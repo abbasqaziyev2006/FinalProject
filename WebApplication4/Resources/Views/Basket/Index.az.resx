@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="Product" xml:space="preserve"><value>Məhsul</value></data>
+	<data name="Price" xml:space="preserve"><value>Qiymət</value></data>
+	<data name="Quantity" xml:space="preserve"><value>Miqdar</value></data>
+	<data name="Subtotal" xml:space="preserve"><value>Ara cəm</value></data>
+	<data name="Color" xml:space="preserve"><value>Rəng</value></data>
+	<data name="Size" xml:space="preserve"><value>Ölçü</value></data>
+
+	<data name="CouponCode" xml:space="preserve"><value>Kupon Kodu</value></data>
+	<data name="ApplyCoupon" xml:space="preserve"><value>KUPONU TƏTBİQ ET</value></data>
+	<data name="UpdateCart" xml:space="preserve"><value>SƏBƏTİ YENİLƏ</value></data>
+
+	<data name="CartTotals" xml:space="preserve"><value>Səbətin Cəmi</value></data>
+	<data name="Shipping" xml:space="preserve"><value>Çatdırılma</value></data>
+	<data name="FreeShipping" xml:space="preserve"><value>Pulsuz çatdırılma</value></data>
+	<data name="FlatRate" xml:space="preserve"><value>Sabit tarif: $49</value></data>
+	<data name="LocalPickup" xml:space="preserve"><value>Özün götür: $8</value></data>
+	<data name="ShippingTo" xml:space="preserve"><value>{0} ünvanına çatdırılma</value></data>
+	<data name="ChangeAddress" xml:space="preserve"><value>ÜNVANI DƏYİŞ</value></data>
+	<data name="VAT" xml:space="preserve"><value>ƏDV</value></data>
+	<data name="Total" xml:space="preserve"><value>Cəmi</value></data>
+	<data name="ProceedToCheckout" xml:space="preserve"><value>ÖDƏNİŞƏ KEÇ</value></data>
+</root>

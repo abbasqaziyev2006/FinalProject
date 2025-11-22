@@ -1,0 +1,108 @@
+﻿@using EcommerceCoza.MVC.Models
+@model EditAccountViewModel
+
+<main class="pt-90">
+    <div class="mb-4 pb-4"></div>
+
+    <section class="my-account container">
+        <h2 class="page-title">Account Details</h2>
+
+        <div class="row">
+            <!-- LEFT MENU -->
+            <div class="col-lg-3">
+                <ul class="account-nav">
+                    <li><a asp-controller="Account" asp-action="Index" class="menu-link menu-link_us-s">Dashboard</a></li>
+                    <li><a asp-controller="Order" asp-action="Index" class="menu-link menu-link_us-s">Orders</a></li>
+                    <li><a asp-controller="Address" asp-action="Index" class="menu-link menu-link_us-s">Addresses</a></li>
+                    <li><a asp-controller="Account" asp-action="Edit" class="menu-link menu-link_us-s menu-link_active">Account Details</a></li>
+                    <li><a asp-controller="Wishlist" asp-action="Index" class="menu-link menu-link_us-s">Wishlist</a></li>
+                    <li><a asp-controller="Account" asp-action="Logout" class="menu-link menu-link_us-s">Logout</a></li>
+                </ul>
+            </div>
+
+            <!-- RIGHT CONTENT -->
+            <div class="col-lg-9">
+                <div class="page-content my-account__edit">
+                    <div class="my-account__edit-form">
+
+                        <form asp-action="Edit" asp-controller="Account" method="post" class="needs-validation" novalidate>
+                            @Html.AntiForgeryToken()
+
+                            <div class="row">
+
+                                <!-- FIRST NAME -->
+                                <div class="col-md-6">
+                                    <div class="form-floating my-3">
+                                        <input asp-for="FirstName" class="form-control" placeholder="First Name" />
+                                        <label asp-for="FirstName"></label>
+                                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <!-- LAST NAME -->
+                                <div class="col-md-6">
+                                    <div class="form-floating my-3">
+                                        <input asp-for="LastName" class="form-control" placeholder="Last Name" />
+                                        <label asp-for="LastName"></label>
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <!-- EMAIL -->
+                                <div class="col-md-12">
+                                    <div class="form-floating my-3">
+                                        <input asp-for="Email" class="form-control" placeholder="Email" />
+                                        <label asp-for="Email"></label>
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <!-- PASSWORD SECTION TITLE -->
+                                <div class="col-md-12">
+                                    <h5 class="text-uppercase my-3">Password Change</h5>
+                                </div>
+
+                                <!-- CURRENT PASSWORD -->
+                                <div class="col-md-12">
+                                    <div class="form-floating my-3">
+                                        <input asp-for="CurrentPassword" class="form-control" placeholder="Current Password" />
+                                        <label asp-for="CurrentPassword"></label>
+                                        <span asp-validation-for="CurrentPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <!-- NEW PASSWORD -->
+                                <div class="col-md-12">
+                                    <div class="form-floating my-3">
+                                        <input asp-for="NewPassword" class="form-control" placeholder="New Password" />
+                                        <label asp-for="NewPassword"></label>
+                                        <span asp-validation-for="NewPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <!-- CONFIRM PASSWORD -->
+                                <div class="col-md-12">
+                                    <div class="form-floating my-3">
+                                        <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm New Password" />
+                                        <label asp-for="ConfirmPassword"></label>
+                                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <!-- SAVE BUTTON -->
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-primary my-3">Save Changes</button>
+                                </div>
+
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+</main>
+
+

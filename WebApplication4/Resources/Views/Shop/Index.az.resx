@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="FilterBy" xml:space="preserve"><value>Filtrə Edin</value></data>
+	<data name="ProductCategories" xml:space="preserve"><value>Məhsul Kateqoriyaları</value></data>
+	<data name="Color" xml:space="preserve"><value>Rəng</value></data>
+	<data name="Sizes" xml:space="preserve"><value>Ölçülər</value></data>
+	<data name="Brands" xml:space="preserve"><value>Markalar</value></data>
+	<data name="Price" xml:space="preserve"><value>Qiymət</value></data>
+	<data name="ResetFilters" xml:space="preserve"><value>Filtirləri Sıfırla</value></data>
+	<data name="Home" xml:space="preserve"><value>Anasayfa</value></data>
+	<data name="TheShop" xml:space="preserve"><value>Mağaza</value></data>
+	<data name="DefaultSorting" xml:space="preserve"><value>Standart Sıralama</value></data>
+	<data name="Featured" xml:space="preserve"><value>Xüsusi</value></data>
+	<data name="BestSelling" xml:space="preserve"><value>Ən Çox Satılan</value></data>
+	<data name="AlphabeticallyAZ" xml:space="preserve"><value>Əlifba sırasına, A-Z</value></data>
+	<data name="AlphabeticallyZA" xml:space="preserve"><value>Əlifba sırasına, Z-A</value></data>
+	<data name="PriceLowHigh" xml:space="preserve"><value>Qiymət, aşağıdan yuxarıya</value></data>
+	<data name="PriceHighLow" xml:space="preserve"><value>Qiymət, yuxarıdan aşağıya</value></data>
+	<data name="DateOldNew" xml:space="preserve"><value>Tarix, eski-yeni</value></data>
+	<data name="DateNewOld" xml:space="preserve"><value>Tarix, yeni-eski</value></data>
+	<data name="View" xml:space="preserve"><value>Bax</value></data>
+	<data name="Filter" xml:space="preserve"><value>Filtr</value></data>
+	<data name="WomenAccessories" xml:space="preserve"><value>Qadın Aksesuarları</value></data>
+	<data name="AccessoriesText" xml:space="preserve"><value>Aksesuarlar görünüşünüzü yenilemenin ən yaxşı yoludur. Yeni stillərlə və rənglərlə bir az kənar əlavə edin və ya bəzəli vaxt asılı olmayan parçaları seçin.</value></data>
+	<data name="AddToCart" xml:space="preserve"><value>Səbətə Əlavə Et</value></data>
+	<data name="Category" xml:space="preserve"><value>Kateqoriya</value></data>
+	<data name="Reviews" xml:space="preserve"><value>rəylər</value></data>
+	<data name="Min" xml:space="preserve"><value>Min</value></data>
+	<data name="Max" xml:space="preserve"><value>Maks</value></data>
+	<data name="LoadMore" xml:space="preserve"><value>Daha Çoxu Yüklə</value></data>
+	<data name="NoMoreProducts" xml:space="preserve"><value>Daha çox məhsul yoxdur</value></data>
+	<data name="Dresses" xml:space="preserve"><value>Paltarlar</value></data>
+	<data name="Shorts" xml:space="preserve"><value>Şortlar</value></data>
+	<data name="Sweatshirts" xml:space="preserve"><value>Sweatshirtlər</value></data>
+	<data name="Jackets" xml:space="preserve"><value>Ceketlər</value></data>
+	<data name="TShirts" xml:space="preserve"><value>T-Shirtlər və Üstlər</value></data>
+	<data name="Jeans" xml:space="preserve"><value>Jinsləri</value></data>
+	<data name="Trousers" xml:space="preserve"><value>Pantalon</value></data>
+	<data name="Jumpers" xml:space="preserve"><value>Sveterlər və Cardigan</value></data>
+</root>

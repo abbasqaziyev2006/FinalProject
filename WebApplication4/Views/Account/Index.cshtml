@@ -1,0 +1,37 @@
+﻿@using EcommerceCoza.MVC.Models
+@model AccountViewModel
+<main class="pt-90"> 
+    <div class="mb-4 pb-4"></div>
+    <section class="my-account container">
+        <h2 class="page-title">My Account</h2>
+        <div class="row">
+            <div class="col-lg-3">
+                <ul class="account-nav">
+                    <li><a asp-controller="Account" asp-action="Index" class="menu-link menu-link_us-s">Dashboard</a></li>
+                    <li><a asp-controller="Order" asp-action="Index" class="menu-link menu-link_us-s">Orders</a></li>
+                    <li><a asp-controller="Address" asp-action="Index" class="menu-link menu-link_us-s">Addresses</a></li>
+                    <li><a asp-controller="Account" asp-action="Edit" class="menu-link menu-link_us-s menu-link_active">Account Details</a></li>
+                    <li><a asp-controller="Wishlist" asp-action="Index" class="menu-link menu-link_us-s">Wishlist</a></li>
+                    <li><a asp-controller="Account" asp-action="Logout" class="menu-link menu-link_us-s">Logout</a></li>
+                </ul>
+            </div>
+            <div class="col-lg-9">
+                <div class="page-content my-account__dashboard">
+                    <p>Hello <strong>User</strong></p>
+                    <p>
+                        From your account dashboard you can view your <a class="unerline-link" asp-controller="Order" asp-action="Index">
+                            recent
+                            orders
+                        </a>, manage your <a class="unerline-link" asp-controller="Address" asp-action="Index">
+                            shipping
+                            addresses
+                        </a>, and <a class="unerline-link" asp-controller="Account" asp-action="Edit">
+                            edit your password and account
+                            details.
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

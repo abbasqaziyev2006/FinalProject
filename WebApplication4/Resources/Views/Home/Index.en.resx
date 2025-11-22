@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="NewArrivals" xml:space="preserve"><value>New Arrivals</value></data>
+	<data name="NightSpring" xml:space="preserve"><value>Night Spring</value></data>
+	<data name="Dresses" xml:space="preserve"><value>Dresses</value></data>
+	<data name="ShopNow" xml:space="preserve"><value>Shop Now</value></data>
+	<data name="YouMightLike" xml:space="preserve"><value>You Might Like</value></data>
+	<data name="WomenTops" xml:space="preserve"><value>Women Tops</value></data>
+	<data name="WomenPants" xml:space="preserve"><value>Women Pants</value></data>
+	<data name="WomenClothes" xml:space="preserve"><value>Women Clothes</value></data>
+	<data name="MenJeans" xml:space="preserve"><value>Men Jeans</value></data>
+	<data name="MenShirts" xml:space="preserve"><value>Men Shirts</value></data>
+	<data name="MenShoes" xml:space="preserve"><value>Men Shoes</value></data>
+	<data name="KidsT ops" xml:space="preserve"><value>Kids Tops</value></data>
+	<data name="HotDeals" xml:space="preserve"><value>Hot Deals</value></data>
+	<data name="SummerSale" xml:space="preserve"><value>Summer Sale</value></data>
+	<data name="UpTo60PercentOff" xml:space="preserve"><value>Up to 60% Off</value></data>
+	<data name="Days" xml:space="preserve"><value>Days</value></data>
+	<data name="Hours" xml:space="preserve"><value>Hours</value></data>
+	<data name="Mins" xml:space="preserve"><value>Mins</value></data>
+	<data name="Sec" xml:space="preserve"><value>Sec</value></data>
+	<data name="ViewAll" xml:space="preserve"><value>View All</value></data>
+	<data name="AddToCart" xml:space="preserve"><value>Add To Cart</value></data>
+	<data name="QuickView" xml:space="preserve"><value>Quick View</value></data>
+	<data name="AddToWishlist" xml:space="preserve"><value>Add To Wishlist</value></data>
+	<data name="Blazers" xml:space="preserve"><value>Blazers</value></data>
+	<data name="Sportswear" xml:space="preserve"><value>Sportswear</value></data>
+	<data name="StartingAt" xml:space="preserve"><value>Starting at</value></data>
+	<data name="FeaturedProducts" xml:space="preserve"><value>Featured Products</value></data>
+	<data name="LoadMore" xml:space="preserve"><value>Load More</value></data>
+	<data name="CroppedFauxLeatherJacket" xml:space="preserve"><value>Cropped Faux Leather Jacket</value></data>
+	<data name="CalvinShorts" xml:space="preserve"><value>Calvin Shorts</value></data>
+	<data name="KirbyTShirt" xml:space="preserve"><value>Kirby T-Shirt</value></data>
+	<data name="CableknitShawl" xml:space="preserve"><value>Cableknit Shawl</value></data>
+	<data name="WomenAccessories" xml:space="preserve"><value>Women's Accessories</value></data>
+	<data name="AccessoriesDescription" xml:space="preserve"><value>Accessories are the best way to update your look. Add a little edge with new styles and new colors, or go for timeless pieces.</value></data>
+	<data name="Summer" xml:space="preserve"><value>Summer</value></data>
+</root>

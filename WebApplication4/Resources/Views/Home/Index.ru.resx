@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="NewArrivals" xml:space="preserve"><value>Новые поступления</value></data>
+	<data name="NightSpring" xml:space="preserve"><value>Ночная весна</value></data>
+	<data name="Dresses" xml:space="preserve"><value>Платья</value></data>
+	<data name="ShopNow" xml:space="preserve"><value>Купить сейчас</value></data>
+	<data name="YouMightLike" xml:space="preserve"><value>Вам может понравиться</value></data>
+	<data name="WomenTops" xml:space="preserve"><value>Женские топы</value></data>
+	<data name="WomenPants" xml:space="preserve"><value>Женские брюки</value></data>
+	<data name="WomenClothes" xml:space="preserve"><value>Женская одежда</value></data>
+	<data name="MenJeans" xml:space="preserve"><value>Мужские джинсы</value></data>
+	<data name="MenShirts" xml:space="preserve"><value>Мужские рубашки</value></data>
+	<data name="MenShoes" xml:space="preserve"><value>Мужские туфли</value></data>
+	<data name="KidsTopps" xml:space="preserve"><value>Детские топы</value></data>
+	<data name="HotDeals" xml:space="preserve"><value>Горячие предложения</value></data>
+	<data name="SummerSale" xml:space="preserve"><value>Летняя распродажа</value></data>
+	<data name="UpTo60PercentOff" xml:space="preserve"><value>До 60% скидки</value></data>
+	<data name="Days" xml:space="preserve"><value>Дни</value></data>
+	<data name="Hours" xml:space="preserve"><value>Часы</value></data>
+	<data name="Mins" xml:space="preserve"><value>Минуты</value></data>
+	<data name="Sec" xml:space="preserve"><value>Сек</value></data>
+	<data name="ViewAll" xml:space="preserve"><value>Просмотреть все</value></data>
+	<data name="AddToCart" xml:space="preserve"><value>Добавить в корзину</value></data>
+	<data name="QuickView" xml:space="preserve"><value>Быстрый просмотр</value></data>
+	<data name="AddToWishlist" xml:space="preserve"><value>Добавить в список желаний</value></data>
+	<data name="Blazers" xml:space="preserve"><value>Пиджаки</value></data>
+	<data name="Sportswear" xml:space="preserve"><value>Спортивная одежда</value></data>
+	<data name="StartingAt" xml:space="preserve"><value>Начиная с</value></data>
+	<data name="FeaturedProducts" xml:space="preserve"><value>Рекомендуемые товары</value></data>
+	<data name="LoadMore" xml:space="preserve"><value>Загрузить еще</value></data>
+	<data name="CroppedFauxLeatherJacket" xml:space="preserve"><value>Укороченная куртка из искусственной кожи</value></data>
+	<data name="CalvinShorts" xml:space="preserve"><value>Шорты Calvin</value></data>
+	<data name="KirbyTShirt" xml:space="preserve"><value>Футболка Kirby</value></data>
+	<data name="CableknitShawl" xml:space="preserve"><value>Шаль Cableknit</value></data>
+	<data name="WomenAccessories" xml:space="preserve"><value>Женские аксессуары</value></data>
+	<data name="AccessoriesDescription" xml:space="preserve"><value>Аксессуары - лучший способ обновить свой образ. Добавьте края с новыми стилями и цветами или выберите вневременные вещи.</value></data>
+	<data name="Summer" xml:space="preserve"><value>Лето</value></data>
+</root>

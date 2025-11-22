@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="NewArrivals" xml:space="preserve"><value>Yeni Gəlişlər</value></data>
+	<data name="NightSpring" xml:space="preserve"><value>Gecə Baharı</value></data>
+	<data name="Dresses" xml:space="preserve"><value>Paltarlar</value></data>
+	<data name="ShopNow" xml:space="preserve"><value>İndi Al</value></data>
+	<data name="YouMightLike" xml:space="preserve"><value>Sizə Bəyənə Biləcəksiniz</value></data>
+	<data name="WomenTops" xml:space="preserve"><value>Qadın Üstləri</value></data>
+	<data name="WomenPants" xml:space="preserve"><value>Qadın Pantolonları</value></data>
+	<data name="WomenClothes" xml:space="preserve"><value>Qadın Geyimləri</value></data>
+	<data name="MenJeans" xml:space="preserve"><value>Kişi Jinsləri</value></data>
+	<data name="MenShirts" xml:space="preserve"><value>Kişi Gömlәkləri</value></data>
+	<data name="MenShoes" xml:space="preserve"><value>Kişi Ayakkabıları</value></data>
+	<data name="KidsTopps" xml:space="preserve"><value>Uşaq Üstləri</value></data>
+	<data name="HotDeals" xml:space="preserve"><value>Ədvətli Fərsətlər</value></data>
+	<data name="SummerSale" xml:space="preserve"><value>Yay Satışı</value></data>
+	<data name="UpTo60PercentOff" xml:space="preserve"><value>60% -ə qədər endirim</value></data>
+	<data name="Days" xml:space="preserve"><value>Günlər</value></data>
+	<data name="Hours" xml:space="preserve"><value>Saat</value></data>
+	<data name="Mins" xml:space="preserve"><value>Dəq</value></data>
+	<data name="Sec" xml:space="preserve"><value>San</value></data>
+	<data name="ViewAll" xml:space="preserve"><value>Hamısını Gör</value></data>
+	<data name="AddToCart" xml:space="preserve"><value>Səbətə Əlavə Et</value></data>
+	<data name="QuickView" xml:space="preserve"><value>Sürətli Baxış</value></data>
+	<data name="AddToWishlist" xml:space="preserve"><value>Arzu Siyahısına Əlavə Et</value></data>
+	<data name="Blazers" xml:space="preserve"><value>Blazerlar</value></data>
+	<data name="Sportswear" xml:space="preserve"><value>Sportswear</value></data>
+	<data name="StartingAt" xml:space="preserve"><value>Başlanğıc</value></data>
+	<data name="FeaturedProducts" xml:space="preserve"><value>Xüsusi Məhsullar</value></data>
+	<data name="LoadMore" xml:space="preserve"><value>Daha Çoxu Yüklə</value></data>
+	<data name="CroppedFauxLeatherJacket" xml:space="preserve"><value>Kəsilmiş Saxta Dəri Ceket</value></data>
+	<data name="CalvinShorts" xml:space="preserve"><value>Calvin Şortları</value></data>
+	<data name="KirbyTShirt" xml:space="preserve"><value>Kirby T-Shirt</value></data>
+	<data name="CableknitShawl" xml:space="preserve"><value>Cableknit Şalı</value></data>
+	<data name="WomenAccessories" xml:space="preserve"><value>Qadın Aksessuarları</value></data>
+	<data name="AccessoriesDescription" xml:space="preserve"><value>Aksesuarlar görünüşünüzü yenilemenin ən yaxşı yoludur. Yeni stillərlə və rənglərlə bir az kənar əlavə edin və ya bəzəliyin vaxt asılı olmayan parçalarını seçin.</value></data>
+	<data name="Summer" xml:space="preserve"><value>Yay</value></data>
+</root>

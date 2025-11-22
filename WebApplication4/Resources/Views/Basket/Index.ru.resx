@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="Product" xml:space="preserve"><value>Товар</value></data>
+	<data name="Price" xml:space="preserve"><value>Цена</value></data>
+	<data name="Quantity" xml:space="preserve"><value>Количество</value></data>
+	<data name="Subtotal" xml:space="preserve"><value>Промежуточный итог</value></data>
+	<data name="Color" xml:space="preserve"><value>Цвет</value></data>
+	<data name="Size" xml:space="preserve"><value>Размер</value></data>
+
+	<data name="CouponCode" xml:space="preserve"><value>Купон</value></data>
+	<data name="ApplyCoupon" xml:space="preserve"><value>ПРИМЕНИТЬ КУПОН</value></data>
+	<data name="UpdateCart" xml:space="preserve"><value>ОБНОВИТЬ КОРЗИНУ</value></data>
+
+	<data name="CartTotals" xml:space="preserve"><value>Итоги корзины</value></data>
+	<data name="Shipping" xml:space="preserve"><value>Доставка</value></data>
+	<data name="FreeShipping" xml:space="preserve"><value>Бесплатная доставка</value></data>
+	<data name="FlatRate" xml:space="preserve"><value>Фиксированная ставка: $49</value></data>
+	<data name="LocalPickup" xml:space="preserve"><value>Самовывоз: $8</value></data>
+	<data name="ShippingTo" xml:space="preserve"><value>Доставка в {0}</value></data>
+	<data name="ChangeAddress" xml:space="preserve"><value>ИЗМЕНИТЬ АДРЕС</value></data>
+	<data name="VAT" xml:space="preserve"><value>НДС</value></data>
+	<data name="Total" xml:space="preserve"><value>Итого</value></data>
+	<data name="ProceedToCheckout" xml:space="preserve"><value>ПЕРЕЙТИ К ОФОРМЛЕНИЮ</value></data>
+</root>

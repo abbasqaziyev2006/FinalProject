@@ -1,0 +1,283 @@
+﻿@using ECommerceCoza.DAL.DataContext.Entities
+@using EcommerceCoza.BLL.ViewModels
+@using Microsoft.Extensions.Options
+@model OrderCreateViewModel
+@inject IOptions<StripeSettings> Stripe
+@inject WebApplication4.Services.ICurrencyService CurrencyService
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
+<main class="pt-90">
+    <div class="mb-4 pb-4"></div>
+    <section class="shop-checkout container">
+        <h2 class="page-title">@Localizer["PageTitle"]</h2>
+        <div class="checkout-steps">
+            <a asp-controller="Cart" asp-action="Index" class="checkout-steps__item active">
+                <span class="checkout-steps__item-number">01</span>
+                <span class="checkout-steps__item-title">
+                    <span>@Localizer["ShoppingBag"]</span>
+                    <em>@Localizer["ManageItems"]</em>
+                </span>
+            </a>
+            <a asp-controller="Order" asp-action="Checkout" class="checkout-steps__item active">
+                <span class="checkout-steps__item-number">02</span>
+                <span class="checkout-steps__item-title">
+                    <span>@Localizer["ShippingCheckout"]</span>
+                    <em>@Localizer["CheckoutItems"]</em>
+                </span>
+            </a>
+            <a class="checkout-steps__item">
+                <span class="checkout-steps__item-number">03</span>
+                <span class="checkout-steps__item-title">
+                    <span>@Localizer["Confirmation"]</span>
+                    <em>@Localizer["ReviewSubmit"]</em>
+                </span>
+            </a>
+        </div>
+
+        <form asp-action="Checkout" asp-controller="Order" method="post">
+            <div class="checkout-form">
+                <div class="billing-info__wrapper">
+                    <div class="row">
+                        <div class="col-6">
+                            <h4>@Localizer["ShippingDetails"]</h4>
+                        </div>
+                    </div>
+
+                    <div class="row mt-5">
+                        <div class="col-md-6">
+                            <div class="form-floating my-3">
+                                <input asp-for="AddressCreateViewModel.FirstName" class="form-control" placeholder="@Localizer["FirstName"]" required />
+                                <label asp-for="AddressCreateViewModel.FirstName">@Localizer["FirstName"] @Localizer["Required"]</label>
+                                <span class="text-danger" asp-validation-for="AddressCreateViewModel.FirstName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating my-3">
+                                <input asp-for="AddressCreateViewModel.LastName" class="form-control" placeholder="@Localizer["LastName"]" required />
+                                <label asp-for="AddressCreateViewModel.LastName">@Localizer["LastName"] @Localizer["Required"]</label>
+                                <span class="text-danger" asp-validation-for="AddressCreateViewModel.LastName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating my-3">
+                                <input asp-for="AddressCreateViewModel.Phone" class="form-control" placeholder="@Localizer["PhoneNumber"]" required />
+                                <label asp-for="AddressCreateViewModel.Phone">@Localizer["PhoneNumber"] @Localizer["Required"]</label>
+                                <span class="text-danger" asp-validation-for="AddressCreateViewModel.Phone"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating my-3">
+                                <input asp-for="AddressCreateViewModel.PostalCode" class="form-control" placeholder="@Localizer["PostalCode"]" required />
+                                <label asp-for="AddressCreateViewModel.PostalCode">@Localizer["PostalCode"] @Localizer["Required"]</label>
+                                <span class="text-danger" asp-validation-for="AddressCreateViewModel.PostalCode"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating my-3">
+                                <input asp-for="AddressCreateViewModel.City" class="form-control" placeholder="@Localizer["City"]" required />
+                                <label asp-for="AddressCreateViewModel.City">@Localizer["City"] @Localizer["Required"]</label>
+                                <span class="text-danger" asp-validation-for="AddressCreateViewModel.City"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-floating my-3">
+                                <input asp-for="AddressCreateViewModel.Country" class="form-control" placeholder="@Localizer["Country"]" required />
+                                <label asp-for="AddressCreateViewModel.Country">@Localizer["Country"] @Localizer["Required"]</label>
+                                <span class="text-danger" asp-validation-for="AddressCreateViewModel.Country"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating my-3">
+                                <input asp-for="AddressCreateViewModel.Adress" class="form-control" placeholder="@Localizer["Address"]" required />
+                                <label asp-for="AddressCreateViewModel.Adress">@Localizer["Address"] @Localizer["Required"]</label>
+                                <span class="text-danger" asp-validation-for="AddressCreateViewModel.Adress"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-floating my-3">
+                                <input asp-for="AddressCreateViewModel.Company" class="form-control" placeholder="@Localizer["Company"]" />
+                                <label asp-for="AddressCreateViewModel.Company">@Localizer["Company"]</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="checkout__totals-wrapper">
+                    <div class="sticky-content">
+                        <div class="checkout__totals">
+                            <h3>@Localizer["YourOrder"]</h3>
+                            <table class="checkout-cart-items">
+                                <thead>
+                                    <tr>
+                                        <th>@Localizer["Product"]</th>
+                                        <th align="right">@Localizer["Subtotal"]</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model?.BasketViewModel?.Items != null && Model.BasketViewModel.Items.Count > 0)
+                                    {
+                                        @foreach (var item in Model.BasketViewModel.Items)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @item.ProductName x @item.Quantity
+                                                </td>
+                                                <td align="right">
+                                                    @CurrencyService.Format(item.TotalPrice)
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td colspan="2" class="text-center text-muted">@Localizer["EmptyBasket"]</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                            <div class="checkout__discount-code my-3 p-3 border-top border-bottom">
+                                <h5 class="mb-3">@Localizer["DiscountCode"]</h5>
+                                <div class="input-group">
+                                    <input type="text" id="discountCode" class="form-control" placeholder="@Localizer["EnterDiscount"]">
+                                    <button type="button" id="applyDiscountBtn" class="btn btn-outline-secondary">@Localizer["Apply"]</button>
+                                </div>
+                                <small id="discountMessage" class="d-block mt-2"></small>
+                            </div>
+
+                            <table class="checkout-totals">
+                                <tbody>
+                                    <tr>
+                                        <th>@Localizer["Subtotal"]</th>
+                                        <td align="right" id="subtotalPrice">@CurrencyService.Format(Model?.TotalPrice ?? 0)</td>
+                                    </tr>
+                                    <tr>
+                                        <th>@Localizer["Discount"]</th>
+                                        <td align="right" id="discountAmount">-@CurrencyService.GetSymbol()0.00</td>
+                                    </tr>
+                                    <tr>
+                                        <th>@Localizer["Shipping"]</th>
+                                        <td align="right">@Localizer["Free"]</td>
+                                    </tr>
+                                    <tr class="checkout-totals-total">
+                                        <th>@Localizer["Total"]</th>
+                                        <td align="right" id="totalPrice">@CurrencyService.Format(Model?.EndPrice != 0 ? Model.EndPrice : Model?.TotalPrice ?? 0)</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="checkout__payment-methods my-4">
+                            <h4 class="mb-3">@Localizer["PaymentMethod"]</h4>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="DirectBankTransfer" checked />
+                                <label class="form-check-label">@Localizer["DirectBankTransfer"]</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="Check" />
+                                <label class="form-check-label">@Localizer["CheckPayment"]</label>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="CashOnDelivery" />
+                                <label class="form-check-label">@Localizer["CashOnDelivery"]</label>
+                            </div>
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="Stripe" />
+                                <label class="form-check-label">@Localizer["CreditCard"]</label>
+                            </div>
+
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" asp-for="AcceptTermsConditions" id="acceptTerms" required />
+                                <label class="form-check-label" for="acceptTerms">
+                                    @Localizer["AcceptTerms"] @Localizer["Required"]
+                                </label>
+                                <span class="text-danger" asp-validation-for="AcceptTermsConditions"></span>
+                            </div>
+                        </div>
+
+                        <input type="hidden" id="hasAppliedDiscount" asp-for="HasAppliedDiscount" />
+                        <input type="hidden" id="discountField" asp-for="Discount" />
+
+                        <button type="submit" class="btn btn-primary btn-checkout w-100 btn-lg">@Localizer["PlaceOrder"]</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </section>
+</main>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            let currentTotalPrice = @(Model?.TotalPrice ?? 0);
+            const currencySymbol = '@CurrencyService.GetSymbol()';
+
+            const msgEnterDiscount = '@Localizer["EnterDiscountCodeWarning"]';
+            const msgDiscountAppliedFormat = '@Localizer["DiscountAppliedFormat"]';
+            const msgInvalidCode = '@Localizer["InvalidDiscountCode"]';
+            const msgErrorApplying = '@Localizer["ErrorApplyingDiscount"]';
+
+            $('#applyDiscountBtn').click(function () {
+                const discountCode = $('#discountCode').val().trim();
+
+                if (!discountCode) {
+                    $('#discountMessage')
+                        .text('⚠ ' + msgEnterDiscount)
+                        .css('color', '#dc3545')
+                        .removeClass('text-success')
+                        .addClass('text-danger');
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("ApplyDiscount", "Order")',
+                    type: 'POST',
+                    data: { discountCode: discountCode },
+                    dataType: 'json',
+                    success: function (response) {
+                        if (response.success) {
+                            $('#hasAppliedDiscount').val('true');
+                            $('#discountField').val(discountCode);
+
+                            const discount = parseFloat(response.discountAmount);
+                            const finalTotal = parseFloat(response.finalPrice);
+
+                            $('#discountAmount').text('-' + currencySymbol + discount.toFixed(2));
+                            $('#totalPrice').text(currencySymbol + finalTotal.toFixed(2));
+
+                            const appliedText = msgDiscountAppliedFormat.replace('{0}', response.salePercentage);
+                            $('#discountMessage')
+                                .text('✓ ' + appliedText)
+                                .css('color', '#28a745')
+                                .removeClass('text-danger')
+                                .addClass('text-success');
+                        } else {
+                            $('#discountMessage')
+                                .text('⚠ ' + (response.message || msgInvalidCode))
+                                .css('color', '#dc3545')
+                                .removeClass('text-success')
+                                .addClass('text-danger');
+                            $('#hasAppliedDiscount').val('false');
+                        }
+                    },
+                    error: function () {
+                        $('#discountMessage')
+                            .text('⚠ ' + msgErrorApplying)
+                            .css('color', '#dc3545')
+                            .removeClass('text-success')
+                            .addClass('text-danger');
+                    }
+                });
+            });
+
+            $('#discountCode').keypress(function (e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    $('#applyDiscountBtn').click();
+                }
+            });
+        });
+    </script>
+}

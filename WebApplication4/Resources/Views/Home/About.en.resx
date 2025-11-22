@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="PageTitle" xml:space="preserve"><value>About Us</value></data>
+	<data name="StoryHeading" xml:space="preserve"><value>Our Story</value></data>
+	<data name="StoryParagraph1" xml:space="preserve"><value>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</value></data>
+	<data name="StoryParagraph2" xml:space="preserve"><value>Saw wherein fruitful good days image them, midst, waters upon, saw. Seas lights seasons. Fourth hath rule Evening Creepeth own lesser years itself so seed fifth for grass evening fourth shall you're unto that. Had. Female replenish for yielding so saw all one to yielding grass you'll air sea it, open waters subdue, hath. Brought second Made. Be. Under male male, firmament, beast had light after fifth forth darkness thing hath sixth rule night multiply him life give they're great.</value></data>
+	<data name="MissionHeading" xml:space="preserve"><value>Our Mission</value></data>
+	<data name="MissionText" xml:space="preserve"><value>Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</value></data>
+	<data name="VisionHeading" xml:space="preserve"><value>Our Vision</value></data>
+	<data name="VisionText" xml:space="preserve"><value>Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</value></data>
+	<data name="CompanyHeading" xml:space="preserve"><value>The Company</value></data>
+	<data name="CompanyText" xml:space="preserve"><value>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Amet sapien dignissim a elementum. Sociis metus, hendrerit mauris id in. Quis sit sit ultrices tincidunt euismod luctus diam. Turpis sodales orci etiam phasellus lacus id leo. Amet turpis nunc, nulla massa est viverra interdum. Praesent auctor nulla morbi non posuere mattis. Arcu eu id maecenas cras.</value></data>
+	<data name="ImageAltAbout" xml:space="preserve"><value>About us image</value></data>
+</root>
