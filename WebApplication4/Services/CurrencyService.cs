@@ -10,13 +10,11 @@ namespace WebApplication4.Services
         private const string CookieName = "CurrentCurrency";
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        // Base currency assumed USD stored in DB/prices.
-        // Rates can be moved to configuration later.
         private readonly Dictionary<Currency, decimal> _rates = new()
         {
             { Currency.USD, 1m },
-            { Currency.AZN, 1.70m }, // 1 USD = 1.70 AZN (example)
-            { Currency.RUB, 95m }    // 1 USD = 95 RUB (example)
+            { Currency.AZN, 1.70m },
+            { Currency.RUB, 95m }
         };
 
         private readonly Dictionary<Currency, string> _symbols = new()
@@ -24,6 +22,13 @@ namespace WebApplication4.Services
             { Currency.USD, "$" },
             { Currency.AZN, "₼" },
             { Currency.RUB, "₽" }
+        };
+
+        private readonly Dictionary<Currency, string> _names = new()
+        {
+            { Currency.USD, "US Dollar" },
+            { Currency.AZN, "Azerbaijani Manat" },
+            { Currency.RUB, "Russian Ruble" }
         };
 
         public CurrencyService(IHttpContextAccessor httpContextAccessor)
@@ -59,6 +64,19 @@ namespace WebApplication4.Services
             return decimal.Round(amount * rate, 2, MidpointRounding.AwayFromZero);
         }
 
+        public decimal ConvertBetweenCurrencies(decimal amount, Currency from, Currency to)
+        {
+            if (from == to)
+                return amount;
+
+            var fromRate = _rates[from];
+            var toRate = _rates[to];
+            var amountInUsd = amount / fromRate;
+            var convertedAmount = amountInUsd * toRate;
+
+            return decimal.Round(convertedAmount, 2, MidpointRounding.AwayFromZero);
+        }
+
         public string Format(decimal amount, bool withSymbol = true)
         {
             var converted = ConvertFromBaseUsd(amount);
@@ -70,6 +88,25 @@ namespace WebApplication4.Services
         {
             currency ??= GetCurrentCurrency();
             return _symbols[currency.Value];
+        }
+
+        public string GetCurrencyName(Currency? currency = null)
+        {
+            currency ??= GetCurrentCurrency();
+            return _names[currency.Value];
+        }
+
+        public decimal GetExchangeRate(Currency currency)
+        {
+            return _rates[currency];
+        }
+
+        public IEnumerable<(Currency Currency, string Name, string Symbol)> GetAllCurrencies()
+        {
+            foreach (Currency currency in Enum.GetValues(typeof(Currency)))
+            {
+                yield return (currency, _names[currency], _symbols[currency]);
+            }
         }
     }
 }

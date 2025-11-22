@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("EcommerceCoza.MVC")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4a99e55dcbf38eca75df8fa4b7db9b524b74e3aa")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+74b194ec022daffeb9da6ca3099a58344a8650ae")]
 [assembly: System.Reflection.AssemblyProductAttribute("EcommerceCoza.MVC")]
 [assembly: System.Reflection.AssemblyTitleAttribute("EcommerceCoza.MVC")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,0 +1,74 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\EcommerceCoza\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\ecommercecoza\\webapplication4\\services\\icurrencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\services\\icurrencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\ecommercecoza\\webapplication4\\services\\currencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\services\\currencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "ICurrencyService.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\EcommerceCoza\\WebApplication4\\Services\\ICurrencyService.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Services\\ICurrencyService.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\EcommerceCoza\\WebApplication4\\Services\\ICurrencyService.cs",
+              "RelativeToolTip": "WebApplication4\\Services\\ICurrencyService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAowAsAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T15:49:03.809Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CurrencyService.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\EcommerceCoza\\WebApplication4\\Services\\CurrencyService.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Services\\CurrencyService.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\EcommerceCoza\\WebApplication4\\Services\\CurrencyService.cs",
+              "RelativeToolTip": "WebApplication4\\Services\\CurrencyService.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAAA3wG8AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T15:48:46.407Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
