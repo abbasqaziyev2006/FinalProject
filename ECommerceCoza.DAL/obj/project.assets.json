@@ -4248,11 +4248,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\EcommerceCoza\\ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj",
+      "projectUniqueName": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\FinalProject\\ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj",
       "projectName": "ECommerceCoza.DAL",
-      "projectPath": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\EcommerceCoza\\ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj",
+      "projectPath": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\FinalProject\\ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj",
       "packagesPath": "C:\\Users\\O Sebnem K Cemengul\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\EcommerceCoza\\ECommerceCoza.DAL\\obj\\",
+      "outputPath": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\FinalProject\\ECommerceCoza.DAL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

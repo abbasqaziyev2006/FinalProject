@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Q/U6Zj+Yg24=",
+  "dgSpecHash": "rUjC3KIGK5I=",
   "success": true,
-  "projectFilePath": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\EcommerceCoza\\ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj",
+  "projectFilePath": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\FinalProject\\ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\O Sebnem K Cemengul\\.nuget\\packages\\automapper\\15.0.1\\automapper.15.0.1.nupkg.sha512",
     "C:\\Users\\O Sebnem K Cemengul\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",

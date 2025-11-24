@@ -1,13 +1,13 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\EcommerceCoza\\",
+  "WorkspaceRootPath": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\ecommercecoza\\webapplication4\\services\\icurrencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\services\\icurrencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\services\\icurrencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\ecommercecoza\\webapplication4\\services\\currencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\services\\currencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\services\\currencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -18,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -37,16 +37,12 @@
               "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
             },
             {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
-            },
-            {
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "ICurrencyService.cs",
-              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\EcommerceCoza\\WebApplication4\\Services\\ICurrencyService.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Services\\ICurrencyService.cs",
               "RelativeDocumentMoniker": "WebApplication4\\Services\\ICurrencyService.cs",
-              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\EcommerceCoza\\WebApplication4\\Services\\ICurrencyService.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Services\\ICurrencyService.cs",
               "RelativeToolTip": "WebApplication4\\Services\\ICurrencyService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAowAsAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
@@ -57,14 +53,21 @@
               "$type": "Document",
               "DocumentIndex": 1,
               "Title": "CurrencyService.cs",
-              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\EcommerceCoza\\WebApplication4\\Services\\CurrencyService.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Services\\CurrencyService.cs",
               "RelativeDocumentMoniker": "WebApplication4\\Services\\CurrencyService.cs",
-              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\EcommerceCoza\\WebApplication4\\Services\\CurrencyService.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Services\\CurrencyService.cs",
               "RelativeToolTip": "WebApplication4\\Services\\CurrencyService.cs",
               "ViewState": "AgIAAFYAAAAAAAAAAAA3wG8AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-22T15:48:46.407Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-22T15:48:46.407Z"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{56df62a4-05a3-4e5b-aa1a-99371ccfb997}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
             }
           ]
         }
