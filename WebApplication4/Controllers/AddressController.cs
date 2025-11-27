@@ -1,102 +1,104 @@
-﻿using EcommerceCoza.BLL.Services.Contracts;
-using EcommerceCoza.BLL.ViewModels;
-using ECommerceCoza.DAL.DataContext.Entities;
-using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using EcommerceCoza.BLL.Services.Contracts;
+using EcommerceCoza.BLL.ViewModels;
 
-namespace EcommerceCoza.MVC.Controllers
+namespace WebApplication4.Controllers
 {
+    [Authorize]
     public class AddressController : Controller
     {
         private readonly IAddressService _addressService;
-        private readonly UserManager<AppUser> _userManager;
 
-        public AddressController(IAddressService addressService, UserManager<AppUser> userManager)
+        public AddressController(IAddressService addressService)
         {
             _addressService = addressService;
-            _userManager = userManager;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var adresses = await _addressService.GetAllAsync(predicate: x => !x.IsDeleted);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var addresses = await _addressService.GetAllAsync(a => a.AppUserId == userId, AsNoTracking: true);
+            return View(addresses.ToList());
+        }
 
-            return View(adresses.ToList());
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View(new AddressCreateViewModel());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Add(AddressCreateViewModel model)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(AddressCreateViewModel model)
         {
             if (!ModelState.IsValid)
-                return RedirectToAction(nameof(Address));
-
-            if (User.Identity!.IsAuthenticated)
             {
-                var user = await _userManager.FindByNameAsync(User.Identity!.Name!);
-                if (user == null)
-                    return RedirectToAction("Account", "Login");
-                model.AppUserId = user.Id;
+                return View(model);
             }
 
-            await _addressService.CreateAsync(model);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            model.AppUserId = userId;
 
+            await _addressService.CreateAddressAsync(model);
             return RedirectToAction(nameof(Index));
         }
 
+        // EDIT: load existing address
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var addressViewModel = await _addressService.GetByIdAsync(id);
-
-            if (addressViewModel == null)
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var vm = await _addressService.GetByIdAsync(id);
+            if (vm is null || vm.AppUserId != userId)
                 return NotFound();
 
-            var addressUpdateViewModel = new AddressUpdateViewModel
+            var updateVm = new AddressUpdateViewModel
             {
-                Id = id,
-                FirstName = addressViewModel.FirstName,
-                LastName = addressViewModel.LastName,
-                Adress = addressViewModel.Adress,
-                PostalCode = addressViewModel.PostalCode,
-                Phone = addressViewModel.Phone,
-                Company = addressViewModel.Company,
-                City = addressViewModel.City,
-                Country = addressViewModel.Country,
+                Id = vm.Id,
+                FirstName = vm.FirstName,
+                LastName = vm.LastName,
+                Company = vm.Company,
+                Adress = vm.Adress,
+                City = vm.City,
+                Country = vm.Country,
+                PostalCode = vm.PostalCode,
+                Phone = vm.Phone,
+                AppUserId = vm.AppUserId,
+                IsDefault = vm.IsDefault
             };
 
-            return PartialView("_EditAddressPartial", addressUpdateViewModel);
+            return View(updateVm);
         }
 
-        public async Task<IActionResult> Delete(int id)
-        {
-            var address = await _addressService.GetByIdAsync(id);
-
-            if (address == null)
-                return BadRequest();
-
-            var deleted = await _addressService.DeleteAsync(id);
-
-            if (deleted)
-                return NoContent();
-            else
-                return RedirectToAction(nameof(Index));
-        }
-
+        // EDIT: save changes
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, AddressUpdateViewModel model)
         {
+            if (id != model.Id)
+                return BadRequest();
+
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // ensure the address belongs to the current user
+            var existing = await _addressService.GetByIdAsync(id);
+            if (existing is null || existing.AppUserId != userId)
+                return NotFound();
+
             if (!ModelState.IsValid)
                 return View(model);
 
-            var existedAddress = await _addressService.GetByIdAsync(id);
-            if (existedAddress == null)
-                return BadRequest();
-
-            var updated = await _addressService.UpdateAsync(id, model);
-
-            if (updated)
-                return RedirectToAction(nameof(Index));
-            else
+            model.AppUserId = userId; // enforce ownership
+            var ok = await _addressService.UpdateAsync(id, model);
+            if (!ok)
+            {
+                ModelState.AddModelError(string.Empty, "Unable to update address.");
                 return View(model);
+            }
+
+            return RedirectToAction(nameof(Index));
         }
     }
 }

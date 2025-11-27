@@ -3,6 +3,62 @@
   "WorkspaceRootPath": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\views\\address\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\address\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\views\\address\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\address\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\views\\address\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\address\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\views\\account\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\account\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\views\\order\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\order\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\views\\wishlist\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\wishlist\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\views\\account\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\account\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\resources\\views\\shared\\_layout.az.resx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\resources\\views\\shared\\_layout.az.resx||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\resources\\views\\shared\\_layout.en.resx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\resources\\views\\shared\\_layout.en.resx||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\resources\\views\\shared\\_layout.ru.resx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\resources\\views\\shared\\_layout.ru.resx||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\resources\\views\\basket\\index.az.resx||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\resources\\views\\basket\\index.az.resx||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\resources\\views\\basket\\index.az.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\resources\\views\\basket\\index.az.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalproject\\webapplication4\\services\\icurrencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\services\\icurrencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -18,8 +74,78 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AddressController.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Controllers\\AddressController.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Controllers\\AddressController.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Controllers\\AddressController.cs",
+              "RelativeToolTip": "WebApplication4\\Controllers\\AddressController.cs",
+              "ViewState": "AgIAAFAAAAAAAAAAAADwv2cAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T05:45:38.623Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Address\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Address\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Address\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Address\\Index.cshtml",
+              "ViewState": "AgIAACUAAAAAAAAAAAAAACwAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T05:24:18.19Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Address\\Edit.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Address\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Address\\Edit.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Address\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T06:11:37.932Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Address\\Create.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Address\\Create.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Address\\Create.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Address\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAF0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T05:45:58.101Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Account\\Edit.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Account\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Account\\Edit.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Account\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAABlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T05:44:45.531Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
@@ -38,7 +164,117 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 6,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Wishlist\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Wishlist\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Wishlist\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Wishlist\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T05:27:08.659Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Order\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Order\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Order\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Order\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T05:26:00.218Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Account\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Account\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Account\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Account\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAABlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T05:29:10.791Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAIDAAAAAAAAAAAQwPcCAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T04:55:16.625Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "_Layout.az.resx",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Resources\\Views\\Shared\\_Layout.az.resx",
+              "RelativeDocumentMoniker": "WebApplication4\\Resources\\Views\\Shared\\_Layout.az.resx",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Resources\\Views\\Shared\\_Layout.az.resx",
+              "RelativeToolTip": "WebApplication4\\Resources\\Views\\Shared\\_Layout.az.resx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-27T04:55:10.79Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "_Layout.en.resx",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Resources\\Views\\Shared\\_Layout.en.resx",
+              "RelativeDocumentMoniker": "WebApplication4\\Resources\\Views\\Shared\\_Layout.en.resx",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Resources\\Views\\Shared\\_Layout.en.resx",
+              "RelativeToolTip": "WebApplication4\\Resources\\Views\\Shared\\_Layout.en.resx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-27T04:55:05.867Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "_Layout.ru.resx",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Resources\\Views\\Shared\\_Layout.ru.resx",
+              "RelativeDocumentMoniker": "WebApplication4\\Resources\\Views\\Shared\\_Layout.ru.resx",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Resources\\Views\\Shared\\_Layout.ru.resx",
+              "RelativeToolTip": "WebApplication4\\Resources\\Views\\Shared\\_Layout.ru.resx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-27T04:54:58.33Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Index.az.resx",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "RelativeDocumentMoniker": "WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "RelativeToolTip": "WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAuwAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-27T04:53:32.06Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Index.az.resx",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "RelativeDocumentMoniker": "WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "RelativeToolTip": "WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-27T04:49:54.29Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "ICurrencyService.cs",
               "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Services\\ICurrencyService.cs",
               "RelativeDocumentMoniker": "WebApplication4\\Services\\ICurrencyService.cs",
@@ -46,12 +282,11 @@
               "RelativeToolTip": "WebApplication4\\Services\\ICurrencyService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAowAsAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-22T15:49:03.809Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-11-22T15:49:03.809Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 15,
               "Title": "CurrencyService.cs",
               "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProject\\WebApplication4\\Services\\CurrencyService.cs",
               "RelativeDocumentMoniker": "WebApplication4\\Services\\CurrencyService.cs",
@@ -64,10 +299,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{56df62a4-05a3-4e5b-aa1a-99371ccfb997}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
             }
           ]
         }

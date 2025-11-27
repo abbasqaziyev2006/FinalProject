@@ -7,12 +7,12 @@
         <div class="row">
             <div class="col-lg-3">
                 <ul class="account-nav">
-                    <li><a href="my-account.html" class="menu-link menu-link_us-s menu-link_active">Dashboard</a></li>
-                    <li><a href="account-orders.html" class="menu-link menu-link_us-s">Orders</a></li>
-                    <li><a href="account-address.html" class="menu-link menu-link_us-s">Addresses</a></li>
-                    <li><a href="account-details.html" class="menu-link menu-link_us-s">Account Details</a></li>
-                    <li><a href="account-wishlist.html" class="menu-link menu-link_us-s">Wishlist</a></li>
-                    <li><a href="login.html" class="menu-link menu-link_us-s">Logout</a></li>
+                    <li><a asp-controller="Account" asp-action="Index" class="menu-link menu-link_us-s">Dashboard</a></li>
+                    <li><a asp-controller="Order" asp-action="Index" class="menu-link menu-link_us-s">Orders</a></li>
+                    <li><a asp-controller="Address" asp-action="Index" class="menu-link menu-link_us-s">Addresses</a></li>
+                    <li><a asp-controller="Account" asp-action="Edit" class="menu-link menu-link_us-s">Account Details</a></li>
+                    <li><a asp-controller="Wishlist" asp-action="Index" class="menu-link menu-link_us-s">Wishlist</a></li>
+                    <li><a asp-controller="Account" asp-action="Logout" class="menu-link menu-link_us-s">Logout</a></li>
                 </ul>
             </div>
             <div class="col-lg-9">
@@ -22,31 +22,48 @@
                             <p class="notice">The following addresses will be used on the checkout page by default.</p>
                         </div>
                         <div class="col-6 text-right">
-                            <a href="#" class="btn btn-sm btn-info">Add New</a>
+                            <a asp-controller="Address" asp-action="Create" class="btn btn-sm btn-info">Add New</a>
                         </div>
                     </div>
                     <div class="my-account__address-list row">
                         <h5>Shipping Address</h5>
 
-                        <div class="my-account__address-item col-md-6">
-                            <div class="my-account__address-item__title">
-                                <h5>Sudhir Kumar <i class="fa fa-check-circle text-success"></i></h5>
-                                <a href="#">Edit</a>
-                            </div>
-                            <div class="my-account__address-item__detail">
-                                <p>Flat No - 13, R. K. Wing - B</p>
-                                <p>ABC, DEF</p>
-                                <p>GHJ, </p>
-                                <p>Near Sun Temple</p>
-                                <p>000000</p>
-                                <br>
-                                <p>Mobile : 1234567891</p>
-                            </div>
-                        </div>
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var a in Model)
+                            {
+                                <div class="my-account__address-item col-md-6">
+                                    <div class="my-account__address-item__title">
+                                        <h5>
+                                            @(string.Join(" ", new[] { a.FirstName, a.LastName }.Where(s => !string.IsNullOrWhiteSpace(s))))
+                                            @if (a.IsDefault)
+                                            {
+                                                <i class="fa fa-check-circle text-success"></i>
+                                            }
+                                        </h5>
+                                        <a asp-controller="Address" asp-action="Edit" asp-route-id="@a.Id">Edit</a>
+                                    </div>
+                                    <div class="my-account__address-item__detail">
+                                        @if (!string.IsNullOrWhiteSpace(a.Company)) { <p>@a.Company</p> }
+                                        @if (!string.IsNullOrWhiteSpace(a.Adress)) { <p>@a.Adress</p> }
+                                        <p>@a.City@((!string.IsNullOrWhiteSpace(a.City) && !string.IsNullOrWhiteSpace(a.Country)) ? ", " : "")@a.Country</p>
+                                        @if (!string.IsNullOrWhiteSpace(a.PostalCode)) { <p>@a.PostalCode</p> }
+                                        @if (!string.IsNullOrWhiteSpace(a.Phone)) { <p>Mobile : @a.Phone</p> }
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="col-12 text-muted">No addresses yet. Use "Add New" to create one.</div>
+                        }
                         <hr>
                     </div>
                 </div>
             </div>
+        </div>
+    </section>
+</main>
         </div>
     </section>
 </main>
