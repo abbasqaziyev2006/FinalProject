@@ -6,6 +6,7 @@
     let currentProductId = null;
     let isAddingToCart = false;
     let isAddingToWishlist = false;
+    let isRemovingFromCart = false;
 
     // Event delegation for quick view buttons
     document.addEventListener('click', function (e) {
@@ -39,6 +40,25 @@
                     showNotification('Could not load product. Please try again.', 'danger');
                 }
             }
+        }
+    });
+
+    // Delegated remove-from-cart handler for generic remove triggers
+    document.addEventListener('click', function (e) {
+        const removeTrigger = e.target.closest('.js-remove-from-cart');
+        if (removeTrigger) {
+            e.preventDefault();
+            if (isRemovingFromCart) return;
+
+            const productId = removeTrigger.dataset.productId || currentProductId;
+            if (!productId) {
+                showNotification('Unable to identify product to remove.', 'danger');
+                return;
+            }
+
+            const qtyAttr = removeTrigger.dataset.quantity;
+            const quantity = qtyAttr ? parseInt(qtyAttr) : null; // null => remove all
+            removeFromCart(productId, quantity);
         }
     });
 
@@ -206,6 +226,18 @@
         });
     }
 
+    // Remove from cart from quick view (expects a button with id="qvRemoveCart")
+    const removeCartBtn = document.getElementById('qvRemoveCart');
+    if (removeCartBtn) {
+        removeCartBtn.addEventListener('click', function () {
+            if (isRemovingFromCart) return;
+
+            const qvQuantity = document.getElementById('qvQuantity');
+            const quantity = qvQuantity ? parseInt(qvQuantity.value) : null; // null => remove all
+            removeFromCart(currentProductId, quantity);
+        });
+    }
+
     // Add to wishlist from quick view
     const addWishlistBtn = document.getElementById('qvAddWishlist');
     if (addWishlistBtn) {
@@ -219,9 +251,11 @@
     function addToCart(productId, quantity) {
         isAddingToCart = true;
         const btn = document.getElementById('qvAddCart');
-        const originalText = btn.textContent;
-        btn.disabled = true;
-        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Adding...';
+        const originalText = btn ? btn.textContent : '';
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Adding...';
+        }
 
         const formData = new FormData();
         formData.append('productVariantId', productId);
@@ -254,8 +288,81 @@
             })
             .finally(() => {
                 isAddingToCart = false;
-                btn.disabled = false;
-                btn.textContent = originalText;
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = originalText;
+                }
+            });
+    }
+
+    // Generic Remove from Cart function
+    // Tries /Basket/Remove first; falls back to /Basket/Update with quantity=0
+    function removeFromCart(productId, quantity = null) {
+        isRemovingFromCart = true;
+        const btn = document.getElementById('qvRemoveCart');
+        const originalHtml = btn ? btn.innerHTML : '';
+
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Removing...';
+        }
+
+        const formData = new FormData();
+        formData.append('productVariantId', productId);
+        if (quantity !== null && !isNaN(quantity) && quantity > 0) {
+            formData.append('quantity', quantity);
+        }
+
+        fetch('/Basket/Remove', {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) throw new Error('Primary remove failed');
+                return response.json();
+            })
+            .then(() => {
+                updateCartCount();
+                showNotification('Removed from basket.', 'success');
+
+                if (quickViewModal) {
+                    const modal = bootstrap.Modal.getInstance(quickViewModal);
+                    if (modal) setTimeout(() => modal.hide(), 300);
+                }
+            })
+            .catch(() => {
+                // Fallback: set quantity to 0 via update endpoint
+                const fd = new FormData();
+                fd.append('productVariantId', productId);
+                fd.append('quantity', 0);
+
+                return fetch('/Basket/Update', {
+                    method: 'POST',
+                    body: fd
+                })
+                    .then(resp => {
+                        if (!resp.ok) throw new Error('Fallback remove failed');
+                        return resp.json();
+                    })
+                    .then(() => {
+                        updateCartCount();
+                        showNotification('Removed from basket.', 'success');
+                        if (quickViewModal) {
+                            const modal = bootstrap.Modal.getInstance(quickViewModal);
+                            if (modal) setTimeout(() => modal.hide(), 300);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error removing from cart:', error);
+                        showNotification('Unable to remove product from basket. Please try again.', 'danger');
+                    });
+            })
+            .finally(() => {
+                isRemovingFromCart = false;
+                if (btn) {
+                    btn.disabled = false;
+                    btn.innerHTML = originalHtml;
+                }
             });
     }
 
@@ -263,7 +370,7 @@
     function addToWishlist(productId) {
         isAddingToWishlist = true;
         const btn = document.getElementById('qvAddWishlist');
-        btn.disabled = true;
+        if (btn) btn.disabled = true;
 
         fetch('/api/wishlist/add', {
             method: 'POST',
@@ -279,7 +386,7 @@
                 return response.json();
             })
             .then(data => {
-                btn.classList.toggle('active');
+                if (btn) btn.classList.toggle('active');
                 showNotification('Added to wishlist!', 'success');
                 updateWishlistCount();
             })
@@ -289,7 +396,7 @@
             })
             .finally(() => {
                 isAddingToWishlist = false;
-                btn.disabled = false;
+                if (btn) btn.disabled = false;
             });
     }
 
@@ -323,6 +430,7 @@
     function resetButtonStates() {
         const addCartBtn = document.getElementById('qvAddCart');
         const addWishlistBtn = document.getElementById('qvAddWishlist');
+        const removeCartBtn = document.getElementById('qvRemoveCart');
 
         if (addCartBtn) {
             addCartBtn.disabled = false;
@@ -330,6 +438,10 @@
         }
         if (addWishlistBtn) {
             addWishlistBtn.disabled = false;
+        }
+        if (removeCartBtn) {
+            removeCartBtn.disabled = false;
+            removeCartBtn.textContent = 'Remove From Basket';
         }
     }
 
