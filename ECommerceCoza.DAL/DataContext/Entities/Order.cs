@@ -17,12 +17,16 @@
         public int AddressId { get; set; }
         public Address Address { get; set; } = null!;
         public decimal TotalPrice { get; set; }
+        
+        public DateTime? DeliveredDate { get; set; }
+        public DateTime? CanceledDate { get; set; }
     }
 
     public enum PaymentMethod
     {
         DirectBankTransfer,
-        CashOnDelivery
+        CashOnDelivery,
+        Stripe
     }
 
     public enum OrderStatus
@@ -30,6 +34,7 @@
         InProgress,
         OnHold,
         Cancelled,
-        Completed
+        Completed,
+        Delivered
     }
 }
