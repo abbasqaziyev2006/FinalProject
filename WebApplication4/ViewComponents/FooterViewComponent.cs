@@ -1,9 +1,9 @@
 ﻿using EcommerceCoza.BLL.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EcommerceCoza.MVC.ViewComponents
+namespace WebApplication4.ViewComponents
 {
-    public class FooterViewComponent:ViewComponent
+    public class FooterViewComponent : ViewComponent
     {
         private readonly IFooterService _footerService;
 
@@ -14,9 +14,8 @@ namespace EcommerceCoza.MVC.ViewComponents
 
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var model = await _footerService.GetFooterViewModelAsync();
-
-            return View(model);
+            var footerViewModel = await _footerService.GetFooterViewModelAsync();
+            return View(footerViewModel);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿@using EcommerceCoza.BLL.ViewModels
 @model WishlistItemsViewModel
+@inject WebApplication4.Services.ICurrencyService CurrencyService
 
 <main class="pt-90">
     <div class="mb-4 pb-4"></div>
@@ -24,217 +25,95 @@
 
         <div class="row">
             <div class="col-lg-12">
-                <div class="page-content my-account__wishlist">
-                    <div class="products-grid row row-cols-2 row-cols-lg-3" id="products-grid">
-                        <div class="product-card-wrapper">
-                            <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-                                <div class="pc__img-wrapper">
-                                    <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-                                        <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
-                                                <img loading="lazy" src="~/assets/images/products/product_5.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
+                @if (Model.Items.Any())
+                {
+                    <div class="page-content my-account__wishlist">
+                        <div class="products-grid row row-cols-2 row-cols-lg-3" id="products-grid">
+                            @foreach (var item in Model.Items)
+                            {
+                                @if (item.Product != null)
+                                {
+                                    var firstVariant = item.Product.ProductVariants.FirstOrDefault();
+                                    var productImages = firstVariant?.ImageNames ?? new List<string>();
+                                    var categoryName = item.Product.CategoryName ?? "Uncategorized";
+
+                                    <div class="product-card-wrapper" data-product-id="@item.ProductId">
+                                        <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+                                            <div class="pc__img-wrapper">
+                                                @if (productImages.Any())
+                                                {
+                                                    <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
+                                                        <div class="swiper-wrapper">
+                                                            @foreach (var imageName in productImages.Take(2))
+                                                            {
+                                                                <div class="swiper-slide">
+                                                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Product.DetailsUrl">
+                                                                        <img loading="lazy" src="~/uploads/products/@imageName" width="330" height="400" alt="@item.Product.Name" class="pc__img">
+                                                                    </a>
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                        <span class="pc__img-prev">
+                                                            <svg width="7" height="11"><use href="#icon_prev_sm" /></svg>
+                                                        </span>
+                                                        <span class="pc__img-next">
+                                                            <svg width="7" height="11"><use href="#icon_next_sm" /></svg>
+                                                        </span>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Product.DetailsUrl">
+                                                        <img loading="lazy" src="~/assets/images/products/product_0.jpg" width="330" height="400" alt="@item.Product.Name" class="pc__img">
+                                                    </a>
+                                                }
+                                                <button class="btn-remove-from-wishlist" data-wishlist-id="@item.Id" data-product-id="@item.ProductId" title="Remove">
+                                                    <svg width="12" height="12"><use href="#icon_close" /></svg>
+                                                </button>
                                             </div>
-                                            <div class="swiper-slide">
-                                                <img loading="lazy" src="~/assets/images/products/product_5-1.jpg" width="330" height="400" alt="Cropped Faux leather Jacket" class="pc__img">
+                                            <div class="pc__info position-relative">
+                                                <p class="pc__category">@categoryName</p>
+                                                <h6 class="pc__title">
+                                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Product.DetailsUrl">@item.Product.Name</a>
+                                                </h6>
+                                                <div class="product-card__price d-flex">
+                                                    <span class="money price">@CurrencyService.Format(item.Product.BasePrice)</span>
+                                                </div>
                                             </div>
                                         </div>
-                                        <span class="pc__img-prev">
-                                            <svg width="7" height="11"><use href="#icon_prev_sm" /></svg>
-                                        </span>
-                                        <span class="pc__img-next">
-                                            <svg width="7" height="11"><use href="#icon_next_sm" /></svg>
-                                        </span>
                                     </div>
-                                    <button class="btn-remove-from-wishlist" title="Remove">
-                                        <svg width="12" height="12"><use href="#icon_close" /></svg>
-                                    </button>
-                                </div>
-                                <div class="pc__info position-relative">
-                                    <p class="pc__category">Dresses</p>
-                                    <h6 class="pc__title">Colorful Jacket</h6>
-                                    <div class="product-card__price d-flex">
-                                        <span class="money price">$29</span>
-                                    </div>
-                                    <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                                        <svg width="16" height="16"><use href="#icon_heart" /></svg>
-                                    </button>
-                                </div>
-                            </div>
+                                }
+                            }
                         </div>
 
-                        <div class="product-card-wrapper">
-                            <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-                                <div class="pc__img-wrapper">
-                                    <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-                                        <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
-                                                <img loading="lazy" src="~/assets/images/products/product_6.jpg" width="330" height="400" alt="Shirt In Botanical Cheetah Print" class="pc__img">
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <img loading="lazy" src="~/assets/images/products/product_6-1.jpg" width="330" height="400" alt="Shirt In Botanical Cheetah Print" class="pc__img">
-                                            </div>
-                                        </div>
-                                        <span class="pc__img-prev"><svg width="7" height="11"><use href="#icon_prev_sm" /></svg></span>
-                                        <span class="pc__img-next"><svg width="7" height="11"><use href="#icon_next_sm" /></svg></span>
-                                    </div>
-                                    <button class="btn-remove-from-wishlist" title="Remove">
-                                        <svg width="12" height="12"><use href="#icon_close" /></svg>
-                                    </button>
-                                </div>
-                                <div class="pc__info position-relative">
-                                    <p class="pc__category">Dresses</p>
-                                    <h6 class="pc__title">Shirt In Botanical Cheetah Print</h6>
-                                    <div class="product-card__price d-flex">
-                                        <span class="money price">$62</span>
-                                    </div>
-                                    <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                                        <svg width="16" height="16"><use href="#icon_heart" /></svg>
-                                    </button>
-                                </div>
-                            </div>
+                        <div id="wishlistNoResults" class="text-center text-secondary fw-medium mt-4 d-none">
+                            No matching items
                         </div>
 
-                        <div class="product-card-wrapper">
-                            <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-                                <div class="pc__img-wrapper">
-                                    <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-                                        <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
-                                                <img loading="lazy" src="~/assets/images/products/product_7.jpg" width="330" height="400" alt="Cotton Jersey T-Shirt" class="pc__img">
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <img loading="lazy" src="~/assets/images/products/product_7-1.jpg" width="330" height="400" alt="Cotton Jersey T-Shirt" class="pc__img">
-                                            </div>
-                                        </div>
-                                        <span class="pc__img-prev"><svg width="7" height="11"><use href="#icon_prev_sm" /></svg></span>
-                                        <span class="pc__img-next"><svg width="7" height="11"><use href="#icon_next_sm" /></svg></span>
-                                    </div>
-                                    <button class="btn-remove-from-wishlist" title="Remove">
-                                        <svg width="12" height="12"><use href="#icon_close" /></svg>
-                                    </button>
-                                </div>
-                                <div class="pc__info position-relative">
-                                    <p class="pc__category">Dresses</p>
-                                    <h6 class="pc__title">Cotton Jersey T-Shirt</h6>
-                                    <div class="product-card__price d-flex">
-                                        <span class="money price">$17</span>
-                                    </div>
-                                    <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                                        <svg width="16" height="16"><use href="#icon_heart" /></svg>
-                                    </button>
-                                </div>
+                        <!-- Load More -->
+                        @if (Model.Items.Count > 6)
+                        {
+                            <div class="text-center mt-3">
+                                <button id="wishlistLoadMore" type="button" class="btn btn-outline-secondary btn-sm px-4">
+                                    Load More
+                                </button>
                             </div>
-                        </div>
-
-                        <div class="product-card-wrapper">
-                            <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-                                <div class="pc__img-wrapper">
-                                    <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-                                        <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
-                                                <img loading="lazy" src="~/assets/images/products/product_8.jpg" width="330" height="400" alt="Zessi Dresses" class="pc__img">
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <img loading="lazy" src="~/assets/images/products/product_8-1.jpg" width="330" height="400" alt="Zessi Dresses" class="pc__img">
-                                            </div>
-                                        </div>
-                                        <span class="pc__img-prev"><svg width="7" height="11"><use href="#icon_prev_sm" /></svg></span>
-                                        <span class="pc__img-next"><svg width="7" height="11"><use href="#icon_next_sm" /></svg></span>
-                                    </div>
-                                    <button class="btn-remove-from-wishlist" title="Remove">
-                                        <svg width="12" height="12"><use href="#icon_close" /></svg>
-                                    </button>
-                                </div>
-                                <div class="pc__info position-relative">
-                                    <p class="pc__category">Dresses</p>
-                                    <h6 class="pc__title">Zessi Dresses</h6>
-                                    <div class="product-card__price d-flex">
-                                        <span class="money price price-old">$129</span>
-                                        <span class="money price price-sale">$99</span>
-                                    </div>
-                                    <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                                        <svg width="16" height="16"><use href="#icon_heart" /></svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="product-card-wrapper">
-                            <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-                                <div class="pc__img-wrapper">
-                                    <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-                                        <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
-                                                <img loading="lazy" src="~/assets/images/products/product_9.jpg" width="330" height="400" alt="Cropped Faux Leather Jacket" class="pc__img">
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <img loading="lazy" src="~/assets/images/products/product_9-1.jpg" width="330" height="400" alt="Cropped Faux Leather Jacket" class="pc__img">
-                                            </div>
-                                        </div>
-                                        <span class="pc__img-prev"><svg width="7" height="11"><use href="#icon_prev_sm" /></svg></span>
-                                        <span class="pc__img-next"><svg width="7" height="11"><use href="#icon_next_sm" /></svg></span>
-                                    </div>
-                                    <button class="btn-remove-from-wishlist" title="Remove">
-                                        <svg width="12" height="12"><use href="#icon_close" /></svg>
-                                    </button>
-                                </div>
-                                <div class="pc__info position-relative">
-                                    <p class="pc__category">Dresses</p>
-                                    <h6 class="pc__title">Cropped Faux Leather Jacket</h6>
-                                    <div class="product-card__price d-flex">
-                                        <span class="money price">$29</span>
-                                    </div>
-                                    <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                                        <svg width="16" height="16"><use href="#icon_heart" /></svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="product-card-wrapper">
-                            <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-                                <div class="pc__img-wrapper">
-                                    <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-                                        <div class="swiper-wrapper">
-                                            <div class="swiper-slide">
-                                                <img loading="lazy" src="~/assets/images/products/product_10.jpg" width="330" height="400" alt="Calvin Shorts" class="pc__img">
-                                            </div>
-                                            <div class="swiper-slide">
-                                                <img loading="lazy" src="~/assets/images/products/product_10-1.jpg" width="330" height="400" alt="Calvin Shorts" class="pc__img">
-                                            </div>
-                                        </div>
-                                        <span class="pc__img-prev"><svg width="7" height="11"><use href="#icon_prev_sm" /></svg></span>
-                                        <span class="pc__img-next"><svg width="7" height="11"><use href="#icon_next_sm" /></svg></span>
-                                    </div>
-                                    <button class="btn-remove-from-wishlist" title="Remove">
-                                        <svg width="12" height="12"><use href="#icon_close" /></svg>
-                                    </button>
-                                </div>
-                                <div class="pc__info position-relative">
-                                    <p class="pc__category">Dresses</p>
-                                    <h6 class="pc__title">Calvin Shorts</h6>
-                                    <div class="product-card__price d-flex">
-                                        <span class="money price">$62</span>
-                                    </div>
-                                    <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist" title="Add To Wishlist">
-                                        <svg width="16" height="16"><use href="#icon_heart" /></svg>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
+                        }
                     </div>
-
-                    <div id="wishlistNoResults" class="text-center text-secondary fw-medium mt-4 d-none">
-                        No matching items
+                }
+                else
+                {
+                    <div class="text-center py-5">
+                        <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-muted mb-3">
+                            <use href="#icon_heart" />
+                        </svg>
+                        <h4 class="mb-3">Your wishlist is empty</h4>
+                        <p class="text-muted mb-4">Start adding products you love to your wishlist</p>
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-primary">
+                            Continue Shopping
+                        </a>
                     </div>
-
-                    <!-- Load More -->
-                    <div class="text-center mt-3">
-                        <button id="wishlistLoadMore" type="button" class="btn btn-outline-secondary btn-sm px-4">
-                            Load More
-                        </button>
-                    </div>
-                </div>
+                }
             </div>
         </div>
     </section>
@@ -257,7 +136,7 @@
             // Init hide beyond initialVisible
             function initHide() {
                 if (cards.length <= initialVisible) {
-                    loadMore.style.display = 'none';
+                    if (loadMore) loadMore.style.display = 'none';
                     return;
                 }
                 cards.forEach((c, i) => {
@@ -271,7 +150,7 @@
                 const hidden = cards.filter(c => c.classList.contains('d-none'));
                 hidden.slice(0, batchSize).forEach(c => c.classList.remove('d-none'));
                 if (cards.filter(c => c.classList.contains('d-none')).length === 0) {
-                    loadMore.style.display = 'none';
+                    if (loadMore) loadMore.style.display = 'none';
                 }
             }
 
@@ -314,6 +193,44 @@
                     loadMore.style.display = term.length > 0 ? 'none' : (cards.filter(c => c.classList.contains('d-none')).length > 0 ? 'inline-block' : 'none');
                 }
             }
+
+            // Remove from wishlist functionality
+            document.addEventListener('click', async function(e) {
+                const removeBtn = e.target.closest('.btn-remove-from-wishlist');
+                if (removeBtn) {
+                    const productId = removeBtn.dataset.productId;
+                    const card = removeBtn.closest('.product-card-wrapper');
+
+                    if (confirm('Are you sure you want to remove this item from your wishlist?')) {
+                        try {
+                            const response = await fetch(`/Wishlist/Remove/${productId}`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                }
+                            });
+
+                            if (response.ok) {
+                                // Remove the card with animation
+                                card.style.transition = 'opacity 0.3s';
+                                card.style.opacity = '0';
+                                setTimeout(() => {
+                                    card.remove();
+                                    const remainingCards = grid.querySelectorAll('.product-card-wrapper');
+                                    if (remainingCards.length === 0) {
+                                        location.reload();
+                                    }
+                                }, 300);
+                            } else {
+                                alert('Failed to remove item from wishlist');
+                            }
+                        } catch (error) {
+                            console.error('Error:', error);
+                            alert('An error occurred while removing the item');
+                        }
+                    }
+                }
+            });
 
             input?.addEventListener('input', applyFilter);
             btn?.addEventListener('click', applyFilter);
