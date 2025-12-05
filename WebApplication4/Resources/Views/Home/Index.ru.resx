@@ -35,7 +35,7 @@
 	<data name="ViewAll" xml:space="preserve"><value>Просмотреть все</value></data>
 	<data name="AddToCart" xml:space="preserve"><value>Добавить в корзину</value></data>
 	<data name="QuickView" xml:space="preserve"><value>Быстрый просмотр</value></data>
-	<data name="AddToWishlist" xml:space="preserve"><value>Добавить в список желаний</value></data>
+	<data name="Add To Wishlist" xml:space="preserve"><value>Добавить в список желаний</value></data>
 	<data name="Blazers" xml:space="preserve"><value>Пиджаки</value></data>
 	<data name="Sportswear" xml:space="preserve"><value>Спортивная одежда</value></data>
 	<data name="StartingAt" xml:space="preserve"><value>Начиная с</value></data>

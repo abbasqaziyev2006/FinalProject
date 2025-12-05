@@ -35,7 +35,7 @@
 	<data name="ViewAll" xml:space="preserve"><value>View All</value></data>
 	<data name="AddToCart" xml:space="preserve"><value>Add To Cart</value></data>
 	<data name="QuickView" xml:space="preserve"><value>Quick View</value></data>
-	<data name="AddToWishlist" xml:space="preserve"><value>Add To Wishlist</value></data>
+	<data name="Add To Wishlist" xml:space="preserve"><value>Add To Wishlist</value></data>
 	<data name="Blazers" xml:space="preserve"><value>Blazers</value></data>
 	<data name="Sportswear" xml:space="preserve"><value>Sportswear</value></data>
 	<data name="StartingAt" xml:space="preserve"><value>Starting at</value></data>
