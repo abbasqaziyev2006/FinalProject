@@ -8,132 +8,73 @@
         <div class="row">
             <div class="col-lg-8">
                 <div class="cart-table__wrapper">
-                    <table class="cart-table">
-                        <thead>
-                            <tr>
-                                <th>@Localizer["Product"]</th>
-                                <th>@Localizer["Price"]</th>
-                                <th>@Localizer["Quantity"]</th>
-                                <th>@Localizer["Subtotal"]</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>
-                                    <div class="shopping-cart__product-item">
-                                        <img loading="lazy" src="~/assets/images/cart-item-1.jpg" width="100" height="120" alt="Zessi Dresses" />
-                                    </div>
-                                    <div class="shopping-cart__product-item__detail">
-                                        <h4>Zessi Dresses</h4>
-                                        <ul class="shopping-cart__product-item__options">
-                                            <li>@Localizer["Color"]: Yellow</li>
-                                            <li>@Localizer["Size"]: L</li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="shopping-cart__product-price">$99</span>
-                                </td>
-                                <td>
-                                    <div class="qty-control position-relative">
-                                        <input type="number" name="quantity" value="3" min="1" class="qty-control__number text-center">
-                                        <div class="qty-control__reduce">-</div>
-                                        <div class="qty-control__increase">+</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="shopping-cart__subtotal">$297</span>
-                                </td>
-                                <td>
-                                    <a href="#" class="remove-cart">
-                                        <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
-                                            <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
-                                        </svg>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="shopping-cart__product-item">
-                                        <img loading="lazy" src="~/assets/images/cart-item-2.jpg" width="100" height="120" alt="Kirby T-Shirt" />
-                                    </div>
-                                    <div class="shopping-cart__product-item__detail">
-                                        <h4>Kirby T-Shirt</h4>
-                                        <ul class="shopping-cart__product-item__options">
-                                            <li>@Localizer["Color"]: Yellow</li>
-                                            <li>@Localizer["Size"]: L</li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="shopping-cart__product-price">$99</span>
-                                </td>
-                                <td>
-                                    <div class="qty-control position-relative">
-                                        <input type="number" name="quantity" value="3" min="1" class="qty-control__number text-center">
-                                        <div class="qty-control__reduce">-</div>
-                                        <div class="qty-control__increase">+</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="shopping-cart__subtotal">$297</span>
-                                </td>
-                                <td>
-                                    <a href="#" class="remove-cart">
-                                        <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
-                                            <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
-                                        </svg>
-                                    </a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="shopping-cart__product-item">
-                                        <img loading="lazy" src="~/assets/images/cart-item-3.jpg" width="100" height="120" alt="Cobleknit Shawl" />
-                                    </div>
-                                    <div class="shopping-cart__product-item__detail">
-                                        <h4>Cobleknit Shawl</h4>
-                                        <ul class="shopping-cart__product-item__options">
-                                            <li>@Localizer["Color"]: Yellow</li>
-                                            <li>@Localizer["Size"]: L</li>
-                                        </ul>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="shopping-cart__product-price">$99</span>
-                                </td>
-                                <td>
-                                    <div class="qty-control position-relative">
-                                        <input type="number" name="quantity" value="3" min="1" class="qty-control__number text-center">
-                                        <div class="qty-control__reduce">-</div>
-                                        <div class="qty-control__increase">+</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span class="shopping-cart__subtotal">$297</span>
-                                </td>
-                                <td>
-                                    <a href="#" class="remove-cart">
-                                        <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
-                                            <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
-                                        </svg>
-                                    </a>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    @if (Model.Items.Count > 0)
+                    {
+                        <table class="cart-table">
+                            <thead>
+                                <tr>
+                                    <th>@Localizer["Product"]</th>
+                                    <th>@Localizer["Price"]</th>
+                                    <th>@Localizer["Quantity"]</th>
+                                    <th>@Localizer["Subtotal"]</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="basket-items">
+                                @foreach (var item in Model.Items)
+                                {
+                                    <tr data-variant-id="@item.ProductVariantId">
+                                        <td>
+                                            <div class="shopping-cart__product-item">
+                                                <img loading="lazy" src="~/assets/images/products/@item.ImageName" width="100" height="120" alt="@item.ProductName" />
+                                            </div>
+                                            <div class="shopping-cart__product-item__detail">
+                                                <h4>@item.ProductName</h4>
+                                                <ul class="shopping-cart__product-item__options">
+                                                    <li>@Localizer["Color"]: @item.ColorName</li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="shopping-cart__product-price">$@item.Price.ToString("0.00")</span>
+                                        </td>
+                                        <td>
+                                            <div class="qty-control position-relative">
+                                                <input type="number" name="quantity" value="@item.Quantity" min="1" class="qty-control__number text-center" readonly>
+                                                <div class="qty-control__reduce" data-variant-id="@item.ProductVariantId" data-change="-1">-</div>
+                                                <div class="qty-control__increase" data-variant-id="@item.ProductVariantId" data-change="1">+</div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="shopping-cart__subtotal">$@item.TotalPrice.ToString("0.00")</span>
+                                        </td>
+                                        <td>
+                                            <a href="#" class="remove-cart" data-variant-id="@item.ProductVariantId">
+                                                <svg width="10" height="10" viewBox="0 0 10 10" fill="#767676" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M0.259435 8.85506L9.11449 0L10 0.885506L1.14494 9.74056L0.259435 8.85506Z" />
+                                                    <path d="M0.885506 0.0889838L9.74057 8.94404L8.85506 9.82955L0 0.97449L0.885506 0.0889838Z" />
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
 
-                    <div class="cart-table-footer">
-                        <form action="#" class="position-relative bg-body">
-                            <input class="form-control" type="text" name="coupon_code" placeholder="@Localizer["CouponCode"]">
-                            <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="@Localizer["ApplyCoupon"]">
-                        </form>
-                        <button class="btn btn-light">@Localizer["UpdateCart"]</button>
-                    </div>
+                        <div class="cart-table-footer">
+                            <form action="#" class="position-relative bg-body">
+                                <input class="form-control" type="text" name="coupon_code" placeholder="@Localizer["CouponCode"]">
+                                <input class="btn-link fw-medium position-absolute top-0 end-0 h-100 px-4" type="submit" value="@Localizer["ApplyCoupon"]">
+                            </form>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            <p>@Localizer["Your Basket Is Empty"]</p>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-primary">@Localizer["Continue Shopping"]</a>
+                        </div>
+                    }
                 </div>
             </div>
 
@@ -146,7 +87,7 @@
                                 <tbody>
                                     <tr>
                                         <th>@Localizer["Subtotal"]</th>
-                                        <td>$1300</td>
+                                        <td id="cart-subtotal">$@Model.TotalPrice.ToString("0.00")</td>
                                     </tr>
                                     <tr>
                                         <th>@Localizer["Shipping"]</th>
@@ -169,10 +110,10 @@
                                             </div>
                                         </td>
                                     </tr>
- 
+
                                     <tr>
                                         <th>@Localizer["Total"]</th>
-                                        <td>$1319</td>
+                                        <td id="cart-total">$@Model.TotalPrice.ToString("0.00")</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -190,3 +131,119 @@
 
     <div class="mb-4 pb-4"></div>
 </main>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Remove item from basket
+            $(document).on('click', '.remove-cart', function (e) {
+                e.preventDefault();
+                const variantId = $(this).data('variant-id');
+
+                if (confirm('@Localizer["AreYouSureToRemove"]')) {
+                    removeFromBasket(variantId);
+                }
+            });
+
+            // Increase quantity
+            $(document).on('click', '.qty-control__increase', function () {
+                const variantId = $(this).data('variant-id');
+                const change = $(this).data('change');
+                changeQuantity(variantId, change);
+            });
+
+            // Decrease quantity
+            $(document).on('click', '.qty-control__reduce', function () {
+                const variantId = $(this).data('variant-id');
+                const change = $(this).data('change');
+                const currentQty = parseInt($(this).siblings('.qty-control__number').val());
+
+                if (currentQty > 1) {
+                    changeQuantity(variantId, change);
+                } else {
+                    if (confirm('@Localizer["AreYouSureToRemove"]')) {
+                        removeFromBasket(variantId);
+                    }
+                }
+            });
+
+            function removeFromBasket(variantId) {
+                $.ajax({
+                    url: '/Basket/Remove',
+                    type: 'POST',
+                    data: { id: variantId },
+                    success: function () {
+                        // Remove the row from table
+                        $(`tr[data-variant-id="${variantId}"]`).fadeOut(300, function() {
+                            $(this).remove();
+
+                            // Check if basket is empty
+                            if ($('#basket-items tr').length === 0) {
+                                location.reload();
+                            } else {
+                                updateBasketTotals();
+                            }
+                        });
+
+                        // Update header cart count
+                        updateHeaderCartCount();
+                    },
+                    error: function () {
+                        alert('@Localizer["ErrorRemovingItem"]');
+                    }
+                });
+            }
+
+            function changeQuantity(variantId, change) {
+                $.ajax({
+                    url: '/Basket/ChangeQuantity',
+                    type: 'POST',
+                    data: {
+                        productVariantId: variantId,
+                        change: change
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            const item = response.basketViewModel.items.find(x => x.productVariantId === variantId);
+
+                            if (item) {
+                                // Update quantity display
+                                const $row = $(`tr[data-variant-id="${variantId}"]`);
+                                $row.find('.qty-control__number').val(item.quantity);
+                                $row.find('.shopping-cart__subtotal').text('$' + item.totalPrice.toFixed(2));
+
+                                // Update totals
+                                updateBasketTotals();
+                                updateHeaderCartCount();
+                            }
+                        }
+                    },
+                    error: function () {
+                        alert('@Localizer["ErrorUpdatingQuantity"]');
+                    }
+                });
+            }
+
+            function updateBasketTotals() {
+                $.ajax({
+                    url: '/Basket/GetBasket',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#cart-subtotal').text('$' + data.totalPrice.toFixed(2));
+                        $('#cart-total').text('$' + data.totalPrice.toFixed(2));
+                    }
+                });
+            }
+
+            function updateHeaderCartCount() {
+                $.ajax({
+                    url: '/Basket/GetBasket',
+                    type: 'GET',
+                    success: function (data) {
+                        $('.header__cart-count').text(data.totalCount);
+                    }
+                });
+            }
+        });
+    </script>
+}

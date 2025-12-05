@@ -14,20 +14,25 @@ namespace EcommerceCoza.BLL.ViewModels
         public int CategoryId { get; set; }
         public Category? Category { get; set; }
         public string? CategoryName { get; set; }
+        public int BrandId { get; set; }
+        public Brand? Brand { get; set; }
+        public string? BrandName { get; set; }
         public List<ProductVariantViewModel> ProductVariants { get; set; } = [];
-        public bool IsInWishlist {  get; set; }
+        public bool IsInWishlist { get; set; }
         public List<int> WishlistItemIds { get; set; } = [];
-                
+
     }
 
     public class ProductCreateViewModel
     {
         public string Name { get; set; } = null!;
-        public string Description {  get; set; }=null!;
+        public string Description { get; set; } = null!;
         public string? AdditionalInformation { get; set; }
         public decimal BasePrice { get; set; }
         public int CategoryId { get; set; }
+        public int BrandId { get; set; }
         public List<SelectListItem> CategorySelectListItems { get; set; } = [];
+        public List<SelectListItem> BrandSelectListItems { get; set; } = [];
     }
 
     public class ProductUpdateViewModel
@@ -38,8 +43,10 @@ namespace EcommerceCoza.BLL.ViewModels
         public string? AdditionalInformation { get; set; }
         public decimal BasePrice { get; set; }
         public int CategoryId { get; set; }
+        public int BrandId { get; set; }
         public List<SelectListItem> CategorySelectListItems { get; set; } = [];
+        public List<SelectListItem> BrandSelectListItems { get; set; } = [];
     }
 
-  
+
 }
