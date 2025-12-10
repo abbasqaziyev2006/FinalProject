@@ -8,6 +8,7 @@
     var products = model.Products;
     var categories = model.Categories;
     var brands = model.Brands;
+    var colors = model.Colors;
 }
 
 <main class="pt-90">
@@ -26,8 +27,8 @@
                 <!-- Categories -->
                 <div class="accordion-item mb-4 pb-3 border-0">
                     <h5 class="accordion-header" id="accordion-heading-categories">
-                        <button class="accordion-button p-0 border-0 fs-5 text-uppercase collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#accordion-filter-categories" aria-expanded="false" aria-controls="accordion-filter-categories">
+                        <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordion-filter-categories" aria-expanded="true" aria-controls="accordion-filter-categories">
                             @Localizer["ProductCategories"]
                             <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
                                 <g aria-hidden="true" stroke="none" fill-rule="evenodd">
@@ -37,7 +38,7 @@
                         </button>
                     </h5>
                     <div id="accordion-filter-categories" class="accordion-collapse collapse show border-0"
-                         aria-labelledby="accordion-heading-categories" data-bs-parent="#filters-accordion">
+                         aria-labelledby="accordion-heading-categories">
                         <div class="accordion-body px-0 pb-0 pt-3">
                             <ul class="list list-unstyled mb-0">
                                 <li class="list-item mb-2">
@@ -60,12 +61,12 @@
                 </div>
 
                 <!-- Brands Filter -->
-                @if (brands.Any())
+                @if (brands != null && brands.Any())
                 {
                     <div class="accordion-item mb-4 pb-3 border-0">
                         <h5 class="accordion-header" id="accordion-heading-brands">
-                            <button class="accordion-button p-0 border-0 fs-5 text-uppercase collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#accordion-filter-brands" aria-expanded="false" aria-controls="accordion-filter-brands">
+                            <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordion-filter-brands" aria-expanded="true" aria-controls="accordion-filter-brands">
                                 @Localizer["Brands"]
                                 <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
                                     <g aria-hidden="true" stroke="none" fill-rule="evenodd">
@@ -74,8 +75,8 @@
                                 </svg>
                             </button>
                         </h5>
-                        <div id="accordion-filter-brands" class="accordion-collapse collapse border-0"
-                             aria-labelledby="accordion-heading-brands" data-bs-parent="#filters-accordion">
+                        <div id="accordion-filter-brands" class="accordion-collapse collapse show border-0"
+                             aria-labelledby="accordion-heading-brands">
                             <div class="accordion-body px-0 pb-0 pt-3">
                                 <ul class="list list-unstyled mb-0">
                                     @foreach (var brand in brands)
@@ -84,7 +85,7 @@
                                         @if (brandProductCount > 0)
                                         {
                                             <li class="list-item mb-2">
-                                                <label class="form-check d-flex align-items-center">
+                                                <label class="form-check d-flex align-items-center" style="cursor: pointer;">
                                                     <input class="form-check-input brand-filter me-2" type="checkbox" data-brand-id="@brand.Id" value="@brand.Id">
                                                     <span class="form-check-label">@brand.Name (@brandProductCount)</span>
                                                 </label>
@@ -97,6 +98,82 @@
                     </div>
                 }
 
+                <!-- Colors Filter -->
+                @if (colors != null && colors.Any())
+                {
+                    <div class="accordion-item mb-4 pb-3 border-0">
+                        <h5 class="accordion-header" id="accordion-heading-colors">
+                            <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordion-filter-colors" aria-expanded="true" aria-controls="accordion-filter-colors">
+                                @Localizer["Colors"]
+                                <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
+                                    <g aria-hidden="true" stroke="none" fill-rule="evenodd">
+                                        <path d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
+                                    </g>
+                                </svg>
+                            </button>
+                        </h5>
+                        <div id="accordion-filter-colors" class="accordion-collapse collapse show border-0"
+                             aria-labelledby="accordion-heading-colors">
+                            <div class="accordion-body px-0 pb-0 pt-3">
+                                <div class="d-flex flex-wrap gap-2">
+                                    @foreach (var color in colors)
+                                    {
+                                        var colorProductCount = products.Count(p => p.ProductVariants.Any(v => v.ColorId == color.Id));
+                                        @if (colorProductCount > 0)
+                                        {
+                                            <label class="position-relative" style="cursor: pointer;" title="@color.Name (@colorProductCount)">
+                                                <input type="checkbox" class="color-filter d-none" data-color-id="@color.Id" value="@color.Id">
+                                                <span class="swatch-color"
+                                                      style="background-color: @color.HexCode; width: 32px; height: 32px; border-radius: 50%; display: inline-block; border: 2px solid #e0e0e0; transition: all 0.3s ease;">
+                                                </span>
+                                                <span class="color-check position-absolute top-50 start-50 translate-middle d-none" style="color: white; font-size: 14px; font-weight: bold;">✓</span>
+                                            </label>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <!-- Size Filter -->
+                <div class="accordion-item mb-4 pb-3 border-0">
+                    <h5 class="accordion-header" id="accordion-heading-sizes">
+                        <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordion-filter-sizes" aria-expanded="true" aria-controls="accordion-filter-sizes">
+                            @Localizer["Sizes"]
+                            <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
+                                <g aria-hidden="true" stroke="none" fill-rule="evenodd">
+                                    <path d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
+                                </g>
+                            </svg>
+                        </button>
+                    </h5>
+                    <div id="accordion-filter-sizes" class="accordion-collapse collapse show border-0"
+                         aria-labelledby="accordion-heading-sizes">
+                        <div class="accordion-body px-0 pb-0 pt-3">
+                            <div class="d-flex flex-wrap gap-2">
+                                @{
+                                    var availableSizes = new[] { "XS", "S", "M", "L", "XL", "XXL" };
+                                    foreach (var size in availableSizes)
+                                    {
+                                        var sizeProductCount = products.Count(p => p.ProductVariants.Any(v => !string.IsNullOrEmpty(v.Size) && v.Size.Equals(size, StringComparison.OrdinalIgnoreCase)));
+                                        if (sizeProductCount > 0)
+                                        {
+                                            <label class="size-filter-label" style="cursor: pointer;">
+                                                <input type="checkbox" class="size-filter d-none" data-size="@size" value="@size">
+                                                <span class="size-badge" style="display: inline-block; padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; font-weight: 500; transition: all 0.3s ease;">
+                                                    @size
+                                                </span>
+                                                <small class="text-muted ms-1">(@sizeProductCount)</small>
+                                            </label>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <!-- Price Filter -->
                 <div class="accordion-item mb-4 border-0">
                     <h5 class="accordion-header" id="accordion-heading-price">
@@ -111,7 +188,7 @@
                         </button>
                     </h5>
                     <div id="accordion-filter-price" class="accordion-collapse collapse border-0"
-                         aria-labelledby="accordion-heading-price" data-bs-parent="#filters-accordion">
+                         aria-labelledby="accordion-heading-price">
                         <div class="accordion-body px-0 pb-0 pt-3">
                             @{
                                 var minPrice = products.Any() ? (int)products.Min(p => p.BasePrice) : 0;
@@ -245,10 +322,15 @@
                 @foreach (var product in products)
                 {
                     var firstVariant = product.ProductVariants.FirstOrDefault();
+                    var productColorIds = product.ProductVariants.Select(v => v.ColorId).Where(id => id > 0).Distinct().ToList();
+                    var productSizes = product.ProductVariants.Where(v => !string.IsNullOrEmpty(v.Size)).Select(v => v.Size).Distinct().ToList();
+                    
                     <div class="product-card-wrapper"
                          data-product-id="@product.Id"
                          data-product-category="@product.CategoryId"
                          data-product-brand="@product.BrandId"
+                         data-product-colors="@string.Join(",", productColorIds)"
+                         data-product-sizes="@string.Join(",", productSizes)"
                          data-product-price="@product.BasePrice"
                          data-product-name="@product.Name"
                          data-product-date="@product.Id">
@@ -314,10 +396,17 @@
 
                             <div class="pc__info position-relative">
                                 <p class="pc__category">
-                                    @(product.Category?.Name ?? "")
                                     @if (product.Brand != null)
                                     {
-                                        <span class="text-muted"> • @product.Brand.Name</span>
+                                        <span class="fw-medium text-primary">@product.Brand.Name</span>
+                                        @if (product.Category != null)
+                                        {
+                                            <span class="text-muted"> • </span>
+                                        }
+                                    }
+                                    @if (product.Category != null)
+                                    {
+                                        <span>@product.Category.Name</span>
                                     }
                                 </p>
                                 <h6 class="pc__title">
@@ -348,7 +437,7 @@
 
                                 <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
                                         data-product-id="@product.Id"
-                                        title="@Localizer["Add To Wishlist"]">
+                                        title="@Localizer["AddToWishlist"]">
                                     <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <use href="#icon_heart" />
                                     </svg>
@@ -357,7 +446,7 @@
                                 @if (firstVariant != null && firstVariant.Quantity == 0)
                                 {
                                     <div class="pc-labels position-absolute top-0 start-0">
-                                        <span class="pc-label pc-label_sale d-block text-white bg-danger">@Localizer["Out Of Stock"]</span>
+                                        <span class="pc-label pc-label_sale d-block text-white bg-danger">@Localizer["OutOfStock"]</span>
                                     </div>
                                 }
                             </div>
@@ -383,16 +472,22 @@
             let filteredProducts = [];
             let selectedCategory = 'all';
             let selectedBrands = [];
+            let selectedColors = [];
+            let selectedSizes = []; // YENİ
             let minPrice = @(products.Any() ? products.Min(p => p.BasePrice) : 0);
             let maxPrice = @(products.Any() ? products.Max(p => p.BasePrice) : 1000);
 
             // Store all products data
             $('.product-card-wrapper').each(function() {
+                const colorIds = $(this).data('product-colors');
+                const sizes = $(this).data('product-sizes'); // YENİ
                 allProducts.push({
                     element: $(this),
                     id: $(this).data('product-id'),
                     category: $(this).data('product-category'),
-                    brand: $(this).data('product-brand'),
+                    brand: parseInt($(this).data('product-brand')) || 0,
+                    colors: colorIds ? colorIds.toString().split(',').map(id => parseInt(id)) : [],
+                    sizes: sizes ? sizes.toString().split(',').map(s => s.trim().toUpperCase()) : [], // YENİ
                     price: parseFloat($(this).data('product-price')),
                     name: $(this).data('product-name'),
                     date: $(this).data('product-date')
@@ -416,6 +511,58 @@
                 $('.brand-filter:checked').each(function() {
                     selectedBrands.push(parseInt($(this).data('brand-id')));
                 });
+                console.log('Selected brands:', selectedBrands);
+                applyFilters();
+            });
+
+            // Color Filter
+            $('.color-filter').on('change', function() {
+                const $label = $(this).closest('label');
+                const $swatch = $label.find('.swatch-color');
+                const $check = $label.find('.color-check');
+
+                if ($(this).is(':checked')) {
+                    $swatch.css('border-color', '#000');
+                    $swatch.css('box-shadow', '0 0 0 2px #000');
+                    $check.removeClass('d-none');
+                } else {
+                    $swatch.css('border-color', '#e0e0e0');
+                    $swatch.css('box-shadow', 'none');
+                    $check.addClass('d-none');
+                }
+
+                selectedColors = [];
+                $('.color-filter:checked').each(function() {
+                    selectedColors.push(parseInt($(this).data('color-id')));
+                });
+                console.log('Selected colors:', selectedColors);
+                applyFilters();
+            });
+
+            // Size Filter - YENİ
+            $('.size-filter').on('change', function() {
+                const $label = $(this).closest('label');
+                const $badge = $label.find('.size-badge');
+                
+                if ($(this).is(':checked')) {
+                    $badge.css({
+                        'background-color': '#000',
+                        'color': '#fff',
+                        'border-color': '#000'
+                    });
+                } else {
+                    $badge.css({
+                        'background-color': 'transparent',
+                        'color': '#000',
+                        'border-color': '#ddd'
+                    });
+                }
+
+                selectedSizes = [];
+                $('.size-filter:checked').each(function() {
+                    selectedSizes.push($(this).data('size').toString().toUpperCase());
+                });
+                console.log('Selected sizes:', selectedSizes);
                 applyFilters();
             });
 
@@ -439,9 +586,35 @@
             $('.js-reset-filters').on('click', function() {
                 selectedCategory = 'all';
                 selectedBrands = [];
+                selectedColors = [];
+                selectedSizes = []; // YENİ
+                
                 $('.category-filter').removeClass('text-primary fw-bold active');
                 $('.category-filter[data-category-id="all"]').addClass('text-primary fw-bold active');
                 $('.brand-filter').prop('checked', false);
+                
+                // Reset color filters
+                $('.color-filter').prop('checked', false);
+                $('.color-filter').each(function() {
+                    const $label = $(this).closest('label');
+                    const $swatch = $label.find('.swatch-color');
+                    const $check = $label.find('.color-check');
+                    $swatch.css('border-color', '#e0e0e0');
+                    $swatch.css('box-shadow', 'none');
+                    $check.addClass('d-none');
+                });
+
+                // Reset size filters - YENİ
+                $('.size-filter').prop('checked', false);
+                $('.size-filter').each(function() {
+                    const $label = $(this).closest('label');
+                    const $badge = $label.find('.size-badge');
+                    $badge.css({
+                        'background-color': 'transparent',
+                        'color': '#000',
+                        'border-color': '#ddd'
+                    });
+                });
 
                 if ($('.price-range-slider').length) {
                     const slider = $('.price-range-slider').data('ionRangeSlider');
@@ -451,6 +624,8 @@
                 }
 
                 $('#sortProducts').val('default');
+                minPrice = @(products.Any() ? products.Min(p => p.BasePrice) : 0);
+                maxPrice = @(products.Any() ? products.Max(p => p.BasePrice) : 1000);
                 applyFilters();
             });
 
@@ -488,8 +663,10 @@
                 filteredProducts = allProducts.filter(product => {
                     const categoryMatch = selectedCategory === 'all' || product.category == selectedCategory;
                     const brandMatch = selectedBrands.length === 0 || selectedBrands.includes(product.brand);
+                    const colorMatch = selectedColors.length === 0 || selectedColors.some(colorId => product.colors.includes(colorId));
+                    const sizeMatch = selectedSizes.length === 0 || selectedSizes.some(size => product.sizes.includes(size)); // YENİ
                     const priceMatch = product.price >= minPrice && product.price <= maxPrice;
-                    return categoryMatch && brandMatch && priceMatch;
+                    return categoryMatch && brandMatch && colorMatch && sizeMatch && priceMatch;
                 });
 
                 // Hide all products
@@ -500,6 +677,8 @@
 
                 // Update count
                 $('#productsCount').text(filteredProducts.length);
+
+                console.log('Filtered products:', filteredProducts.length);
             }
 
             function sortProducts(sortBy) {

@@ -20,6 +20,7 @@ namespace EcommerceCoza.BLL.ViewModels
         public string? ColorName { get; set; }
         public string? ColorIconName { get; set; }
         public string? ColorHexCode { get; set; }
+        public string? Size { get; set; } 
         public string? CoverImageName { get; set; }
         public IList<string> ImageNames { get; set; } = [];
     }
@@ -30,6 +31,7 @@ namespace EcommerceCoza.BLL.ViewModels
         public decimal Price { get; set; }
         public IFormFile? CoverImageFile { get; set; }
         public string? CoverImageName { get; set; }
+        public string? Size { get; set; }
         public List<IFormFile> ImageFiles { get; set; } = [];
         public List<ProductImage> Images { get; set; } = [];
         public int ColorId { get; set; }
@@ -44,6 +46,7 @@ namespace EcommerceCoza.BLL.ViewModels
         public int Quantity { get; set; }
         public decimal Price { get; set; }
         public IFormFile? CoverImageFile { get; set; }
+        public string? Size { get; set; }
         public string? CoverImageName { get; set; }
         public List<IFormFile> ImageFiles { get; set; } = [];
         public List<ProductImage> ProductImages { get; set; } = [];

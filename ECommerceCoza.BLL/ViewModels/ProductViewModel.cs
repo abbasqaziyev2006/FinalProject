@@ -20,7 +20,8 @@ namespace EcommerceCoza.BLL.ViewModels
         public List<ProductVariantViewModel> ProductVariants { get; set; } = [];
         public bool IsInWishlist { get; set; }
         public List<int> WishlistItemIds { get; set; } = [];
-
+        public int Rating { get; set; }
+        public int ReviewCount { get; set; }
     }
 
     public class ProductCreateViewModel

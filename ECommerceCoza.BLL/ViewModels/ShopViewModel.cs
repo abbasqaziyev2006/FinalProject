@@ -11,5 +11,6 @@ namespace EcommerceCoza.BLL.ViewModels
         public List<CategoryViewModel> Categories { get; set; } = [];
         public List<ProductViewModel> Products { get; set; } = [];
         public List<BrandViewModel> Brands { get; set; } = [];
+        public List<ColorViewModel> Colors { get; set; } = [];
     }
 }

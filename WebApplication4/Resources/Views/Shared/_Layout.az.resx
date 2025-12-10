@@ -19,4 +19,6 @@
 	<data name="About" xml:space="preserve"><value>Haqqımızda</value></data>
 	<data name="Contact" xml:space="preserve"><value>Əlaqə</value></data>
 	<data name="MyAccount" xml:space="preserve"><value>Hesabım</value></data>
+	<data name="Sizes" xml:space="preserve"><value>Ölçülər</value></data>
+	<data name="Colors" xml:space="preserve"><value>Rənglər</value></data>
 </root>
