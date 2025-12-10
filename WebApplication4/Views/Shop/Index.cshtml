@@ -136,6 +136,7 @@
                         </div>
                     </div>
                 }
+
                 <!-- Size Filter -->
                 <div class="accordion-item mb-4 pb-3 border-0">
                     <h5 class="accordion-header" id="accordion-heading-sizes">
@@ -174,6 +175,7 @@
                         </div>
                     </div>
                 </div>
+
                 <!-- Price Filter -->
                 <div class="accordion-item mb-4 border-0">
                     <h5 class="accordion-header" id="accordion-heading-price">
@@ -246,10 +248,10 @@
                                  style="background-color: #f5e6e0;">
                                 <div class="slideshow-text container p-3 p-xl-5">
                                     <h2 class="text-uppercase section-title fw-normal mb-3 animate animate_fade animate_btt animate_delay-2">
-                                        @Localizer["DiscoverOurCollection"]
+                                        @Localizer["Discover Our Collection"]
                                     </h2>
                                     <p class="mb-0 animate animate_fade animate_btt animate_delay-5">
-                                        @Localizer["ShopLatestTrends"]
+                                        @Localizer["Shop Latest Trends"]
                                     </p>
                                 </div>
                             </div>
@@ -313,7 +315,7 @@
             <!-- Products Count -->
             <div class="mb-3">
                 <p class="text-secondary">
-                    @Localizer["Showing"] <span id="productsCount">@products.Count</span> @Localizer["Products"]
+                    @Localizer["Showing"] <span id="productsCount">@products.Count</span> @Localizer["of"] <span id="totalProducts">@ViewBag.TotalProducts</span> @Localizer["Products"]
                 </p>
             </div>
 
@@ -321,138 +323,21 @@
             <div class="products-grid row row-cols-2 row-cols-md-3 g-3" id="products-grid">
                 @foreach (var product in products)
                 {
-                    var firstVariant = product.ProductVariants.FirstOrDefault();
-                    var productColorIds = product.ProductVariants.Select(v => v.ColorId).Where(id => id > 0).Distinct().ToList();
-                    var productSizes = product.ProductVariants.Where(v => !string.IsNullOrEmpty(v.Size)).Select(v => v.Size).Distinct().ToList();
-                    
-                    <div class="product-card-wrapper"
-                         data-product-id="@product.Id"
-                         data-product-category="@product.CategoryId"
-                         data-product-brand="@product.BrandId"
-                         data-product-colors="@string.Join(",", productColorIds)"
-                         data-product-sizes="@string.Join(",", productSizes)"
-                         data-product-price="@product.BasePrice"
-                         data-product-name="@product.Name"
-                         data-product-date="@product.Id">
-                        <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-                            <div class="pc__img-wrapper">
-                                @if (firstVariant != null && (!string.IsNullOrEmpty(firstVariant.CoverImageName) || firstVariant.ImageNames.Any()))
-                                {
-                                    <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-                                        <div class="swiper-wrapper">
-                                            @if (!string.IsNullOrEmpty(firstVariant.CoverImageName))
-                                            {
-                                                <div class="swiper-slide">
-                                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
-                                                        <img loading="lazy" src="~/assets/images/products/@firstVariant.CoverImageName" width="330"
-                                                             height="400" alt="@product.Name" class="pc__img">
-                                                    </a>
-                                                </div>
-                                            }
-                                            @if (firstVariant.ImageNames.Any())
-                                            {
-                                                <div class="swiper-slide">
-                                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
-                                                        <img loading="lazy" src="~/assets/images/products/@firstVariant.ImageNames.First()"
-                                                             width="330" height="400" alt="@product.Name" class="pc__img">
-                                                    </a>
-                                                </div>
-                                            }
-                                        </div>
-                                        <span class="pc__img-prev">
-                                            <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_prev_sm" />
-                                            </svg>
-                                        </span>
-                                        <span class="pc__img-next">
-                                            <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_next_sm" />
-                                            </svg>
-                                        </span>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
-                                        <img loading="lazy" src="~/assets/images/products/product-placeholder.jpg" width="330"
-                                             height="400" alt="@product.Name" class="pc__img">
-                                    </a>
-                                }
-                                @if (firstVariant != null && firstVariant.Quantity > 0)
-                                {
-                                    <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart"
-                                            data-variant-id="@firstVariant.Id"
-                                            title="@Localizer["AddToCart"]">
-                                        @Localizer["AddToCart"]
-                                    </button>
-                                }
-                                else
-                                {
-                                    <div class="pc__atc btn position-absolute border-0 text-uppercase fw-medium bg-secondary text-white" style="cursor: not-allowed;">
-                                        @Localizer["OutOfStock"]
-                                    </div>
-                                }
-                            </div>
-
-                            <div class="pc__info position-relative">
-                                <p class="pc__category">
-                                    @if (product.Brand != null)
-                                    {
-                                        <span class="fw-medium text-primary">@product.Brand.Name</span>
-                                        @if (product.Category != null)
-                                        {
-                                            <span class="text-muted"> • </span>
-                                        }
-                                    }
-                                    @if (product.Category != null)
-                                    {
-                                        <span>@product.Category.Name</span>
-                                    }
-                                </p>
-                                <h6 class="pc__title">
-                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">@product.Name</a>
-                                </h6>
-                                <div class="product-card__price d-flex">
-                                    <span class="money price">@CurrencyService.Format(product.BasePrice)</span>
-                                </div>
-
-                                @if (product.ProductVariants.Count > 1)
-                                {
-                                    <div class="d-flex align-items-center mt-1">
-                                        @foreach (var variant in product.ProductVariants.Take(5))
-                                        {
-                                            @if (!string.IsNullOrEmpty(variant.ColorHexCode))
-                                            {
-                                                <a href="#" class="swatch-color pc__swatch-color"
-                                                   style="background-color: @variant.ColorHexCode;"
-                                                   title="@variant.ColorName"></a>
-                                            }
-                                        }
-                                        @if (product.ProductVariants.Count > 5)
-                                        {
-                                            <span class="text-secondary small ms-1">+@(product.ProductVariants.Count - 5)</span>
-                                        }
-                                    </div>
-                                }
-
-                                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
-                                        data-product-id="@product.Id"
-                                        title="@Localizer["AddToWishlist"]">
-                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <use href="#icon_heart" />
-                                    </svg>
-                                </button>
-
-                                @if (firstVariant != null && firstVariant.Quantity == 0)
-                                {
-                                    <div class="pc-labels position-absolute top-0 start-0">
-                                        <span class="pc-label pc-label_sale d-block text-white bg-danger">@Localizer["OutOfStock"]</span>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </div>
+                    @await Html.PartialAsync("_ProductCard", product)
                 }
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" class="text-center py-5" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-secondary">@Localizer["LoadingMoreProducts"]</p>
+            </div>
+
+            <!-- No More Products Message -->
+            <div id="no-more-products" class="text-center py-5" style="display: none;">
+                <p class="text-secondary fs-5">@Localizer["NoMoreProducts"]</p>
             </div>
 
             @if (!products.Any())
@@ -468,34 +353,201 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            let allProducts = [];
+            let currentSkip = @ViewBag.PageSize;
+            let isLoading = false;
+            let hasMoreProducts = true;
+            const pageSize = @ViewBag.PageSize;
+            let allLoadedProducts = [];
             let filteredProducts = [];
             let selectedCategory = 'all';
             let selectedBrands = [];
             let selectedColors = [];
-            let selectedSizes = []; // YENİ
+            let selectedSizes = [];
             let minPrice = @(products.Any() ? products.Min(p => p.BasePrice) : 0);
             let maxPrice = @(products.Any() ? products.Max(p => p.BasePrice) : 1000);
 
-            // Store all products data
+            // Store initially loaded products
             $('.product-card-wrapper').each(function() {
                 const colorIds = $(this).data('product-colors');
-                const sizes = $(this).data('product-sizes'); // YENİ
-                allProducts.push({
+                const sizes = $(this).data('product-sizes');
+                allLoadedProducts.push({
                     element: $(this),
                     id: $(this).data('product-id'),
                     category: $(this).data('product-category'),
                     brand: parseInt($(this).data('product-brand')) || 0,
                     colors: colorIds ? colorIds.toString().split(',').map(id => parseInt(id)) : [],
-                    sizes: sizes ? sizes.toString().split(',').map(s => s.trim().toUpperCase()) : [], // YENİ
+                    sizes: sizes ? sizes.toString().split(',').map(s => s.trim().toUpperCase()) : [],
                     price: parseFloat($(this).data('product-price')),
                     name: $(this).data('product-name'),
                     date: $(this).data('product-date')
                 });
             });
-            filteredProducts = [...allProducts];
+            filteredProducts = [...allLoadedProducts];
 
-            // Category Filter
+            // ============= INFINITE SCROLL =============
+            $(window).on('scroll', function() {
+                if (isLoading || !hasMoreProducts) return;
+
+                const scrollTop = $(window).scrollTop();
+                const windowHeight = $(window).height();
+                const documentHeight = $(document).height();
+                const scrollPercentage = (scrollTop + windowHeight) / documentHeight;
+
+                // Trigger when user scrolls to 80% of page
+                if (scrollPercentage > 0.8) {
+                    loadMoreProducts();
+                }
+            });
+
+            function loadMoreProducts() {
+                if (isLoading || !hasMoreProducts) return;
+
+                isLoading = true;
+                $('#loading-indicator').show();
+
+                $.ajax({
+                    url: '@Url.Action("LoadMoreProducts", "Shop")',
+                    type: 'GET',
+                    data: {
+                        skip: currentSkip,
+                        take: pageSize
+                    },
+                    success: function(response) {
+                        if (response.hasMore === false || response.products.length === 0) {
+                            hasMoreProducts = false;
+                            $('#loading-indicator').hide();
+                            $('#no-more-products').show();
+                            return;
+                        }
+
+                        // Append new products to grid
+                        response.products.forEach(function(product) {
+                            const productHtml = createProductCard(product);
+                            $('#products-grid').append(productHtml);
+
+                            // Store product data for filtering
+                            const $newProduct = $('.product-card-wrapper').last();
+                            allLoadedProducts.push({
+                                element: $newProduct,
+                                id: product.id,
+                                category: product.categoryId,
+                                brand: product.brandId,
+                                colors: product.colorIds ? product.colorIds.split(',').map(id => parseInt(id)) : [],
+                                sizes: product.sizes ? product.sizes.split(',').map(s => s.trim().toUpperCase()) : [],
+                                price: product.basePrice,
+                                name: product.name,
+                                date: product.id
+                            });
+                        });
+
+                        currentSkip += pageSize;
+                        $('#totalProducts').text(allLoadedProducts.length);
+
+                        // Apply current filters to newly loaded products
+                        applyFilters();
+
+                        hasMoreProducts = response.hasMore;
+                        if (!hasMoreProducts) {
+                            $('#no-more-products').show();
+                        }
+                    },
+                    error: function() {
+                        console.error('Error loading products');
+                    },
+                    complete: function() {
+                        isLoading = false;
+                        $('#loading-indicator').hide();
+                    }
+                });
+            }
+
+            function createProductCard(product) {
+                const variant = product.firstVariant;
+                const hasStock = variant && variant.quantity > 0;
+                const imageUrl = variant?.coverImageName || 'product-placeholder.jpg';
+                const secondImage = variant?.imageNames?.[0] || imageUrl;
+
+                return `
+                    <div class="product-card-wrapper"
+                         data-product-id="${product.id}"
+                         data-product-category="${product.categoryId}"
+                         data-product-brand="${product.brandId}"
+                         data-product-colors="${product.colorIds}"
+                         data-product-sizes="${product.sizes}"
+                         data-product-price="${product.basePrice}"
+                         data-product-name="${product.name}"
+                         data-product-date="${product.id}">
+                        <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+                            <div class="pc__img-wrapper">
+                                <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide">
+                                            <a href="/Product/Details/${product.detailsUrl}">
+                                                <img loading="lazy" src="/assets/images/products/${imageUrl}" width="330" height="400" alt="${product.name}" class="pc__img">
+                                            </a>
+                                        </div>
+                                        ${secondImage !== imageUrl ? `
+                                        <div class="swiper-slide">
+                                            <a href="/Product/Details/${product.detailsUrl}">
+                                                <img loading="lazy" src="/assets/images/products/${secondImage}" width="330" height="400" alt="${product.name}" class="pc__img">
+                                            </a>
+                                        </div>
+                                        ` : ''}
+                                    </div>
+                                    <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm" /></svg></span>
+                                    <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm" /></svg></span>
+                                </div>
+                                ${hasStock ? `
+                                <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart"
+                                        data-variant-id="${variant.id}"
+                                        title="@Localizer["AddToCart"]">
+                                    @Localizer["AddToCart"]
+                                </button>
+                                ` : `
+                                <div class="pc__atc btn position-absolute border-0 text-uppercase fw-medium bg-secondary text-white" style="cursor: not-allowed;">
+                                    @Localizer["OutOfStock"]
+                                </div>
+                                `}
+                            </div>
+                            <div class="pc__info position-relative">
+                                <p class="pc__category">
+                                    ${product.brandName ? `<span class="fw-medium text-primary">${product.brandName}</span>` : ''}
+                                    ${product.brandName && product.categoryName ? '<span class="text-muted"> • </span>' : ''}
+                                    ${product.categoryName ? `<span>${product.categoryName}</span>` : ''}
+                                </p>
+                                <h6 class="pc__title">
+                                    <a href="/Product/Details/${product.detailsUrl}">${product.name}</a>
+                                </h6>
+                                <div class="product-card__price d-flex">
+                                    <span class="money price">$${product.basePrice.toFixed(2)}</span>
+                                </div>
+                                ${product.variants.length > 1 ? `
+                                <div class="d-flex align-items-center mt-1">
+                                    ${product.variants.slice(0, 5).map(v =>
+                                        v.colorHexCode ? `<a href="#" class="swatch-color pc__swatch-color" style="background-color: ${v.colorHexCode};" title="${v.colorName}"></a>` : ''
+                                    ).join('')}
+                                    ${product.variants.length > 5 ? `<span class="text-secondary small ms-1">+${product.variants.length - 5}</span>` : ''}
+                                </div>
+                                ` : ''}
+                                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
+                                        data-product-id="${product.id}"
+                                        title="@Localizer["AddToWishlist"]">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <use href="#icon_heart" />
+                                    </svg>
+                                </button>
+                                ${!hasStock ? `
+                                <div class="pc-labels position-absolute top-0 start-0">
+                                    <span class="pc-label pc-label_sale d-block text-white bg-danger">@Localizer["OutOfStock"]</span>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ============= CATEGORY FILTER =============
             $('.category-filter').on('click', function(e) {
                 e.preventDefault();
                 $('.category-filter').removeClass('text-primary fw-bold active');
@@ -505,7 +557,7 @@
                 applyFilters();
             });
 
-            // Brand Filter
+            // ============= BRAND FILTER =============
             $('.brand-filter').on('change', function() {
                 selectedBrands = [];
                 $('.brand-filter:checked').each(function() {
@@ -515,7 +567,7 @@
                 applyFilters();
             });
 
-            // Color Filter
+            // ============= COLOR FILTER =============
             $('.color-filter').on('change', function() {
                 const $label = $(this).closest('label');
                 const $swatch = $label.find('.swatch-color');
@@ -539,11 +591,11 @@
                 applyFilters();
             });
 
-            // Size Filter - YENİ
+            // ============= SIZE FILTER =============
             $('.size-filter').on('change', function() {
                 const $label = $(this).closest('label');
                 const $badge = $label.find('.size-badge');
-                
+
                 if ($(this).is(':checked')) {
                     $badge.css({
                         'background-color': '#000',
@@ -566,7 +618,7 @@
                 applyFilters();
             });
 
-            // Price Range Filter
+            // ============= PRICE RANGE FILTER =============
             if ($('.price-range-slider').length) {
                 $('.price-range-slider').on('change', function() {
                     const values = $(this).val().split(',');
@@ -576,23 +628,23 @@
                 });
             }
 
-            // Sort Products
+            // ============= SORT PRODUCTS =============
             $('#sortProducts').on('change', function() {
                 const sortBy = $(this).val();
                 sortProducts(sortBy);
             });
 
-            // Reset Filters
+            // ============= RESET FILTERS =============
             $('.js-reset-filters').on('click', function() {
                 selectedCategory = 'all';
                 selectedBrands = [];
                 selectedColors = [];
-                selectedSizes = []; // YENİ
-                
+                selectedSizes = [];
+
                 $('.category-filter').removeClass('text-primary fw-bold active');
                 $('.category-filter[data-category-id="all"]').addClass('text-primary fw-bold active');
                 $('.brand-filter').prop('checked', false);
-                
+
                 // Reset color filters
                 $('.color-filter').prop('checked', false);
                 $('.color-filter').each(function() {
@@ -604,7 +656,7 @@
                     $check.addClass('d-none');
                 });
 
-                // Reset size filters - YENİ
+                // Reset size filters
                 $('.size-filter').prop('checked', false);
                 $('.size-filter').each(function() {
                     const $label = $(this).closest('label');
@@ -629,48 +681,19 @@
                 applyFilters();
             });
 
-            // Add to Cart
-            $(document).on('click', '.js-add-cart', function(e) {
-                e.preventDefault();
-                const variantId = $(this).data('variant-id');
-
-                const formData = new FormData();
-                formData.append('productVariantId', variantId);
-                formData.append('quantity', 1);
-
-                $.ajax({
-                    url: '/Basket/Add',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function() {
-                        // Update cart count
-                        $.get('/Basket/GetBasket', function(data) {
-                            $('.header__cart-count').text(data.totalCount);
-                        });
-
-                        // Show success message
-                        alert('@Localizer["ProductAddedToCart"]');
-                    },
-                    error: function() {
-                        alert('@Localizer["ErrorAddingToCart"]');
-                    }
-                });
-            });
-
+            // ============= APPLY FILTERS =============
             function applyFilters() {
-                filteredProducts = allProducts.filter(product => {
+                filteredProducts = allLoadedProducts.filter(product => {
                     const categoryMatch = selectedCategory === 'all' || product.category == selectedCategory;
                     const brandMatch = selectedBrands.length === 0 || selectedBrands.includes(product.brand);
                     const colorMatch = selectedColors.length === 0 || selectedColors.some(colorId => product.colors.includes(colorId));
-                    const sizeMatch = selectedSizes.length === 0 || selectedSizes.some(size => product.sizes.includes(size)); // YENİ
+                    const sizeMatch = selectedSizes.length === 0 || selectedSizes.some(size => product.sizes.includes(size));
                     const priceMatch = product.price >= minPrice && product.price <= maxPrice;
                     return categoryMatch && brandMatch && colorMatch && sizeMatch && priceMatch;
                 });
 
                 // Hide all products
-                allProducts.forEach(p => p.element.hide());
+                allLoadedProducts.forEach(p => p.element.hide());
 
                 // Show filtered products
                 filteredProducts.forEach(p => p.element.show());
@@ -681,6 +704,7 @@
                 console.log('Filtered products:', filteredProducts.length);
             }
 
+            // ============= SORT PRODUCTS =============
             function sortProducts(sortBy) {
                 const $grid = $('#products-grid');
                 let sorted = [...filteredProducts];
@@ -711,6 +735,33 @@
                     $grid.append(product.element);
                 });
             }
+
+            // ============= ADD TO CART =============
+            $(document).on('click', '.js-add-cart', function(e) {
+                e.preventDefault();
+                const variantId = $(this).data('variant-id');
+
+                const formData = new FormData();
+                formData.append('productVariantId', variantId);
+                formData.append('quantity', 1);
+
+                $.ajax({
+                    url: '/Basket/Add',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function() {
+                        $.get('/Basket/GetBasket', function(data) {
+                            $('.header__cart-count').text(data.totalCount);
+                        });
+                        alert('@Localizer["ProductAddedToCart"]');
+                    },
+                    error: function() {
+                        alert('@Localizer["ErrorAddingToCart"]');
+                    }
+                });
+            });
         });
     </script>
 }

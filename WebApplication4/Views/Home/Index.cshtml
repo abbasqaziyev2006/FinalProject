@@ -101,7 +101,7 @@
 <div class="container mw-1620 bg-white border-radius-10">
     <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
 
-    <!-- Replace the Featured Categories section with this: -->
+    <!-- Featured Categories Section - DÜZELTİLDİ: loop: false -->
     @if (Model.FeaturedCategories.Any())
     {
         <section class="category-carousel container">
@@ -122,7 +122,7 @@
                               },
                               "breakpoints": {
                                 "320": {
-                                  "slidesPerView": 3,
+                                  "slidesPerView": 2,
                                   "slidesPerGroup": 1,
                                   "spaceBetween": 15
                                 },
@@ -144,44 +144,42 @@
                               }
                             }'>
                     <div class="swiper-wrapper">
-                        @foreach (var category in Model.FeaturedCategories.Take(8))
+                        @foreach (var category in Model.FeaturedCategories)
                         {
                             <div class="swiper-slide">
-                                <a asp-controller="Shop" asp-action="Index" asp-route-categoryId="@category.Id" class="d-flex flex-column align-items-center text-decoration-none">
-                                    @if (!string.IsNullOrEmpty(category.ImageName))
-                                    {
-                                        <img loading="lazy"
-                                             src="~/assets/images/home/demo3/@category.ImageName"
-                                             width="124"
-                                             height="124"
-                                             alt="@category.Name" />
-                                    }
-                                    else
-                                    {
-                                        <div class="d-flex align-items-center justify-content-center bg-light"
-                                             style="width: 124px; height: 124px; border-radius: 50%; margin-bottom: 1rem;">
-                                            <span class="fs-3 text-secondary">@category.Name.Substring(0, 1)</span>
-                                        </div>
-                                    }
-                                    <div class="text-center mt-2">
-                                        <span class="menu-link fw-medium">@category.Name</span>
+                                @if (!string.IsNullOrEmpty(category.ImageName))
+                                {
+                                    <img loading="lazy" class="w-100 h-auto mb-3" src="~/assets/images/home/demo3/@category.ImageName" width="124"
+                                         height="124" alt="@category.Name" style="object-fit: cover; border-radius: 50%;" />
+                                }
+                                else
+                                {
+                                    <div class="w-100 mb-3 bg-light d-flex align-items-center justify-content-center"
+                                         style="height: 124px; border-radius: 50%;">
+                                        <span class="text-secondary">@category.Name.Substring(0, 1)</span>
                                     </div>
-                                </a>
+                                }
+                                <div class="text-center">
+                                    <a asp-controller="Shop" asp-action="Index" class="menu-link fw-medium">@category.Name</a>
+                                </div>
                             </div>
                         }
                     </div>
                 </div>
 
-                <div class="products-carousel__prev products-carousel__prev-1 position-absolute top-50 d-flex align-items-center justify-content-center">
-                    <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_prev_md" />
-                    </svg>
-                </div>
-                <div class="products-carousel__next products-carousel__next-1 position-absolute top-50 d-flex align-items-center justify-content-center">
-                    <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
-                        <use href="#icon_next_md" />
-                    </svg>
-                </div>
+                @if (Model.FeaturedCategories.Count > 8)
+                {
+                    <div class="products-carousel__prev products-carousel__prev-1 position-absolute top-50 d-flex align-items-center justify-content-center">
+                        <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                            <use href="#icon_prev_md" />
+                        </svg>
+                    </div>
+                    <div class="products-carousel__next products-carousel__next-1 position-absolute top-50 d-flex align-items-center justify-content-center">
+                        <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                            <use href="#icon_next_md" />
+                        </svg>
+                    </div>
+                }
             </div>
         </section>
     }
@@ -263,16 +261,16 @@
 
     <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
 
-    <!-- Featured Products Section -->
+    <!-- Featured Products Section - MAKSIMUM 3 ÜRÜN -->
     @if (Model.FeaturedProducts.Any())
     {
         <section class="products-grid container">
             <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">@Localizer["Featured Products"]</h2>
-            <div class="row">
-                @foreach (var product in Model.FeaturedProducts)
+            <div class="row justify-content-center">
+                @foreach (var product in Model.FeaturedProducts.Take(3))
                 {
                     var firstVariant = product.ProductVariants.FirstOrDefault();
-                    <div class="col-6 col-md-4 col-lg-3">
+                    <div class="col-6 col-md-4 col-lg-4">
                         <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
                             <div class="pc__img-wrapper">
                                 @if (firstVariant != null && (!string.IsNullOrEmpty(firstVariant.CoverImageName) || firstVariant.ImageNames.Any()))

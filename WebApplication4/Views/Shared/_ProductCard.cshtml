@@ -1,0 +1,137 @@
+@model EcommerceCoza.BLL.ViewModels.ProductViewModel
+@inject WebApplication4.Services.ICurrencyService CurrencyService
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
+@{
+    var firstVariant = Model.ProductVariants.FirstOrDefault();
+    var productColorIds = Model.ProductVariants.Select(v => v.ColorId).Where(id => id > 0).Distinct().ToList();
+    var productSizes = Model.ProductVariants.Where(v => !string.IsNullOrEmpty(v.Size)).Select(v => v.Size).Distinct().ToList();
+}
+
+<div class="product-card-wrapper"
+     data-product-id="@Model.Id"
+     data-product-category="@Model.CategoryId"
+     data-product-brand="@Model.BrandId"
+     data-product-colors="@string.Join(",", productColorIds)"
+     data-product-sizes="@string.Join(",", productSizes)"
+     data-product-price="@Model.BasePrice"
+     data-product-name="@Model.Name"
+     data-product-date="@Model.Id">
+    <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+        <div class="pc__img-wrapper">
+            @if (firstVariant != null && (!string.IsNullOrEmpty(firstVariant.CoverImageName) || firstVariant.ImageNames.Any()))
+            {
+                <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
+                    <div class="swiper-wrapper">
+                        @if (!string.IsNullOrEmpty(firstVariant.CoverImageName))
+                        {
+                            <div class="swiper-slide">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.DetailsUrl">
+                                    <img loading="lazy" src="~/assets/images/products/@firstVariant.CoverImageName" width="330"
+                                         height="400" alt="@Model.Name" class="pc__img">
+                                </a>
+                            </div>
+                        }
+                        @if (firstVariant.ImageNames.Any())
+                        {
+                            <div class="swiper-slide">
+                                <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.DetailsUrl">
+                                    <img loading="lazy" src="~/assets/images/products/@firstVariant.ImageNames.First()"
+                                         width="330" height="400" alt="@Model.Name" class="pc__img">
+                                </a>
+                            </div>
+                        }
+                    </div>
+                    <span class="pc__img-prev">
+                        <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
+                            <use href="#icon_prev_sm" />
+                        </svg>
+                    </span>
+                    <span class="pc__img-next">
+                        <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
+                            <use href="#icon_next_sm" />
+                        </svg>
+                    </span>
+                </div>
+            }
+            else
+            {
+                <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.DetailsUrl">
+                    <img loading="lazy" src="~/assets/images/products/product-placeholder.jpg" width="330"
+                         height="400" alt="@Model.Name" class="pc__img">
+                </a>
+            }
+            @if (firstVariant != null && firstVariant.Quantity > 0)
+            {
+                <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart"
+                        data-variant-id="@firstVariant.Id"
+                        title="@Localizer["AddToCart"]">
+                    @Localizer["AddToCart"]
+                </button>
+            }
+            else
+            {
+                <div class="pc__atc btn position-absolute border-0 text-uppercase fw-medium bg-secondary text-white" style="cursor: not-allowed;">
+                    @Localizer["OutOfStock"]
+                </div>
+            }
+        </div>
+
+        <div class="pc__info position-relative">
+            <p class="pc__category">
+                @if (Model.Brand != null)
+                {
+                    <span class="fw-medium text-primary">@Model.Brand.Name</span>
+                    @if (Model.Category != null)
+                    {
+                        <span class="text-muted"> • </span>
+                    }
+                }
+                @if (Model.Category != null)
+                {
+                    <span>@Model.Category.Name</span>
+                }
+            </p>
+            <h6 class="pc__title">
+                <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.DetailsUrl">@Model.Name</a>
+            </h6>
+            <div class="product-card__price d-flex">
+                <span class="money price">@CurrencyService.Format(Model.BasePrice)</span>
+            </div>
+
+            @if (Model.ProductVariants.Count > 1)
+            {
+                <div class="d-flex align-items-center mt-1">
+                    @foreach (var variant in Model.ProductVariants.Take(5))
+                    {
+                        @if (!string.IsNullOrEmpty(variant.ColorHexCode))
+                        {
+                            <a href="#" class="swatch-color pc__swatch-color"
+                               style="background-color: @variant.ColorHexCode;"
+                               title="@variant.ColorName"></a>
+                        }
+                    }
+                    @if (Model.ProductVariants.Count > 5)
+                    {
+                        <span class="text-secondary small ms-1">+@(Model.ProductVariants.Count - 5)</span>
+                    }
+                </div>
+            }
+
+            <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
+                    data-product-id="@Model.Id"
+                    title="@Localizer["AddToWishlist"]">
+                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <use href="#icon_heart" />
+                </svg>
+            </button>
+
+            @if (firstVariant != null && firstVariant.Quantity == 0)
+            {
+                <div class="pc-labels position-absolute top-0 start-0">
+                    <span class="pc-label pc-label_sale d-block text-white bg-danger">@Localizer["OutOfStock"]</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>
