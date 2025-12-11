@@ -105,8 +105,8 @@ namespace EcommerceCoza.MVC
                 var userManager = scope.ServiceProvider.GetRequiredService<UserManager<AppUser>>();
 
                 string adminRole = "Admin";
-                string adminEmail = "admin@gmail.com";
-                string adminPassword = "admin123";
+                string adminEmail = "abbasqaziyev119@gmail.com";
+                string adminPassword = "2030an30";
 
                 if (!await roleManager.RoleExistsAsync(adminRole))
                     await roleManager.CreateAsync(new IdentityRole(adminRole));

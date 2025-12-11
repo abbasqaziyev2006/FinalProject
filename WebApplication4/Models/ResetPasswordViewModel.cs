@@ -10,13 +10,14 @@ namespace EcommerceCoza.MVC.Models
         [Required]
         public string Token { get; set; } = string.Empty;
 
-        [Required, EmailAddress]
         public string Email { get; set; } = string.Empty;
 
         [Required, DataType(DataType.Password)]
+        [Display(Name = "New Password")]
         public string NewPassword { get; set; } = string.Empty;
 
         [Required, DataType(DataType.Password), Compare(nameof(NewPassword))]
+        [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; } = string.Empty;
     }
 }

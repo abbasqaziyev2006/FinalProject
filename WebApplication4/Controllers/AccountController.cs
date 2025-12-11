@@ -164,6 +164,13 @@ namespace EcommerceCoza.MVC.Controllers
             //check password
             if (!string.IsNullOrEmpty(model.CurrentPassword) && !string.IsNullOrEmpty(model.NewPassword))
             {
+                // Check if new password is the same as current password
+                if (model.CurrentPassword == model.NewPassword)
+                {
+                    ModelState.AddModelError("NewPassword", "New password cannot be the same as the current password.");
+                    return View(model);
+                }
+
                 var resultPassword = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
                 if (!resultPassword.Succeeded)
                 {
@@ -290,6 +297,14 @@ namespace EcommerceCoza.MVC.Controllers
             if (user == null)
             {
                 ModelState.AddModelError("", "Invalid user.");
+                return View(model);
+            }
+
+            // Check if new password is the same as current password
+            var isSamePassword = await _userManager.CheckPasswordAsync(user, model.NewPassword);
+            if (isSamePassword)
+            {
+                ModelState.AddModelError("NewPassword", "New password cannot be the same as your current password.");
                 return View(model);
             }
 
