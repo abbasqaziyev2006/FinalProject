@@ -6,9 +6,9 @@
      * Manages adding products to basket and updating cart count
      */
     const AddToBasketHandler = {
-        basketCountSelector: '.header__cart-count', // Adjust based on your header structure
+        basketCountSelector: '.js-cart-items-count', // Fixed: changed from .header__cart-count
         addCartButtonClass: '.js-add-cart',
-        
+
         init() {
             this.attachEventListeners();
             this.updateBasketCount();
@@ -29,7 +29,7 @@
 
             // Get product variant ID from product card (you may need to adjust this based on your HTML structure)
             const productVariantId = this.getProductVariantId(productCard);
-            
+
             if (!productVariantId) {
                 console.warn('Product variant ID not found');
                 return;
@@ -42,9 +42,9 @@
         getProductVariantId(productCard) {
             // Try to get product variant ID from data attribute, or from product ID
             // Adjust this based on your actual HTML structure
-            const productId = productCard.dataset.productId || 
-                            productCard.querySelector('a[href*="/Product/Details/"]')?.href?.split('/').pop();
-            
+            const productId = productCard.dataset.productId ||
+                productCard.querySelector('a[href*="/Product/Details/"]')?.href?.split('/').pop();
+
             // For now, return a default value - you may need to fetch the variant ID from API
             return productId ? parseInt(productId) : null;
         },
@@ -58,15 +58,15 @@
                 method: 'POST',
                 body: formData
             })
-            .then(response => {
-                if (response.ok) {
-                    this.updateBasketCount();
-                    this.showAddedNotification();
-                } else {
-                    console.error('Failed to add item to basket');
-                }
-            })
-            .catch(error => console.error('Error adding to basket:', error));
+                .then(response => {
+                    if (response.ok) {
+                        this.updateBasketCount();
+                        this.showAddedNotification();
+                    } else {
+                        console.error('Failed to add item to basket');
+                    }
+                })
+                .catch(error => console.error('Error adding to basket:', error));
         },
 
         updateBasketCount() {

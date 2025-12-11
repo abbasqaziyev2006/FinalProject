@@ -1,4 +1,4 @@
-using EcommerceCoza.BLL.Services.Contracts;
+﻿using EcommerceCoza.BLL.Services.Contracts;
 using EcommerceCoza.MVC.Models;
 using ECommerceCoza.BLL.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
@@ -51,7 +51,7 @@ namespace EcommerceCoza.MVC.Controllers
 
             try
             {
-                // Get admin email from configuration (abbasqaziyev119@gmail.com)
+
                 var adminEmail = _configuration["EmailSettings:AdminEmail"];
 
                 if (string.IsNullOrEmpty(adminEmail))

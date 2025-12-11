@@ -8,7 +8,7 @@ namespace EcommerceCoza.BLL.ViewModels
 {
     public class BasketViewModel
     {
-        public List<BasketItemViewModel> Items { get; set; } = [];
+        public List<BasketItemViewModel> Items { get; set; } = new List<BasketItemViewModel>();
         public decimal TotalPrice => Items.Sum(item => item.Price * item.Quantity);
         public int TotalCount => Items.Sum(item => item.Quantity);
     }
