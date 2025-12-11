@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerceCoza.DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251203122955_Order")]
-    partial class Order
+    [Migration("20251211170544_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

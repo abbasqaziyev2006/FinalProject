@@ -17,46 +17,71 @@
     <section class="contact-us container">
         <div class="mw-930">
             <div class="contact-us__form">
-                @if (!string.IsNullOrEmpty(ViewData["SuccessMessage"] as string))
+                @if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
                 {
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        @ViewData["SuccessMessage"]
+                        <strong>✓ Success!</strong> @TempData["SuccessMessage"]
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 }
 
-                <form name="contact-us-form" class="needs-validation" novalidate="" method="POST" asp-action="Contact" asp-controller="Home">
+                @if (ViewData.ModelState.ErrorCount > 0)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>⚠ Error!</strong>
+                        <ul class="mb-0">
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+
+                <form name="contact-us-form" method="POST" asp-action="Contact" asp-controller="Home">
+                    @Html.AntiForgeryToken()
+
                     <h3 class="mb-5">Get In Touch</h3>
-                    
+                    <p class="text-secondary mb-4">Fill out the form below and we'll get back to you as soon as possible.</p>
+
                     <div class="form-floating my-4">
-                        <input type="text" class="form-control" asp-for="Name" placeholder="Name *" required="">
+                        <input type="text" class="form-control" asp-for="Name" placeholder="Name *">
                         <label asp-for="Name">Name *</label>
                         <span class="text-danger" asp-validation-for="Name"></span>
                     </div>
-                    
+
                     <div class="form-floating my-4">
-                        <input type="text" class="form-control" asp-for="Phone" placeholder="Phone *" required="">
+                        <input type="tel" class="form-control" asp-for="Phone" placeholder="Phone *">
                         <label asp-for="Phone">Phone *</label>
                         <span class="text-danger" asp-validation-for="Phone"></span>
                     </div>
-                    
+
                     <div class="form-floating my-4">
-                        <input type="email" class="form-control" asp-for="Email" placeholder="Email address *" required="">
+                        <input type="email" class="form-control" asp-for="Email" placeholder="Email address *">
                         <label asp-for="Email">Email address *</label>
                         <span class="text-danger" asp-validation-for="Email"></span>
                     </div>
-                    
+
                     <div class="my-4">
-                        <textarea class="form-control form-control_gray" asp-for="Comment" placeholder="Your Message" cols="30"
-                                  rows="8" required=""></textarea>
+                        <label asp-for="Comment" class="form-label">Your Message *</label>
+                        <textarea class="form-control form-control_gray" asp-for="Comment" placeholder="Tell us what's on your mind..." cols="30" rows="8"></textarea>
                         <span class="text-danger" asp-validation-for="Comment"></span>
                     </div>
-                    
+
                     <div class="my-4">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-send"></i> Send Message
+                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </section>
+
+    <div class="mb-5 pb-5"></div>
 </main>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

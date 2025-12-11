@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 
 namespace EcommerceCoza.MVC.Controllers
 {
@@ -54,10 +55,30 @@ namespace EcommerceCoza.MVC.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
+
+            // Check if email already exists to prevent duplicates
+            var existingUserByEmail = await _userManager.Users
+                .Where(u => u.NormalizedEmail == model.Email.ToUpper())
+                .FirstOrDefaultAsync();
+
+            if (existingUserByEmail != null)
+            {
+                ModelState.AddModelError("Email", "This email is already registered.");
+                return View(model);
+            }
+
+            // Check if username already exists
+            var existingUserByName = await _userManager.FindByNameAsync(model.UserName);
+            if (existingUserByName != null)
+            {
+                ModelState.AddModelError("UserName", "This username is already taken.");
+                return View(model);
+            }
 
             var user = new AppUser
             {
@@ -79,6 +100,10 @@ namespace EcommerceCoza.MVC.Controllers
                 return View(model);
             }
 
+            // Automatically sign in the user after registration
+            await _signInManager.SignInAsync(user, isPersistent: false);
+
+            TempData["SuccessMessage"] = "Your account has been created successfully!";
             return RedirectToAction("Index", "Home");
         }
 
@@ -93,28 +118,40 @@ namespace EcommerceCoza.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            // Use direct query to handle potential duplicates gracefully
+            var normalizedEmail = model.Email.ToUpper();
+            var users = await _userManager.Users
+                .Where(u => u.NormalizedEmail == normalizedEmail)
+                .ToListAsync();
 
-            if (user == null)
+            if (users.Count == 0)
             {
                 ModelState.AddModelError("", "Email or password is incorrect.");
-
                 return View(model);
             }
+
+            if (users.Count > 1)
+            {
+                // Critical: Multiple accounts with same email
+                ModelState.AddModelError("", "Multiple accounts found with this email. Please contact support to resolve this issue.");
+                // Log this error for admin attention
+                // You can add logging here: _logger.LogError($"Duplicate email found: {model.Email}");
+                return View(model);
+            }
+
+            var user = users[0];
 
             var result = await _signInManager.PasswordSignInAsync(user, model.Password, model.RememberMe, true);
 
             if (result.IsLockedOut)
             {
-                ModelState.AddModelError("", $"You are banned {user.LockoutEnd.Value.AddHours(4).ToString()}.");
-
+                ModelState.AddModelError("", $"You are banned until {user.LockoutEnd.Value.AddHours(4):yyyy-MM-dd HH:mm}.");
                 return View(model);
             }
 
             if (!result.Succeeded)
             {
                 ModelState.AddModelError("", "Email or password is incorrect.");
-
                 return View(model);
             }
 
@@ -184,6 +221,17 @@ namespace EcommerceCoza.MVC.Controllers
 
             if (model.Email != user.Email /*&& !string.IsNullOrEmpty(model.Email) && !string.IsNullOrEmpty(user.Email)*/)
             {
+                // Check if new email already exists
+                var existingUser = await _userManager.Users
+                    .Where(u => u.NormalizedEmail == model.Email.ToUpper() && u.Id != user.Id)
+                    .FirstOrDefaultAsync();
+
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("Email", "This email is already in use by another account.");
+                    return View(model);
+                }
+
                 var resultEmail = await _userManager.SetEmailAsync(user, model.Email);
                 if (!resultEmail.Succeeded)
                 {
@@ -227,14 +275,20 @@ namespace EcommerceCoza.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            var user = await _userManager.FindByEmailAsync(model.Email);
+            // Use direct query to handle potential duplicates
+            var normalizedEmail = model.Email.ToUpper();
+            var users = await _userManager.Users
+                .Where(u => u.NormalizedEmail == normalizedEmail)
+                .ToListAsync();
 
-            // Don't reveal that the user does not exist
-            if (user == null)
+            // Don't reveal that the user does not exist or that there are duplicates
+            if (users.Count == 0 || users.Count > 1)
             {
                 TempData["ForgotPasswordStatus"] = "If the email exists in our system, a password reset link has been sent.";
                 return View();
             }
+
+            var user = users[0];
 
             // Generate password reset token
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
@@ -250,13 +304,23 @@ namespace EcommerceCoza.MVC.Controllers
             // Send email
             var subject = "Password Reset Request";
             var message = $@"
-                <h2>Password Reset</h2>
-                <p>You requested a password reset. Click the link below to reset your password:</p>
-                <p><a href='{resetLink}'>Reset Password</a></p>
-                <p>If you didn't request this, please ignore this email.</p>
-                <p>This link will expire in 24 hours.</p>";
+                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
+                    <h2 style='color: #333;'>Password Reset</h2>
+                    <p>Hello {user.FirstName ?? "User"},</p>
+                    <p>You requested a password reset. Click the button below to reset your password:</p>
+                    <div style='text-align: center; margin: 30px 0;'>
+                        <a href='{resetLink}' style='background-color: #007bff; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; display: inline-block;'>Reset Password</a>
+                    </div>
+                    <p>Or copy and paste this link into your browser:</p>
+                    <p style='word-break: break-all; color: #666;'>{resetLink}</p>
+                    <p>If you didn't request this, please ignore this email.</p>
+                    <p style='color: #999; font-size: 12px;'>This link will expire in 24 hours.</p>
+                    <hr style='border: none; border-top: 1px solid #ddd; margin: 20px 0;'>
+                    <p style='color: #999; font-size: 11px;'>This is an automated message from your E-Commerce Store. Please do not reply to this email.</p>
+                </div>";
 
-            var emailSent = await _emailService.SendEmailAsync(user.Email!, subject, message, "User");
+
+            var emailSent = await _emailService.SendEmailAsync(user.Email!, subject, message, "Admin");
 
             if (emailSent)
             {

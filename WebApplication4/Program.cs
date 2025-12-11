@@ -1,4 +1,4 @@
-using ECommerceCoza.BLL.Constants;
+﻿using ECommerceCoza.BLL.Constants;
 using ECommerceCoza.DAL.DataContext.Entities;
 using ECommerceCoza.DAL.DataContext;
 using Microsoft.AspNetCore.Identity;
@@ -45,6 +45,9 @@ namespace EcommerceCoza.MVC
                 options.Password.RequireUppercase = false;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 3;
+                
+                // ✅ ADD THIS: Enforce unique emails
+                options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
             // Configure Identity options for Access Denied
