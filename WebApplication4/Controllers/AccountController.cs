@@ -299,8 +299,6 @@ namespace EcommerceCoza.MVC.Controllers
                 ModelState.AddModelError("", "Invalid user.");
                 return View(model);
             }
-
-            // Check if new password is the same as current password
             var isSamePassword = await _userManager.CheckPasswordAsync(user, model.NewPassword);
             if (isSamePassword)
             {
@@ -308,10 +306,8 @@ namespace EcommerceCoza.MVC.Controllers
                 return View(model);
             }
 
-            // Decode the token
             var decodedToken = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(model.Token));
 
-            // Reset the password
             var result = await _userManager.ResetPasswordAsync(user, decodedToken, model.NewPassword);
 
             if (!result.Succeeded)
