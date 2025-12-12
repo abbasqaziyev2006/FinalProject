@@ -11,7 +11,7 @@
     <section class="shop-checkout container">
         <h2 class="page-title">@Localizer["PageTitle"]</h2>
         <div class="checkout-steps">
-            <a asp-controller="Cart" asp-action="Index" class="checkout-steps__item active">
+            <a asp-controller="Basket" asp-action="Index" class="checkout-steps__item active">
                 <span class="checkout-steps__item-number">01</span>
                 <span class="checkout-steps__item-title">
                     <span>@Localizer["ShoppingBag"]</span>
@@ -34,7 +34,7 @@
             </a>
         </div>
 
-        <form asp-action="Checkout" asp-controller="Order" method="post">
+        <form asp-action="Checkout" asp-controller="Order" method="post" id="checkoutForm">
             <div class="checkout-form">
                 <div class="billing-info__wrapper">
                     <div class="row">
@@ -171,20 +171,20 @@
                         <div class="checkout__payment-methods my-4">
                             <h4 class="mb-3">@Localizer["PaymentMethod"]</h4>
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="DirectBankTransfer" checked />
-                                <label class="form-check-label">@Localizer["DirectBankTransfer"]</label>
+                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="DirectBankTransfer" id="payment1" checked />
+                                <label class="form-check-label" for="payment1">@Localizer["DirectBankTransfer"]</label>
                             </div>
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="Check" />
-                                <label class="form-check-label">@Localizer["CheckPayment"]</label>
+                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="Check" id="payment2" />
+                                <label class="form-check-label" for="payment2">@Localizer["CheckPayment"]</label>
                             </div>
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="CashOnDelivery" />
-                                <label class="form-check-label">@Localizer["CashOnDelivery"]</label>
+                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="CashOnDelivery" id="payment3" />
+                                <label class="form-check-label" for="payment3">@Localizer["CashOnDelivery"]</label>
                             </div>
                             <div class="form-check mb-3">
-                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="Stripe" />
-                                <label class="form-check-label">@Localizer["CreditCard"]</label>
+                                <input class="form-check-input" type="radio" asp-for="PaymentMethod" value="Stripe" id="payment4" />
+                                <label class="form-check-label" for="payment4">@Localizer["CreditCard"]</label>
                             </div>
 
                             <div class="form-check">
@@ -199,7 +199,7 @@
                         <input type="hidden" id="hasAppliedDiscount" asp-for="HasAppliedDiscount" />
                         <input type="hidden" id="discountField" asp-for="Discount" />
 
-                        <button type="submit" class="btn btn-primary btn-checkout w-100 btn-lg">@Localizer["PlaceOrder"]</button>
+                        <button type="submit" class="btn btn-primary btn-checkout w-100 btn-lg" id="placeOrderBtn">@Localizer["PlaceOrder"]</button>
                     </div>
                 </div>
             </div>
@@ -219,6 +219,11 @@
             const msgInvalidCode = '@Localizer["InvalidDiscountCode"]';
             const msgErrorApplying = '@Localizer["ErrorApplyingDiscount"]';
 
+            // Prevent theme.js from hijacking the form submission
+            $('#checkoutForm').off('submit');
+            $('#placeOrderBtn').off('click');
+
+            // Handle discount code application
             $('#applyDiscountBtn').click(function () {
                 const discountCode = $('#discountCode').val().trim();
 

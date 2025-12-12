@@ -1,16 +1,20 @@
 ﻿using EcommerceCoza.BLL.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace EcommerceCoza.MVC.Controllers
 {
     public class ShopController : Controller
     {
         private readonly IShopService _shopService;
+        private readonly ILogger<ShopController> _logger;
         private const int PageSize = 12;
 
-        public ShopController(IShopService shopService)
+        public ShopController(IShopService shopService, ILogger<ShopController> logger)
         {
             _shopService = shopService;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
@@ -60,6 +64,7 @@ namespace EcommerceCoza.MVC.Controllers
                     size = p.ProductVariants.First().Size
                 } : null,
                 variants = p.ProductVariants.Select(v => new
+ 
                 {
                     id = v.Id,
                     colorId = v.ColorId,
@@ -77,6 +82,70 @@ namespace EcommerceCoza.MVC.Controllers
             var hasMore = (skip + take) < totalProducts;
 
             return Json(new { hasMore, products = productData });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SearchProducts([FromQuery] string query)
+        {
+            _logger.LogInformation($"=== SearchProducts STARTED === Query: '{query}'");
+
+            if (string.IsNullOrWhiteSpace(query) || query.Length < 2)
+            {
+                _logger.LogWarning("Query validation failed");
+                return Json(new { products = Array.Empty<object>() });
+            }
+
+            try
+            {
+                var shopData = await _shopService.GetShopViewModelAsync();
+
+                if (shopData?.Products == null)
+                {
+                    _logger.LogError("ShopData or Products is NULL!");
+                    return Json(new { products = Array.Empty<object>() });
+                }
+
+                _logger.LogInformation($"Total products loaded: {shopData.Products.Count}");
+
+                // Log first few products
+                foreach (var p in shopData.Products.Take(3))
+                {
+                    _logger.LogInformation($"Product: '{p.Name}'");
+                }
+
+                var normalizedQuery = query.Trim().ToLowerInvariant();
+                _logger.LogInformation($"Normalized query: '{normalizedQuery}'");
+
+                var searchResults = shopData.Products
+                    .Where(p => !string.IsNullOrWhiteSpace(p.Name) &&
+                               p.Name.ToLowerInvariant().Contains(normalizedQuery))
+                    .Take(10)
+                    .Select(p => new
+                    {
+                        id = p.Id,
+                        name = p.Name,
+                        detailsUrl = p.DetailsUrl,
+                        basePrice = p.BasePrice,
+                        categoryName = p.Category?.Name ?? "Uncategorized",
+                        brandName = p.Brand?.Name ?? "",
+                        coverImageName = p.ProductVariants?.FirstOrDefault()?.CoverImageName ?? "product-placeholder.jpg"
+                    })
+                    .ToList();
+
+                _logger.LogInformation($"=== SearchProducts COMPLETED === Found: {searchResults.Count} products");
+
+                return Json(new { products = searchResults });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"=== SearchProducts ERROR === Query: '{query}'");
+                return StatusCode(500, new
+                {
+                    products = Array.Empty<object>(),
+                    error = "Search failed",
+                    message = ex.Message
+                });
+            }
         }
     }
 }

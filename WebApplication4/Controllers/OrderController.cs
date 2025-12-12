@@ -95,7 +95,6 @@ namespace EcommerceCoza.MVC.Controllers
                 return View(model);
             }
 
-            // İndirim kontrolü
             if (model.HasAppliedDiscount && model.Discount != null)
             {
                 var d = await _orderService.GetDiscount(model.Discount);
@@ -115,7 +114,7 @@ namespace EcommerceCoza.MVC.Controllers
                 model.EndPrice = model.TotalPrice;
             }
 
-            // ✅ STRIPE ÖDEME
+
             if (model.PaymentMethod == ECommerceCoza.DAL.DataContext.Entities.PaymentMethod.Stripe)
             {
                 var user = await _userManager.GetUserAsync(User);
@@ -127,7 +126,7 @@ namespace EcommerceCoza.MVC.Controllers
 
                 var orderToken = Guid.NewGuid().ToString();
 
-                // ✅ Güvenli serileştirme
+
                 var serializerSettings = new JsonSerializerSettings
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
@@ -135,13 +134,13 @@ namespace EcommerceCoza.MVC.Controllers
                 };
                 Session.SetString(orderToken, JsonConvert.SerializeObject(model, serializerSettings));
 
-                // ✅ Currency conversion
+
                 var currentCurrency = _currencyService.GetCurrentCurrency();
                 var amountInUsd = currentCurrency == Currency.USD
                     ? model.EndPrice
                     : _currencyService.ConvertBetweenCurrencies(model.EndPrice, currentCurrency, Currency.USD);
 
-                var stripeCurrency = "usd"; // Stripe'a her zaman USD gönderiyoruz
+                var stripeCurrency = "usd"; 
 
                 try
                 {
@@ -190,7 +189,7 @@ namespace EcommerceCoza.MVC.Controllers
                 }
             }
 
-            // ✅ DİĞER ÖDEME YÖNTEMLERİ
+
             await _orderService.CreateAsync(model);
 
             var username = User.Identity?.Name ?? "";
@@ -266,7 +265,7 @@ namespace EcommerceCoza.MVC.Controllers
                     return RedirectToAction("Checkout");
                 }
 
-                // ✅ Duplicate order önleme
+
                 var existingOrder = await _orderService.GetAsync(
                     predicate: x => x.AppUserId == userId &&
                                     x.EndPrice == model.EndPrice &&
@@ -347,7 +346,7 @@ namespace EcommerceCoza.MVC.Controllers
             if (order == null)
                 return NotFound();
 
-            // ✅ Kullanıcı kendi siparişine erişiyor mu kontrol et
+
             var user = await _userManager.GetUserAsync(User);
             if (order.AppUserId != user?.Id && !User.IsInRole("Admin"))
                 return Forbid();
@@ -370,7 +369,7 @@ namespace EcommerceCoza.MVC.Controllers
             if (order == null)
                 return NotFound();
 
-            // ✅ Kullanıcı kendi siparişine erişiyor mu kontrol et
+       
             var user = await _userManager.GetUserAsync(User);
             if (order.AppUserId != user?.Id && !User.IsInRole("Admin"))
                 return Forbid();

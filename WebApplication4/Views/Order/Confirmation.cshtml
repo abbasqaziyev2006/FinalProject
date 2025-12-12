@@ -1,6 +1,5 @@
 ﻿@using ECommerceCoza.DAL.DataContext.Entities
-@using EcommerceCoza.BLL.ViewModels
-@model OrderViewModel
+@model Order
 
 @{
     ViewData["Title"] = "Order Confirmation";
@@ -11,7 +10,7 @@
     <section class="shop-checkout container">
         <h2 class="page-title">Order Received</h2>
         <div class="checkout-steps">
-            <a asp-controller="Cart" asp-action="Index" class="checkout-steps__item active">
+            <a asp-controller="Basket" asp-action="Index" class="checkout-steps__item active">
                 <span class="checkout-steps__item-number">01</span>
                 <span class="checkout-steps__item-title">
                     <span>Shopping Bag</span>
@@ -52,7 +51,7 @@
                 </div>
                 <div class="order-info__item">
                     <label>Date</label>
-                    <span>@Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</span>
+                    <span>@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
                 </div>
                 <div class="order-info__item">
                     <label>Total</label>
@@ -81,19 +80,24 @@
                             {
                                 @foreach (var item in Model.OrderDetails)
                                 {
-                                  @*   <tr>
+                                    <tr>
                                         <td>
                                             <strong>@item.ProductVariant?.Product?.Name</strong>
                                             @if (item.ProductVariant?.Color != null)
                                             {
                                                 <br />
-                                                <small class="text-muted">Color: @item.ProductVariant.Color.ColorName</small>
+                                                <small class="text-muted">Color: @item.ProductVariant.Color.Name</small>
+                                            }
+                                            @if (!string.IsNullOrEmpty(item.ProductVariant?.Size))
+                                            {
+                                                <br />
+                                                <small class="text-muted">Size: @item.ProductVariant.Size</small>
                                             }
                                         </td>
                                         <td class="text-center">@item.Quantity</td>
-                                        <td class="text-right">$@(item.ProductVariant?.Priced.ToString("F2") ?? "0.00")</td>
-                                        <td class="text-right">$@(Math.Round(item.Quantity * (item.ProductVariant?.Priced ?? 0), 2).ToString("F2"))</td>
-                                    </tr> *@
+                                        <td class="text-right">$@(item.ProductVariant?.Price.ToString("F2") ?? "0.00")</td>
+                                        <td class="text-right">$@((item.Quantity * (item.ProductVariant?.Price ?? 0)).ToString("F2"))</td>
+                                    </tr>
                                 }
                             }
                             else
@@ -279,26 +283,39 @@
             min-width: 150px;
         }
 
-    .checkout-cart-items tbody tr {
-        border-bottom: 1px solid #eee;
+    .checkout-cart-items {
+        width: 100%;
+        border-collapse: collapse;
     }
 
-        .checkout-cart-items tbody tr:hover {
-            background-color: #f9f9f9;
+        .checkout-cart-items thead th {
+            padding: 15px 5px;
+            border-bottom: 2px solid #ddd;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
         }
 
-    .checkout-cart-items tbody td {
-        padding: 15px 5px;
-        vertical-align: middle;
-    }
+        .checkout-cart-items tbody tr {
+            border-bottom: 1px solid #eee;
+        }
 
-    .checkout-cart-items .text-center {
-        text-align: center;
-    }
+            .checkout-cart-items tbody tr:hover {
+                background-color: #f9f9f9;
+            }
 
-    .checkout-cart-items .text-right {
-        text-align: right;
-    }
+        .checkout-cart-items tbody td {
+            padding: 15px 5px;
+            vertical-align: middle;
+        }
+
+        .checkout-cart-items .text-center {
+            text-align: center;
+        }
+
+        .checkout-cart-items .text-right {
+            text-align: right;
+        }
 
     strong {
         color: #333;
@@ -317,6 +334,17 @@
         padding-top: 1rem !important;
         padding-bottom: 1rem !important;
     }
+
+    @@media (max-width: 768px) {
+        .order-info {
+            grid-template-columns: 1fr;
+        }
+
+        .checkout-cart-items thead th:nth-child(3),
+        .checkout-cart-items tbody td:nth-child(3) {
+            display: none;
+        }
+    }
 </style>
 
 @functions {
@@ -326,8 +354,7 @@
         {
             PaymentMethod.DirectBankTransfer => "Direct Bank Transfer",
             PaymentMethod.CashOnDelivery => "Cash on Delivery",
-            // PaymentMethod.Check => "Check Payment",
-            // PaymentMethod.Stripe => "Credit / Debit Card",
+            PaymentMethod.Stripe => "Credit / Debit Card (Stripe)",
             _ => method.ToString()
         };
     }

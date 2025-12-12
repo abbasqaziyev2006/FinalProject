@@ -1,19 +1,54 @@
-.footer-middle {
-    padding-top: 2.25rem;
-    padding-bottom: 2.25rem;
-}
-.text-right{
-    text-align: right;
-}
-.pt-90 {
-    padding-top: 90px !important;
-}
-.my-account__address-list {
-    display: flex;
-    gap: 1.625rem;
+/* Color Filter Styles */
+.color-swatch-wrapper {
+    text-align: center;
 }
 
-.form-floating>.form-control,
-.form-floating>.form-select {
-    height: 48px;
+    .color-swatch-wrapper input:checked + .color-swatch {
+        border-color: #000 !important;
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+        transform: scale(1.1);
+    }
+
+        .color-swatch-wrapper input:checked + .color-swatch .color-check-icon {
+            opacity: 1 !important;
+        }
+
+.color-swatch:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
+
+.color-swatch-wrapper:hover .color-name {
+    color: #000 !important;
+    font-weight: 500;
+}
+
+/* Selected colors display */
+.selected-filters {
+    margin-top: 15px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.filter-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 12px;
+    background: white;
+    border: 1px solid #dee2e6;
+    border-radius: 20px;
+    font-size: 13px;
+    margin: 3px;
+}
+
+.filter-tag-remove {
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+    .filter-tag-remove:hover {
+        color: #dc3545;
+    }

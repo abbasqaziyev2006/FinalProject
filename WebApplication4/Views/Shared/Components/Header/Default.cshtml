@@ -14,7 +14,7 @@
     <div class="container">
         <div class="header-desk header-desk_type_1">
             <div class="logo">
-                <a href="~/index.html">
+                <a asp-controller="Home" asp-action="Index">
                     <img src="~/assets/images/logo.png" alt="Uomo" class="logo__image d-block" />
                 </a>
             </div>
@@ -80,12 +80,44 @@
 
                 <!-- Search -->
                 <div class="header-tools__item hover-container">
-                    <div class="js-hover__open position-relative">
-                        <a class="js-search-popup search-field__actor" href="~/#">
+                    <div class="position-relative">
+                        <a href="#" class="js-search-popup search-field__actor">
                             <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                 <use href="#icon_search" />
                             </svg>
                         </a>
+                    </div>
+
+                    <!-- Search Popup Content -->
+                    <div class="search-popup" style="position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 9998; display: none; padding-top: 80px; overflow-y: auto;">
+                        <div class="container">
+                            <div class="search-field bg-body p-4 rounded shadow" style="max-width: 800px; margin: 0 auto; position: relative;">
+                                <button class="btn-close position-absolute top-0 end-0 m-3 js-close-search" style="z-index: 10;"></button>
+                                <div class="position-relative mb-3">
+                                    <input id="headerSearchInput" class="search-field__input form-control form-control-lg" type="text" placeholder="Search products..." autocomplete="off">
+                                    <button class="btn btn-link position-absolute top-50 end-0 translate-middle-y pe-3" type="button">
+                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                            <use href="#icon_search" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <!-- Search Results -->
+                                <div id="searchResults" class="search-result" style="max-height: 500px; overflow-y: auto;"></div>
+                                <div id="searchLoading" class="text-center py-4 d-none">
+                                    <div class="spinner-border text-primary" role="status">
+                                        <span class="visually-hidden">Searching...</span>
+                                    </div>
+                                    <p class="mt-2 mb-0 text-muted">Searching...</p>
+                                </div>
+                                <div id="searchNoResults" class="text-center text-muted py-4 d-none">
+                                    <svg width="48" height="48" fill="currentColor" class="mb-2 opacity-50">
+                                        <use href="#icon_search" />
+                                    </svg>
+                                    <p class="mb-0">No products found</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

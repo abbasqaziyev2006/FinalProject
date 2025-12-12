@@ -21,7 +21,7 @@
         <div class="swiper-slide">
             <div class="overflow-hidden position-relative h-100">
                 <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-                    <img loading="lazy"src="~/assets/images/home/demo3/slideshow-character1.png" width="542" height="733"
+                    <img loading="lazy" src="~/assets/images/home/demo3/slideshow-character1.png" width="542" height="733"
                          alt="@Localizer["Dresses"]"
                          class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
                     <div class="character_markup type2">
@@ -47,7 +47,7 @@
         <div class="swiper-slide">
             <div class="overflow-hidden position-relative h-100">
                 <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-                    <img loading="lazy"src="~/assets/images/slideshow-character1.png" width="400" height="733"
+                    <img loading="lazy" src="~/assets/images/slideshow-character1.png" width="400" height="733"
                          alt="@Localizer["Women Clothes"]"
                          class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
                     <div class="character_markup">
@@ -73,7 +73,7 @@
         <div class="swiper-slide">
             <div class="overflow-hidden position-relative h-100">
                 <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-                    <img loading="lazy"src="~/assets/images/slideshow-character2.png" width="400" height="690"
+                    <img loading="lazy" src="~/assets/images/slideshow-character2.png" width="400" height="690"
                          alt="@Localizer["Women Clothes"]"
                          class="slideshow-character__img animate animate_fade animate_rtl animate_delay-10 w-auto h-auto" />
                 </div>
@@ -101,7 +101,7 @@
 <div class="container mw-1620 bg-white border-radius-10">
     <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
 
-    <!-- Featured Categories Section - DÜZELTİLDİ: loop: false -->
+    <!-- Featured Categories Section -->
     @if (Model.FeaturedCategories.Any())
     {
         <section class="category-carousel container">
@@ -109,49 +109,48 @@
 
             <div class="position-relative">
                 <div class="swiper-container js-swiper-slider" data-settings='{
-                              "autoplay": {
-                                "delay": 5000
-                              },
-                              "slidesPerView": 8,
-                              "slidesPerGroup": 1,
-                              "effect": "none",
-                              "loop": false,
-                              "navigation": {
-                                "nextEl": ".products-carousel__next-1",
-                                "prevEl": ".products-carousel__prev-1"
-                              },
-                              "breakpoints": {
-                                "320": {
-                                  "slidesPerView": 2,
-                                  "slidesPerGroup": 1,
-                                  "spaceBetween": 15
-                                },
-                                "768": {
-                                  "slidesPerView": 4,
-                                  "slidesPerGroup": 1,
-                                  "spaceBetween": 30
-                                },
-                                "992": {
-                                  "slidesPerView": 6,
-                                  "slidesPerGroup": 1,
-                                  "spaceBetween": 45
-                                },
-                                "1200": {
+                                  "autoplay": {
+                                    "delay": 5000
+                                  },
                                   "slidesPerView": 8,
                                   "slidesPerGroup": 1,
-                                  "spaceBetween": 30
-                                }
-                              }
-                            }'>
+                                  "effect": "none",
+                                  "loop": false,
+                                  "navigation": {
+                                    "nextEl": ".products-carousel__next-1",
+                                    "prevEl": ".products-carousel__prev-1"
+                                  },
+                                  "breakpoints": {
+                                    "320": {
+                                      "slidesPerView": 2,
+                                      "slidesPerGroup": 1,
+                                      "spaceBetween": 15
+                                    },
+                                    "768": {
+                                      "slidesPerView": 4,
+                                      "slidesPerGroup": 1,
+                                      "spaceBetween": 30
+                                    },
+                                    "992": {
+                                      "slidesPerView": 6,
+                                      "slidesPerGroup": 1,
+                                      "spaceBetween": 45
+                                    },
+                                    "1200": {
+                                      "slidesPerView": 8,
+                                      "slidesPerGroup": 1,
+                                      "spaceBetween": 30
+                                    }
+                                  }
+                                }'>
                     <div class="swiper-wrapper">
                         @foreach (var category in Model.FeaturedCategories)
                         {
                             <div class="swiper-slide">
                                 @if (!string.IsNullOrEmpty(category.ImageName))
                                 {
-                                    <img loading="lazy" class="w-100 h-auto mb-3" src="~/images/collections/@category.ImageName"  width="124" height="124" alt="@category.Name"
+                                    <img loading="lazy" class="w-100 h-auto mb-3" src="~/images/collections/@category.ImageName" width="124" height="124" alt="@category.Name"
                                          style="object-fit: cover; border-radius: 50%;" />
-
                                 }
                                 else
                                 {
@@ -232,14 +231,14 @@
                                 @if (firstVariant != null && !string.IsNullOrEmpty(firstVariant.CoverImageName))
                                 {
                                     <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
-                                        <img loading="lazy"src="~/assets/images/products/@firstVariant.CoverImageName" width="258" height="313"
+                                        <img loading="lazy" src="~/images/products/@firstVariant.CoverImageName" width="258" height="313"
                                              alt="@product.Name" class="pc__img">
                                     </a>
                                 }
                                 else
                                 {
                                     <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
-                                        <img loading="lazy"src="~/assets/images/products/product-placeholder.jpg" width="258" height="313"
+                                        <img loading="lazy" src="~/images/products/product-placeholder.jpg" width="258" height="313"
                                              alt="@product.Name" class="pc__img">
                                     </a>
                                 }
@@ -262,108 +261,16 @@
 
     <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
 
-    <!-- Featured Products Section - MAKSIMUM 3 ÜRÜN -->
+    <!-- Featured Products Section -->
     @if (Model.FeaturedProducts.Any())
     {
         <section class="products-grid container">
             <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">@Localizer["Featured Products"]</h2>
             <div class="row justify-content-center">
-                @foreach (var product in Model.FeaturedProducts.Take(3))
+                @foreach (var product in Model.FeaturedProducts.Take(8))
                 {
-                    var firstVariant = product.ProductVariants.FirstOrDefault();
-                    <div class="col-6 col-md-4 col-lg-4">
-                        <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
-                            <div class="pc__img-wrapper">
-                                @if (firstVariant != null && (!string.IsNullOrEmpty(firstVariant.CoverImageName) || firstVariant.ImageNames.Any()))
-                                {
-                                    <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
-                                        <div class="swiper-wrapper">
-                                            @if (!string.IsNullOrEmpty(firstVariant.CoverImageName))
-                                            {
-                                                <div class="swiper-slide">
-                                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
-                                                        <img loading="lazy"src="~/assets/images/products/@firstVariant.CoverImageName" width="330"
-                                                             height="400" alt="@product.Name" class="pc__img">
-                                                    </a>
-                                                </div>
-                                            }
-                                            @if (firstVariant.ImageNames.Any())
-                                            {
-                                                <div class="swiper-slide">
-                                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
-                                                        <img loading="lazy"src="~/assets/images/products/@firstVariant.ImageNames.First()"
-                                                             width="330" height="400" alt="@product.Name" class="pc__img">
-                                                    </a>
-                                                </div>
-                                            }
-                                        </div>
-                                        <span class="pc__img-prev">
-                                            <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_prev_sm" />
-                                            </svg>
-                                        </span>
-                                        <span class="pc__img-next">
-                                            <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
-                                                <use href="#icon_next_sm" />
-                                            </svg>
-                                        </span>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
-                                        <img loading="lazy"src="~/assets/images/products/product-placeholder.jpg" width="330"
-                                             height="400" alt="@product.Name" class="pc__img">
-                                    </a>
-                                }
-
-                                @if (firstVariant != null && firstVariant.Quantity > 0)
-                                {
-                                    <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart"
-                                            data-variant-id="@firstVariant.Id"
-                                            title="@Localizer["Add To Cart"]">
-                                        @Localizer["Add To Cart"]
-                                    </button>
-                                }
-                            </div>
-
-                            <div class="pc__info position-relative">
-                                <p class="pc__category">@(product.Category?.Name ?? "")</p>
-                                <h6 class="pc__title">
-                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">@product.Name</a>
-                                </h6>
-                                <div class="product-card__price d-flex">
-                                    <span class="money price">@CurrencyService.Format(product.BasePrice)</span>
-                                </div>
-
-                                @if (product.ProductVariants.Count > 1)
-                                {
-                                    <div class="d-flex align-items-center mt-1">
-                                        @foreach (var variant in product.ProductVariants.Take(4))
-                                        {
-                                            @if (!string.IsNullOrEmpty(variant.ColorHexCode))
-                                            {
-                                                <a href="#" class="swatch-color pc__swatch-color"
-                                                   style="background-color: @variant.ColorHexCode;"
-                                                   title="@variant.ColorName"></a>
-                                            }
-                                        }
-                                        @if (product.ProductVariants.Count > 4)
-                                        {
-                                            <span class="text-secondary small ms-1">+@(product.ProductVariants.Count - 4)</span>
-                                        }
-                                    </div>
-                                }
-
-                                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
-                                        data-product-id="@product.Id"
-                                        title="@Localizer["Add To Wishlist"]">
-                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <use href="#icon_heart" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <partial name="_ProductCard" model="product" />
                     </div>
                 }
             </div>
@@ -382,43 +289,15 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            // Add to Cart from home page
-            $(document).on('click', '.js-add-cart', function (e) {
-                e.preventDefault();
-                const variantId = $(this).data('variant-id');
-
-                const formData = new FormData();
-                formData.append('productVariantId', variantId);
-                formData.append('quantity', 1);
-
-                $.ajax({
-                    url: '/Basket/Add',
-                    type: 'POST',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function () {
-                        // Update cart count
-                        $.get('/Basket/GetBasket', function (data) {
-                            $('.header__cart-count').text(data.totalCount);
-                        });
-
-                        // Show success message
-                        alert('@Localizer["ProductAddedToCart"]');
-                    },
-                    error: function () {
-                        alert('@Localizer["ErrorAddingToCart"]');
+            $.get('/Basket/GetBasket', function (data) {
+                if (data && data.totalCount !== undefined) {
+                    $('.js-cart-items-count').text(data.totalCount);
+                    if (data.totalCount > 0) {
+                        $('.js-cart-items-count').show();
+                    } else {
+                        $('.js-cart-items-count').hide();
                     }
-                });
-            });
-
-            // Add to Wishlist
-            $(document).on('click', '.js-add-wishlist', function (e) {
-                e.preventDefault();
-                const productId = $(this).data('product-id');
-
-                // Implement wishlist functionality here
-                console.log('Add to wishlist:', productId);
+                }
             });
         });
     </script>

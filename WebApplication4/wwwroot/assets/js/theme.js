@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars */
+﻿/* eslint-disable no-unused-vars */
 // eslint-disable-next-line no-undef
 var $ = jQuery.noConflict();
 
@@ -179,151 +179,6 @@ function pureFadeOut(e) {
         return ScrollToTop;
     })();
 
-    UomoElements.Search = (function () {
-        function Search() {
-            // Declare variables
-            this.selectors = {
-                container: '.search-field',
-                inputBox: '.search-field__input',
-                searchSuggestItem: '.search-suggestion a.menu-link',
-                searchFieldActor: '.search-field__actor',
-                resetButton: '.search-popup__reset',
-                searchCategorySelector: '.js-search-select',
-                resultContainer: '.search-result',
-                ajaxURL: './search.html'
-            }
-
-            this.searchInputFocusedClass = 'search-field__focused';
-
-            this.$containers = document.querySelectorAll(this.selectors.container);
-
-            this._initSearchSelect();
-            this._initSearchReset();
-            this._initSearchInputFocus();
-            this._initAjaxSearch();
-
-            this._handleAjaxSearch = this._handleAjaxSearch.bind(this);
-            this._updateSearchResult = this._updateSearchResult.bind(this);
-        }
-
-        Search.prototype = Object.assign({}, Search.prototype, {
-            _initSearchSelect: function () {
-                const _this = this;
-                this.$containers.forEach(el => {
-                    /**
-                     * Filter suggestion list on input
-                     */
-
-                    const $inputBox = el.querySelector(_this.selectors.inputBox);
-                    $inputBox && $inputBox.addEventListener('keyup', (e) => {
-                        const filterValue = e.currentTarget.value.toUpperCase();
-                        el.querySelectorAll(_this.selectors.searchSuggestItem).forEach(el => {
-                            const txtValue = el.innerText;
-
-                            if (txtValue.toUpperCase().indexOf(filterValue) > -1) {
-                                el.style.display = "";
-                            } else {
-                                el.style.display = "none";
-                            }
-                        });
-                    });
-
-                    /**
-                     * Search category selector
-                     */
-                    el.querySelectorAll(_this.selectors.searchCategorySelector).forEach(scs => {
-                        scs.addEventListener('click', function (e) {
-                            e.preventDefault();
-                            const $s_f_a = el.querySelector(_this.selectors.searchFieldActor);
-                            if ($s_f_a) {
-                                $s_f_a.value = e.target.innerText;
-                            }
-                        });
-                    });
-                })
-            },
-
-            _removeFormActiveClass($eventEl) {
-                const $parentDiv = $eventEl.closest(this.selectors.container);
-                $parentDiv.classList.remove(this.searchInputFocusedClass);
-            },
-
-            _initSearchReset: function () {
-                const _this = this;
-                document.querySelectorAll(this.selectors.resetButton).forEach(el => {
-                    el.addEventListener('click', function (e) {
-                        const $parentDiv = e.target.closest(_this.selectors.container);
-                        const $inputBox = $parentDiv.querySelector(_this.selectors.inputBox);
-                        const $rc = $parentDiv.querySelector(_this.selectors.resultContainer);
-
-                        $inputBox.value = '';
-                        $rc.innerHtml = '';
-                        _this._removeFormActiveClass(e.target);
-                    });
-                })
-            },
-
-            _initSearchInputFocus: function () {
-                const _this = this;
-
-                document.querySelectorAll(this.selectors.inputBox).forEach(el => {
-                    el.addEventListener('blur', function (e) {
-                        if (e.target.value.length == 0) {
-                            _this._removeFormActiveClass(e.target);
-                        }
-                    })
-                });
-            },
-
-            _initAjaxSearch: function () {
-                const _this = this;
-                document.querySelectorAll(this.selectors.inputBox).forEach(el => {
-                    el.addEventListener('keyup', (event) => {
-                        if (event.target.value.length == 0) {
-                            _this._removeFormActiveClass(event.target);
-                        } else {
-                            _this._handleAjaxSearch(event, _this);
-                        }
-                    });
-                })
-            },
-
-            _handleAjaxSearch: UomoHelpers.debounce((event, _this) => {
-                const $form = event.target.closest(_this.selectors.container);
-                const method = $form ? $form.method : 'GET';
-                const url = _this.selectors.ajaxURL;
-
-                url && fetch(url, { method: method }).then(function (response) {
-                    if (response.ok) {
-                        return response.text();
-                    } else {
-                        return Promise.reject(response);
-                    }
-                }).then(function (data) {
-                    _this._updateSearchResult(data, $form);
-                }).catch(function (err) {
-                    _this._handleAjaxSearchError(err.message, $form);
-                });
-            }, 180),
-
-            _updateSearchResult: function (data, $form) {
-                const $ajaxDom = new DOMParser().parseFromString(data, 'text/html');
-                // Get filtered result dom
-                const $f_r = $ajaxDom.querySelector('.search-result');
-                $form.querySelector(this.selectors.resultContainer).innerHTML = $f_r.innerHTML;
-                $form.classList.add(this.searchInputFocusedClass);
-            },
-
-            _handleAjaxSearchError: function (error, $form) {
-                $form.classList.remove(this.searchInputFocusedClass);
-                console.log(error);
-            }
-        });
-
-        return Search
-    })();
-
-    // Aside Popup
     UomoElements.Aside = (function () {
         function Aside() {
             this.selectors = {
@@ -1278,7 +1133,7 @@ function pureFadeOut(e) {
             this.initRangeSlider();
 
             new UomoElements.JsHoverContent();
-            new UomoElements.Search();
+            // new UomoElements.Search();  // <-- BU SƏTRI COMMENT OUT EDİN
             new UomoElements.Aside();
             new UomoElements.QtyControl();
             new UomoElements.ScrollToTop();
