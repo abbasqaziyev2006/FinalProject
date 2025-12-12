@@ -1,161 +1,131 @@
 ﻿@using EcommerceCoza.BLL.ViewModels
 @model ProductCreateViewModel
+@{
+    ViewData["Title"] = "Add Product";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
 
 <div class="main-content">
-
     <div class="main-content-inner">
-
         <div class="main-content-wrap">
-
+            <!-- Breadcrumb -->
             <div class="flex items-center flex-wrap justify-between gap20 mb-27">
                 <h3>Add Product</h3>
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                     <li>
-                        <a href="/Admin/Dashboard/Index">
+                        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
                             <div class="text-tiny">Dashboard</div>
                         </a>
                     </li>
                     <li><i class="icon-chevron-right"></i></li>
                     <li>
-                        <a href="/Admin/Product/Index">
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Index">
                             <div class="text-tiny">Products</div>
                         </a>
                     </li>
                     <li><i class="icon-chevron-right"></i></li>
-                    <li><div class="text-tiny">Add product</div></li>
+                    <li><div class="text-tiny">Add Product</div></li>
                 </ul>
             </div>
 
+            @* Validation Summary *@
+            @if (!ViewData.ModelState.IsValid)
+            {
+                <div class="alert alert-danger" role="alert">
+                    <h6>Please fix the following errors:</h6>
+                    <ul>
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    </ul>
+                </div>
+            }
+
             <form class="tf-section-2 form-add-product"
-                  method="POST"
+                  method="post"
                   enctype="multipart/form-data"
                   asp-area="Admin"
                   asp-controller="Product"
                   asp-action="Create">
+                @Html.AntiForgeryToken()
 
-                <div class="wg-box">
-                    <fieldset class="name">
-                        <div class="body-title mb-10">Product name <span class="tf-color-1">*</span></div>
-                        <input class="mb-10" type="text" placeholder="Enter product name"
-                               name="Name" required />
-                    </fieldset>
+                <!-- Product Information -->
+                <div class="wg-box mb-4">
+                    <h5 class="mb-3">Product Information</h5>
 
-                    <fieldset class="name">
-                        <div class="body-title mb-10">Slug <span class="tf-color-1">*</span></div>
-                        <input class="mb-10" type="text" placeholder="Enter product slug"
-                               name="Slug" required />
-                    </fieldset>
-
-                    <div class="gap22 cols">
-                        <fieldset class="category">
-                            <div class="body-title mb-10">Category <span class="tf-color-1">*</span></div>
-                            <div class="select">
-                                <select name="CategoryId" asp-items="Model.CategorySelectListItems"></select>
-                            </div>
-                        </fieldset>
-
-                        <fieldset class="brand">
-                            <div class="body-title mb-10">Brand <span class="tf-color-1">*</span></div>
-                        @*     <div class="select">
-                                <select name="BrandId" asp-items="Model.BrandSelectListItems"></select>
-                            </div> *@
-                        </fieldset>
+                    <!-- Product Name -->
+                    <div class="mb-3">
+                        <label class="form-label">Product Name <span class="text-danger">*</span></label>
+                        <input asp-for="Name" class="form-control" placeholder="Enter product name" required />
+                        <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
 
-                    <fieldset class="shortdescription">
-                        <div class="body-title mb-10">Short Description <span class="tf-color-1">*</span></div>
-                        <textarea class="mb-10 ht-150" name="ShortDescription" required></textarea>
-                    </fieldset>
+                    <!-- Description -->
+                    <div class="mb-3">
+                        <label class="form-label">Description <span class="text-danger">*</span></label>
+                        <textarea asp-for="Description" class="form-control" rows="5" placeholder="Enter product description" required></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
 
-                    <fieldset class="description">
-                        <div class="body-title mb-10">Description <span class="tf-color-1">*</span></div>
-                        <textarea class="mb-10" name="Description" required></textarea>
-                    </fieldset>
-                </div>
+                    <!-- Additional Information -->
+                    <div class="mb-3">
+                        <label class="form-label">Additional Information</label>
+                        <textarea asp-for="AdditionalInformation" class="form-control" rows="3" placeholder="Optional"></textarea>
+                        <span asp-validation-for="AdditionalInformation" class="text-danger"></span>
+                    </div>
 
-                <div class="wg-box">
-
-                    <fieldset>
-                        <div class="body-title">Upload images <span class="tf-color-1">*</span></div>
-                        <div class="upload-image flex-grow">
-                            <div id="upload-file" class="item up-load">
-                                <label class="uploadfile">
-                                    <span class="icon"><i class="icon-upload-cloud"></i></span>
-                                    <input type="file" name="Image" accept="image/*" />
-                                </label>
-                            </div>
+                    <!-- Price -->
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <label class="form-label">Base Price <span class="text-danger">*</span></label>
+                            <input asp-for="BasePrice" class="form-control" type="number" step="0.01" min="0" placeholder="Enter base price" required />
+                            <span asp-validation-for="BasePrice" class="text-danger"></span>
                         </div>
-                    </fieldset>
+                    </div>
 
-                    <fieldset>
-                        <div class="body-title mb-10">Upload Gallery Images</div>
-                        <div class="upload-image mb-16">
-                            <div id="galUpload" class="item up-load">
-                                <label class="uploadfile">
-                                    <span class="icon"><i class="icon-upload-cloud"></i></span>
-                                    <input type="file" name="GalleryImages" accept="image/*" multiple />
-                                </label>
-                            </div>
+                    <!-- Category & Brand -->
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Category <span class="text-danger">*</span></label>
+                            <select asp-for="CategoryId" asp-items="Model.CategorySelectListItems" class="form-select" required>
+                                <option value="">Select Category</option>
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger"></span>
                         </div>
-                    </fieldset>
-
-                    <div class="cols gap22">
-                        <fieldset class="name">
-                            <div class="body-title mb-10">Regular Price <span class="tf-color-1">*</span></div>
-                            <input class="mb-10" type="text" name="RegularPrice" required />
-                        </fieldset>
-                        <fieldset class="name">
-                            <div class="body-title mb-10">Sale Price <span class="tf-color-1">*</span></div>
-                            <input class="mb-10" type="text" name="SalePrice" required />
-                        </fieldset>
-                    </div>
-
-                    <div class="cols gap22">
-                        <fieldset class="name">
-                            <div class="body-title mb-10">SKU</div>
-                            <input class="mb-10" type="text" name="SKU" />
-                        </fieldset>
-                        <fieldset class="name">
-                            <div class="body-title mb-10">Quantity</div>
-                            <input class="mb-10" type="number" name="Quantity" />
-                        </fieldset>
-                    </div>
-
-                    <div class="cols gap22">
-                        <fieldset class="name">
-                            <div class="body-title mb-10">Stock</div>
-                            <div class="select mb-10">
-                                <select name="StockStatus">
-                                    <option value="instock">InStock</option>
-                                    <option value="outofstock">Out of Stock</option>
-                                </select>
-                            </div>
-                        </fieldset>
-
-                        <fieldset class="name">
-                            <div class="body-title mb-10">Featured</div>
-                            <div class="select mb-10">
-                                <select name="Featured">
-                                    <option value="0">No</option>
-                                    <option value="1">Yes</option>
-                                </select>
-                            </div>
-                        </fieldset>
-                    </div>
-
-                    <div class="cols gap10">
-                        <button class="tf-button w-full" type="submit">Add product</button>
+                        <div class="col-md-6">
+                            <label class="form-label">Brand <span class="text-danger">*</span></label>
+                            <select asp-for="BrandId" asp-items="Model.BrandSelectListItems" class="form-select" required>
+                                <option value="">Select Brand</option>
+                            </select>
+                            <span asp-validation-for="BrandId" class="text-danger"></span>
+                        </div>
                     </div>
 
                 </div>
 
+                <!-- Actions -->
+                <div class="wg-box">
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="tf-button btn-primary flex-grow-1">
+                            <i class="icon-plus"></i> Add Product
+                        </button>
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="tf-button btn-secondary flex-grow-1">
+                            <i class="icon-x"></i> Cancel
+                        </a>
+                    </div>
+                </div>
             </form>
-
         </div>
     </div>
 
-    <div class="bottom-page">
-        <div class="body-text">Copyright © 2024 SurfsideMedia</div>
+    <div class="bottom-page mt-4">
+        <div class="body-text">Copyright © @DateTime.Now.Year SurfsideMedia</div>
     </div>
-
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

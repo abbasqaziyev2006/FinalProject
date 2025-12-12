@@ -257,7 +257,7 @@
                             </div>
                             <div class="slide-split_media position-relative">
                                 <div class="slideshow-bg" style="background-color: #f5e6e0;">
-                                    <img loading="lazy" src="~/assets/images/shop/shop_banner3.jpg" width="630" height="450"
+                                    <img loading="lazy"src="~/assets/images/shop/shop_banner3.jpg" width="630" height="450"
                                          alt="Shop Collection" class="slideshow-bg__img object-fit-cover" />
                                 </div>
                             </div>
@@ -483,13 +483,13 @@
                                     <div class="swiper-wrapper">
                                         <div class="swiper-slide">
                                             <a href="/Product/Details/${product.detailsUrl}">
-                                                <img loading="lazy" src="/assets/images/products/${imageUrl}" width="330" height="400" alt="${product.name}" class="pc__img">
+                                                <img loading="lazy" src="~/assets/images/products/${imageUrl}" width="330" height="400" alt="${product.name}" class="pc__img">
                                             </a>
                                         </div>
                                         ${secondImage !== imageUrl ? `
                                         <div class="swiper-slide">
                                             <a href="/Product/Details/${product.detailsUrl}">
-                                                <img loading="lazy" src="/assets/images/products/${secondImage}" width="330" height="400" alt="${product.name}" class="pc__img">
+                                                <img loading="lazy" src="~/assets/images/products/${secondImage}" width="330" height="400" alt="${product.name}" class="pc__img">
                                             </a>
                                         </div>
                                         ` : ''}

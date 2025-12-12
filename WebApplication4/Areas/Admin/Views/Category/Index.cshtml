@@ -2,11 +2,14 @@
 @model List<CategoryViewModel>
 @{
     ViewData["Title"] = "Categories";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="main-content">
     <div class="main-content-inner">
         <div class="main-content-wrap">
+
+            <!-- Header -->
             <div class="flex items-center flex-wrap justify-between gap20 mb-27">
                 <h3>Categories</h3>
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
@@ -15,99 +18,160 @@
                             <div class="text-tiny">Dashboard</div>
                         </a>
                     </li>
-                    <li>
-                        <i class="icon-chevron-right"></i>
-                    </li>
-                    <li>
-                        <div class="text-tiny">Categories</div>
-                    </li>
+                    <li><i class="icon-chevron-right"></i></li>
+                    <li><div class="text-tiny">Categories</div></li>
                 </ul>
             </div>
 
-            @* Success/Error Messages *@
+            <!-- Messages -->
             @if (TempData["SuccessMessage"] != null)
             {
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    @TempData["SuccessMessage"]
+                    <i class="icon-check-circle me-2"></i>@TempData["SuccessMessage"]
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
             @if (TempData["ErrorMessage"] != null)
             {
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    @TempData["ErrorMessage"]
+                    <i class="icon-alert-triangle me-2"></i>@TempData["ErrorMessage"]
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             }
 
+            <!-- Main Box -->
             <div class="wg-box">
-                <div class="flex items-center justify-between gap10 flex-wrap">
+                <!-- Toolbar -->
+                <div class="flex items-center justify-between gap10 flex-wrap mb-3">
                     <div class="wg-filter flex-grow">
                         <form class="form-search" method="get" asp-action="Index">
                             <fieldset class="name">
-                                <input type="text" placeholder="Search here..." class="" name="search"
-                                       tabindex="2" value="" aria-required="true">
+                                <input type="text"
+                                       placeholder="Search categories..."
+                                       name="search"
+                                       value="@Context.Request.Query["search"]"
+                                       class="form-control"
+                                       aria-label="Search categories">
                             </fieldset>
                             <div class="button-submit">
-                                <button class="" type="submit"><i class="icon-search"></i></button>
+                                <button type="submit" class="btn btn-primary" title="Search">
+                                    <i class="icon-search"></i>
+                                </button>
                             </div>
                         </form>
                     </div>
                     <a class="tf-button style-1 w208" asp-area="Admin" asp-controller="Category" asp-action="Create">
-                        <i class="icon-plus"></i>Add new
+                        <i class="icon-plus"></i>Add New Category
                     </a>
                 </div>
 
+                <!-- Table -->
                 <div class="wg-table table-all-user">
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                                <tr>
-                                    <th style="width:80px">#</th>
-                                    <th>Name</th>
-                                    <th>Slug</th>
-                                    <th class="text-center">Products</th>
-                                    <th class="text-center" style="width:150px">Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model != null && Model.Any())
-                                {
+                        @if (Model != null && Model.Any())
+                        {
+                            <table class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th style="width:80px" class="text-center">#</th>
+                                        <th>Category</th>
+                                        <th>Description</th>
+                                        <th class="text-center" style="width:100px">Products</th>
+                                        <th class="text-center" style="width:120px">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
                                     @foreach (var category in Model)
                                     {
                                         <tr>
-                                            <td class="text-center">@category.Id</td>
-                                            <td class="pname">
-                                                @if (!string.IsNullOrEmpty(category.ImageName))
-                                                {
-                                                    <div class="image">
-                                                        <img src="@category.ImageName" alt="@category.Name" class="image" style="width:50px; height:50px; object-fit:cover;">
+                                            <td class="text-center">
+                                                <span class="badge bg-secondary">@category.Id</span>
+                                            </td>
+                                            <td>
+                                                <div class="pname d-flex align-items-center">
+                                                    @if (!string.IsNullOrEmpty(category.ImageName))
+                                                    {
+                                                        <div class="image me-3">
+                                                            <img src="~/assets/images/home/demo3/@category.ImageName"
+                                                                 alt="@category.Name"
+                                                                 style="width:50px; height:50px; object-fit:cover; border-radius:8px;"
+                                                                 onerror="this.src='/assets/images/no-image.png'">
+
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="image me-3">
+                                                            <div style="width:50px; height:50px; background:#f0f0f0; border-radius:8px; display:flex; align-items:center; justify-content:center;">
+                                                                <i class="icon-image" style="font-size:20px; color:#ccc;"></i>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    <div class="name">
+                                                        <a asp-area="Admin"
+                                                           asp-controller="Category"
+                                                           asp-action="Edit"
+                                                           asp-route-id="@category.Id"
+                                                           class="body-title-2 text-decoration-none">
+                                                            @category.Name
+                                                        </a>
                                                     </div>
-                                                }
-                                                <div class="name">
-                                                    <a asp-area="Admin" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" class="body-title-2">
-                                                        @category.Name
-                                                    </a>
                                                 </div>
                                             </td>
-                                            <td>@category.Description</td>
-                                            <td class="text-center">
-                                                <a asp-area="Admin" asp-controller="Product" asp-action="Index" asp-route-categoryId="@category.Id">
-                                                    @category.Products?.Count ?? 0
-                                                </a>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(category.Description))
+                                                {
+                                                    <span title="@category.Description">
+                                                        @(category.Description.Length > 60
+                                                                                                    ? category.Description.Substring(0, 60) + "..."
+                                                                                                    : category.Description)
+                                        </span>
+                                                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">No description</span>
+                                                }
                                             </td>
                                             <td class="text-center">
-                                                <div class="list-icon-function">
-                                                    <a asp-area="Admin" asp-controller="Category" asp-action="Edit" asp-route-id="@category.Id" title="Edit">
-                                                        <div class="item edit">
-                                                            <i class="icon-edit-3"></i>
-                                                        </div>
+                                                @if (category.Products != null && category.Products.Any())
+                                                {
+                                                    <a asp-area="Admin"
+                                                       asp-controller="Product"
+                                                       asp-action="Index"
+                                                       asp-route-categoryId="@category.Id"
+                                                       class="badge bg-info text-decoration-none"
+                                                       title="View products in this category">
+                                                        @category.Products.Count
                                                     </a>
-                                                    <form asp-area="Admin" asp-controller="Category" asp-action="Delete" asp-route-id="@category.Id"
-                                                          method="post" class="d-inline"
-                                                          onsubmit="return confirm('Are you sure you want to delete this category?');">
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">0</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                <div class="list-icon-function d-flex justify-content-center gap-2">
+                                                    <a asp-area="Admin"
+                                                       asp-controller="Category"
+                                                       asp-action="Edit"
+                                                       asp-route-id="@category.Id"
+                                                       class="item edit"
+                                                       title="Edit category">
+                                                        <i class="icon-edit-3"></i>
+                                                    </a>
+                                                    <form asp-area="Admin"
+                                                          asp-controller="Category"
+                                                          asp-action="Delete"
+                                                          asp-route-id="@category.Id"
+                                                          method="post"
+                                                          class="d-inline delete-form"
+                                                          data-category-name="@category.Name">
                                                         @Html.AntiForgeryToken()
-                                                        <button type="submit" class="item text-danger delete" style="border:none; background:transparent; cursor:pointer;" title="Delete">
+                                                        <button type="submit"
+                                                                class="item text-danger delete"
+                                                                style="border:none; background:transparent; cursor:pointer;"
+                                                                title="Delete category"
+                                                                onclick="return confirmDelete('@category.Name', @(category.Products?.Count ?? 0))">
                                                             <i class="icon-trash-2"></i>
                                                         </button>
                                                     </form>
@@ -115,26 +179,58 @@
                                             </td>
                                         </tr>
                                     }
-                                }
-                                else
-                                {
-                                    <tr>
-                                        <td colspan="5" class="text-center">No categories found.</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        }
+                        else
+                        {
+                            <div class="text-center py-5">
+                                <i class="icon-inbox" style="font-size: 48px; color: #ccc;"></i>
+                                <h5 class="mt-3 text-muted">No categories found</h5>
+                                <p class="text-muted">Start by creating your first category.</p>
+                                <a class="tf-button style-1 mt-3" asp-area="Admin" asp-controller="Category" asp-action="Create">
+                                    <i class="icon-plus"></i>Create Category
+                                </a>
+                            </div>
+                        }
                     </div>
                 </div>
 
-                <div class="divider"></div>
-                <div class="flex items-center justify-between flex-wrap gap10 wgp-pagination">
-                </div>
+                <div class="divider mt-3"></div>
+
+                <!-- Summary -->
+                @if (Model != null && Model.Any())
+                {
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="body-text">
+                            Showing <strong>@Model.Count</strong> categor@(Model.Count == 1 ? "y" : "ies")
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
 
-    <div class="bottom-page">
+    <div class="bottom-page mt-4">
         <div class="body-text">Copyright © @DateTime.Now.Year SurfsideMedia</div>
     </div>
 </div>
+
+@section Scripts {
+    <script>
+        function confirmDelete(categoryName, productCount) {
+            let message = `Are you sure you want to delete the category "${categoryName}"?`;
+
+            if (productCount > 0) {
+                message += `\n\nWarning: This category contains ${productCount} product(s). They may be affected.`;
+            }
+
+            return confirm(message);
+        }
+
+        // Auto-hide alerts after 5 seconds
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 5000);
+    </script>
+}

@@ -21,7 +21,7 @@
         <div class="swiper-slide">
             <div class="overflow-hidden position-relative h-100">
                 <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-                    <img loading="lazy" src="~/assets/images/home/demo3/slideshow-character1.png" width="542" height="733"
+                    <img loading="lazy"src="~/assets/images/home/demo3/slideshow-character1.png" width="542" height="733"
                          alt="@Localizer["Dresses"]"
                          class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
                     <div class="character_markup type2">
@@ -47,7 +47,7 @@
         <div class="swiper-slide">
             <div class="overflow-hidden position-relative h-100">
                 <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-                    <img loading="lazy" src="~/assets/images/slideshow-character1.png" width="400" height="733"
+                    <img loading="lazy"src="~/assets/images/slideshow-character1.png" width="400" height="733"
                          alt="@Localizer["Women Clothes"]"
                          class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
                     <div class="character_markup">
@@ -73,7 +73,7 @@
         <div class="swiper-slide">
             <div class="overflow-hidden position-relative h-100">
                 <div class="slideshow-character position-absolute bottom-0 pos_right-center">
-                    <img loading="lazy" src="~/assets/images/slideshow-character2.png" width="400" height="690"
+                    <img loading="lazy"src="~/assets/images/slideshow-character2.png" width="400" height="690"
                          alt="@Localizer["Women Clothes"]"
                          class="slideshow-character__img animate animate_fade animate_rtl animate_delay-10 w-auto h-auto" />
                 </div>
@@ -149,7 +149,7 @@
                             <div class="swiper-slide">
                                 @if (!string.IsNullOrEmpty(category.ImageName))
                                 {
-                                    <img loading="lazy" class="w-100 h-auto mb-3" src="~/assets/images/home/demo3/@category.ImageName" width="124"
+                                    <img loading="lazy" class="w-100 h-auto mb-3"src="~/assets/images/home/demo3/@category.ImageName" width="124"
                                          height="124" alt="@category.Name" style="object-fit: cover; border-radius: 50%;" />
                                 }
                                 else
@@ -231,14 +231,14 @@
                                 @if (firstVariant != null && !string.IsNullOrEmpty(firstVariant.CoverImageName))
                                 {
                                     <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
-                                        <img loading="lazy" src="~/assets/images/products/@firstVariant.CoverImageName" width="258" height="313"
+                                        <img loading="lazy"src="~/assets/images/products/@firstVariant.CoverImageName" width="258" height="313"
                                              alt="@product.Name" class="pc__img">
                                     </a>
                                 }
                                 else
                                 {
                                     <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
-                                        <img loading="lazy" src="~/assets/images/products/product-placeholder.jpg" width="258" height="313"
+                                        <img loading="lazy"src="~/assets/images/products/product-placeholder.jpg" width="258" height="313"
                                              alt="@product.Name" class="pc__img">
                                     </a>
                                 }
@@ -281,7 +281,7 @@
                                             {
                                                 <div class="swiper-slide">
                                                     <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
-                                                        <img loading="lazy" src="~/assets/images/products/@firstVariant.CoverImageName" width="330"
+                                                        <img loading="lazy"src="~/assets/images/products/@firstVariant.CoverImageName" width="330"
                                                              height="400" alt="@product.Name" class="pc__img">
                                                     </a>
                                                 </div>
@@ -290,7 +290,7 @@
                                             {
                                                 <div class="swiper-slide">
                                                     <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
-                                                        <img loading="lazy" src="~/assets/images/products/@firstVariant.ImageNames.First()"
+                                                        <img loading="lazy"src="~/assets/images/products/@firstVariant.ImageNames.First()"
                                                              width="330" height="400" alt="@product.Name" class="pc__img">
                                                     </a>
                                                 </div>
@@ -311,7 +311,7 @@
                                 else
                                 {
                                     <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
-                                        <img loading="lazy" src="~/assets/images/products/product-placeholder.jpg" width="330"
+                                        <img loading="lazy"src="~/assets/images/products/product-placeholder.jpg" width="330"
                                              height="400" alt="@product.Name" class="pc__img">
                                     </a>
                                 }

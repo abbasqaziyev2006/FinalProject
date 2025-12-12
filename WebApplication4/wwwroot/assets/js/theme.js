@@ -656,7 +656,7 @@ function pureFadeOut(e) {
                   <div class="swiper-wrapper">
                     <div class="swiper-slide">
                       <a href="/Product/Details/${item.id}">
-                        <img loading="lazy" src="${item.imageUrl}" width="330" height="400" alt="${item.name}" class="pc__img">
+                        <img loading="lazy" src="~${item.imageUrl}" width="330" height="400" alt="${item.name}" class="pc__img">
                       </a>
                     </div>
                   </div>
