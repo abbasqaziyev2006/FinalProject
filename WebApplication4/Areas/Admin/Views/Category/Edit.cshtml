@@ -1,0 +1,87 @@
+@using EcommerceCoza.BLL.ViewModels
+@model CategoryUpdateViewModel
+
+@{
+    ViewData["Title"] = "Edit Category";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main-content">
+    <div class="main-content-inner">
+        <div class="main-content-wrap">
+            <div class="flex items-center flex-wrap justify-between gap20 mb-27">
+                <h3>Edit Category</h3>
+                <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
+                    <li>
+                        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                            <div class="text-tiny">Dashboard</div>
+                        </a>
+                    </li>
+                    <li><i class="icon-chevron-right"></i></li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Category" asp-action="Index">
+                            <div class="text-tiny">Categories</div>
+                        </a>
+                    </li>
+                    <li><i class="icon-chevron-right"></i></li>
+                    <li><div class="text-tiny">Edit</div></li>
+                </ul>
+            </div>
+
+            <div class="wg-box">
+                <form asp-area="Admin"
+                      asp-controller="Category"
+                      asp-action="Edit"
+                      method="post"
+                      enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ImageFile" class="form-label">Image</label>
+                        <input asp-for="ImageFile" type="file" class="form-control" />
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+
+                        @if (!string.IsNullOrEmpty(Model.ImageName))
+                        {
+                            <div class="mt-2">
+                                <div>Current image:</div>
+                                <img src="~/assets/images/home/demo3/@Model.ImageName"
+                                     alt="@Model.Name"
+                                     style="width:100px; height:100px; object-fit:cover; border-radius:8px;" />
+                            </div>
+                        }
+                    </div>
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit" class="btn btn-lg btn-primary">
+                            Save Changes
+                        </button>
+                        <a asp-area="Admin"
+                           asp-controller="Category"
+                           asp-action="Index"
+                           class="btn btn-lg btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

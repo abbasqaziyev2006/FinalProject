@@ -150,14 +150,14 @@
                                                 }
                                             </td>
                                             <td>
-                                                <div class="list-icon-function d-flex justify-content-center gap-2">
+                                                <div class="d-flex justify-content-center gap-2">
                                                     <a asp-area="Admin"
                                                        asp-controller="Category"
                                                        asp-action="Edit"
                                                        asp-route-id="@category.Id"
-                                                       class="item edit"
+                                                       class="btn btn-lg btn-outline-primary"
                                                        title="Edit category">
-                                                        <i class="icon-edit-3"></i>
+                                                        <i class="icon-edit-3"></i> Edit
                                                     </a>
                                                     <form asp-area="Admin"
                                                           asp-controller="Category"
@@ -168,11 +168,10 @@
                                                           data-category-name="@category.Name">
                                                         @Html.AntiForgeryToken()
                                                         <button type="submit"
-                                                                class="item text-danger delete"
-                                                                style="border:none; background:transparent; cursor:pointer;"
+                                                                class="btn btn-lg btn-outline-danger"
                                                                 title="Delete category"
                                                                 onclick="return confirmDelete('@category.Name', @(category.Products?.Count ?? 0))">
-                                                            <i class="icon-trash-2"></i>
+                                                            <i class="icon-trash-2"></i> Delete
                                                         </button>
                                                     </form>
                                                 </div>
