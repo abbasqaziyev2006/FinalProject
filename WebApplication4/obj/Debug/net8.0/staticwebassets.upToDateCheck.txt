@@ -106,6 +106,7 @@ wwwroot\assets\images\shop\shop_banner3.jpg
 wwwroot\assets\images\slideshow-character1.png
 wwwroot\assets\images\slideshow-character2.png
 wwwroot\assets\js\add-to-basket.js
+wwwroot\assets\js\add-to-wishlist.js
 wwwroot\assets\js\custom-search.js
 wwwroot\assets\js\dark-mode.js
 wwwroot\assets\js\plugins\bootstrap.bundle.min.js

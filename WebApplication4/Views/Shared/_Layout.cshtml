@@ -365,17 +365,18 @@
     </main>
     @await Component.InvokeAsync("Footer")
 
+    <!-- Bu skriptlərin SIRALAMASI vacibdir -->
     <script src="~/assets/js/plugins/jquery.min.js"></script>
     <script src="~/assets/js/plugins/bootstrap.bundle.min.js"></script>
     <script src="~/assets/js/plugins/bootstrap-slider.min.js"></script>
     <script src="~/assets/js/plugins/swiper.min.js"></script>
     <script src="~/assets/js/plugins/countdown.js"></script>
     <script src="~/assets/js/theme.js"></script>
-    <script src="~/assets/js/custom-search.js"></script> 
+    <script src="~/assets/js/custom-search.js"></script>
     <script src="~/assets/js/quick-view.js"></script>
     <script src="~/assets/js/add-to-basket.js"></script>
+    <script src="~/assets/js/add-to-wishlist.js" asp-append-version="true"></script> <!-- BU SƏTRI ƏLAVƏ EDİN -->
     <script src="~/assets/js/dark-mode.js"></script>
-
 
     @RenderSection("Scripts", required: false)
 

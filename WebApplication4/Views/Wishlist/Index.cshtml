@@ -34,21 +34,29 @@
                                 @if (item.Product != null)
                                 {
                                     var firstVariant = item.Product.ProductVariants.FirstOrDefault();
-                                    var productImages = firstVariant?.ImageNames ?? new List<string>();
+                                    var coverImage = !string.IsNullOrEmpty(firstVariant?.CoverImageName)
+                                    ? firstVariant.CoverImageName
+                                    : firstVariant?.ImageNames?.FirstOrDefault();
+                                    var secondImage = firstVariant?.ImageNames?.FirstOrDefault();
                                     var categoryName = item.Product.CategoryName ?? "Uncategorized";
 
                                     <div class="product-card-wrapper" data-product-id="@item.ProductId">
                                         <div class="product-card mb-3 mb-md-4 mb-xxl-5">
                                             <div class="pc__img-wrapper">
-                                                @if (productImages.Any())
+                                                @if (!string.IsNullOrEmpty(coverImage))
                                                 {
                                                     <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
                                                         <div class="swiper-wrapper">
-                                                            @foreach (var imageName in productImages.Take(2))
+                                                            <div class="swiper-slide">
+                                                                <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Product.DetailsUrl">
+                                                                    <img loading="lazy" src="~/images/products/@coverImage" width="330" height="400" alt="@item.Product.Name" class="pc__img">
+                                                                </a>
+                                                            </div>
+                                                            @if (!string.IsNullOrEmpty(secondImage) && secondImage != coverImage)
                                                             {
                                                                 <div class="swiper-slide">
                                                                     <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Product.DetailsUrl">
-                                                                        <img loading="lazy" src="~/assets/images/products/@imageName" width="330" height="400" alt="@item.Product.Name" class="pc__img">
+                                                                        <img loading="lazy" src="~/images/products/@secondImage" width="330" height="400" alt="@item.Product.Name" class="pc__img">
                                                                     </a>
                                                                 </div>
                                                             }
@@ -64,11 +72,15 @@
                                                 else
                                                 {
                                                     <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Product.DetailsUrl">
-                                                        <img loading="lazy" src="~/assets/images/products/product_0.jpg" width="330" height="400" alt="@item.Product.Name" class="pc__img">
+                                                        <img loading="lazy" src="~/images/products/product-placeholder.jpg" width="330" height="400" alt="@item.Product.Name" class="pc__img">
                                                     </a>
                                                 }
-                                                <button class="btn-remove-from-wishlist" data-wishlist-id="@item.Id" data-product-id="@item.ProductId" title="Remove">
-                                                    <svg width="12" height="12"><use href="#icon_close" /></svg>
+                                                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist active"
+                                                        data-product-id="@item.ProductId"
+                                                        title="Remove from Wishlist">
+                                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <use href="#icon_heart" />
+                                                    </svg>
                                                 </button>
                                             </div>
                                             <div class="pc__info position-relative">
@@ -90,7 +102,6 @@
                             No matching items
                         </div>
 
-                        <!-- Load More -->
                         @if (Model.Items.Count > 6)
                         {
                             <div class="text-center mt-3">
@@ -121,6 +132,7 @@
 
 @section Scripts {
     <script>
+        // Simple search and load more functionality
         (function () {
             const input = document.getElementById('wishlistSearchInput');
             const btn = document.getElementById('wishlistSearchBtn');
@@ -130,10 +142,9 @@
 
             if (!grid) return;
 
-            const cards = Array.from(grid.querySelectorAll('.product-card-wrapper'));
+            let cards = Array.from(grid.querySelectorAll('.product-card-wrapper'));
             const initialVisible = 6;
 
-            // Init hide beyond initialVisible
             function initHide() {
                 if (cards.length <= initialVisible) {
                     if (loadMore) loadMore.style.display = 'none';
@@ -158,8 +169,9 @@
                 const term = input.value.trim().toLowerCase();
                 let visible = 0;
 
+                cards = Array.from(grid.querySelectorAll('.product-card-wrapper'));
+
                 if (term.length === 0) {
-                    // Restore default collapsed view (keep already revealed items)
                     cards.forEach((c, i) => {
                         if (i < initialVisible || !c.classList.contains('d-none')) {
                             c.style.display = '';
@@ -168,7 +180,6 @@
                         }
                     });
                 } else {
-                    // When searching, show all cards for matching
                     cards.forEach(c => c.style.display = '');
                 }
 
@@ -188,49 +199,10 @@
                     noResults.classList.toggle('d-none', visible !== 0);
                 }
 
-                // Hide load more when searching
                 if (loadMore) {
                     loadMore.style.display = term.length > 0 ? 'none' : (cards.filter(c => c.classList.contains('d-none')).length > 0 ? 'inline-block' : 'none');
                 }
             }
-
-            // Remove from wishlist functionality
-            document.addEventListener('click', async function(e) {
-                const removeBtn = e.target.closest('.btn-remove-from-wishlist');
-                if (removeBtn) {
-                    const productId = removeBtn.dataset.productId;
-                    const card = removeBtn.closest('.product-card-wrapper');
-
-                    if (confirm('Are you sure you want to remove this item from your wishlist?')) {
-                        try {
-                            const response = await fetch(`/Wishlist/Remove/${productId}`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                }
-                            });
-
-                            if (response.ok) {
-                                // Remove the card with animation
-                                card.style.transition = 'opacity 0.3s';
-                                card.style.opacity = '0';
-                                setTimeout(() => {
-                                    card.remove();
-                                    const remainingCards = grid.querySelectorAll('.product-card-wrapper');
-                                    if (remainingCards.length === 0) {
-                                        location.reload();
-                                    }
-                                }, 300);
-                            } else {
-                                alert('Failed to remove item from wishlist');
-                            }
-                        } catch (error) {
-                            console.error('Error:', error);
-                            alert('An error occurred while removing the item');
-                        }
-                    }
-                }
-            });
 
             input?.addEventListener('input', applyFilter);
             btn?.addEventListener('click', applyFilter);
