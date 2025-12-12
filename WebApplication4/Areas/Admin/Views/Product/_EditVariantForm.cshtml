@@ -1,0 +1,93 @@
+﻿@using EcommerceCoza.BLL.ViewModels
+@model ProductVariantUpdateViewModel
+
+<input type="hidden" asp-for="Id" />
+<input type="hidden" asp-for="ProductId" />
+<input type="hidden" asp-for="DeletedImageIds" />
+
+<!-- Info -->
+<div class="alert alert-info mb-4" style="font-size: 14px;">
+    <i class="fas fa-info-circle me-2"></i>
+    <strong>Info:</strong> Each variant represents ONE size-color combination.
+    Create separate variants for different sizes and colors.
+    <br />
+    <small class="text-muted mt-1 d-block">
+        <i class="fas fa-lightbulb me-1"></i> Example: Red/36, Red/37, Black/36, Black/37
+    </small>
+</div>
+
+<!-- Size selection -->
+<div class="mb-3">
+    <label class="form-label fw-bold">Size <span class="text-danger">*</span></label>
+    <input asp-for="Size" class="form-control" placeholder="Enter size (e.g., S, M, L)" />
+    <span asp-validation-for="Size" class="text-danger"></span>
+</div>
+
+<!-- Color selection -->
+<div class="mb-3">
+    <label asp-for="ColorId" class="form-label fw-bold">Color <span class="text-danger">*</span></label>
+    <select asp-for="ColorId" asp-items="Model.ColorSelectListItems" class="form-select">
+        <option value="">-- Select Color --</option>
+    </select>
+    <span asp-validation-for="ColorId" class="text-danger"></span>
+</div>
+
+<!-- Price and Quantity -->
+<div class="row">
+    <div class="col-md-6 mb-3">
+        <label asp-for="Price" class="form-label">Price</label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="col-md-6 mb-3">
+        <label asp-for="Quantity" class="form-label">Stock Quantity</label>
+        <input asp-for="Quantity" class="form-control" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
+</div>
+
+<!-- Cover Image -->
+<div class="mb-3">
+    <label asp-for="CoverImageFile" class="form-label">Cover Image</label>
+    @if (!string.IsNullOrEmpty(Model.CoverImageName))
+    {
+        <div class="mb-2">
+            <img src="~/images/products/@Model.CoverImageName" style="width:120px; height:120px; object-fit:cover; border-radius:8px; border:2px solid #e0e0e0;" alt="Cover Image" />
+        </div>
+    }
+    <input asp-for="CoverImageFile" type="file" class="form-control" accept="image/*" />
+    <span asp-validation-for="CoverImageFile" class="text-danger"></span>
+</div>
+
+<!-- Additional Images -->
+<div class="mb-3">
+    <label asp-for="ImageFiles" class="form-label">Additional Images</label>
+    @if (Model.ProductImages != null && Model.ProductImages.Any())
+    {
+        <div class="d-flex gap-2 flex-wrap mb-2">
+            @foreach (var img in Model.ProductImages)
+            {
+                <div class="position-relative existing-image-item" data-image-id="@img.Id">
+                    <img src="~/images/products/@img.ImageName" style="width:80px; height:80px; object-fit:cover; border-radius:8px; border:2px solid #e0e0e0;" alt="Product Image" />
+                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0" onclick="markImageForDelete(@img.Id, this)">✕</button>
+                </div>
+            }
+        </div>
+    }
+    <input asp-for="ImageFiles" type="file" class="form-control" multiple accept="image/*" />
+    <span asp-validation-for="ImageFiles" class="text-danger"></span>
+</div>
+
+<script>
+    function markImageForDelete(imageId, btn) {
+        const hiddenInput = $('#editVariantContent input[name="DeletedImageIds"]');
+        let current = hiddenInput.val() ? hiddenInput.val().split(',').filter(x => x) : [];
+        if (!current.includes(imageId.toString())) {
+            current.push(imageId.toString());
+        }
+        hiddenInput.val(current.join(','));
+        $(btn).closest('.existing-image-item').fadeOut(200, function() {
+            $(this).remove();
+        });
+    }
+</script>

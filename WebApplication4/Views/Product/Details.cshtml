@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col-lg-7">
                 <div class="product-single__media" data-media-type="vertical-thumbnail">
-                    @if (Model.ProductVariants.Any() && Model.ProductVariants.First().ImageNames.Any())
+                    @if (Model.ProductVariants.Any() && (Model.ProductVariants.First().ImageNames.Any() || !string.IsNullOrEmpty(Model.ProductVariants.First().CoverImageName)))
                     {
                         var firstVariant = Model.ProductVariants.First();
                         <div class="product-single__image">
@@ -19,9 +19,9 @@
                                     @if (!string.IsNullOrEmpty(firstVariant.CoverImageName))
                                     {
                                         <div class="swiper-slide product-single__image-item">
-                                            <img loading="lazy" class="h-auto"src="~/assets/images/products/@firstVariant.CoverImageName" width="674"
+                                            <img loading="lazy" class="h-auto" src="~/images/products/@firstVariant.CoverImageName" width="674"
                                                  height="674" alt="@Model.Name" />
-                                            <a data-fancybox="gallery" href="~/assets/images/products/@firstVariant.CoverImageName" data-bs-toggle="tooltip"
+                                            <a data-fancybox="gallery" href="~/images/products/@firstVariant.CoverImageName" data-bs-toggle="tooltip"
                                                data-bs-placement="left" title="Zoom">
                                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <use href="#icon_zoom" />
@@ -33,9 +33,9 @@
                                     @foreach (var imageName in firstVariant.ImageNames)
                                     {
                                         <div class="swiper-slide product-single__image-item">
-                                            <img loading="lazy" class="h-auto"src="~/assets/images/products/@imageName" width="674"
+                                            <img loading="lazy" class="h-auto" src="~/images/products/@imageName" width="674"
                                                  height="674" alt="@Model.Name" />
-                                            <a data-fancybox="gallery" href="~/assets/images/products/@imageName" data-bs-toggle="tooltip"
+                                            <a data-fancybox="gallery" href="~/images/products/@imageName" data-bs-toggle="tooltip"
                                                data-bs-placement="left" title="Zoom">
                                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <use href="#icon_zoom" />
@@ -45,14 +45,12 @@
                                     }
                                 </div>
                                 <div class="swiper-button-prev">
-                                    <svg width="7" height="11" viewBox="0 0 7 11"
-                                         xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
                                         <use href="#icon_prev_sm" />
                                     </svg>
                                 </div>
                                 <div class="swiper-button-next">
-                                    <svg width="7" height="11" viewBox="0 0 7 11"
-                                         xmlns="http://www.w3.org/2000/svg">
+                                    <svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg">
                                         <use href="#icon_next_sm" />
                                     </svg>
                                 </div>
@@ -65,14 +63,14 @@
                                     {
                                         <div class="swiper-slide product-single__image-item">
                                             <img loading="lazy" class="h-auto"
-                                                src="~/assets/images/products/@firstVariant.CoverImageName" width="104" height="104" alt="@Model.Name" />
+                                                 src="~/images/products/@firstVariant.CoverImageName" width="104" height="104" alt="@Model.Name" />
                                         </div>
                                     }
                                     @foreach (var imageName in firstVariant.ImageNames)
                                     {
                                         <div class="swiper-slide product-single__image-item">
                                             <img loading="lazy" class="h-auto"
-                                                src="~/assets/images/products/@imageName" width="104" height="104" alt="@Model.Name" />
+                                                 src="~/images/products/@imageName" width="104" height="104" alt="@Model.Name" />
                                         </div>
                                     }
                                 </div>
@@ -82,7 +80,7 @@
                     else
                     {
                         <div class="product-single__image">
-                            <img loading="lazy" class="h-auto"src="~/assets/images/products/product-placeholder.jpg" width="674"
+                            <img loading="lazy" class="h-auto" src="~/images/products/product-placeholder.jpg" width="674"
                                  height="674" alt="@Model.Name" />
                         </div>
                     }
@@ -102,6 +100,16 @@
                     </div>
                 </div>
                 <h1 class="product-single__name">@Model.Name</h1>
+
+                @* Brand Display *@
+                @if (Model.Brand != null)
+                {
+                    <div class="product-single__brand mb-3">
+                        <span class="text-muted">@Localizer["Brand"]:</span>
+                        <strong class="text-primary ms-2">@Model.Brand.Name</strong>
+                    </div>
+                }
+
                 <div class="product-single__rating d-flex align-items-center" data-rating="@Model.Rating" data-review-count="@Model.ReviewCount">
                     <div class="reviews-group d-flex">
                         @for (int i = 1; i <= 5; i++)
@@ -144,22 +152,53 @@
                     @if (Model.ProductVariants.Any())
                     {
                         <div class="product-single__swatches">
+                            @* Size Selection *@
+                            @{
+                                var uniqueSizes = Model.ProductVariants
+                                .Where(v => !string.IsNullOrEmpty(v.Size))
+                                .Select(v => v.Size)
+                                .Distinct()
+                                .ToList();
+                            }
+                            @if (uniqueSizes.Any())
+                            {
+                                <div class="product-swatch text-swatches mb-3">
+                                    <label>@Localizer["Size"]</label>
+                                    <div class="swatch-list">
+                                        @foreach (var size in uniqueSizes)
+                                        {
+                                            <input type="radio"
+                                                   name="size"
+                                                   id="size_@size"
+                                                   value="@size"
+                                                   class="swatch-input"
+                                                   @(uniqueSizes.First() == size ? "checked" : "")>
+                                            <label class="swatch js-swatch" for="size_@size" title="@size">
+                                                @size
+                                            </label>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            @* Color Selection *@
                             <div class="product-swatch text-swatches">
                                 <label>@Localizer["Color"]</label>
                                 <div class="swatch-list">
-                                    @foreach (var variant in Model.ProductVariants)
+                                    @foreach (var variant in Model.ProductVariants.GroupBy(v => v.ColorId).Select(g => g.First()))
                                     {
                                         <input type="radio"
                                                name="color"
-                                               id="color_@variant.Id"
-                                               value="@variant.Id"
+                                               id="color_@variant.ColorId"
+                                               value="@variant.ColorId"
                                                data-variant-id="@variant.Id"
+                                               data-color-id="@variant.ColorId"
                                                data-cover-image="@variant.CoverImageName"
                                                data-stock="@variant.Quantity"
                                                class="swatch-input"
-                                               @(Model.ProductVariants.First() == variant ? "checked" : "")>
+                                               @(Model.ProductVariants.First().ColorId == variant.ColorId ? "checked" : "")>
                                         <label class="swatch js-swatch"
-                                               for="color_@variant.Id"
+                                               for="color_@variant.ColorId"
                                                title="@variant.ColorName"
                                                style="@(!string.IsNullOrEmpty(variant.ColorHexCode) ? $"background-color: {variant.ColorHexCode};" : "")">
                                             @if (string.IsNullOrEmpty(variant.ColorHexCode) && !string.IsNullOrEmpty(variant.ColorIconName))
@@ -183,15 +222,14 @@
                             <div class="qty-control__increase">+</div>
                         </div>
                         <input type="hidden" name="productVariantId" id="productVariantId" value="@Model.ProductVariants.FirstOrDefault()?.Id" />
-                        <button type="submit" class="btn btn-primary btn-addtocart">
+                        <button type="submit" class="btn btn-primary btn-addtocart" id="addToCartBtn">
                             @Localizer["Add To Cart"]
                         </button>
                     </div>
                 </form>
                 <div class="product-single__addtolinks">
-                    <a href="#" class="menu-link menu-link_us-s add-to-wishlist">
-                        <svg width="16" height="16" viewBox="0 0 20 20"
-                             fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <a href="#" class="menu-link menu-link_us-s add-to-wishlist" data-product-id="@Model.Id">
+                        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <use href="#icon_heart" />
                         </svg><span>@Localizer["Add To Wishlist"]</span>
                     </a>
@@ -281,27 +319,39 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            // Handle color selection
-            $('input[name="color"]').on('change', function () {
-                const variantId = $(this).data('variant-id');
-                const coverImage = $(this).data('cover-image');
-                const stock = $(this).data('stock');
+            const variants = @Html.Raw(Json.Serialize(Model.ProductVariants));
 
-                $('#productVariantId').val(variantId);
-                $('#quantity').attr('max', stock);
+            function updateVariantSelection() {
+                const selectedSize = $('input[name="size"]:checked').val() || '';
+                const selectedColorId = parseInt($('input[name="color"]:checked').data('color-id'));
 
-                // Update stock status
-                if (stock > 0) {
-                    $('#stock-status').html('<span class="text-success">@Localizer["InStock"] (' + stock + ' @Localizer["Available"])</span>');
-                } else {
-                    $('#stock-status').html('<span class="text-danger">@Localizer["OutOfStock"]</span>');
+                const matchingVariant = variants.find(v =>
+                    v.colorId === selectedColorId &&
+                    (selectedSize === '' || v.size === selectedSize || v.size === null || v.size === '')
+                );
+
+                if (matchingVariant) {
+                    $('#productVariantId').val(matchingVariant.id);
+                    $('#quantity').attr('max', matchingVariant.quantity);
+
+                    // Update stock status
+                    if (matchingVariant.quantity > 0) {
+                        $('#stock-status').html('<span class="text-success">@Localizer["InStock"] (' + matchingVariant.quantity + ' @Localizer["Available"])</span>');
+                        $('#addToCartBtn').prop('disabled', false);
+                    } else {
+                        $('#stock-status').html('<span class="text-danger">@Localizer["OutOfStock"]</span>');
+                        $('#addToCartBtn').prop('disabled', true);
+                    }
+
+                    // Update main image if needed
+                    if (matchingVariant.coverImageName) {
+                        $('.product-single__image .swiper-slide:first img').attr('src', '/images/products/' + matchingVariant.coverImageName);
+                    }
                 }
+            }
 
-                // Update main image if needed
-                if (coverImage) {
-                    $('.product-single__image .swiper-slide:first img').attr('src', '/assets/images/products/' + coverImage);
-                }
-            });
+            // Handle size and color selection
+            $('input[name="size"], input[name="color"]').on('change', updateVariantSelection);
 
             // Handle quantity controls
             $('.qty-control__increase').on('click', function () {
@@ -330,7 +380,7 @@
                 const quantity = $('#quantity').val();
 
                 if (!variantId) {
-                    alert('@Localizer["PleaseSelectColor"]');
+                    alert('@Localizer["PleaseSelectVariant"]');
                     return;
                 }
 

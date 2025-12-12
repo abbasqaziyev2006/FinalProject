@@ -539,6 +539,9 @@ namespace ECommerceCoza.DAL.Migrations
                     b.Property<int>("SalePercentage")
                         .HasColumnType("int");
 
+                    b.Property<string>("Size")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 

@@ -1,131 +1,495 @@
 ﻿@using EcommerceCoza.BLL.ViewModels
 @model ProductCreateViewModel
+
 @{
-    ViewData["Title"] = "Add Product";
+    ViewData["Title"] = "Create Product";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
 <div class="main-content">
     <div class="main-content-inner">
         <div class="main-content-wrap">
-            <!-- Breadcrumb -->
             <div class="flex items-center flex-wrap justify-between gap20 mb-27">
-                <h3>Add Product</h3>
+                <h3 style="font-size: 28px;">Create New Product</h3>
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
                     <li>
                         <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
-                            <div class="text-tiny">Dashboard</div>
+                            <div class="text-tiny" style="font-size: 14px;">Dashboard</div>
                         </a>
                     </li>
                     <li><i class="icon-chevron-right"></i></li>
                     <li>
                         <a asp-area="Admin" asp-controller="Product" asp-action="Index">
-                            <div class="text-tiny">Products</div>
+                            <div class="text-tiny" style="font-size: 14px;">Products</div>
                         </a>
                     </li>
                     <li><i class="icon-chevron-right"></i></li>
-                    <li><div class="text-tiny">Add Product</div></li>
+                    <li><div class="text-tiny" style="font-size: 14px;">New Product</div></li>
                 </ul>
             </div>
 
-            @* Validation Summary *@
-            @if (!ViewData.ModelState.IsValid)
-            {
-                <div class="alert alert-danger" role="alert">
-                    <h6>Please fix the following errors:</h6>
-                    <ul>
-                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
-                        {
-                            <li>@error.ErrorMessage</li>
-                        }
-                    </ul>
-                </div>
-            }
+            <!-- Product Basic Info -->
+            <div class="wg-box mb-4">
+                <h4 class="mb-4" style="font-size: 20px; font-weight: 600; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">
+                    <i class="icon-box me-2"></i>Product Information
+                </h4>
+                <form asp-area="Admin"
+                      asp-controller="Product"
+                      asp-action="Create"
+                      method="post"
+                      id="createProductForm">
+                    @Html.AntiForgeryToken()
 
-            <form class="tf-section-2 form-add-product"
-                  method="post"
-                  enctype="multipart/form-data"
-                  asp-area="Admin"
-                  asp-controller="Product"
-                  asp-action="Create">
-                @Html.AntiForgeryToken()
-
-                <!-- Product Information -->
-                <div class="wg-box mb-4">
-                    <h5 class="mb-3">Product Information</h5>
-
-                    <!-- Product Name -->
-                    <div class="mb-3">
-                        <label class="form-label">Product Name <span class="text-danger">*</span></label>
-                        <input asp-for="Name" class="form-control" placeholder="Enter product name" required />
-                        <span asp-validation-for="Name" class="text-danger"></span>
-                    </div>
-
-                    <!-- Description -->
-                    <div class="mb-3">
-                        <label class="form-label">Description <span class="text-danger">*</span></label>
-                        <textarea asp-for="Description" class="form-control" rows="5" placeholder="Enter product description" required></textarea>
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
-
-                    <!-- Additional Information -->
-                    <div class="mb-3">
-                        <label class="form-label">Additional Information</label>
-                        <textarea asp-for="AdditionalInformation" class="form-control" rows="3" placeholder="Optional"></textarea>
-                        <span asp-validation-for="AdditionalInformation" class="text-danger"></span>
-                    </div>
-
-                    <!-- Price -->
-                    <div class="row mb-3">
-                        <div class="col-md-12">
-                            <label class="form-label">Base Price <span class="text-danger">*</span></label>
-                            <input asp-for="BasePrice" class="form-control" type="number" step="0.01" min="0" placeholder="Enter base price" required />
-                            <span asp-validation-for="BasePrice" class="text-danger"></span>
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <label asp-for="Name" class="form-label" style="font-size: 18px; font-weight: 600;">
+                                Product Name <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="Name"
+                                   class="form-control"
+                                   placeholder="Enter product name"
+                                   style="font-size: 16px; padding: 12px;" />
+                            <span asp-validation-for="Name" class="text-danger" style="font-size: 14px;"></span>
                         </div>
                     </div>
 
-                    <!-- Category & Brand -->
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <label class="form-label">Category <span class="text-danger">*</span></label>
-                            <select asp-for="CategoryId" asp-items="Model.CategorySelectListItems" class="form-select" required>
-                                <option value="">Select Category</option>
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <label asp-for="Description" class="form-label" style="font-size: 18px; font-weight: 600;">
+                                Description <span class="text-danger">*</span>
+                            </label>
+                            <textarea asp-for="Description"
+                                      class="form-control"
+                                      rows="4"
+                                      placeholder="Enter product description"
+                                      style="font-size: 16px; padding: 12px;"></textarea>
+                            <span asp-validation-for="Description" class="text-danger" style="font-size: 14px;"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-4">
+                            <label asp-for="AdditionalInformation" class="form-label" style="font-size: 18px; font-weight: 600;">
+                                Additional Information
+                            </label>
+                            <textarea asp-for="AdditionalInformation"
+                                      class="form-control"
+                                      rows="3"
+                                      placeholder="Enter additional information (optional)"
+                                      style="font-size: 16px; padding: 12px;"></textarea>
+                            <span asp-validation-for="AdditionalInformation" class="text-danger" style="font-size: 14px;"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-4">
+                            <label asp-for="BasePrice" class="form-label" style="font-size: 18px; font-weight: 600;">
+                                Base Price ($) <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="BasePrice"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   class="form-control"
+                                   placeholder="0.00"
+                                   style="font-size: 16px; padding: 12px;" />
+                            <span asp-validation-for="BasePrice" class="text-danger" style="font-size: 14px;"></span>
+                        </div>
+
+                        <div class="col-md-4 mb-4">
+                            <label asp-for="CategoryId" class="form-label" style="font-size: 18px; font-weight: 600;">
+                                Category <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="CategoryId"
+                                    asp-items="Model.CategorySelectListItems"
+                                    class="form-select"
+                                    style="font-size: 16px; padding: 12px;">
+                                <option value="">-- Select Category --</option>
                             </select>
-                            <span asp-validation-for="CategoryId" class="text-danger"></span>
+                            <span asp-validation-for="CategoryId" class="text-danger" style="font-size: 14px;"></span>
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Brand <span class="text-danger">*</span></label>
-                            <select asp-for="BrandId" asp-items="Model.BrandSelectListItems" class="form-select" required>
-                                <option value="">Select Brand</option>
+
+                        <div class="col-md-4 mb-4">
+                            <label asp-for="BrandId" class="form-label" style="font-size: 18px; font-weight: 600;">
+                                Brand <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="BrandId"
+                                    asp-items="Model.BrandSelectListItems"
+                                    class="form-select"
+                                    style="font-size: 16px; padding: 12px;">
+                                <option value="">-- Select Brand --</option>
                             </select>
-                            <span asp-validation-for="BrandId" class="text-danger"></span>
+                            <span asp-validation-for="BrandId" class="text-danger" style="font-size: 14px;"></span>
                         </div>
                     </div>
+                </form>
+            </div>
 
+            <!-- Variants Section -->
+            <div class="wg-box">
+                <div class="d-flex justify-content-between align-items-center mb-4" style="border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">
+                    <h4 style="font-size: 20px; font-weight: 600;">
+                        <i class="icon-layers me-2"></i>Product Variants
+                        <span id="variantCount" class="badge bg-primary ms-2" style="font-size: 14px;">0</span>
+                    </h4>
+                    <button type="button" class="btn btn-lg btn-success" onclick="openAddVariantModal()" style="font-size: 16px;">
+                        <i class="icon-plus me-2"></i>Add Variant
+                    </button>
                 </div>
 
-                <!-- Actions -->
-                <div class="wg-box">
-                    <div class="d-flex gap-2">
-                        <button type="submit" class="tf-button btn-primary flex-grow-1">
-                            <i class="icon-plus"></i> Add Product
-                        </button>
-                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="tf-button btn-secondary flex-grow-1">
-                            <i class="icon-x"></i> Cancel
-                        </a>
+                <div id="variantsContainer">
+                    <div class="alert alert-info d-flex align-items-center" style="font-size: 14px;">
+                        <i class="icon-info me-2" style="font-size: 20px;"></i>
+                        <span>Add at least one variant with size, color, price, quantity and images.</span>
                     </div>
+                </div>
+
+                <div class="d-flex gap-3 mt-4">
+                    <button type="button" class="btn btn-lg btn-primary" onclick="submitProduct()" style="font-size: 18px; padding: 12px 30px;">
+                        <i class="icon-save me-2"></i>Create Product & Variants
+                    </button>
+                    <a asp-area="Admin"
+                       asp-controller="Product"
+                       asp-action="Index"
+                       class="btn btn-lg btn-secondary" style="font-size: 18px; padding: 12px 30px;">
+                        <i class="icon-x me-2"></i>Cancel
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Variant Modal -->
+<div class="modal fade" id="addVariantModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="font-size: 20px; font-weight: 600;">
+                    <i class="icon-plus-circle me-2"></i>Add Product Variant
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="variantForm" onsubmit="return false;">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size: 16px; font-weight: 600;">
+                                <i class="icon-tag me-1"></i>Size
+                            </label>
+                            <input type="text" id="variantSize" class="form-control" placeholder="e.g., S, M, L, XL" style="font-size: 16px; padding: 10px;" />
+                            <small class="text-muted">Optional - Leave empty if product has no sizes</small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size: 16px; font-weight: 600;">
+                                <i class="icon-droplet me-1"></i>Color <span class="text-danger">*</span>
+                            </label>
+                            <select id="variantColor" class="form-select" required style="font-size: 16px; padding: 10px;">
+                                <option value="">-- Select Color --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size: 16px; font-weight: 600;">
+                                <i class="icon-dollar-sign me-1"></i>Sale Price ($) <span class="text-danger">*</span>
+                            </label>
+                            <input type="number" id="variantPrice" step="0.01" min="0" class="form-control" required style="font-size: 16px; padding: 10px;" placeholder="0.00" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size: 16px; font-weight: 600;">
+                                <i class="icon-package me-1"></i>Quantity <span class="text-danger">*</span>
+                            </label>
+                            <input type="number" id="variantQuantity" min="0" class="form-control" required style="font-size: 16px; padding: 10px;" placeholder="0" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 16px; font-weight: 600;">
+                            <i class="icon-image me-1"></i>Cover Image <span class="text-danger">*</span>
+                        </label>
+                        <input type="file" id="variantCoverImage" accept="image/*" class="form-control" required style="font-size: 16px; padding: 10px;" onchange="previewCoverImage(this)" />
+                        <div id="coverImagePreview" class="mt-3" style="display:none;">
+                            <img id="coverPreviewImg" src="#" style="width:200px; height:200px; object-fit:cover; border-radius:12px; border: 3px solid #e0e0e0;" alt="Cover Preview">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 16px; font-weight: 600;">
+                            <i class="icon-images me-1"></i>Additional Images
+                        </label>
+                        <input type="file" id="variantAdditionalImages" accept="image/*" multiple class="form-control" style="font-size: 16px; padding: 10px;" onchange="previewAdditionalImages(this)" />
+                        <div id="additionalImagesPreview" class="mt-3 d-flex gap-3 flex-wrap"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal" style="font-size: 16px;">
+                        <i class="icon-x me-2"></i>Cancel
+                    </button>
+                    <button type="button" class="btn btn-lg btn-primary" onclick="addVariant()" style="font-size: 16px;">
+                        <i class="icon-check me-2"></i>Add Variant
+                    </button>
                 </div>
             </form>
         </div>
     </div>
-
-    <div class="bottom-page mt-4">
-        <div class="body-text">Copyright © @DateTime.Now.Year SurfsideMedia</div>
-    </div>
 </div>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        let variants = [];
+        let variantCounter = 0;
+        let colors = [];
+        const modal = new bootstrap.Modal(document.getElementById('addVariantModal'));
+
+        $(document).ready(function() {
+            loadColors();
+        });
+
+        function loadColors() {
+            $.get('@Url.Action("GetColors", "Product", new { area = "Admin" })', function(data) {
+                colors = data;
+                const colorSelect = $('#variantColor');
+                colorSelect.empty();
+                colorSelect.append('<option value="">-- Select Color --</option>');
+                data.forEach(function(color) {
+                    colorSelect.append(`<option value="${color.id}" data-name="${color.name}" data-hex="${color.hexCode || ''}">${color.name}</option>`);
+                });
+            }).fail(function() {
+                alert('Failed to load colors. Please refresh the page.');
+            });
+        }
+
+        function openAddVariantModal() {
+            resetVariantForm();
+            modal.show();
+        }
+
+        function resetVariantForm() {
+            $('#variantForm')[0].reset();
+            $('#coverImagePreview').hide();
+            $('#additionalImagesPreview').empty();
+        }
+
+        function addVariant() {
+            const colorSelect = $('#variantColor');
+            const selectedColor = colorSelect.find(':selected');
+            const coverFile = $('#variantCoverImage')[0].files[0];
+            const price = $('#variantPrice').val();
+            const quantity = $('#variantQuantity').val();
+
+            if (!selectedColor.val() || !price || !quantity || !coverFile) {
+                alert('Please fill all required fields (Color, Price, Quantity, Cover Image)');
+                return;
+            }
+
+            const variant = {
+                id: variantCounter++,
+                size: $('#variantSize').val() || 'One Size',
+                colorId: colorSelect.val(),
+                colorName: selectedColor.data('name'),
+                colorHex: selectedColor.data('hex'),
+                price: parseFloat(price),
+                quantity: parseInt(quantity),
+                coverImage: coverFile,
+                coverImageUrl: URL.createObjectURL(coverFile),
+                additionalImages: Array.from($('#variantAdditionalImages')[0].files)
+            };
+
+            variants.push(variant);
+            updateVariantsDisplay();
+            modal.hide();
+
+            // Show success message
+            showToast('success', 'Variant added successfully!');
+        }
+
+        function updateVariantsDisplay() {
+            const container = $('#variantsContainer');
+            $('#variantCount').text(variants.length);
+
+            if (variants.length === 0) {
+                container.html(`
+                    <div class="alert alert-info d-flex align-items-center" style="font-size: 14px;">
+                        <i class="icon-info me-2" style="font-size: 20px;"></i>
+                        <span>Add at least one variant with size, color, price, quantity and images.</span>
+                    </div>
+                `);
+                return;
+            }
+
+            let html = '<div class="table-responsive"><table class="table table-hover table-bordered"><thead class="table-light"><tr>' +
+                '<th style="font-size: 14px; font-weight: 600;">Cover</th>' +
+                '<th style="font-size: 14px; font-weight: 600;">Size</th>' +
+                '<th style="font-size: 14px; font-weight: 600;">Color</th>' +
+                '<th style="font-size: 14px; font-weight: 600;">Price</th>' +
+                '<th style="font-size: 14px; font-weight: 600;">Quantity</th>' +
+                '<th style="font-size: 14px; font-weight: 600;">Images</th>' +
+                '<th style="font-size: 14px; font-weight: 600; width: 100px;">Actions</th>' +
+                '</tr></thead><tbody>';
+
+            variants.forEach(function(variant) {
+                html += `<tr>
+                    <td>
+                        <img src="${variant.coverImageUrl}" style="width:70px; height:70px; object-fit:cover; border-radius:8px; border: 2px solid #e0e0e0;" />
+                    </td>
+                    <td style="font-size: 14px; vertical-align: middle;">
+                        <span class="badge bg-info" style="font-size: 13px;">${variant.size}</span>
+                    </td>
+                    <td style="font-size: 14px; vertical-align: middle;">
+                        <div class="d-flex align-items-center gap-2">
+                            ${variant.colorHex ? `<div style="width:24px; height:24px; background:${variant.colorHex}; border-radius:50%; border:2px solid #ddd;"></div>` : ''}
+                            <span style="font-weight: 500;">${variant.colorName}</span>
+                        </div>
+                    </td>
+                    <td style="font-size: 16px; font-weight: 600; vertical-align: middle; color: #28a745;">
+                        $${variant.price.toFixed(2)}
+                    </td>
+                    <td style="font-size: 14px; vertical-align: middle;">
+                        <span class="badge ${variant.quantity > 0 ? 'bg-success' : 'bg-danger'}" style="font-size: 13px;">
+                            ${variant.quantity} ${variant.quantity === 1 ? 'unit' : 'units'}
+                        </span>
+                    </td>
+                    <td style="font-size: 14px; vertical-align: middle;">
+                        <span class="badge bg-primary" style="font-size: 13px;">
+                            <i class="icon-image me-1"></i>${variant.additionalImages.length}
+                        </span>
+                    </td>
+                    <td style="vertical-align: middle;">
+                        <button type="button" class="btn btn-sm btn-danger" onclick="removeVariant(${variant.id})" title="Remove variant">
+                            <i class="icon-trash-2"></i>
+                        </button>
+                    </td>
+                </tr>`;
+            });
+
+            html += '</tbody></table></div>';
+            container.html(html);
+        }
+
+        function removeVariant(id) {
+            if (confirm('Are you sure you want to remove this variant?')) {
+                variants = variants.filter(v => v.id !== id);
+                updateVariantsDisplay();
+                showToast('warning', 'Variant removed');
+            }
+        }
+
+        function previewCoverImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#coverPreviewImg').attr('src', e.target.result);
+                    $('#coverImagePreview').show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function previewAdditionalImages(input) {
+            $('#additionalImagesPreview').empty();
+            if (input.files) {
+                Array.from(input.files).forEach(function(file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#additionalImagesPreview').append(
+                            `<img src="${e.target.result}" style="width:100px; height:100px; object-fit:cover; border-radius:8px; border: 2px solid #e0e0e0;" />`
+                        );
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        function submitProduct() {
+            if (variants.length === 0) {
+                alert('Please add at least one product variant before creating the product.');
+                return;
+            }
+
+            if (!$('#createProductForm')[0].checkValidity()) {
+                $('#createProductForm')[0].reportValidity();
+                return;
+            }
+
+            const formData = new FormData($('#createProductForm')[0]);
+
+            // Add variants data
+            variants.forEach((variant, index) => {
+                formData.append(`Variants[${index}].Size`, variant.size);
+                formData.append(`Variants[${index}].ColorId`, variant.colorId);
+                formData.append(`Variants[${index}].Price`, variant.price);
+                formData.append(`Variants[${index}].Quantity`, variant.quantity);
+                formData.append(`Variants[${index}].CoverImageFile`, variant.coverImage);
+
+                variant.additionalImages.forEach((img) => {
+                    formData.append(`Variants[${index}].ImageFiles`, img);
+                });
+            });
+
+            // Show loading
+            const submitBtn = event.target;
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating...';
+
+            $.ajax({
+                url: $('#createProductForm').attr('action'),
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        showToast('success', response.message || 'Product created successfully!');
+                        setTimeout(() => {
+                            window.location.href = '@Url.Action("Index", "Product", new { area = "Admin" })';
+                        }, 1500);
+                    } else {
+                        alert(response.message || 'Error creating product');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalText;
+                    }
+                },
+                error: function(xhr) {
+                    alert('An error occurred: ' + (xhr.responseJSON?.message || 'Please try again'));
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
+            });
+        }
+
+        function showToast(type, message) {
+            const bgColor = type === 'success' ? 'bg-success' : type === 'warning' ? 'bg-warning' : 'bg-info';
+            const toast = `
+                <div class="position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+                    <div class="toast show ${bgColor} text-white" role="alert">
+                        <div class="toast-body">
+                            <strong>${message}</strong>
+                        </div>
+                    </div>
+                </div>
+            `;
+            $('body').append(toast);
+            setTimeout(() => $('.toast').fadeOut(), 3000);
+        }
+    </script>
+
+    <style>
+        .modal-xl {
+            max-width: 1000px;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+    </style>
 }

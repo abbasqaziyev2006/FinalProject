@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EcommerceCoza.BLL.Services;
 using EcommerceCoza.BLL.Services.Contracts;
 using EcommerceCoza.BLL.ViewModels;
 using EcommerceCoza.DAL.DataContext.Repositories.Contracts;
@@ -6,7 +7,7 @@ using ECommerceCoza.BLL.Constants;
 using ECommerceCoza.DAL.DataContext.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace EcommerceCoza.BLL.Services
+namespace ECommerceCoza.BLL.Services
 {
     public class ProductVariantManager : CrudManager<ProductVariant, ProductVariantViewModel, ProductVariantCreateViewModel, ProductVariantUpdateViewModel>,
         IProductVariantService
@@ -28,7 +29,7 @@ namespace EcommerceCoza.BLL.Services
             var model = new ProductVariantCreateViewModel();
             model.ColorSelectListItems = await _colorService.GetColorSelectListItemsAsync();
             model.ProductSelectListItems = await _productService.GetProductSelectListItemsAsync();
-            
+
             return model;
         }
 
@@ -73,8 +74,8 @@ namespace EcommerceCoza.BLL.Services
             var productVariant = await Repository.GetAsync(
                 predicate: p => p.Id == id,
                 include: x => x.Include(i => i.ProductImages!)
-                .Include(c=>c.Color!)
-                .Include(p=>p.Product!));
+                .Include(c => c.Color!)
+                .Include(p => p.Product!));
 
             if (productVariant == null)
                 return null!;
@@ -88,13 +89,21 @@ namespace EcommerceCoza.BLL.Services
 
         public override async Task<bool> UpdateAsync(int id, ProductVariantUpdateViewModel model)
         {
-            var existingVariant = await Repository.GetByIdAsync(id);
+            var existingVariant = await Repository.GetAsync(
+                predicate: p => p.Id == id,
+                include: x => x.Include(i => i.ProductImages!));
 
             if (existingVariant == null)
                 return false;
 
-            existingVariant = Mapper.Map(model, existingVariant);
+            // Update basic properties
+            existingVariant.Size = model.Size;
+            existingVariant.ColorId = model.ColorId;
+            existingVariant.Price = model.Price;
+            existingVariant.Quantity = model.Quantity;
+            existingVariant.ProductId = model.ProductId;
 
+            // Handle cover image update
             if (model.CoverImageFile != null)
             {
                 if (!_fileService.IsImageFile(model.CoverImageFile))
@@ -111,21 +120,52 @@ namespace EcommerceCoza.BLL.Services
                 }
             }
 
+            // Handle deleted images
+            if (!string.IsNullOrEmpty(model.DeletedImageIds))
+            {
+                var deletedIds = model.DeletedImageIds
+                    .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                    .Select(int.Parse)
+                    .ToList();
+
+                if (existingVariant.ProductImages != null && deletedIds.Any())
+                {
+                    var imagesToDelete = existingVariant.ProductImages
+                        .Where(img => deletedIds.Contains(img.Id))
+                        .ToList();
+
+                    foreach (var img in imagesToDelete)
+                    {
+                        var filePath = Path.Combine(FilePathConstants.ProductImagePath, img.ImageName!);
+                        if (File.Exists(filePath))
+                            File.Delete(filePath);
+
+                        existingVariant.ProductImages.Remove(img);
+                    }
+                }
+            }
+
+            // Handle new image files
             if (model.ImageFiles != null && model.ImageFiles.Any())
             {
-                existingVariant.ProductImages = new List<ProductImage>();
+                // Validate all files first
                 foreach (var imageFile in model.ImageFiles)
                 {
                     if (!_fileService.IsImageFile(imageFile))
                         throw new ArgumentException("One of the files is not a valid image.", nameof(model.ImageFiles));
                 }
 
+                // Initialize the list if null
+                existingVariant.ProductImages ??= new List<ProductImage>();
+
+                // Add new images to existing ones
                 foreach (var imageFile in model.ImageFiles)
                 {
                     var imageName = await _fileService.GenerateFile(imageFile, FilePathConstants.ProductImagePath);
                     existingVariant.ProductImages.Add(new ProductImage
                     {
-                        ImageName = imageName
+                        ImageName = imageName,
+                        ProductVariantId = existingVariant.Id
                     });
                 }
             }

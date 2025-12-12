@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace EcommerceCoza.BLL.ViewModels
 {
+
     public class ProductVariantViewModel
     {
         public int Id { get; set; }
@@ -20,7 +21,7 @@ namespace EcommerceCoza.BLL.ViewModels
         public string? ColorName { get; set; }
         public string? ColorIconName { get; set; }
         public string? ColorHexCode { get; set; }
-        public string? Size { get; set; } 
+        public string? Size { get; set; }
         public string? CoverImageName { get; set; }
         public IList<string> ImageNames { get; set; } = [];
     }
@@ -38,21 +39,24 @@ namespace EcommerceCoza.BLL.ViewModels
         public List<SelectListItem> ColorSelectListItems { get; set; } = [];
         public int ProductId { get; set; }
         public List<SelectListItem> ProductSelectListItems { get; set; } = [];
-
     }
+
     public class ProductVariantUpdateViewModel
     {
         public int Id { get; set; }
-        public int Quantity { get; set; }
-        public decimal Price { get; set; }
-        public IFormFile? CoverImageFile { get; set; }
+        public int ProductId { get; set; }
+        public int ColorId { get; set; }
         public string? Size { get; set; }
+        public decimal Price { get; set; }
+        public int Quantity { get; set; }
+        public IFormFile? CoverImageFile { get; set; }
         public string? CoverImageName { get; set; }
         public List<IFormFile> ImageFiles { get; set; } = [];
         public List<ProductImage> ProductImages { get; set; } = [];
-        public int ColorId { get; set; }
+        public string? DeletedImageIds { get; set; }
         public List<SelectListItem> ColorSelectListItems { get; set; } = [];
-        public int ProductId { get; set; }
         public List<SelectListItem> ProductSelectListItems { get; set; } = [];
+        public List<string> AvailableSizes { get; set; } = [];
+        public List<ColorViewModel> AvailableColors { get; set; } = [];
     }
 }

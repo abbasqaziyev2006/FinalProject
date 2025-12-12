@@ -1,0 +1,385 @@
+@using EcommerceCoza.BLL.ViewModels
+@model ProductUpdateViewModel
+
+@{
+    ViewData["Title"] = "Edit Product";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main-content">
+    <div class="main-content-inner">
+        <div class="main-content-wrap">
+            <div class="flex items-center flex-wrap justify-between gap20 mb-27">
+                <h3 style="font-size: 28px;">Edit Product</h3>
+                <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
+                    <li>
+                        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                            <div class="text-tiny" style="font-size: 14px;">Dashboard</div>
+                        </a>
+                    </li>
+                    <li><i class="icon-chevron-right"></i></li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Index">
+                            <div class="text-tiny" style="font-size: 14px;">Products</div>
+                        </a>
+                    </li>
+                    <li><i class="icon-chevron-right"></i></li>
+                    <li><div class="text-tiny" style="font-size: 14px;">Edit</div></li>
+                </ul>
+            </div>
+
+            <!-- Product Basic Info -->
+            <div class="wg-box mb-4">
+                <h4 class="mb-4" style="font-size: 20px; font-weight: 600;">Basic Information</h4>
+                <form asp-area="Admin"
+                      asp-controller="Product"
+                      asp-action="Edit"
+                      method="post"
+                      id="productForm">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-4">
+                        <label asp-for="Name" class="form-label" style="font-size: 18px; font-weight: 600;">
+                            Product Name <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Name"
+                               class="form-control"
+                               style="font-size: 16px; padding: 12px;" />
+                        <span asp-validation-for="Name" class="text-danger" style="font-size: 14px;"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Description" class="form-label" style="font-size: 18px; font-weight: 600;">
+                            Description <span class="text-danger">*</span>
+                        </label>
+                        <textarea asp-for="Description"
+                                  class="form-control"
+                                  rows="4"
+                                  style="font-size: 16px; padding: 12px;"></textarea>
+                        <span asp-validation-for="Description" class="text-danger" style="font-size: 14px;"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="AdditionalInformation" class="form-label" style="font-size: 18px; font-weight: 600;">
+                            Additional Information
+                        </label>
+                        <textarea asp-for="AdditionalInformation"
+                                  class="form-control"
+                                  rows="3"
+                                  style="font-size: 16px; padding: 12px;"></textarea>
+                        <span asp-validation-for="AdditionalInformation" class="text-danger" style="font-size: 14px;"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label asp-for="BasePrice" class="form-label" style="font-size: 18px; font-weight: 600;">
+                                Base Price ($) <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="BasePrice"
+                                   type="number"
+                                   step="0.01"
+                                   min="0"
+                                   class="form-control"
+                                   style="font-size: 16px; padding: 12px;" />
+                            <span asp-validation-for="BasePrice" class="text-danger" style="font-size: 14px;"></span>
+                        </div>
+
+                        <div class="col-md-6 mb-4">
+                            <label asp-for="CategoryId" class="form-label" style="font-size: 18px; font-weight: 600;">
+                                Category <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="CategoryId"
+                                    asp-items="Model.CategorySelectListItems"
+                                    class="form-select"
+                                    style="font-size: 16px; padding: 12px;">
+                                <option value="">-- Select Category --</option>
+                            </select>
+                            <span asp-validation-for="CategoryId" class="text-danger" style="font-size: 14px;"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="BrandId" class="form-label" style="font-size: 18px; font-weight: 600;">
+                            Brand <span class="text-danger">*</span>
+                        </label>
+                        <select asp-for="BrandId"
+                                asp-items="Model.BrandSelectListItems"
+                                class="form-select"
+                                style="font-size: 16px; padding: 12px;">
+                            <option value="">-- Select Brand --</option>
+                        </select>
+                        <span asp-validation-for="BrandId" class="text-danger" style="font-size: 14px;"></span>
+                    </div>
+
+                    <div class="d-flex gap-3 mt-4">
+                        <button type="submit" class="btn btn-lg btn-primary" style="font-size: 18px; padding: 12px 30px;">
+                            <i class="icon-save me-2"></i>Save Product
+                        </button>
+                        <a asp-area="Admin"
+                           asp-controller="Product"
+                           asp-action="Index"
+                           class="btn btn-lg btn-secondary" style="font-size: 18px; padding: 12px 30px;">
+                            <i class="icon-x me-2"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Product Variants Section -->
+            <div class="wg-box">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 style="font-size: 20px; font-weight: 600;">Product Variants</h4>
+                    <button type="button" class="btn btn-lg btn-success" data-bs-toggle="modal" data-bs-target="#addVariantModal" style="font-size: 16px;">
+                        <i class="icon-plus me-2"></i>Add Variant
+                    </button>
+                </div>
+
+                <div id="variantsList">
+                    <!-- Variants will be loaded here via AJAX -->
+                    <div class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Variant Modal -->
+<div class="modal fade" id="addVariantModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="font-size: 20px; font-weight: 600;">Add New Variant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addVariantForm" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="hidden" name="ProductId" value="@Model.Id" />
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size: 16px; font-weight: 600;">Size</label>
+                            <input type="text" name="Size" class="form-control" placeholder="e.g., S, M, L, XL" style="font-size: 16px; padding: 10px;" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size: 16px; font-weight: 600;">Color <span class="text-danger">*</span></label>
+                            <select name="ColorId" class="form-select" required style="font-size: 16px; padding: 10px;">
+                                <option value="">-- Select Color --</option>
+                                @* Colors will be populated via controller *@
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size: 16px; font-weight: 600;">Sale Price ($) <span class="text-danger">*</span></label>
+                            <input type="number" name="Price" step="0.01" min="0" class="form-control" required style="font-size: 16px; padding: 10px;" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" style="font-size: 16px; font-weight: 600;">Quantity <span class="text-danger">*</span></label>
+                            <input type="number" name="Quantity" min="0" class="form-control" required style="font-size: 16px; padding: 10px;" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 16px; font-weight: 600;">Cover Image <span class="text-danger">*</span></label>
+                        <input type="file" name="CoverImageFile" accept="image/*" class="form-control" required style="font-size: 16px; padding: 10px;" onchange="previewCoverImage(this)" />
+                        <div id="coverImagePreview" class="mt-2" style="display:none;">
+                            <img id="coverPreviewImg" src="#" style="width:150px; height:150px; object-fit:cover; border-radius:8px;" alt="Cover Preview">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 16px; font-weight: 600;">Additional Images</label>
+                        <input type="file" name="ImageFiles" accept="image/*" multiple class="form-control" style="font-size: 16px; padding: 10px;" onchange="previewAdditionalImages(this)" />
+                        <div id="additionalImagesPreview" class="mt-2 d-flex gap-2 flex-wrap"></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="font-size: 16px;">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="font-size: 16px;">
+                        <i class="icon-save me-2"></i>Save Variant
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Variant Modal -->
+<div class="modal fade" id="editVariantModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="font-size: 20px; font-weight: 600;">Edit Variant</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="editVariantForm" enctype="multipart/form-data">
+                <div class="modal-body" id="editVariantContent">
+                    <!-- Content will be loaded via AJAX -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="font-size: 16px;">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="font-size: 16px;">
+                        <i class="icon-save me-2"></i>Update Variant
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+
+    <script>
+        const productId = @Model.Id;
+
+        $(document).ready(function () {
+            loadVariants();
+            loadColors();
+        });
+
+        function loadVariants() {
+            $.get('@Url.Action("GetVariants", "Product", new { area = "Admin" })',
+                { productId: productId },
+                function (data) {
+                    $('#variantsList').html(data);
+                }).fail(function () {
+                    $('#variantsList').html('<div class="alert alert-danger">Failed to load variants</div>');
+                });
+        }
+
+        function loadColors() {
+            $.get('@Url.Action("GetColors", "Product", new { area = "Admin" })',
+                function (colors) {
+                    let colorSelect = $('#addVariantForm select[name="ColorId"]');
+                    colorSelect.empty();
+                    colorSelect.append('<option value="">-- Select Color --</option>');
+                    colors.forEach(function (color) {
+                        colorSelect.append(`<option value="${color.id}">${color.name}</option>`);
+                    });
+                });
+        }
+
+        // ADD VARIANT
+        $('#addVariantForm').on('submit', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: '@Url.Action("CreateVariant", "Product", new { area = "Admin" })',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#addVariantModal').modal('hide');
+                        $('#addVariantForm')[0].reset();
+                        $('#coverImagePreview').hide();
+                        $('#additionalImagesPreview').empty();
+                        loadVariants();
+                        showAlert('success', response.message || 'Variant added successfully!');
+                    } else {
+                        showAlert('danger', response.message || 'Failed to add variant');
+                    }
+                },
+                error: function () {
+                    showAlert('danger', 'An error occurred while adding variant');
+                }
+            });
+        });
+
+        // EDIT VARIANT BUTTON
+        function editVariant(variantId) {
+            $.get('@Url.Action("GetVariantForEdit", "Product", new { area = "Admin" })',
+                { id: variantId },
+                function (html) {
+                    $('#editVariantContent').html(html);
+                    $('#editVariantModal').modal('show');
+                }).fail(function (xhr) {
+                    showAlert('danger', 'Failed to load variant: ' + xhr.responseText);
+                });
+        }
+
+        // SUBMIT EDIT VARIANT
+        $('#editVariantForm').on('submit', function (e) {
+            e.preventDefault();
+
+            let formData = new FormData(this);
+
+            $.ajax({
+                url: '@Url.Action("UpdateVariant", "Product", new { area = "Admin" })',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                headers: {
+                    'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (response) {
+                    if (response.success) {
+                        $('#editVariantModal').modal('hide');
+                        loadVariants();
+                        showAlert('success', response.message || 'Variant updated successfully!');
+                    } else {
+                        showAlert('danger', response.message || 'Failed to update variant');
+                    }
+                },
+                error: function () {
+                    showAlert('danger', 'An error occurred while updating variant');
+                }
+            });
+        });
+
+        function deleteVariant(variantId, size, color) {
+            if (!confirm(`Are you sure you want to delete variant: ${size} - ${color}?`)) {
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("DeleteVariant", "Product", new { area = "Admin" })',
+                type: 'POST',
+                data: {
+                    id: variantId,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (response) {
+                    if (response.success) {
+                        loadVariants();
+                        showAlert('success', response.message || 'Variant deleted successfully!');
+                    } else {
+                        showAlert('danger', response.message || 'Failed to delete variant');
+                    }
+                },
+                error: function () {
+                    showAlert('danger', 'An error occurred while deleting variant');
+                }
+            });
+        }
+
+        function showAlert(type, message) {
+            let alertHtml = `
+                <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            $('.main-content-wrap').prepend(alertHtml);
+            setTimeout(function () {
+                $('.alert').fadeOut();
+            }, 5000);
+        }
+    </script>
+}
+}
