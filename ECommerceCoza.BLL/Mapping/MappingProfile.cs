@@ -13,6 +13,10 @@ namespace ECommerceCoza.BLL.Mapping
             CreateMap<Category, CategoryCreateViewModel>().ReverseMap();
             CreateMap<Category, CategoryUpdateViewModel>().ReverseMap();
 
+            CreateMap<Brand, BrandViewModel>().ReverseMap();
+            CreateMap<Brand, BrandCreateViewModel>().ReverseMap();
+            CreateMap<Brand, BrandUpdateViewModel>().ReverseMap();
+
             CreateMap<Product, ProductViewModel>()
                 .ForMember(x => x.CategoryName, opt => opt.MapFrom(src => src.Category == null ? "" : src.Category.Name))
                 .ReverseMap();
@@ -49,7 +53,6 @@ namespace ECommerceCoza.BLL.Mapping
             CreateMap<Social, SocialCreateViewModel>().ReverseMap();
             CreateMap<Social, SocialUpdateViewModel>().ReverseMap();
 
-
             CreateMap<Address, AddressViewModel>().ReverseMap();
             CreateMap<Address, AddressCreateViewModel>().ReverseMap();
             CreateMap<Address, AddressUpdateViewModel>().ReverseMap();
@@ -65,8 +68,6 @@ namespace ECommerceCoza.BLL.Mapping
             CreateMap<OrderDetail, OrderDetailViewModel>().ReverseMap();
             CreateMap<OrderDetail, OrderDetailCreateViewModel>().ReverseMap();
             CreateMap<OrderDetail, OrderDetailUpdateViewModel>().ReverseMap();
-
-
         }
     }
 }

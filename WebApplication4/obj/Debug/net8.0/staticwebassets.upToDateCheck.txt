@@ -117,6 +117,7 @@ wwwroot\assets\js\shop-filter.js
 wwwroot\assets\js\shop-sorting.js
 wwwroot\assets\js\theme.js
 wwwroot\favicon.ico
+wwwroot\images\collections\category_1-0411bd12-d009-455a-bb6a-66ca6c93245a-.png
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap.min.css

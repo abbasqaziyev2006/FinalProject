@@ -18,7 +18,18 @@ namespace ECommerceCoza.DAL.DataContext
 
         public async Task Initialize()
         {
-            await _dbContext.Database.MigrateAsync();
+            _dbContext.Database.SetCommandTimeout(120);
+
+            try
+            {
+                await _dbContext.Database.MigrateAsync();
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Migration failed: {ex.Message}");
+                throw;
+            }
         }
     }
 }
