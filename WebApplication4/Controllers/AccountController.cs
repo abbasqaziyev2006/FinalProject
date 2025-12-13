@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using EcommerceCoza.BLL.Services;
 
 namespace EcommerceCoza.MVC.Controllers
 {
@@ -19,8 +20,9 @@ namespace EcommerceCoza.MVC.Controllers
         private readonly IWishlistItemService _wishlistItemService;
         private readonly IProductService _productService;
         private readonly IEmailService _emailService;
+        private readonly BasketManager _basketManager;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, IWishlistItemService userWishlistItemService, IProductService productService, IEmailService emailService)
+        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, IWishlistItemService userWishlistItemService, IProductService productService, IEmailService emailService, BasketManager basketManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -28,6 +30,7 @@ namespace EcommerceCoza.MVC.Controllers
             _wishlistItemService = userWishlistItemService;
             _productService = productService;
             _emailService = emailService;
+            _basketManager = basketManager;
         }
 
 
@@ -100,6 +103,9 @@ namespace EcommerceCoza.MVC.Controllers
                 return View(model);
             }
 
+            // Clear basket before signing in new user
+            _basketManager.CleanBasket();
+
             // Automatically sign in the user after registration
             await _signInManager.SignInAsync(user, isPersistent: false);
 
@@ -154,6 +160,9 @@ namespace EcommerceCoza.MVC.Controllers
                 ModelState.AddModelError("", "Email or password is incorrect.");
                 return View(model);
             }
+
+            // Clear basket when user logs in (account change)
+            _basketManager.CleanBasket();
 
             if (!string.IsNullOrEmpty(model.ReturnUrl))
                 return Redirect(model.ReturnUrl);
@@ -389,6 +398,9 @@ namespace EcommerceCoza.MVC.Controllers
 
         public async Task<IActionResult> Logout()
         {
+            // Clear basket before logging out
+            _basketManager.CleanBasket();
+
             await _signInManager.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
