@@ -740,7 +740,18 @@
             // ============= ADD TO CART =============
             $(document).on('click', '.js-add-cart', function(e) {
                 e.preventDefault();
-                const variantId = $(this).data('variant-id');
+                
+                const $button = $(this);
+                const variantId = $button.data('variant-id');
+
+                if (!variantId) {
+                    console.warn('Product variant ID not found');
+                    return;
+                }
+
+                // Disable button
+                $button.prop('disabled', true);
+                const originalText = $button.text();
 
                 const formData = new FormData();
                 formData.append('productVariantId', variantId);
@@ -752,17 +763,107 @@
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function() {
-                        $.get('/Basket/GetBasket', function(data) {
-                            $('.header__cart-count').text(data.totalCount);
-                        });
-                        alert('@Localizer["ProductAddedToCart"]');
+                    success: function(response) {
+                        // Update cart count
+                        if (response && response.totalCount !== undefined) {
+                            $('.js-cart-items-count, .header__cart-count').text(response.totalCount);
+                            $('.js-cart-items-count, .header__cart-count').show();
+                        } else {
+                            // Fallback: fetch basket count
+                            $.get('/Basket/GetBasket', function(data) {
+                                if (data && data.totalCount !== undefined) {
+                                    $('.js-cart-items-count, .header__cart-count').text(data.totalCount);
+                                }
+                            });
+                        }
+
+                        // Show success notification with localized message
+                        showSuccessNotification('@Localizer["ProductAddedToCart"]');
                     },
-                    error: function() {
-                        alert('@Localizer["ErrorAddingToCart"]');
+                    error: function(xhr, status, error) {
+                        console.error('Error adding to cart:', error);
+                        showErrorNotification('@Localizer["ErrorAddingToCart"]');
+                    },
+                    complete: function() {
+                        // Re-enable button
+                        $button.prop('disabled', false);
+                        $button.text(originalText);
                     }
                 });
             });
+
+            function showSuccessNotification(message) {
+                const toast = $('<div>')
+                    .addClass('basket-toast')
+                    .text(message)
+                    .css({
+                        'position': 'fixed',
+                        'top': '20px',
+                        'right': '20px',
+                        'background': '#28a745',
+                        'color': 'white',
+                        'padding': '15px 25px',
+                        'border-radius': '5px',
+                        'z-index': '10000',
+                        'box-shadow': '0 4px 6px rgba(0,0,0,0.1)',
+                        'animation': 'slideIn 0.3s ease-out'
+                    });
+
+                $('body').append(toast);
+
+                setTimeout(() => {
+                    toast.css('animation', 'slideOut 0.3s ease-out');
+                    setTimeout(() => toast.remove(), 300);
+                }, 2000);
+            }
+
+            function showErrorNotification(message) {
+                const toast = $('<div>')
+                    .addClass('basket-toast')
+                    .text(message)
+                    .css({
+                        'position': 'fixed',
+                        'top': '20px',
+                        'right': '20px',
+                        'background': '#dc3545',
+                        'color': 'white',
+                        'padding': '15px 25px',
+                        'border-radius': '5px',
+                        'z-index': '10000',
+                        'box-shadow': '0 4px 6px rgba(0,0,0,0.1)',
+                        'animation': 'slideIn 0.3s ease-out'
+                    });
+
+                $('body').append(toast);
+
+                setTimeout(() => {
+                    toast.css('animation', 'slideOut 0.3s ease-out');
+                    setTimeout(() => toast.remove(), 300);
+                }, 2000);
+            }
         });
     </script>
+
+    <style>
+        @@keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @@keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    </style>
 }
