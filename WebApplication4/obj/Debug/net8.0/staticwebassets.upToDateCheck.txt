@@ -123,7 +123,13 @@ wwwroot\images\collections\category_1-0411bd12-d009-455a-bb6a-66ca6c93245a-.png
 wwwroot\images\collections\category_6-3597417e-76e7-4eea-aa21-822b43172d99-.png
 wwwroot\images\collections\product-0-1-5ff7dc49-e37d-4b55-8c84-4d99d63df8bd-.jpg
 wwwroot\images\collections\slideshow-character1-501ddcc6-f4c7-4e64-90c0-7f7a2ebb000a-.png
+wwwroot\images\products\category_4-d73b14b1-1cea-4890-98f0-12848303efdf-.png
+wwwroot\images\products\category_6-e4c85ed6-0d6a-4726-91e5-bae654c5f1c3-.png
+wwwroot\images\products\category_7-3907a86a-f08a-42ca-a78b-f217b95a4353-.png
 wwwroot\images\products\category_9-c08f16e9-4339-42bc-9acb-824696b06859-.jpg
+wwwroot\images\products\product-2-1-bf17eb3e-72ff-4c88-bd1b-5bf202d7bed1-.jpg
+wwwroot\images\products\product-3-1-9f0ebaa2-4471-4bf1-8749-d5f7ebdbf650-.jpg
+wwwroot\images\products\product-3-1-fdd90bd1-e156-4b59-bf86-4742cd68e909-.jpg
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap.min.css

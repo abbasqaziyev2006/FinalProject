@@ -133,6 +133,18 @@
                             </p>
                         </div>
 
+                        <!-- Discount Info -->
+                        <div id="discount-info" class="alert alert-success d-none mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong id="discount-code"></strong>
+                                    <div class="small">@Localizer["Discount"]: <span id="discount-percentage"></span>%</div>
+                                    <div class="small text-success">-<span id="discount-amount"></span></div>
+                                </div>
+                                <button type="button" class="btn-close" id="remove-coupon"></button>
+                            </div>
+                        </div>
+
                         <hr>
 
                         <!-- Coupon Code -->
@@ -145,8 +157,10 @@
                                 @Localizer["EnterCouponCode"]
                             </a>
                             <div class="collapse mt-3" id="couponCollapse">
-                                <form asp-action="ApplyCoupon" method="post" class="d-flex gap-2">
+                                <form id="coupon-form" class="d-flex gap-2">
+                                    @Html.AntiForgeryToken()
                                     <input type="text"
+                                           id="coupon-code-input"
                                            name="couponCode"
                                            class="form-control"
                                            placeholder="@Localizer["EnterCode"]"
@@ -155,6 +169,7 @@
                                         @Localizer["Apply"]
                                     </button>
                                 </form>
+                                <div id="coupon-message" class="mt-2"></div>
                             </div>
                         </div>
                     </div>
@@ -203,6 +218,7 @@
     <script>
         $(document).ready(function () {
             const currencySymbol = '@CurrencyService.GetSymbol()';
+            let appliedCoupon = null;
 
             // Increase quantity
             $(document).on('click', '.qty-increase', function () {
@@ -219,7 +235,7 @@
                 if (currentQty > 1) {
                     changeQuantity(variantId, -1);
                 } else {
-                    if (confirm('@Localizer["AreYouSureToRemove"]')) {
+                    if (confirm('@Localizer["AreYoureSureToRemove"]')) {
                         removeItem(variantId);
                     }
                 }
@@ -231,6 +247,63 @@
                 if (confirm('@Localizer["AreYouSureToRemove"]')) {
                     removeItem(variantId);
                 }
+            });
+
+                // Apply coupon
+        $('#coupon-form').on('submit', function (e) {
+            e.preventDefault();
+
+            const couponCode = $('#coupon-code-input').val().trim();
+
+            if (!couponCode) {
+                showCouponMessage('@Localizer["EnterCouponCode"]', 'danger');
+                return;
+            }
+
+            $.ajax({
+                url: '@Url.Action("ApplyCoupon", "Basket")',
+                type: 'POST',
+                data: {
+                    couponCode: couponCode,
+                    __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
+                },
+                success: function (response) {
+                    if (response && response.success) {
+
+                        appliedCoupon = {
+                            code: response.code,
+                            salePercentage: response.salePercentage,
+                            discountAmount: response.discountAmount,
+                            finalPrice: response.finalPrice,
+                            originalPrice: response.originalPrice
+                        };
+
+                        updatePricesWithDiscount(appliedCoupon);
+                        showCouponMessage('@Localizer["CouponAppliedSuccessfully"]', 'success');
+
+                        $('#coupon-code-input').val('');
+                        $('#couponCollapse').collapse('hide');
+
+                    } else {
+                        showCouponMessage(
+                            response?.message || '@Localizer["InvalidCouponCode"]',
+                            'danger'
+                        );
+                    }
+                },
+                error: function (xhr) {
+                    console.error(xhr.responseText);
+                    showCouponMessage('@Localizer["CouponApplyError"]', 'danger');
+                }
+            });
+        });
+
+
+            // Remove coupon
+            $('#remove-coupon').on('click', function () {
+                appliedCoupon = null;
+                $('#discount-info').addClass('d-none');
+                updateTotals();
             });
 
             function changeQuantity(variantId, change) {
@@ -295,9 +368,37 @@
 
                             // Update header cart count
                             $('.js-cart-items-count').text(data.totalCount || 0);
+
+                            // Reapply discount if exists
+                            if (appliedCoupon) {
+                                const discountAmount = (data.totalPrice * appliedCoupon.salePercentage) / 100;
+                                const finalPrice = data.totalPrice - discountAmount;
+                                appliedCoupon.discountAmount = Math.round(discountAmount, 2);
+                                appliedCoupon.finalPrice = Math.round(finalPrice, 2);
+                                appliedCoupon.originalPrice = data.totalPrice;
+                                updatePricesWithDiscount(appliedCoupon);
+                            }
                         }
                     }
                 });
+            }
+
+            function updatePricesWithDiscount(discount) {
+                $('#discount-info').removeClass('d-none');
+                $('#discount-code').text(discount.code);
+                $('#discount-percentage').text(discount.salePercentage);
+                $('#discount-amount').text(currencySymbol + ' ' + discount.discountAmount.toFixed(2));
+
+                const finalFormatted = currencySymbol + ' ' + discount.finalPrice.toFixed(2);
+                $('#cart-subtotal').html('<span class="text-decoration-line-through text-muted me-2">' +
+                    currencySymbol + ' ' + discount.originalPrice.toFixed(2) + '</span>' + finalFormatted);
+            }
+
+            function showCouponMessage(message, type) {
+                $('#coupon-message')
+                    .removeClass('text-danger text-success')
+                    .addClass('text-' + type)
+                    .html('<small>' + message + '</small>');
             }
         });
     </script>

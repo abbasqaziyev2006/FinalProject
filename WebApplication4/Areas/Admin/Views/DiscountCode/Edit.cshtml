@@ -1,0 +1,83 @@
+@model EcommerceCoza.BLL.ViewModels.DiscountCodeUpdateViewModel
+
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Edit Discount Code";
+}
+
+<div class="main-content">
+    <div class="main-content-inner">
+        <div class="main-content-wrap">
+            <div class="flex items-center flex-wrap justify-between gap20 mb-27">
+                <h3>Edit Coupon</h3>
+                <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
+                    <li>
+                        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                            <div class="text-tiny">Dashboard</div>
+                        </a>
+                    </li>
+                    <li>
+                        <i class="icon-chevron-right"></i>
+                    </li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="DiscountCode" asp-action="Index">
+                            <div class="text-tiny">Coupons</div>
+                        </a>
+                    </li>
+                    <li>
+                        <i class="icon-chevron-right"></i>
+                    </li>
+                    <li>
+                        <div class="text-tiny">Edit Coupon</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="wg-box">
+                <form asp-area="Admin" asp-controller="DiscountCode" asp-action="Edit" method="post" class="form-new-product form-style-1">
+                    <input type="hidden" asp-for="Id" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <fieldset class="name">
+                        <div class="body-title">Coupon Code <span class="tf-color-1">*</span></div>
+                        <input asp-for="Code" class="flex-grow" type="text" placeholder="Enter Coupon Code" 
+                               tabindex="0" aria-required="true">
+                        <span asp-validation-for="Code" class="text-danger"></span>
+                    </fieldset>
+
+                    <fieldset class="name">
+                        <div class="body-title">Discount Percentage <span class="tf-color-1">*</span></div>
+                        <input asp-for="SalePercentage" class="flex-grow" type="number" min="1" max="100" 
+                               placeholder="Enter discount percentage (1-100)" 
+                               tabindex="0" aria-required="true">
+                        <span asp-validation-for="SalePercentage" class="text-danger"></span>
+                    </fieldset>
+
+                    <fieldset class="category">
+                        <div class="body-title">Status</div>
+                        <div class="select flex-grow">
+                            <select asp-for="IsActive" class="">
+                                <option value="true">Active</option>
+                                <option value="false">Inactive</option>
+                            </select>
+                        </div>
+                        <span asp-validation-for="IsActive" class="text-danger"></span>
+                    </fieldset>
+
+                    <div class="bot">
+                        <a asp-area="Admin" asp-controller="DiscountCode" asp-action="Index" class="tf-button style-1 w208">Cancel</a>
+                        <button class="tf-button w208" type="submit">Update Coupon</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-page">
+        <div class="body-text">Copyright © 2024 SurfsideMedia</div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

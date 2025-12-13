@@ -4,7 +4,7 @@
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 <main class="pt-90">
-    <div class="mb-md-1 pb-md-3"></div>
+    <div class="mb-5 pb-5"></div>
     <section class="product-single container">
         <div class="row">
             <div class="col-lg-7">
@@ -142,12 +142,6 @@
                 <div class="product-single__price">
                     <span class="current-price">@CurrencyService.Format(Model.BasePrice)</span>
                 </div>
-                @if (!string.IsNullOrEmpty(Model.Description))
-                {
-                    <div class="product-single__short-desc">
-                        <p>@Model.Description</p>
-                    </div>
-                }
                 <form name="addtocart-form" method="post" id="addToCartForm">
                     @if (Model.ProductVariants.Any())
                     {
@@ -228,7 +222,7 @@
                     </div>
                 </form>
                 <div class="product-single__addtolinks">
-                    <a href="#" class="menu-link menu-link_us-s add-to-wishlist" data-product-id="@Model.Id">
+                    <a href="#" class="menu-link menu-link_us-s js-add-wishlist @(Model.IsInWishlist ? "active" : "")" data-product-id="@Model.Id">
                         <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <use href="#icon_heart" />
                         </svg><span>@Localizer["Add To Wishlist"]</span>
@@ -291,11 +285,13 @@
                     <div class="product-single__description">
                         @if (!string.IsNullOrEmpty(Model.Description))
                         {
-                            @Html.Raw(Model.Description)
+                            <div class="product-description-content">
+                                @Html.Raw(Model.Description)
+                            </div>
                         }
                         else
                         {
-                            <p>@Localizer["NoDescriptionAvailable"]</p>
+                            <p class="text-muted">@Localizer["NoDescriptionAvailable"]</p>
                         }
                     </div>
                 </div>
@@ -303,11 +299,52 @@
                     <div class="product-single__addtional-info">
                         @if (!string.IsNullOrEmpty(Model.AdditionalInformation))
                         {
-                            @Html.Raw(Model.AdditionalInformation)
+                            <div class="additional-info-content">
+                                @Html.Raw(Model.AdditionalInformation)
+                            </div>
                         }
                         else
                         {
-                            <p>@Localizer["NoAdditionalInformationAvailable"]</p>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <tbody>
+                                        @if (Model.Brand != null)
+                                        {
+                                            <tr>
+                                                <th class="bg-light" style="width: 200px;">@Localizer["Brand"]</th>
+                                                <td>@Model.Brand.Name</td>
+                                            </tr>
+                                        }
+                                        @if (Model.Category != null)
+                                        {
+                                            <tr>
+                                                <th class="bg-light">@Localizer["Category"]</th>
+                                                <td>@Model.Category.Name</td>
+                                            </tr>
+                                        }
+                                        @if (Model.ProductVariants.Any())
+                                        {
+                                            var uniqueSizes = Model.ProductVariants.Where(v => !string.IsNullOrEmpty(v.Size)).Select(v => v.Size).Distinct();
+                                            if (uniqueSizes.Any())
+                                            {
+                                                <tr>
+                                                    <th class="bg-light">@Localizer["Available Sizes"]</th>
+                                                    <td>@string.Join(", ", uniqueSizes)</td>
+                                                </tr>
+                                            }
+
+                                            var uniqueColors = Model.ProductVariants.Select(v => v.ColorName).Distinct();
+                                            if (uniqueColors.Any())
+                                            {
+                                                <tr>
+                                                    <th class="bg-light">@Localizer["Available Colors"]</th>
+                                                    <td>@string.Join(", ", uniqueColors)</td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
                         }
                     </div>
                 </div>

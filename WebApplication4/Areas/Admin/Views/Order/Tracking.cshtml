@@ -39,7 +39,7 @@
                 {
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
                         <i class="icon-alert-triangle"></i> @TempData["Error"]
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 }
 
@@ -54,7 +54,7 @@
                                name="orderId"
                                value="@(Model?.Id ?? 0)"
                                class="form-control"
-                               placeholder="Enter Order ID (e.g., 1234)" />
+                               placeholder="Enter Order ID" />
                     </div>
 
                     <div class="col-md-6">
@@ -76,31 +76,31 @@
 
             @if (Model != null)
             {
-                <!-- Order Summary Card -->
+                <!-- Order Summary -->
                 <div class="wg-box mb-4">
-                    <div class="row">
+                    <div class="row g-3">
                         <div class="col-md-3">
-                            <div class="block-legend">
-                                <h6 class="mb-2">Order Number</h6>
-                                <div class="text-title">#@Model.Id</div>
+                            <div class="order-info-card">
+                                <h6>Order Number</h6>
+                                <div class="info-value">#@Model.Id</div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="block-legend">
-                                <h6 class="mb-2">Order Date</h6>
-                                <div class="text-title">@Model.FormattedCreatedAt</div>
+                            <div class="order-info-card">
+                                <h6>Order Date</h6>
+                                <div class="info-value">@Model.FormattedCreatedAt</div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="block-legend">
-                                <h6 class="mb-2">Total Amount</h6>
-                                <div class="text-title">@Model.EndPrice.ToString("C")</div>
+                            <div class="order-info-card">
+                                <h6>Total Amount</h6>
+                                <div class="info-value">@Model.EndPrice.ToString("C")</div>
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="block-legend">
-                                <h6 class="mb-2">Status</h6>
-                                <div class="text-title">
+                            <div class="order-info-card">
+                                <h6>Status</h6>
+                                <div class="info-value">
                                     @switch (Model.OrderStatus)
                                     {
                                         case OrderStatus.InProgress:
@@ -131,54 +131,56 @@
                 <!-- Timeline -->
                 <div class="wg-box mb-4">
                     <h5 class="mb-4">Order Status Timeline</h5>
-                    <ul class="timeline">
+                    <ul class="order-timeline">
                         <!-- Order Placed -->
                         <li class="timeline-item completed">
-                            <div class="timeline-icon"><i class="icon-check"></i></div>
-                            <div class="timeline-content">
+                            <div class="timeline-marker">
+                                <i class="icon-check"></i>
+                            </div>
+                            <div class="timeline-info">
                                 <strong>Order Placed</strong>
-                                <div class="timeline-time">@Model.FormattedCreatedAt</div>
+                                <span class="timeline-date">@Model.FormattedCreatedAt</span>
                             </div>
                         </li>
 
                         <!-- In Progress -->
                         <li class="timeline-item @(Model.OrderStatus >= OrderStatus.InProgress ? "completed" : "pending")">
-                            <div class="timeline-icon">
+                            <div class="timeline-marker">
                                 <i class="@(Model.OrderStatus == OrderStatus.InProgress ? "icon-clock" : "icon-check")"></i>
                             </div>
-                            <div class="timeline-content">
+                            <div class="timeline-info">
                                 <strong>In Progress</strong>
                                 @if (Model.OrderStatus == OrderStatus.InProgress)
                                 {
-                                    <div class="timeline-time">Processing your order...</div>
+                                    <span class="timeline-date">Processing your order...</span>
                                 }
                             </div>
                         </li>
 
                         <!-- Completed -->
                         <li class="timeline-item @(Model.OrderStatus >= OrderStatus.Completed ? "completed" : Model.OrderStatus == OrderStatus.Cancelled ? "skipped" : "pending")">
-                            <div class="timeline-icon">
+                            <div class="timeline-marker">
                                 <i class="@(Model.OrderStatus >= OrderStatus.Completed ? "icon-check" : "icon-package")"></i>
                             </div>
-                            <div class="timeline-content">
+                            <div class="timeline-info">
                                 <strong>Order Completed</strong>
                                 @if (Model.OrderStatus == OrderStatus.Completed)
                                 {
-                                    <div class="timeline-time">Ready for delivery</div>
+                                    <span class="timeline-date">Ready for delivery</span>
                                 }
                             </div>
                         </li>
 
                         <!-- Delivered -->
                         <li class="timeline-item @(Model.OrderStatus == OrderStatus.Delivered ? "completed" : Model.OrderStatus == OrderStatus.Cancelled ? "skipped" : "pending")">
-                            <div class="timeline-icon">
+                            <div class="timeline-marker">
                                 <i class="@(Model.OrderStatus == OrderStatus.Delivered ? "icon-check" : "icon-truck")"></i>
                             </div>
-                            <div class="timeline-content">
+                            <div class="timeline-info">
                                 <strong>Delivered</strong>
                                 @if (!string.IsNullOrEmpty(Model.FormattedDeliveredDate))
                                 {
-                                    <div class="timeline-time">@Model.FormattedDeliveredDate</div>
+                                    <span class="timeline-date">@Model.FormattedDeliveredDate</span>
                                 }
                             </div>
                         </li>
@@ -187,12 +189,14 @@
                         @if (Model.OrderStatus == OrderStatus.Cancelled)
                         {
                             <li class="timeline-item cancelled">
-                                <div class="timeline-icon"><i class="icon-x"></i></div>
-                                <div class="timeline-content">
+                                <div class="timeline-marker">
+                                    <i class="icon-x"></i>
+                                </div>
+                                <div class="timeline-info">
                                     <strong>Order Cancelled</strong>
                                     @if (!string.IsNullOrEmpty(Model.FormattedCanceledDate))
                                     {
-                                        <div class="timeline-time">@Model.FormattedCanceledDate</div>
+                                        <span class="timeline-date">@Model.FormattedCanceledDate</span>
                                     }
                                 </div>
                             </li>
@@ -202,22 +206,24 @@
                         @if (Model.OrderStatus == OrderStatus.OnHold)
                         {
                             <li class="timeline-item on-hold">
-                                <div class="timeline-icon"><i class="icon-pause"></i></div>
-                                <div class="timeline-content">
+                                <div class="timeline-marker">
+                                    <i class="icon-pause"></i>
+                                </div>
+                                <div class="timeline-info">
                                     <strong>On Hold</strong>
-                                    <div class="timeline-time">Order is temporarily on hold</div>
+                                    <span class="timeline-date">Order is temporarily on hold</span>
                                 </div>
                             </li>
                         }
                     </ul>
                 </div>
 
-                <!-- Order Details -->
+                <!-- Order Items -->
                 <div class="wg-box mb-4">
                     <h5 class="mb-4">Order Items</h5>
 
                     <div class="table-responsive">
-                        <table class="table table-bordered table-striped">
+                        <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th style="width: 50px">#</th>
@@ -238,7 +244,7 @@
                                         <tr>
                                             <td class="text-center">@index</td>
                                             <td>
-                                                <div class="fw-bold">@(item.ProductVariant?.ProductName ?? "N/A")</div>
+                                                <div class="fw-semibold">@(item.ProductVariant?.ProductName ?? "N/A")</div>
                                             </td>
                                             <td>
                                                 @if (!string.IsNullOrEmpty(item.ProductVariant?.ColorName))
@@ -249,15 +255,14 @@
                                                 {
                                                     <span class="badge bg-secondary">@item.ProductVariant.Size</span>
                                                 }
-                                                @if (string.IsNullOrEmpty(item.ProductVariant?.ColorName) &&
-                                                                                    string.IsNullOrEmpty(item.ProductVariant?.Size))
+                                                @if (string.IsNullOrEmpty(item.ProductVariant?.ColorName) && string.IsNullOrEmpty(item.ProductVariant?.Size))
                                                 {
                                                     <span class="text-muted">Default</span>
                                                 }
                                             </td>
                                             <td class="text-center">@item.Quantity</td>
                                             <td class="text-end">@unitPrice.ToString("C")</td>
-                                            <td class="text-end fw-bold">@item.TotalPrice.ToString("C")</td>
+                                            <td class="text-end fw-semibold">@item.TotalPrice.ToString("C")</td>
                                         </tr>
                                         index++;
                                     }
@@ -271,7 +276,7 @@
                                     </tr>
                                 }
                             </tbody>
-                            <tfoot class="table-light">
+                            <tfoot>
                                 <tr>
                                     <th colspan="5" class="text-end">Subtotal:</th>
                                     <th class="text-end">@Model.TotalPrice.ToString("C")</th>
@@ -280,9 +285,7 @@
                                 {
                                     <tr>
                                         <th colspan="5" class="text-end">Discount:</th>
-                                        <th class="text-end text-success">
-                                            -@Model.DiscountAmount.ToString("C")
-                                        </th>
+                                        <th class="text-end text-success">-@Model.DiscountAmount.ToString("C")</th>
                                     </tr>
                                 }
                                 <tr>
@@ -291,76 +294,58 @@
                                 </tr>
                                 <tr class="table-active">
                                     <th colspan="5" class="text-end fs-5">Total:</th>
-                                    <th class="text-end fs-5 text-primary">
-                                        @Model.EndPrice.ToString("C")
-                                    </th>
+                                    <th class="text-end fs-5 text-primary">@Model.EndPrice.ToString("C")</th>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
                 </div>
 
-                <!-- Shipping & Payment Information -->
-                <div class="row">
-                    <!-- Shipping Address -->
+                <!-- Shipping & Payment -->
+                <div class="row g-4">
                     <div class="col-md-6">
-                        <div class="wg-box">
+                        <div class="wg-box h-100">
                             <h6 class="mb-3">
                                 <i class="icon-map-pin"></i> Shipping Address
                             </h6>
                             @if (Model.Address != null)
                             {
-                                <p class="mb-1">
-                                    <strong>
-                                        @((Model.Address.FirstName ?? "") + " " + (Model.Address.LastName ?? ""))
-                                    </strong>
+                                <p class="mb-2">
+                                    <strong>@((Model.Address.FirstName ?? "") + " " + (Model.Address.LastName ?? ""))</strong>
                                 </p>
-
-                                @* Address line *@
                                 @if (!string.IsNullOrWhiteSpace(Model.Address.Adress))
                                 {
-                                    <p class="mb-1">@Model.Address.Adress</p>
+                                    <p class="mb-2">@Model.Address.Adress</p>
                                 }
-
-                                @* City + PostalCode *@
-                                <p class="mb-1">
-                                    @(Model.Address.City ?? "")@(
-                                    !string.IsNullOrWhiteSpace(Model.Address.City)
-                                    && !string.IsNullOrWhiteSpace(Model.Address.PostalCode)
-                                    ? ", "
-                                    : ""
-                                                        )@(Model.Address.PostalCode ?? "")
-                            </p>
-
-                                @* Country *@
-                        @if (!string.IsNullOrWhiteSpace(Model.Address.Country))
+                                <p class="mb-2">
+                                    @(Model.Address.City ?? "")@(!string.IsNullOrWhiteSpace(Model.Address.City) && !string.IsNullOrWhiteSpace(Model.Address.PostalCode) ? ", " : "")@(Model.Address.PostalCode ?? "")
+                                </p>
+                                @if (!string.IsNullOrWhiteSpace(Model.Address.Country))
                                 {
-                                    <p class="mb-1">@Model.Address.Country</p>
+                                    <p class="mb-2">@Model.Address.Country</p>
                                 }
-
                                 <p class="mb-0">
                                     <i class="icon-phone"></i> @Model.Phone
                                 </p>
                             }
                             else
                             {
-                                <p class="text-muted">No address information available</p>
+                                <p class="text-muted">No address information</p>
                             }
                         </div>
                     </div>
 
-                    <!-- Payment & Additional Info -->
                     <div class="col-md-6">
-                        <div class="wg-box">
+                        <div class="wg-box h-100">
                             <h6 class="mb-3">
-                                <i class="icon-credit-card"></i> Payment & Additional Information
+                                <i class="icon-credit-card"></i> Payment Information
                             </h6>
                             <p class="mb-2">
                                 <strong>Payment Method:</strong>
                                 @switch (Model.PaymentMethod)
                                 {
                                     case PaymentMethod.DirectBankTransfer:
-                                        <span class="badge bg-info">Direct Bank Transfer</span>
+                                        <span class="badge bg-info">Bank Transfer</span>
                                         break;
                                     case PaymentMethod.CashOnDelivery:
                                         <span class="badge bg-warning text-dark">Cash on Delivery</span>
@@ -385,7 +370,7 @@
                             {
                                 <div class="mt-3">
                                     <strong>Order Notes:</strong>
-                                    <p class="p-2 bg-light border rounded">@Model.Note</p>
+                                    <p class="p-2 bg-light border rounded mt-2">@Model.Note</p>
                                 </div>
                             }
                         </div>
@@ -396,7 +381,7 @@
             {
                 <div class="wg-box text-center py-5">
                     <i class="icon-search" style="font-size: 48px; color: #ccc;"></i>
-                    <p class="text-muted mt-3">Enter Order ID and Email to track your order</p>
+                    <p class="text-muted mt-3">Enter Order ID and Email to track order</p>
                 </div>
             }
         </div>
@@ -404,194 +389,193 @@
 </div>
 
 <style>
-    .timeline {
-        list-style: none;
-        padding-left: 0;
-        position: relative;
-        padding: 20px 0;
+    .wg-box {
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        transition: all 0.3s ease;
     }
 
-        .timeline::before {
-            content: "";
-            position: absolute;
-            left: 18px;
-            top: 0;
-            width: 3px;
-            height: 100%;
-            background: linear-gradient(180deg, #e0e0e0 0%, #f5f5f5 100%);
-        }
+    .wg-box:hover {
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .order-info-card {
+        padding: 20px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        border-radius: 10px;
+        border-left: 4px solid #007bff;
+        height: 100%;
+    }
+
+    .order-info-card h6 {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #6c757d;
+        font-weight: 600;
+        margin-bottom: 10px;
+        letter-spacing: 0.5px;
+    }
+
+    .order-info-card .info-value {
+        font-size: 18px;
+        font-weight: 700;
+        color: #2c3e50;
+    }
+
+    /* Timeline Styles */
+    .order-timeline {
+        list-style: none;
+        padding: 20px 0;
+        margin: 0;
+        position: relative;
+    }
+
+    .order-timeline::before {
+        content: "";
+        position: absolute;
+        left: 20px;
+        top: 0;
+        width: 3px;
+        height: 100%;
+        background: linear-gradient(180deg, #e0e0e0 0%, #f5f5f5 100%);
+    }
 
     .timeline-item {
         display: flex;
         align-items: flex-start;
-        margin-bottom: 30px;
+        margin-bottom: 35px;
         position: relative;
-        padding-left: 20px;
     }
 
-        .timeline-item .timeline-icon {
-            width: 40px;
-            height: 40px;
-            background: #e9ecef;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-            margin-right: 20px;
-            flex-shrink: 0;
-            border: 3px solid #fff;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
-        }
+    .timeline-item:last-child {
+        margin-bottom: 0;
+    }
 
-        .timeline-item.completed .timeline-icon {
-            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-            color: white;
-            animation: pulse 2s infinite;
-        }
+    .timeline-marker {
+        width: 42px;
+        height: 42px;
+        background: #e9ecef;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 2;
+        margin-right: 20px;
+        flex-shrink: 0;
+        border: 4px solid #fff;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+        transition: all 0.3s ease;
+    }
 
-        .timeline-item.pending .timeline-icon {
-            background: #f8f9fa;
-            color: #6c757d;
-            border-color: #dee2e6;
-        }
+    .timeline-item.completed .timeline-marker {
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: white;
+        animation: pulse 2s infinite;
+    }
 
-        .timeline-item.cancelled .timeline-icon {
-            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
-            color: white;
-        }
+    .timeline-item.pending .timeline-marker {
+        background: #f8f9fa;
+        color: #adb5bd;
+        border-color: #dee2e6;
+    }
 
-        .timeline-item.on-hold .timeline-icon {
-            background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
-            color: white;
-        }
+    .timeline-item.cancelled .timeline-marker {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+        color: white;
+    }
 
-        .timeline-item.skipped .timeline-icon {
-            background: #e9ecef;
-            color: #adb5bd;
-            opacity: 0.5;
-        }
+    .timeline-item.on-hold .timeline-marker {
+        background: linear-gradient(135deg, #ffc107 0%, #ff9800 100%);
+        color: white;
+    }
 
-    .timeline-content {
+    .timeline-item.skipped .timeline-marker {
+        background: #e9ecef;
+        color: #adb5bd;
+        opacity: 0.4;
+    }
+
+    .timeline-info {
         flex: 1;
+        padding-top: 8px;
     }
 
-        .timeline-content strong {
-            display: block;
-            font-size: 16px;
-            margin-bottom: 5px;
-            color: #2c3e50;
-        }
+    .timeline-info strong {
+        display: block;
+        font-size: 16px;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 5px;
+    }
 
-    .timeline-time {
+    .timeline-date {
         font-size: 13px;
         color: #6c757d;
-        margin-top: 4px;
+        display: block;
     }
 
     @@keyframes pulse {
         0%, 100% {
             transform: scale(1);
+            box-shadow: 0 3px 8px rgba(0,0,0,0.12);
         }
-
         50% {
-            transform: scale(1.05);
+            transform: scale(1.08);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
         }
     }
 
-    {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
-
-    }
-
-    .wg-box {
-        background: #fff;
-        border-radius: 8px;
-        padding: 24px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-
-        .wg-box h5,
-        .wg-box h6 {
-            color: #2c3e50;
-            font-weight: 600;
-        }
-
-    .block-legend {
-        padding: 15px;
-        background: #f8f9fa;
-        border-radius: 6px;
-        border-left: 4px solid #007bff;
-    }
-
-        .block-legend h6 {
-            font-size: 12px;
-            text-transform: uppercase;
-            color: #6c757d;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .block-legend .text-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
+    /* Table Styles */
     .table {
         margin-bottom: 0;
     }
 
-        .table thead th {
-            background: #f8f9fa;
-            border-bottom: 2px solid #dee2e6;
-            font-weight: 600;
-            color: #495057;
-        }
+    .table thead th {
+        background: #f8f9fa;
+        border-bottom: 2px solid #dee2e6;
+        font-weight: 600;
+        color: #495057;
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-        .table tbody tr:hover {
-            background-color: #f8f9fa;
-        }
+    .table tbody tr {
+        transition: background-color 0.2s ease;
+    }
 
+    .table tbody tr:hover {
+        background-color: #f8f9fa;
+    }
+
+    .table tfoot {
+        background: #f8f9fa;
+    }
+
+    .table tfoot th {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    /* Responsive */
     @@media (max-width: 768px) {
-        .timeline-item {
-            margin-bottom: 25px;
+        .order-info-card .info-value {
+            font-size: 16px;
         }
 
-        .timeline-content strong {
+        .timeline-marker {
+            width: 38px;
+            height: 38px;
+        }
+
+        .timeline-info strong {
             font-size: 14px;
         }
 
-        .timeline-time {
+        .timeline-date {
             font-size: 12px;
         }
-
-        .block-legend .text-title {
-            font-size: 16px;
-        }
     }
-
-    {
-        margin-bottom: 25px;
-    }
-
-    .timeline-content strong {
-        font-size: 14px;
-    }
-
-    .timeline-time {
-        font-size: 12px;
-    }
-
-    .block-legend .text-title {
-        font-size: 16px;
-    }
-
-    }
-</style>
+</style

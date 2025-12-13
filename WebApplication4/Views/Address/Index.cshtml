@@ -1,9 +1,9 @@
 ﻿@using EcommerceCoza.BLL.ViewModels
 @model List<AddressViewModel>
 <main class="pt-90">
-    <div class="mb-4 pb-4"></div>
+    <div class="mb-5 pb-5"></div>
     <section class="my-account container">
-        <h2 class="page-title">Addresses</h2>
+        <h2 class="page-title mt-4 mb-5">Addresses</h2>
         <div class="row">
             <div class="col-lg-3">
                 <ul class="account-nav">
@@ -44,11 +44,23 @@
                                         <a asp-controller="Address" asp-action="Edit" asp-route-id="@a.Id">Edit</a>
                                     </div>
                                     <div class="my-account__address-item__detail">
-                                        @if (!string.IsNullOrWhiteSpace(a.Company)) { <p>@a.Company</p> }
-                                        @if (!string.IsNullOrWhiteSpace(a.Adress)) { <p>@a.Adress</p> }
+                                        @if (!string.IsNullOrWhiteSpace(a.Company))
+                                        {
+                                            <p>@a.Company</p>
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(a.Adress))
+                                        {
+                                            <p>@a.Adress</p>
+                                        }
                                         <p>@a.City@((!string.IsNullOrWhiteSpace(a.City) && !string.IsNullOrWhiteSpace(a.Country)) ? ", " : "")@a.Country</p>
-                                        @if (!string.IsNullOrWhiteSpace(a.PostalCode)) { <p>@a.PostalCode</p> }
-                                        @if (!string.IsNullOrWhiteSpace(a.Phone)) { <p>Mobile : @a.Phone</p> }
+                                        @if (!string.IsNullOrWhiteSpace(a.PostalCode))
+                                        {
+                                            <p>@a.PostalCode</p>
+                                        }
+                                        @if (!string.IsNullOrWhiteSpace(a.Phone))
+                                        {
+                                            <p>Mobile : @a.Phone</p>
+                                        }
                                     </div>
                                 </div>
                             }

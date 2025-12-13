@@ -41,7 +41,9 @@ namespace ECommerceCoza.BLL.Mapping
             CreateMap<Order, OrderCreateViewModel>().ReverseMap();
             CreateMap<Order, OrderUpdateViewModel>().ReverseMap();
 
-            CreateMap<DiscountCode, DiscountCodeViewModel>().ReverseMap();
+            CreateMap<DiscountCode, DiscountCodeViewModel>()
+                .ForMember(x => x.CreatedDate, opt => opt.MapFrom(src => src.CreatedAt))
+                .ReverseMap();
             CreateMap<DiscountCode, DiscountCodeCreateViewModel>().ReverseMap();
             CreateMap<DiscountCode, DiscountCodeUpdateViewModel>().ReverseMap();
 

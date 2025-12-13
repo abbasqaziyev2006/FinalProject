@@ -3,9 +3,9 @@
 @inject WebApplication4.Services.ICurrencyService CurrencyService
 
 <main class="pt-90">
-    <div class="mb-4 pb-4"></div>
+    <div class="mb-5 pb-5"></div>
     <section class="my-account container">
-        <h2 class="page-title">Wishlist</h2>
+        <h2 class="page-title mt-4 mb-5">Wishlist</h2>
 
         <form class="mb-4" onsubmit="return false;">
             <div class="d-flex gap-2 align-items-center" style="max-width:420px;">
@@ -102,14 +102,11 @@
                             No matching items
                         </div>
 
-                        @if (Model.Items.Count > 6)
-                        {
-                            <div class="text-center mt-3">
-                                <button id="wishlistLoadMore" type="button" class="btn btn-outline-secondary btn-sm px-4">
-                                    Load More
-                                </button>
+                        <div id="wishlistLoading" class="text-center mt-4 d-none">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">Loading...</span>
                             </div>
-                        }
+                        </div>
                     </div>
                 }
                 else
@@ -132,83 +129,124 @@
 
 @section Scripts {
     <script>
-        // Simple search and load more functionality
+        // Infinite scroll and search functionality
         (function () {
             const input = document.getElementById('wishlistSearchInput');
             const btn = document.getElementById('wishlistSearchBtn');
             const grid = document.getElementById('products-grid');
             const noResults = document.getElementById('wishlistNoResults');
-            const loadMore = document.getElementById('wishlistLoadMore');
+            const loading = document.getElementById('wishlistLoading');
 
             if (!grid) return;
 
             let cards = Array.from(grid.querySelectorAll('.product-card-wrapper'));
-            const initialVisible = 6;
+            const itemsPerLoad = 6;
+            let currentlyVisible = 0;
+            let isSearching = false;
+            let isLoading = false;
 
-            function initHide() {
-                if (cards.length <= initialVisible) {
-                    if (loadMore) loadMore.style.display = 'none';
-                    return;
+            // Initialize by showing first batch
+            function init() {
+                hideAllCards();
+                showNextBatch();
+                setupInfiniteScroll();
+            }
+
+            // Hide all cards initially
+            function hideAllCards() {
+                cards.forEach(c => c.classList.add('d-none'));
+            }
+
+            // Show next batch of items
+            function showNextBatch() {
+                if (isSearching || isLoading) return;
+
+                const hidden = cards.filter(c =>
+                    c.classList.contains('d-none') &&
+                    c.style.display !== 'none'
+                );
+
+                if (hidden.length === 0) {
+                    return false; // No more items to show
                 }
-                cards.forEach((c, i) => {
-                    if (i >= initialVisible) {
-                        c.classList.add('d-none');
-                    }
+
+                isLoading = true;
+                if (loading) loading.classList.remove('d-none');
+
+                // Simulate loading delay for smooth experience
+                setTimeout(() => {
+                    hidden.slice(0, itemsPerLoad).forEach(c => {
+                        c.classList.remove('d-none');
+                        currentlyVisible++;
+                    });
+
+                    if (loading) loading.classList.add('d-none');
+                    isLoading = false;
+                }, 300);
+
+                return true;
+            }
+
+            // Setup infinite scroll
+            function setupInfiniteScroll() {
+                let scrollTimeout;
+
+                window.addEventListener('scroll', () => {
+                    clearTimeout(scrollTimeout);
+
+                    scrollTimeout = setTimeout(() => {
+                        if (isSearching || isLoading) return;
+
+                        const scrollPosition = window.innerHeight + window.scrollY;
+                        const pageHeight = document.documentElement.scrollHeight;
+                        const threshold = 300; // Trigger 300px before bottom
+
+                        if (scrollPosition >= pageHeight - threshold) {
+                            showNextBatch();
+                        }
+                    }, 100);
                 });
             }
 
-            function showNextBatch(batchSize = 6) {
-                const hidden = cards.filter(c => c.classList.contains('d-none'));
-                hidden.slice(0, batchSize).forEach(c => c.classList.remove('d-none'));
-                if (cards.filter(c => c.classList.contains('d-none')).length === 0) {
-                    if (loadMore) loadMore.style.display = 'none';
-                }
-            }
-
+            // Apply search filter
             function applyFilter() {
                 const term = input.value.trim().toLowerCase();
                 let visible = 0;
+                isSearching = term.length > 0;
 
                 cards = Array.from(grid.querySelectorAll('.product-card-wrapper'));
 
                 if (term.length === 0) {
-                    cards.forEach((c, i) => {
-                        if (i < initialVisible || !c.classList.contains('d-none')) {
-                            c.style.display = '';
-                        } else {
-                            c.style.display = 'none';
-                        }
-                    });
+                    // Reset to infinite scroll mode
+                    hideAllCards();
+                    currentlyVisible = 0;
+                    showNextBatch();
                 } else {
-                    cards.forEach(c => c.style.display = '');
-                }
-
-                cards.forEach(card => {
-                    if (term.length > 0) {
+                    // Show all matching items
+                    cards.forEach(card => {
                         const title = card.querySelector('.pc__title')?.textContent.trim().toLowerCase() || '';
                         const category = card.querySelector('.pc__category')?.textContent.trim().toLowerCase() || '';
                         const match = title.includes(term) || category.includes(term);
-                        card.style.display = match ? '' : 'none';
-                        if (match) visible++;
-                    } else {
-                        if (card.style.display !== 'none') visible++;
-                    }
-                });
 
-                if (noResults) {
-                    noResults.classList.toggle('d-none', visible !== 0);
+                        card.classList.remove('d-none');
+                        card.style.display = match ? '' : 'none';
+
+                        if (match) visible++;
+                    });
                 }
 
-                if (loadMore) {
-                    loadMore.style.display = term.length > 0 ? 'none' : (cards.filter(c => c.classList.contains('d-none')).length > 0 ? 'inline-block' : 'none');
+                // Show/hide no results message
+                if (noResults) {
+                    noResults.classList.toggle('d-none', !isSearching || visible !== 0);
                 }
             }
 
+            // Event listeners
             input?.addEventListener('input', applyFilter);
             btn?.addEventListener('click', applyFilter);
-            loadMore?.addEventListener('click', () => showNextBatch());
 
-            initHide();
+            // Initialize
+            init();
         })();
     </script>
 }

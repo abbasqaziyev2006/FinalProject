@@ -11,7 +11,9 @@
     var colors = model.Colors;
 }
 
+
 <main class="pt-90">
+    <div class="mb-5 pb-3"></div>
     <section class="shop-main container d-flex pt-4 pt-xl-5">
         <!-- Sidebar Filters -->
         <div class="shop-sidebar side-sticky bg-body" id="shopFilter">
@@ -228,7 +230,7 @@
         <!-- Main Shop Content -->
         <div class="shop-list flex-grow-1">
             <!-- Banner Slider -->
-            <div class="swiper-container js-swiper-slider slideshow slideshow_small slideshow_split" data-settings='{
+            <div class="swiper-container js-swiper-slider slideshow slideshow_small slideshow_split mb-5" data-settings='{
             "autoplay": {
               "delay": 5000
             },
@@ -257,7 +259,7 @@
                             </div>
                             <div class="slide-split_media position-relative">
                                 <div class="slideshow-bg" style="background-color: #f5e6e0;">
-                                    <img loading="lazy"src="~/assets/images/shop/shop_banner3.jpg" width="630" height="450"
+                                    <img loading="lazy" src="~/assets/images/shop/shop_banner3.jpg" width="630" height="450"
                                          alt="Shop Collection" class="slideshow-bg__img object-fit-cover" />
                                 </div>
                             </div>
@@ -269,8 +271,6 @@
                     <div class="slideshow-pagination d-flex align-items-center position-absolute bottom-0 mb-4 pb-xl-2"></div>
                 </div>
             </div>
-
-            <div class="mb-3 pb-2 pb-xl-3"></div>
 
             <!-- Shop Controls -->
             <div class="d-flex justify-content-between mb-4 pb-md-2 flex-wrap gap-3">
@@ -313,7 +313,7 @@
             </div>
 
             <!-- Products Count -->
-            <div class="mb-3">
+            <div class="mb-4">
                 <p class="text-secondary">
                     @Localizer["Showing"] <span id="productsCount">@products.Count</span> @Localizer["of"] <span id="totalProducts">@ViewBag.TotalProducts</span> @Localizer["Products"]
                 </p>
@@ -348,6 +348,7 @@
             }
         </div>
     </section>
+    <div class="mb-5 pb-5"></div>
 </main>
 
 @section Scripts {
