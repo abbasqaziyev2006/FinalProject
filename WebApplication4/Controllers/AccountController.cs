@@ -103,11 +103,11 @@ namespace EcommerceCoza.MVC.Controllers
                 return View(model);
             }
 
-            // Clear basket before signing in new user
-            _basketManager.CleanBasket();
-
             // Automatically sign in the user after registration
             await _signInManager.SignInAsync(user, isPersistent: false);
+
+            // Guest səbətini yeni istifadəçiyə köçür
+            _basketManager.TransferGuestBasketToUser();
 
             TempData["SuccessMessage"] = "Your account has been created successfully!";
             return RedirectToAction("Index", "Home");
@@ -161,8 +161,8 @@ namespace EcommerceCoza.MVC.Controllers
                 return View(model);
             }
 
-            // Clear basket when user logs in (account change)
-            _basketManager.CleanBasket();
+            // Guest səbətini login olan istifadəçiyə köçür
+            _basketManager.TransferGuestBasketToUser();
 
             if (!string.IsNullOrEmpty(model.ReturnUrl))
                 return Redirect(model.ReturnUrl);
@@ -398,9 +398,6 @@ namespace EcommerceCoza.MVC.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            // Clear basket before logging out
-            _basketManager.CleanBasket();
-
             await _signInManager.SignOutAsync();
 
             return RedirectToAction("Index", "Home");
