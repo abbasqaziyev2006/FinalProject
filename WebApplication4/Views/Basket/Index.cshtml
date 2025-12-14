@@ -38,6 +38,10 @@
                                         <h5 class="mb-2 fw-normal">@item.ProductName</h5>
                                         <p class="text-muted mb-3" style="font-size: 14px;">
                                             <strong>@Localizer["Color"]:</strong> @item.ColorName
+                                            @if (!string.IsNullOrEmpty(item.Size))
+                                            {
+                                                <span class="ms-3"><strong>@Localizer["Size"]:</strong> @item.Size</span>
+                                            }
                                         </p>
 
                                         <!-- Quantity Controls -->
@@ -250,269 +254,201 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
+
             const currencySymbol = '@CurrencyService.GetSymbol()';
             let appliedCoupon = null;
             let variantIdToDelete = null;
 
-            // Increase quantity
+            /* ================= QUANTITY ================= */
+
             $(document).on('click', '.qty-increase', function () {
-                const variantId = $(this).data('variant-id');
-                changeQuantity(variantId, 1);
+                changeQuantity($(this).data('variant-id'), 1);
             });
 
-            // Decrease quantity
             $(document).on('click', '.qty-decrease', function () {
                 const variantId = $(this).data('variant-id');
-                const $qtyDisplay = $(`.qty-display[data-variant-id="${variantId}"]`);
-                const currentQty = parseInt($qtyDisplay.text());
+                const qty = parseInt($(`.qty-display[data-variant-id="${variantId}"]`).text());
 
-                if (currentQty > 1) {
+                if (qty > 1) {
                     changeQuantity(variantId, -1);
                 } else {
-                    // Show confirmation modal
-                    const productName = $(`.btn-delete[data-variant-id="${variantId}"]`).data('product-name');
-                    showDeleteConfirmation(variantId, productName);
+                    showDeleteConfirmation(
+                        variantId,
+                        $(`.btn-delete[data-variant-id="${variantId}"]`).data('product-name')
+                    );
                 }
             });
 
-            // Delete button
+            /* ================= DELETE ================= */
+
             $(document).on('click', '.btn-delete', function () {
-                const variantId = $(this).data('variant-id');
-                const productName = $(this).data('product-name');
-                showDeleteConfirmation(variantId, productName);
+                showDeleteConfirmation(
+                    $(this).data('variant-id'),
+                    $(this).data('product-name')
+                );
             });
 
-            // Show delete confirmation modal
             function showDeleteConfirmation(variantId, productName) {
                 variantIdToDelete = variantId;
                 $('#productNameToDelete').text(productName);
                 $('#deleteConfirmModal').modal('show');
             }
 
-            // Confirm delete button in modal
             $('#confirmDeleteBtn').on('click', function () {
-                if (variantIdToDelete) {
-                    $('#deleteConfirmModal').modal('hide');
-                    removeItem(variantIdToDelete);
-                    variantIdToDelete = null;
-                }
+                if (!variantIdToDelete) return;
+
+                $('#deleteConfirmModal').modal('hide');
+                removeItem(variantIdToDelete);
+                variantIdToDelete = null;
             });
-
-            // Apply coupon
-            $('#coupon-form').on('submit', function (e) {
-                e.preventDefault();
-
-                const couponCode = $('#coupon-code-input').val().trim();
-
-                if (!couponCode) {
-                    showCouponMessage('@Localizer["EnterCouponCode"]', 'danger');
-                    return;
-                }
-
-                $.ajax({
-                    url: '@Url.Action("ApplyCoupon", "Basket")',
-                    type: 'POST',
-                    data: {
-                        couponCode: couponCode,
-                        __RequestVerificationToken: $('input[name="__RequestVerificationToken"]').val()
-                    },
-                    success: function (response) {
-                        if (response && response.success) {
-                            appliedCoupon = {
-                                code: response.code,
-                                salePercentage: response.salePercentage,
-                                discountAmount: response.discountAmount,
-                                finalPrice: response.finalPrice,
-                                originalPrice: response.originalPrice
-                            };
-
-                            updatePricesWithDiscount(appliedCoupon);
-                            showCouponMessage('@Localizer["CouponAppliedSuccessfully"]', 'success');
-
-                            $('#coupon-code-input').val('');
-                            $('#couponCollapse').collapse('hide');
-                        } else {
-                            showCouponMessage(
-                                response?.message || '@Localizer["InvalidCouponCode"]',
-                                'danger'
-                            );
-                        }
-                    },
-                    error: function (xhr) {
-                        console.error(xhr.responseText);
-                        showCouponMessage('@Localizer["CouponApplyError"]', 'danger');
-                    }
-                });
-            });
-
-            // Remove coupon
-            $('#remove-coupon').on('click', function () {
-                appliedCoupon = null;
-                $('#discount-info').addClass('d-none');
-                updateTotals();
-            });
-
-            function changeQuantity(variantId, change) {
-                const $item = $(`.cart-item[data-variant-id="${variantId}"]`);
-                const $qtyDisplay = $item.find('.qty-display');
-                const $buttons = $item.find('.qty-btn');
-
-                $buttons.prop('disabled', true);
-
-                $.ajax({
-                    url: '@Url.Action("ChangeQuantity", "Basket")',
-                    type: 'POST',
-                    data: { productVariantId: variantId, change: change },
-                    success: function (response) {
-                        if (response.success && response.basketViewModel) {
-                            const item = response.basketViewModel.items.find(x => x.productVariantId === variantId);
-                            if (item) {
-                                $qtyDisplay.text(item.quantity);
-                                $item.find('.item-price').text(currencySymbol + ' ' + item.totalPrice.toFixed(2));
-                                updateTotals();
-                            }
-                        }
-                        $buttons.prop('disabled', false);
-                    },
-                    error: function () {
-                        showNotification('@Localizer["ErrorUpdatingQuantity"]', 'danger');
-                        $buttons.prop('disabled', false);
-                    }
-                });
-            }
 
             function removeItem(variantId) {
-                // Show loading state
                 const $item = $(`.cart-item[data-variant-id="${variantId}"]`);
+                const productName = $item.find('h5').text().trim();
+
                 $item.css('opacity', '0.5');
 
-                $.ajax({
-                    url: '@Url.Action("Remove", "Basket")',
-                    type: 'POST',
-                    data: { id: variantId },
-                    success: function () {
+                $.post('@Url.Action("Remove", "Basket")', { id: variantId })
+                    .done(() => {
                         $item.fadeOut(300, function () {
                             $(this).remove();
+
                             if ($('.cart-item').length === 0) {
                                 location.reload();
                             } else {
                                 updateTotals();
-                                showNotification('@Localizer["ItemRemovedSuccessfully"]', 'success');
+                                showNotification(
+                                    `Product removed from your basket!`,
+                                    'success'
+                                );
                             }
                         });
-                    },
-                    error: function () {
+                    })
+                    .fail(() => {
                         $item.css('opacity', '1');
                         showNotification('@Localizer["ErrorRemovingItem"]', 'danger');
-                    }
-                });
+                    });
             }
+
+            /* ================= UPDATE QUANTITY ================= */
+
+            function changeQuantity(variantId, change) {
+                const $item = $(`.cart-item[data-variant-id="${variantId}"]`);
+                const $qty = $item.find('.qty-display');
+                const $buttons = $item.find('.qty-btn');
+
+                $buttons.prop('disabled', true);
+
+                $.post('@Url.Action("ChangeQuantity", "Basket")', {
+                    productVariantId: variantId,
+                    change: change
+                })
+                .done(res => {
+                    const item = res?.basketViewModel?.items
+                        ?.find(x => x.productVariantId === variantId);
+
+                    if (item) {
+                        $qty.text(item.quantity);
+                        $item.find('.item-price')
+                            .text(`${currencySymbol} ${item.totalPrice.toFixed(2)}`);
+                        updateTotals();
+                    }
+                })
+                .always(() => $buttons.prop('disabled', false));
+            }
+
+            /* ================= TOTALS ================= */
 
             function updateTotals() {
-                $.ajax({
-                    url: '@Url.Action("GetBasket", "Basket")',
-                    type: 'GET',
-                    success: function (data) {
-                        if (data) {
-                            const formatted = currencySymbol + ' ' + data.totalPrice.toFixed(2);
+                $.get('@Url.Action("GetBasket", "Basket")', data => {
+                    const formatted = `${currencySymbol} ${data.totalPrice.toFixed(2)}`;
 
-                            // Update subtotal prices
-                            $('#cart-subtotal').text(formatted);
-                            $('#cart-subtotal-bottom').text(formatted);
+                    $('#cart-subtotal, #cart-subtotal-bottom').text(formatted);
+                    $('#cart-items-count, #cart-items-count-bottom').text(data.totalCount);
+                    $('.js-cart-items-count, .header__cart-count')
+                        .text(data.totalCount || 0);
 
-                            // Update items count
-                            $('#cart-items-count').text(data.totalCount);
-                            $('#cart-items-count-bottom').text(data.totalCount);
-
-                            // Update header cart count
-                            $('.js-cart-items-count, .header__cart-count').text(data.totalCount || 0);
-
-                            // Reapply discount if exists
-                            if (appliedCoupon) {
-                                const discountAmount = (data.totalPrice * appliedCoupon.salePercentage) / 100;
-                                const finalPrice = data.totalPrice - discountAmount;
-                                appliedCoupon.discountAmount = discountAmount;
-                                appliedCoupon.finalPrice = finalPrice;
-                                appliedCoupon.originalPrice = data.totalPrice;
-                                updatePricesWithDiscount(appliedCoupon);
-                            }
-                        }
-                    },
-                    error: function () {
-                        console.error('Error updating totals');
-                    }
+                    if (appliedCoupon) reapplyDiscount(data.totalPrice);
                 });
             }
 
-            function updatePricesWithDiscount(discount) {
+            /* ================= DISCOUNT ================= */
+
+            function reapplyDiscount(total) {
+                const discount = (total * appliedCoupon.salePercentage) / 100;
+                const finalPrice = total - discount;
+
                 $('#discount-info').removeClass('d-none');
-                $('#discount-code').text(discount.code);
-                $('#discount-percentage').text(discount.salePercentage);
-                $('#discount-amount').text(currencySymbol + ' ' + discount.discountAmount.toFixed(2));
-
-                const finalFormatted = currencySymbol + ' ' + discount.finalPrice.toFixed(2);
-                $('#cart-subtotal').html('<span class="text-decoration-line-through text-muted me-2">' +
-                    currencySymbol + ' ' + discount.originalPrice.toFixed(2) + '</span>' + finalFormatted);
+                $('#discount-amount').text(`${currencySymbol} ${discount.toFixed(2)}`);
+                $('#cart-subtotal').html(
+                    `<span class="text-decoration-line-through text-muted me-2">
+                        ${currencySymbol} ${total.toFixed(2)}
+                    </span>${currencySymbol} ${finalPrice.toFixed(2)}`
+                );
             }
 
-            function showCouponMessage(message, type) {
-                $('#coupon-message')
-                    .removeClass('text-danger text-success')
-                    .addClass('text-' + type)
-                    .html('<small>' + message + '</small>');
-            }
+            /* ================= NOTIFICATION ================= */
 
             function showNotification(message, type) {
-                const bgColor = type === 'success' ? '#28a745' : '#dc3545';
+                $('.basket-notification').remove();
+
+                const bg = type === 'success' ? '#28a745' : '#dc3545';
+
                 const toast = $('<div>')
                     .addClass('basket-notification')
                     .text(message)
                     .css({
-                        'position': 'fixed',
-                        'top': '20px',
-                        'right': '20px',
-                        'background': bgColor,
-                        'color': 'white',
-                        'padding': '15px 25px',
-                        'border-radius': '8px',
-                        'z-index': '10000',
-                        'box-shadow': '0 4px 12px rgba(0,0,0,0.15)',
-                        'animation': 'slideIn 0.3s ease-out'
+                        position: 'fixed',
+                        top: '20px',
+                        right: '20px',
+                        background: bg,
+                        color: '#fff',
+                        padding: '14px 22px',
+                        borderRadius: '8px',
+                        zIndex: 10000,
+                        boxShadow: '0 6px 15px rgba(0,0,0,.15)',
+                        animation: 'slideIn .3s ease-out'
                     });
 
                 $('body').append(toast);
 
                 setTimeout(() => {
-                    toast.css('animation', 'slideOut 0.3s ease-out');
+                    toast.css('animation', 'slideOut .3s ease-out');
                     setTimeout(() => toast.remove(), 300);
-                }, 3000);
+                }, 2500);
             }
+
         });
     </script>
 
     <style>
         @@keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
+            from
 
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+        {
+            transform: translateX(100%);
+            opacity: 0;
         }
 
-        @@keyframes slideOut {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
 
-            to {
-                transform: translateX(100%);
-                opacity: 0;
-            }
+        }
+        @@keyframes slideOut {
+            from
+
+        {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
         }
     </style>
 }

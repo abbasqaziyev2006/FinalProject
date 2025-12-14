@@ -224,11 +224,17 @@
 
                 @foreach (var product in Model.HotDeals.Take(4))
                 {
-                    var firstVariant = product.ProductVariants.FirstOrDefault();
+                    var firstVariant = product.ProductVariants
+                    .FirstOrDefault(v => v.SalePrice.HasValue && v.SalePrice.Value < v.Price && v.Quantity > 0);
+
+                    if (firstVariant == null) continue; // Endirimsiz məhsul göstərilmir
+
+                    var discountPercent = (int)Math.Round((1 - (firstVariant.SalePrice.Value / firstVariant.Price)) * 100);
+
                     <div class="col-md-6 col-lg-4 col-xl-20per">
                         <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
-                            <div class="pc__img-wrapper">
-                                @if (firstVariant != null && !string.IsNullOrEmpty(firstVariant.CoverImageName))
+                            <div class="pc__img-wrapper position-relative">
+                                @if (!string.IsNullOrEmpty(firstVariant.CoverImageName))
                                 {
                                     <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
                                         <img loading="lazy" src="~/images/products/@firstVariant.CoverImageName" width="258" height="313"
@@ -242,14 +248,38 @@
                                              alt="@product.Name" class="pc__img">
                                     </a>
                                 }
+
+                                <!-- 🆕 Discount Badge - Sol Üst Künc -->
+                                <div class="pc-labels position-absolute top-0 start-0">
+                                    <span class="pc-label pc-label_sale d-block text-white"
+                                          style="background: #dc3545; font-size: 14px; padding: 6px 12px; font-weight: 700; border-radius: 0;">
+                                        -@discountPercent%
+                                    </span>
+                                </div>
                             </div>
 
                             <div class="pc__info position-relative">
                                 <h6 class="pc__title">
                                     <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">@product.Name</a>
                                 </h6>
-                                <div class="product-card__price d-flex align-items-center">
-                                    <span class="money price text-secondary">@CurrencyService.Format(product.BasePrice)</span>
+
+                                <!-- 🆕 Price with Discount -->
+                                <div class="product-card__price d-flex align-items-center gap-2">
+                                    @if (firstVariant.SalePrice.HasValue && firstVariant.SalePrice.Value < firstVariant.Price)
+                                    {
+                                        <!-- Sale Price -->
+                                        <span class="money price fw-bold text-danger">
+                                            @CurrencyService.Format(firstVariant.SalePrice.Value)
+                                        </span>
+                                        <!-- Old Price -->
+                                        <span class="money text-decoration-line-through text-secondary" style="font-size: 0.9em;">
+                                            @CurrencyService.Format(firstVariant.Price)
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="money price text-secondary">@CurrencyService.Format(firstVariant.Price)</span>
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -258,6 +288,7 @@
             </div>
         </section>
     }
+    
 
     <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
 

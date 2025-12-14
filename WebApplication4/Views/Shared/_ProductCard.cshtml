@@ -1,4 +1,4 @@
-@model EcommerceCoza.BLL.ViewModels.ProductViewModel
+﻿@model EcommerceCoza.BLL.ViewModels.ProductViewModel
 @inject WebApplication4.Services.ICurrencyService CurrencyService
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
@@ -6,6 +6,19 @@
     var firstVariant = Model.ProductVariants.FirstOrDefault();
     var productColorIds = Model.ProductVariants.Select(v => v.ColorId).Where(id => id > 0).Distinct().ToList();
     var productSizes = Model.ProductVariants.Where(v => !string.IsNullOrEmpty(v.Size)).Select(v => v.Size).Distinct().ToList();
+
+    // Ən aşağı qiyməti tap (endirimli və ya adi)
+    var lowestPrice = Model.ProductVariants.Any()
+        ? Model.ProductVariants.Min(v => v.SalePrice ?? v.Price)
+        : Model.BasePrice;
+    var hasVariantDiscount = firstVariant?.HasDiscount ?? false;
+
+    // Endrim faizini əvvəlcədən hesabla
+    int discountPercent = 0;
+    if (hasVariantDiscount && firstVariant != null)
+    {
+        discountPercent = (int)Math.Round((1 - (firstVariant.SalePrice.Value / firstVariant.Price)) * 100);
+    }
 }
 
 <div class="product-card-wrapper"
@@ -14,11 +27,11 @@
      data-product-brand="@Model.BrandId"
      data-product-colors="@string.Join(",", productColorIds)"
      data-product-sizes="@string.Join(",", productSizes)"
-     data-product-price="@Model.BasePrice"
+     data-product-price="@lowestPrice"
      data-product-name="@Model.Name"
      data-product-date="@Model.Id">
     <div class="product-card mb-3 mb-md-4 mb-xxl-5">
-        <div class="pc__img-wrapper">
+        <div class="pc__img-wrapper position-relative">
             @if (firstVariant != null && (!string.IsNullOrEmpty(firstVariant.CoverImageName) || firstVariant.ImageNames.Any()))
             {
                 <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
@@ -61,6 +74,18 @@
                          height="400" alt="@Model.Name" class="pc__img">
                 </a>
             }
+
+            <!-- 🆕 Discount Badge - ŞƏKİLİN ÜZƏRİNDƏ SOL ÜST KÜNC -->
+            @if (hasVariantDiscount)
+            {
+                <div class="pc-labels position-absolute top-0 start-0" style="z-index: 5;">
+                    <span class="pc-label pc-label_sale d-block text-white"
+                          style="background: #dc3545; font-size: 14px; padding: 8px 12px; font-weight: 700; border-radius: 0; letter-spacing: 0.5px;">
+                        -@discountPercent%
+                    </span>
+                </div>
+            }
+
             @if (firstVariant != null && firstVariant.Quantity > 0)
             {
                 <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart"
@@ -84,7 +109,7 @@
                     <span class="fw-medium text-primary">@Model.Brand.Name</span>
                     @if (Model.Category != null)
                     {
-                        <span class="text-muted"> � </span>
+                        <span class="text-muted"> • </span>
                     }
                 }
                 @if (Model.Category != null)
@@ -95,13 +120,32 @@
             <h6 class="pc__title">
                 <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.DetailsUrl">@Model.Name</a>
             </h6>
-            <div class="product-card__price d-flex">
-                <span class="money price">@CurrencyService.Format(Model.BasePrice)</span>
+
+            <!-- Price Display with Discount -->
+            <div class="product-card__price">
+                @if (hasVariantDiscount)
+                {
+                    <div class="d-flex align-items-center gap-2 mb-1">
+                        <!-- Endirimli qiymət - qırmızı və daha böyük -->
+                        <span class="money price text-danger fw-semibold" style="font-size: 1.15rem;">
+                            @CurrencyService.Format(firstVariant.SalePrice.Value)
+                        </span>
+                        <!-- Normal qiymət - balaca və üstüxətli -->
+                        <span class="money price text-decoration-line-through text-muted" style="font-size: 0.875rem;">
+                            @CurrencyService.Format(firstVariant.Price)
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <!-- Normal qiymət -->
+                    <span class="money price" style="font-size: 1.15rem;">@CurrencyService.Format(lowestPrice)</span>
+                }
             </div>
 
             @if (Model.ProductVariants.Count > 1)
             {
-                <div class="d-flex align-items-center mt-1">
+                <div class="d-flex align-items-center mt-2">
                     @foreach (var variant in Model.ProductVariants.Take(5))
                     {
                         @if (!string.IsNullOrEmpty(variant.ColorHexCode))
@@ -126,6 +170,7 @@
                 </svg>
             </button>
 
+            <!-- Out of Stock Badge -->
             @if (firstVariant != null && firstVariant.Quantity == 0)
             {
                 <div class="pc-labels position-absolute top-0 start-0">
@@ -135,3 +180,26 @@
         </div>
     </div>
 </div>
+
+<style>
+    /* Endirimli qiymət üçün stil */
+    .product-card__price .text-danger {
+        color: #dc3545 !important;
+        font-weight: 600;
+    }
+
+    /* Qiymət container-i */
+    .product-card__price {
+        margin-top: 0.25rem;
+        line-height: 1.2;
+    }
+
+    /* Discount badge - şəklin üzərində */
+    .pc-labels {
+        z-index: 5;
+    }
+
+    .pc-label_sale {
+        box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
+    }
+</style>

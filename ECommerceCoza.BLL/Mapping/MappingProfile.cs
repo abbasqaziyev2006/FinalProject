@@ -23,7 +23,10 @@ namespace ECommerceCoza.BLL.Mapping
             CreateMap<Product, ProductCreateViewModel>().ReverseMap();
             CreateMap<Product, ProductUpdateViewModel>().ReverseMap();
 
+            // 🆕 DÜZƏLDILMIŞ - Price və SalePrice əlavə edildi
             CreateMap<ProductVariant, ProductVariantViewModel>()
+                .ForMember(x => x.Price, opt => opt.MapFrom(src => src.Price))  // 🆕
+                .ForMember(x => x.SalePrice, opt => opt.MapFrom(src => src.SalePrice))  // 🆕
                 .ForMember(x => x.ColorName, opt => opt.MapFrom(src => src.Color == null ? "" : src.Color.Name))
                 .ForMember(x => x.ImageNames, opt => opt.MapFrom(src => src.ProductImages.Select(i => i.ImageName).ToList()))
                 .ForMember(x => x.ColorIconName, opt => opt.MapFrom(src => src.Color == null ? "" : src.Color.IconName))
@@ -31,6 +34,7 @@ namespace ECommerceCoza.BLL.Mapping
                 .ForMember(x => x.ProductName, opt => opt.MapFrom(src => src.Product == null ? "" : src.Product.Name))
                 .ForMember(x => x.Priced, opt => opt.MapFrom(src => src.Product!.BasePrice))
                 .ReverseMap();
+
             CreateMap<ProductVariant, ProductVariantCreateViewModel>().ReverseMap();
             CreateMap<ProductVariant, ProductVariantUpdateViewModel>().ReverseMap();
 

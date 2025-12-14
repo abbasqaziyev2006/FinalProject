@@ -17,12 +17,31 @@ namespace EcommerceCoza.MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(int productVariantId, int quantity)
+        public async Task<IActionResult> Add(int productVariantId, int quantity)
         {
-            _basketManager.AddToBasket(productVariantId, quantity);
+            try
+            {
+ 
+                var basket = await _basketManager.AddToBasketAsync(productVariantId, quantity);
 
-            return NoContent();
+                return Json(new
+                {
+                    success = true,
+                    message = "Product added to basket successfully!",
+                    totalCount = basket.TotalCount,
+                    totalPrice = basket.TotalPrice
+                });
+            }
+            catch
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Failed to add product to basket. Please try again."
+                });
+            }
         }
+
 
         [HttpPost]
         public IActionResult Remove(int id)
@@ -91,7 +110,7 @@ namespace EcommerceCoza.MVC.Controllers
                 new HtmlHelperOptions()
                 );
 
-            await viewResult.View.RenderAsync( viewContext );
+            await viewResult.View.RenderAsync(viewContext);
 
             return writer.ToString();
         }

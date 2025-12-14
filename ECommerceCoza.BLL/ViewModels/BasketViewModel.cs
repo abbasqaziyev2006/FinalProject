@@ -22,6 +22,8 @@ namespace EcommerceCoza.BLL.ViewModels
         public string ImageName { get; set; } = null!;
         public string ProductName { get; set; } = null!;
         public decimal TotalPrice => Price * Quantity;
+
+        public string? Size { get;  set; }
     }
 
     public class BasketCookieItemViewModel

@@ -355,6 +355,7 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
         public string? Size { get; set; }
         public int ColorId { get; set; }
         public decimal Price { get; set; }
+        public decimal? SalePrice { get; set; }  
         public int Quantity { get; set; }
         public IFormFile? CoverImageFile { get; set; }
         public List<IFormFile>? ImageFiles { get; set; }

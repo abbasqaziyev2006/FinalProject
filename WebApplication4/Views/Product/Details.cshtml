@@ -3,6 +3,17 @@
 @inject WebApplication4.Services.ICurrencyService CurrencyService
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
+@{
+    // Seçilmiş variant və endrim məlumatları
+    var firstVariant = Model.ProductVariants.FirstOrDefault();
+    var hasDiscount = firstVariant?.HasDiscount ?? false;
+    int discountPercent = 0;
+    if (hasDiscount && firstVariant != null)
+    {
+        discountPercent = (int)Math.Round((1 - (firstVariant.SalePrice.Value / firstVariant.Price)) * 100);
+    }
+}
+
 <main class="pt-90">
     <div class="mb-5 pb-5"></div>
     <section class="product-single container">
@@ -11,17 +22,17 @@
                 <div class="product-single__media" data-media-type="vertical-thumbnail">
                     @if (Model.ProductVariants.Any() && (Model.ProductVariants.First().ImageNames.Any() || !string.IsNullOrEmpty(Model.ProductVariants.First().CoverImageName)))
                     {
-                        var firstVariant = Model.ProductVariants.First();
+                        var currentVariant = Model.ProductVariants.First();
                         <div class="product-single__image">
                             <div class="swiper-container">
                                 <div class="swiper-wrapper">
                                     @* Cover Image *@
-                                    @if (!string.IsNullOrEmpty(firstVariant.CoverImageName))
+                                    @if (!string.IsNullOrEmpty(currentVariant.CoverImageName))
                                     {
                                         <div class="swiper-slide product-single__image-item">
-                                            <img loading="lazy" class="h-auto" src="~/images/products/@firstVariant.CoverImageName" width="674"
+                                            <img loading="lazy" class="h-auto" src="~/images/products/@currentVariant.CoverImageName" width="674"
                                                  height="674" alt="@Model.Name" />
-                                            <a data-fancybox="gallery" href="~/images/products/@firstVariant.CoverImageName" data-bs-toggle="tooltip"
+                                            <a data-fancybox="gallery" href="~/images/products/@currentVariant.CoverImageName" data-bs-toggle="tooltip"
                                                data-bs-placement="left" title="Zoom">
                                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <use href="#icon_zoom" />
@@ -30,7 +41,7 @@
                                         </div>
                                     }
                                     @* Additional Images *@
-                                    @foreach (var imageName in firstVariant.ImageNames)
+                                    @foreach (var imageName in currentVariant.ImageNames)
                                     {
                                         <div class="swiper-slide product-single__image-item">
                                             <img loading="lazy" class="h-auto" src="~/images/products/@imageName" width="674"
@@ -59,14 +70,14 @@
                         <div class="product-single__thumbnail">
                             <div class="swiper-container">
                                 <div class="swiper-wrapper">
-                                    @if (!string.IsNullOrEmpty(firstVariant.CoverImageName))
+                                    @if (!string.IsNullOrEmpty(currentVariant.CoverImageName))
                                     {
                                         <div class="swiper-slide product-single__image-item">
                                             <img loading="lazy" class="h-auto"
-                                                 src="~/images/products/@firstVariant.CoverImageName" width="104" height="104" alt="@Model.Name" />
+                                                 src="~/images/products/@currentVariant.CoverImageName" width="104" height="104" alt="@Model.Name" />
                                         </div>
                                     }
-                                    @foreach (var imageName in firstVariant.ImageNames)
+                                    @foreach (var imageName in currentVariant.ImageNames)
                                     {
                                         <div class="swiper-slide product-single__image-item">
                                             <img loading="lazy" class="h-auto"
@@ -139,9 +150,33 @@
                         }
                     </span>
                 </div>
-                <div class="product-single__price">
-                    <span class="current-price">@CurrencyService.Format(Model.BasePrice)</span>
+
+                <!-- 🆕 Price Display with Discount - DAHA PARLAQ QIRMIZI -->
+                <div class="product-single__price" id="product-price-container">
+                    @if (hasDiscount && firstVariant != null)
+                    {
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <span class="current-price" style="color: #dc3545 !important; font-size: 2.5rem; font-weight: 700;">
+                                @CurrencyService.Format(firstVariant.SalePrice.Value)
+                            </span>
+                            <span class="old-price text-decoration-line-through text-muted" style="font-size: 1.5rem; font-weight: 400;">
+                                @CurrencyService.Format(firstVariant.Price)
+                            </span>
+                        </div>
+                        <div>
+                            <span class="badge" style="background-color: #dc3545; color: white; font-size: 1rem; padding: 8px 16px; font-weight: 700;">
+                                @Localizer["Save"] @discountPercent%
+                            </span>
+                        </div>
+                    }
+                    else
+                    {
+                        <span class="current-price" style="font-size: 2rem; font-weight: 600; color: #212529;">
+                            @CurrencyService.Format(Model.BasePrice)
+                        </span>
+                    }
                 </div>
+
                 <form name="addtocart-form" method="post" id="addToCartForm">
                     @if (Model.ProductVariants.Any())
                     {
@@ -189,6 +224,8 @@
                                                data-color-id="@variant.ColorId"
                                                data-cover-image="@variant.CoverImageName"
                                                data-stock="@variant.Quantity"
+                                               data-price="@variant.Price"
+                                               data-sale-price="@variant.SalePrice"
                                                class="swatch-input"
                                                @(Model.ProductVariants.First().ColorId == variant.ColorId ? "checked" : "")>
                                         <label class="swatch js-swatch"
@@ -357,6 +394,11 @@
     <script>
         $(document).ready(function () {
             const variants = @Html.Raw(Json.Serialize(Model.ProductVariants));
+            const currencySymbol = '@CurrencyService.GetSymbol()';
+
+            function formatPrice(price) {
+                return currencySymbol + ' ' + price.toFixed(2);
+            }
 
             function updateVariantSelection() {
                 const selectedSize = $('input[name="size"]:checked').val() || '';
@@ -371,6 +413,9 @@
                     $('#productVariantId').val(matchingVariant.id);
                     $('#quantity').attr('max', matchingVariant.quantity);
 
+                    // Update price display with discount
+                    updatePriceDisplay(matchingVariant);
+
                     // Update stock status
                     if (matchingVariant.quantity > 0) {
                         $('#stock-status').html('<span class="text-success">@Localizer["InStock"] (' + matchingVariant.quantity + ' @Localizer["Available"])</span>');
@@ -384,6 +429,36 @@
                     if (matchingVariant.coverImageName) {
                         $('.product-single__image .swiper-slide:first img').attr('src', '/images/products/' + matchingVariant.coverImageName);
                     }
+                }
+            }
+
+            // 🆕 Qiyməti yenilə (DAHA PARLAQ QIRMIZI)
+            function updatePriceDisplay(variant) {
+                const hasDiscount = variant.salePrice && variant.salePrice < variant.price;
+
+                if (hasDiscount) {
+                    const discountPercent = Math.round((1 - (variant.salePrice / variant.price)) * 100);
+                    $('#product-price-container').html(`
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <span class="current-price" style="color: #dc3545 !important; font-size: 2.5rem; font-weight: 700;">
+                                ${formatPrice(variant.salePrice)}
+                            </span>
+                            <span class="old-price text-decoration-line-through text-muted" style="font-size: 1.5rem; font-weight: 400;">
+                                ${formatPrice(variant.price)}
+                            </span>
+                        </div>
+                        <div>
+                            <span class="badge" style="background-color: #dc3545; color: white; font-size: 1rem; padding: 8px 16px; font-weight: 700;">
+                                @Localizer["Save"] ${discountPercent}%
+                            </span>
+                        </div>
+                    `);
+                } else {
+                    $('#product-price-container').html(`
+                        <span class="current-price" style="font-size: 2rem; font-weight: 600; color: #212529;">
+                            ${formatPrice(variant.price)}
+                        </span>
+                    `);
                 }
             }
 
@@ -415,11 +490,17 @@
 
                 const variantId = $('#productVariantId').val();
                 const quantity = $('#quantity').val();
+                const $btn = $('#addToCartBtn');
 
                 if (!variantId) {
                     alert('@Localizer["PleaseSelectVariant"]');
                     return;
                 }
+
+                // Disable button and show loading state
+                $btn.prop('disabled', true);
+                const originalText = $btn.text();
+                $btn.text('Adding...');
 
                 const formData = new FormData();
                 formData.append('productVariantId', variantId);
@@ -431,19 +512,84 @@
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function () {
-                        // Update cart count
-                        $.get('/Basket/GetBasket', function (data) {
-                            $('.header__cart-count').text(data.totalCount);
-                        });
+                    success: function (response) {
+                        if (response && response.success) {
+                            // Update cart count in header
+                            $('.header__cart-count, .js-cart-items-count').text(response.totalCount || 0);
 
-                        alert('@Localizer["ProductAddedToCart"]');
+                            // Show success message - using the same style as add-to-basket.js
+                            showNotification(response.message || 'Product added to basket successfully!', 'success');
+                        } else {
+                            showNotification(response.message || 'Failed to add product to basket.', 'danger');
+                        }
                     },
                     error: function () {
-                        alert('@Localizer["ErrorAddingToCart"]');
+                        showNotification('An error occurred. Please try again.', 'danger');
+                    },
+                    complete: function () {
+                        // Re-enable button
+                        $btn.prop('disabled', false);
+                        $btn.text(originalText);
                     }
                 });
             });
+
+            // ✅ Updated notification function to match add-to-basket.js style
+            function showNotification(message, type) {
+                // Remove any existing toasts
+                $('.basket-toast').remove();
+
+                const bgColor = type === 'success' ? '#28a745' : '#dc3545';
+                const $toast = $('<div>')
+                    .addClass('basket-toast')
+                    .text(message)
+                    .css({
+                        'position': 'fixed',
+                        'top': '20px',
+                        'right': '20px',
+                        'background': bgColor,
+                        'color': 'white',
+                        'padding': '15px 25px',
+                        'border-radius': '5px',
+                        'z-index': '10000',
+                        'box-shadow': '0 4px 6px rgba(0,0,0,0.1)',
+                        'animation': 'slideIn 0.3s ease-out'
+                    });
+
+                $('body').append($toast);
+
+                setTimeout(() => {
+                    $toast.css('animation', 'slideOut 0.3s ease-out');
+                    setTimeout(() => $toast.remove(), 300);
+                }, 2000);
+            }
         });
     </script>
+
+    <style>
+        /* Animation for toast notifications */
+        @@keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    </style>
 }

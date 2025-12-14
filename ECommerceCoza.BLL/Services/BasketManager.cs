@@ -2,8 +2,12 @@
 using EcommerceCoza.BLL.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace EcommerceCoza.BLL.Services
 {
@@ -14,6 +18,7 @@ namespace EcommerceCoza.BLL.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IProductService _productService;
         private readonly IProductVariantService _productVariantService;
+        private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         public BasketManager(IProductService productService, IHttpContextAccessor httpContextAccessor, IProductVariantService productVariantService)
         {
@@ -24,44 +29,18 @@ namespace EcommerceCoza.BLL.Services
 
         private string GetBasketCookieName()
         {
-            // Əgər istifadəçi giriş edibsə, onun ID-si ilə cookie adı
             var userId = _httpContextAccessor.HttpContext?.User?.FindFirstValue(ClaimTypes.NameIdentifier);
 
             if (!string.IsNullOrEmpty(userId))
-            {
                 return $"{BasketCookiePrefix}{userId}";
-            }
 
-            // Əgər giriş etməyibsə, ümumi cookie
             return $"{BasketCookiePrefix}guest";
         }
 
         public async Task<BasketViewModel> GetBasketAsync()
         {
             var basket = GetBasketFromCookie();
-            var basketViewModel = new BasketViewModel();
-
-            foreach (var item in basket)
-            {
-                var productVariant = await _productVariantService.GetAsync(predicate: x => x.Id == item.ProductVariantId,
-                    include: x => x.Include(c => c.Color!));
-
-                if (productVariant != null)
-                {
-                    var product = await _productService.GetByIdAsync(productVariant.ProductId);
-                    basketViewModel.Items.Add(new BasketItemViewModel
-                    {
-                        ProductVariantId = productVariant.Id,
-                        ProductName = product?.Name!,
-                        ImageName = productVariant?.CoverImageName!,
-                        Price = product!.BasePrice,
-                        Quantity = item.Quantity,
-                        ColorName = productVariant?.ColorName!
-                    });
-                }
-            }
-
-            return basketViewModel;
+            return await BuildBasketViewModelAsync(basket);
         }
 
         public async Task<BasketViewModel> ChangeQuantityAsync(int productVariantId, int quantity)
@@ -79,35 +58,10 @@ namespace EcommerceCoza.BLL.Services
                 SaveBasketToCookie(basket);
             }
 
-            var basketViewModel = new BasketViewModel();
-
-            foreach (var item in basket)
-            {
-                var productVariant = await _productVariantService.GetAsync(predicate: x => x.Id == item.ProductVariantId,
-                     include: x => x.Include(c => c.Color!));
-
-                if (productVariant != null)
-                {
-                    var product = await _productService.GetByIdAsync(productVariant.ProductId);
-
-                    if (product != null)
-                    {
-                        basketViewModel.Items.Add(new BasketItemViewModel
-                        {
-                            ProductVariantId = productVariant.Id,
-                            ProductName = product.Name!,
-                            ImageName = productVariant.CoverImageName!,
-                            Price = product.BasePrice,
-                            Quantity = item.Quantity,
-                            ColorName = productVariant.ColorName!,
-                        });
-                    }
-                }
-            }
-
-            return basketViewModel;
+            return await BuildBasketViewModelAsync(basket);
         }
 
+        // Keep synchronous AddToBasket for backward compatibility
         public void AddToBasket(int productVariantId, int quantity)
         {
             var basket = GetBasketFromCookie();
@@ -125,6 +79,31 @@ namespace EcommerceCoza.BLL.Services
             }
 
             SaveBasketToCookie(basket);
+        }
+
+        // NEW: Async add that returns the updated BasketViewModel built from the in-memory list
+        public async Task<BasketViewModel> AddToBasketAsync(int productVariantId, int quantity)
+        {
+            // Read current basket from request cookie (may be old), update the in-memory list and save.
+            var basket = GetBasketFromCookie();
+            var basketItem = basket.FirstOrDefault(item => item.ProductVariantId == productVariantId);
+
+            if (basketItem != null)
+                basketItem.Quantity += quantity;
+            else
+            {
+                basket.Add(new BasketCookieItemViewModel
+                {
+                    ProductVariantId = productVariantId,
+                    Quantity = quantity
+                });
+            }
+
+            // Persist new state to response cookie
+            SaveBasketToCookie(basket);
+
+            // Build and return the BasketViewModel from the updated list (no reliance on Request.Cookies)
+            return await BuildBasketViewModelAsync(basket);
         }
 
         public void RemoveFromBasket(int productVariantId)
@@ -149,7 +128,15 @@ namespace EcommerceCoza.BLL.Services
                 return new List<BasketCookieItemViewModel>();
             }
 
-            return JsonSerializer.Deserialize<List<BasketCookieItemViewModel>>(cookie) ?? [];
+            try
+            {
+                var list = JsonSerializer.Deserialize<List<BasketCookieItemViewModel>>(cookie, _jsonOptions);
+                return list ?? new List<BasketCookieItemViewModel>();
+            }
+            catch
+            {
+                return new List<BasketCookieItemViewModel>();
+            }
         }
 
         private void SaveBasketToCookie(List<BasketCookieItemViewModel> basket)
@@ -161,7 +148,7 @@ namespace EcommerceCoza.BLL.Services
                 HttpOnly = true
             };
 
-            var cookieValue = JsonSerializer.Serialize(basket);
+            var cookieValue = JsonSerializer.Serialize(basket, _jsonOptions);
 
             _httpContextAccessor.HttpContext?.Response.Cookies.Append(cookieName, cookieValue, cookieOptions);
         }
@@ -174,35 +161,72 @@ namespace EcommerceCoza.BLL.Services
 
         public void TransferGuestBasketToUser()
         {
-            // Guest cookie-ni oxu
             var guestCookieName = $"{BasketCookiePrefix}guest";
             var guestCookie = _httpContextAccessor.HttpContext?.Request.Cookies[guestCookieName];
 
-            if (!string.IsNullOrEmpty(guestCookie))
+            if (string.IsNullOrEmpty(guestCookie))
+                return;
+
+            List<BasketCookieItemViewModel> guestBasket;
+            try
             {
-                // Guest səbətini user cookie-nə köçür
-                var guestBasket = JsonSerializer.Deserialize<List<BasketCookieItemViewModel>>(guestCookie) ?? [];
-                var userBasket = GetBasketFromCookie();
-
-                // Merge et
-                foreach (var guestItem in guestBasket)
-                {
-                    var existingItem = userBasket.FirstOrDefault(x => x.ProductVariantId == guestItem.ProductVariantId);
-                    if (existingItem != null)
-                    {
-                        existingItem.Quantity += guestItem.Quantity;
-                    }
-                    else
-                    {
-                        userBasket.Add(guestItem);
-                    }
-                }
-
-                SaveBasketToCookie(userBasket);
-
-                // Guest cookie-ni sil
-                _httpContextAccessor.HttpContext?.Response.Cookies.Delete(guestCookieName);
+                guestBasket = JsonSerializer.Deserialize<List<BasketCookieItemViewModel>>(guestCookie, _jsonOptions) ?? new List<BasketCookieItemViewModel>();
             }
+            catch
+            {
+                guestBasket = new List<BasketCookieItemViewModel>();
+            }
+
+            var userBasket = GetBasketFromCookie();
+
+            foreach (var guestItem in guestBasket)
+            {
+                var existingItem = userBasket.FirstOrDefault(x => x.ProductVariantId == guestItem.ProductVariantId);
+                if (existingItem != null)
+                {
+                    existingItem.Quantity += guestItem.Quantity;
+                }
+                else
+                {
+                    userBasket.Add(guestItem);
+                }
+            }
+
+            SaveBasketToCookie(userBasket);
+            _httpContextAccessor.HttpContext?.Response.Cookies.Delete(guestCookieName);
+        }
+
+        // Helper: build a BasketViewModel from in-memory cookie list
+        private async Task<BasketViewModel> BuildBasketViewModelAsync(List<BasketCookieItemViewModel> basket)
+        {
+            var basketViewModel = new BasketViewModel();
+
+            foreach (var item in basket)
+            {
+                var productVariant = await _productVariantService.GetAsync(
+                    predicate: x => x.Id == item.ProductVariantId,
+                    include: x => x.Include(c => c.Color!));
+
+                if (productVariant == null)
+                    continue;
+
+                var product = await _productService.GetByIdAsync(productVariant.ProductId);
+
+                var displayPrice = productVariant.SalePrice ?? productVariant.Price;
+
+                basketViewModel.Items.Add(new BasketItemViewModel
+                {
+                    ProductVariantId = productVariant.Id,
+                    ProductName = product?.Name ?? string.Empty,
+                    ImageName = productVariant?.CoverImageName ?? string.Empty,
+                    Price = displayPrice,
+                    Quantity = item.Quantity,
+                    ColorName = productVariant?.ColorName ?? string.Empty,
+                    Size = productVariant?.Size
+                });
+            }
+
+            return basketViewModel;
         }
     }
 }

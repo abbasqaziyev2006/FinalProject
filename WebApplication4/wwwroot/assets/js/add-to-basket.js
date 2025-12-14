@@ -9,7 +9,7 @@
      */
     const AddToBasketHandler = {
         basketCountSelector: '.js-cart-items-count, .header__cart-count',
-        addCartButtonClass: '.js-add-cart',
+        addCartButtonClass: '.js-add-cart', // ✅ Changed to match button class
         isProcessing: false,
 
         init() {
@@ -52,6 +52,7 @@
             this.isProcessing = true;
             $button.prop('disabled', true);
             const originalText = $button.text();
+            $button.text('Adding...'); // ✅ Show loading state
 
             console.log('🔄 Starting add to basket request...');
 
@@ -90,7 +91,7 @@
                     // Update basket count immediately from the response
                     this.updateBasketCountFromData(data.totalCount);
                     this.showAddedNotification(data.message || 'Product added to basket!');
-                    console.log('✅ Product added successfully');
+                    console.log('✅ Product added successfully, Total Count:', data.totalCount);
                 } else {
                     console.error('❌ Failed to add item:', data.message);
                     alert('Failed to add item to basket. Please try again.');
@@ -120,17 +121,26 @@
             console.log('🔢 Updating count to:', count);
 
             $(this.basketCountSelector).each(function () {
-                $(this).text(count);
+                const $el = $(this);
+                $el.text(count);
+
+                // Force display update
                 if (count > 0) {
-                    $(this).show();
+                    $el.show().css('display', 'inline-block');
                 } else {
-                    $(this).hide();
+                    $el.hide();
                 }
             });
+
+            // ✅ Trigger a custom event that other scripts can listen to
+            $(document).trigger('basketUpdated', [count]);
         },
 
         showAddedNotification(message) {
             console.log('🎉 Showing notification:', message);
+
+            // Remove any existing toasts
+            $('.basket-toast').remove();
 
             // Create a simple toast notification
             const $toast = $('<div>')

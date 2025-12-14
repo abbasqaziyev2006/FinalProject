@@ -45,9 +45,24 @@ namespace EcommerceCoza.BLL.Services
                 // Featured products - first 8 products
                 FeaturedProducts = productsList.Take(8).ToList(),
 
-                // Hot Deals - products with price less than 100
+                // 🆕 Hot Deals - YALNIZ ENDİRİMLİ MƏHSULLAR
+                // Sale price olan və stokda olan məhsullar
+                // Ən böyük endirimdən kiçiyə sıralayırıq
                 HotDeals = productsList
-                    .Where(p => p.BasePrice < 100 && p.ProductVariants.Any(v => v.Quantity > 0))
+                    .Where(p => p.ProductVariants.Any(v =>
+                        v.SalePrice.HasValue &&           // Sale price təyin olunub
+                        v.SalePrice.Value < v.Price &&    // Sale price normal qiymətdən aşağıdır
+                        v.Quantity > 0                     // Stokda var
+                    ))
+                    .OrderByDescending(p => {
+                        // Ən böyük endrim faizini tap
+                        var bestDiscount = p.ProductVariants
+                            .Where(v => v.SalePrice.HasValue && v.SalePrice.Value < v.Price && v.Quantity > 0)
+                            .Select(v => (v.Price - v.SalePrice.Value) / v.Price * 100)
+                            .DefaultIfEmpty(0)
+                            .Max();
+                        return bestDiscount;
+                    })
                     .Take(5)
                     .ToList(),
 
@@ -57,7 +72,7 @@ namespace EcommerceCoza.BLL.Services
                     .Take(8)
                     .ToList(),
 
-                // Best Sellers - you can modify this logic based on your sales data
+                // Best Sellers - stokda olan məhsullar
                 BestSellers = productsList
                     .Where(p => p.ProductVariants.Any(v => v.Quantity > 0))
                     .Take(8)

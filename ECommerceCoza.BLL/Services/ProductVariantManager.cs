@@ -100,6 +100,7 @@ namespace ECommerceCoza.BLL.Services
             existingVariant.Size = model.Size;
             existingVariant.ColorId = model.ColorId;
             existingVariant.Price = model.Price;
+            existingVariant.SalePrice = model.SalePrice;  // 🆕 Sale Price əlavə edildi
             existingVariant.Quantity = model.Quantity;
             existingVariant.ProductId = model.ProductId;
 
@@ -173,6 +174,69 @@ namespace ECommerceCoza.BLL.Services
             await Repository.UpdateAsync(existingVariant);
 
             return true;
+        }
+
+        // 🆕 Custom GetAsync metodu - Price və SalePrice ilə
+        public async Task<ProductVariantViewModel?> GetVariantWithPriceAsync(int id)
+        {
+            var variant = await Repository.GetAsync(
+                predicate: v => v.Id == id && !v.IsDeleted,
+                include: query => query
+                    .Include(v => v.Color!)
+                    .Include(v => v.ProductImages!)
+                    .Include(v => v.Product!)
+            );
+
+            if (variant == null)
+                return null;
+
+            var viewModel = new ProductVariantViewModel
+            {
+                Id = variant.Id,
+                ProductName = variant.Product?.Name ?? string.Empty,
+                Price = variant.Price,  // 🆕
+                SalePrice = variant.SalePrice,  // 🆕
+                Priced = variant.Price,  // Köhnə uyğunluq
+                ProductId = variant.ProductId,
+                Quantity = variant.Quantity,
+                ColorId = variant.ColorId,
+                ColorName = variant.Color?.Name,
+                ColorHexCode = variant.Color?.HexCode,
+                Size = variant.Size,
+                CoverImageName = variant.CoverImageName,
+                ImageNames = variant.ProductImages?.Select(pi => pi.ImageName!).ToList() ?? new List<string>()
+            };
+
+            return viewModel;
+        }
+
+        // 🆕 GetAllAsync override - bütün variant-lar üçün Price və SalePrice
+        public async Task<List<ProductVariantViewModel>> GetAllVariantsWithPriceAsync(int productId)
+        {
+            var variants = await Repository.GetAllAsync(
+                predicate: v => v.ProductId == productId && !v.IsDeleted,
+                include: query => query
+                    .Include(v => v.Color!)
+                    .Include(v => v.ProductImages!)
+                    .Include(v => v.Product!)
+            );
+
+            return variants.Select(variant => new ProductVariantViewModel
+            {
+                Id = variant.Id,
+                ProductName = variant.Product?.Name ?? string.Empty,
+                Price = variant.Price,  // 🆕
+                SalePrice = variant.SalePrice,  // 🆕
+                Priced = variant.Price,  // Köhnə uyğunluq
+                ProductId = variant.ProductId,
+                Quantity = variant.Quantity,
+                ColorId = variant.ColorId,
+                ColorName = variant.Color?.Name,
+                ColorHexCode = variant.Color?.HexCode,
+                Size = variant.Size,
+                CoverImageName = variant.CoverImageName,
+                ImageNames = variant.ProductImages?.Select(pi => pi.ImageName!).ToList() ?? new List<string>()
+            }).ToList();
         }
     }
 }
