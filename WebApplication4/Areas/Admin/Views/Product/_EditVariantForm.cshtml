@@ -5,6 +5,13 @@
 <input type="hidden" asp-for="ProductId" />
 <input type="hidden" asp-for="DeletedImageIds" />
 
+<!-- Quick Bulk Add button (opens global Bulk Add modal present on Edit page) -->
+<div class="d-flex justify-content-end mb-3">
+    <button type="button" class="btn btn-sm btn-info" onclick="openBulkFromEditVariant()" title="Bulk Add variants">
+        <i class="icon-grid me-1"></i> Bulk Add
+    </button>
+</div>
+
 <!-- Info -->
 <div class="alert alert-info mb-4" style="font-size: 14px;">
     <i class="fas fa-info-circle me-2"></i>
@@ -108,6 +115,17 @@
         $(btn).closest('.existing-image-item').fadeOut(200, function() {
             $(this).remove();
         });
+    }
+
+    // Open the global bulk add modal that lives on the Edit page
+    function openBulkFromEditVariant() {
+        // If parent page has the bulk modal, open it
+        if ($('#bulkAddModal').length) {
+            $('#editVariantModal').modal('hide'); // optionally hide edit modal to show bulk modal clearly
+            $('#bulkAddModal').modal('show');
+        } else {
+            alert('Bulk Add modal not available on this page.');
+        }
     }
 
     // Price validation

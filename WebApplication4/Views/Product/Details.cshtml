@@ -12,6 +12,26 @@
     {
         discountPercent = (int)Math.Round((1 - (firstVariant.SalePrice.Value / firstVariant.Price)) * 100);
     }
+
+    // Deduplicate colors: build a stable key per color (prefer ColorId when present)
+    var uniqueColors = Model.ProductVariants
+        .Select(v => new
+        {
+            Variant = v,
+            Key = v.ColorId > 0
+                ? $"id_{v.ColorId}"
+                : (!string.IsNullOrEmpty(v.ColorHexCode) ? $"hex_{v.ColorHexCode}" : $"name_{v.ColorName}")
+        })
+        .GroupBy(x => x.Key)
+        .Select(g => g.First().Variant)
+        .ToList();
+
+    // Deduplicate sizes
+    var uniqueSizes = Model.ProductVariants
+        .Where(v => !string.IsNullOrEmpty(v.Size))
+        .Select(v => v.Size)
+        .Distinct()
+        .ToList();
 }
 
 <main class="pt-90">
@@ -146,7 +166,7 @@
                         }
                         else
                         {
-                            <text>@Localizer["No Reviews Yet"]</text>
+                            <text>@Localizer["NoReviewsYet"]</text>
                         }
                     </span>
                 </div>
@@ -182,13 +202,6 @@
                     {
                         <div class="product-single__swatches">
                             @* Size Selection *@
-                            @{
-                                var uniqueSizes = Model.ProductVariants
-                                .Where(v => !string.IsNullOrEmpty(v.Size))
-                                .Select(v => v.Size)
-                                .Distinct()
-                                .ToList();
-                            }
                             @if (uniqueSizes.Any())
                             {
                                 <div class="product-swatch text-swatches mb-3">
@@ -210,15 +223,19 @@
                                 </div>
                             }
 
-                            @* Color Selection *@
+                            @* Color Selection (deduplicated) *@
                             <div class="product-swatch text-swatches">
                                 <label>@Localizer["Color"]</label>
                                 <div class="swatch-list">
-                                    @foreach (var variant in Model.ProductVariants.GroupBy(v => v.ColorId).Select(g => g.First()))
+                                    @{
+                                        var colorIndex = 0;
+                                    }
+                                    @foreach (var variant in uniqueColors)
                                     {
+                                        var idx = colorIndex++;
                                         <input type="radio"
                                                name="color"
-                                               id="color_@variant.ColorId"
+                                               id="color_@idx"
                                                value="@variant.ColorId"
                                                data-variant-id="@variant.Id"
                                                data-color-id="@variant.ColorId"
@@ -229,7 +246,7 @@
                                                class="swatch-input"
                                                @(Model.ProductVariants.First().ColorId == variant.ColorId ? "checked" : "")>
                                         <label class="swatch js-swatch"
-                                               for="color_@variant.ColorId"
+                                               for="color_@idx"
                                                title="@variant.ColorName"
                                                style="@(!string.IsNullOrEmpty(variant.ColorHexCode) ? $"background-color: {variant.ColorHexCode};" : "")">
                                             @if (string.IsNullOrEmpty(variant.ColorHexCode) && !string.IsNullOrEmpty(variant.ColorIconName))
@@ -361,21 +378,21 @@
                                         }
                                         @if (Model.ProductVariants.Any())
                                         {
-                                            var uniqueSizes = Model.ProductVariants.Where(v => !string.IsNullOrEmpty(v.Size)).Select(v => v.Size).Distinct();
-                                            if (uniqueSizes.Any())
+                                            var uniqueSizesInfo = Model.ProductVariants.Where(v => !string.IsNullOrEmpty(v.Size)).Select(v => v.Size).Distinct();
+                                            if (uniqueSizesInfo.Any())
                                             {
                                                 <tr>
-                                                    <th class="bg-light">@Localizer["Available Sizes"]</th>
-                                                    <td>@string.Join(", ", uniqueSizes)</td>
+                                                    <th class="bg-light">@Localizer["AvailableSizes"]</th>
+                                                    <td>@string.Join(", ", uniqueSizesInfo)</td>
                                                 </tr>
                                             }
 
-                                            var uniqueColors = Model.ProductVariants.Select(v => v.ColorName).Distinct();
-                                            if (uniqueColors.Any())
+                                            var uniqueColorsInfo = uniqueColors.Select(v => v.ColorName).Distinct();
+                                            if (uniqueColorsInfo.Any())
                                             {
                                                 <tr>
-                                                    <th class="bg-light">@Localizer["Available Colors"]</th>
-                                                    <td>@string.Join(", ", uniqueColors)</td>
+                                                    <th class="bg-light">@Localizer["AvailableColors"]</th>
+                                                    <td>@string.Join(", ", uniqueColorsInfo)</td>
                                                 </tr>
                                             }
                                         }
@@ -398,6 +415,79 @@
 
             function formatPrice(price) {
                 return currencySymbol + ' ' + price.toFixed(2);
+            }
+
+            function refreshGalleryForVariant(matchingVariant) {
+                // build arrays of image filenames (cover first if present)
+                const images = [];
+                if (matchingVariant.coverImageName) images.push(matchingVariant.coverImageName);
+                if (Array.isArray(matchingVariant.imageNames)) {
+                    matchingVariant.imageNames.forEach(img => {
+                        if (img && images.indexOf(img) === -1) images.push(img);
+                    });
+                }
+
+                // build slides html for main gallery and thumbnails
+                let slidesHtml = '';
+                let thumbsHtml = '';
+                images.forEach(img => {
+                    slidesHtml += `
+                        <div class="swiper-slide product-single__image-item">
+                            <img loading="lazy" class="h-auto" src="/images/products/${img}" width="674" height="674" alt="${img}" />
+                            <a data-fancybox="gallery" href="/images/products/${img}" data-bs-toggle="tooltip" data-bs-placement="left" title="Zoom">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <use href="#icon_zoom" />
+                                </svg>
+                            </a>
+                        </div>`;
+
+                    thumbsHtml += `
+                        <div class="swiper-slide product-single__image-item">
+                            <img loading="lazy" class="h-auto" src="/images/products/${img}" width="104" height="104" alt="${img}" />
+                        </div>`;
+                });
+
+                const $mainWrapper = $('.product-single__image .swiper-wrapper');
+                const $thumbWrapper = $('.product-single__thumbnail .swiper-wrapper');
+
+                // Replace wrappers content
+                if ($mainWrapper.length) $mainWrapper.html(slidesHtml || `<div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto" src="/images/products/product-placeholder.jpg" width="674" height="674" alt="placeholder" /></div>`);
+                if ($thumbWrapper.length) $thumbWrapper.html(thumbsHtml || `<div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto" src="/images/products/product-placeholder.jpg" width="104" height="104" alt="placeholder" /></div>`);
+
+                // If Swiper instance exists on the containers, try to update it.
+                // Many themes attach Swiper instance to DOM element as .swiper
+                try {
+                    const mainContainer = document.querySelector('.product-single__image .swiper-container');
+                    const thumbContainer = document.querySelector('.product-single__thumbnail .swiper-container');
+
+                    if (mainContainer && mainContainer.swiper && typeof mainContainer.swiper.update === 'function') {
+                        mainContainer.swiper.update();
+                        mainContainer.swiper.slideTo(0);
+                    } else if (window.Swiper && mainContainer) {
+                        // attempt a minimal re-init if no instance present
+                        new Swiper(mainContainer, {
+                            navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
+                            loop: false,
+                        });
+                    }
+
+                    if (thumbContainer && thumbContainer.swiper && typeof thumbContainer.swiper.update === 'function') {
+                        thumbContainer.swiper.update();
+                    } else if (window.Swiper && thumbContainer) {
+                        new Swiper(thumbContainer, {
+                            slidesPerView: Math.min(4, images.length || 1),
+                            spaceBetween: 10,
+                        });
+                    }
+                } catch (ex) {
+                    // silent fallback - gallery will still show updated images without JS swiper controls
+                    console.warn('Swiper update failed', ex);
+                }
+
+                // rebind fancybox (if used) - remove existing attributes then re-add to ensure correct href
+                if (window.$ && $.fancybox) {
+                    $('[data-fancybox="gallery"]').fancybox && $('[data-fancybox="gallery"]').fancybox();
+                }
             }
 
             function updateVariantSelection() {
@@ -425,10 +515,13 @@
                         $('#addToCartBtn').prop('disabled', true);
                     }
 
-                    // Update main image if needed
-                    if (matchingVariant.coverImageName) {
-                        $('.product-single__image .swiper-slide:first img').attr('src', '/images/products/' + matchingVariant.coverImageName);
-                    }
+                    // Update entire gallery (main + thumbnails) to matching variant images
+                    refreshGalleryForVariant(matchingVariant);
+                } else {
+                    // If no exact match, disable add to cart and show message
+                    $('#productVariantId').val('');
+                    $('#addToCartBtn').prop('disabled', true);
+                    $('#stock-status').html('<span class="text-danger">@Localizer["OutOfStock"]</span>');
                 }
             }
 
@@ -464,6 +557,9 @@
 
             // Handle size and color selection
             $('input[name="size"], input[name="color"]').on('change', updateVariantSelection);
+
+            // on initial load ensure gallery matches the initially selected swatch (color)
+            updateVariantSelection();
 
             // Handle quantity controls
             $('.qty-control__increase').on('click', function () {

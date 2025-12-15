@@ -132,9 +132,14 @@
                         <i class="icon-layers me-2"></i>Product Variants
                         <span id="variantCount" class="badge bg-primary ms-2" style="font-size: 14px;">0</span>
                     </h4>
-                    <button type="button" class="btn btn-lg btn-success" onclick="openAddVariantModal()" style="font-size: 16px;">
-                        <i class="icon-plus me-2"></i>Add Variant
-                    </button>
+                    <div>
+                        <button type="button" class="btn btn-lg btn-info me-2" onclick="openBulkAddModal()" style="font-size: 16px;">
+                            <i class="icon-grid me-2"></i>Bulk Add Variants
+                        </button>
+                        <button type="button" class="btn btn-lg btn-success" onclick="openAddVariantModal()" style="font-size: 16px;">
+                            <i class="icon-plus me-2"></i>Add Single Variant
+                        </button>
+                    </div>
                 </div>
 
                 <div id="variantsContainer">
@@ -160,7 +165,105 @@
     </div>
 </div>
 
-<!-- Add Variant Modal -->
+<!-- Bulk Add Variants Modal -->
+<div class="modal fade" id="bulkAddModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" style="font-size: 20px; font-weight: 600;">
+                    <i class="icon-grid me-2"></i>Bulk Add Variants (Multiple Sizes & Colors)
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Sizes Selection -->
+                <div class="mb-4">
+                    <label class="form-label" style="font-size: 16px; font-weight: 600;">
+                        <i class="icon-tag me-1"></i>Sizes <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group mb-2">
+                        <input type="text" id="bulkSizeInput" class="form-control" placeholder="Enter size (e.g., S, M, L)" style="font-size: 16px; padding: 10px;" />
+                        <button type="button" class="btn btn-primary" onclick="addBulkSize()">
+                            <i class="icon-plus"></i> Add Size
+                        </button>
+                    </div>
+                    <div id="selectedSizes" class="d-flex gap-2 flex-wrap"></div>
+                </div>
+
+                <!-- Colors Selection -->
+                <div class="mb-4">
+                    <label class="form-label" style="font-size: 16px; font-weight: 600;">
+                        <i class="icon-droplet me-1"></i>Colors <span class="text-danger">*</span>
+                    </label>
+                    <select id="bulkColorSelect" class="form-select mb-2" style="font-size: 16px; padding: 10px;">
+                        <option value="">-- Select Color to Add --</option>
+                    </select>
+                    <div id="selectedColors" class="d-flex gap-2 flex-wrap"></div>
+                </div>
+
+                <!-- Common Price -->
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label" style="font-size: 16px; font-weight: 600;">
+                            <i class="icon-dollar-sign me-1"></i>Regular Price ($) <span class="text-danger">*</span>
+                        </label>
+                        <input type="number" id="bulkPrice" step="0.01" min="0" class="form-control" placeholder="0.00" style="font-size: 16px; padding: 10px;" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label" style="font-size: 16px; font-weight: 600;">
+                            <i class="icon-tag me-1"></i>Sale Price ($)
+                            <small class="text-muted">(Optional)</small>
+                        </label>
+                        <input type="number" id="bulkSalePrice" step="0.01" min="0" class="form-control" placeholder="0.00" style="font-size: 16px; padding: 10px;" />
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label" style="font-size: 16px; font-weight: 600;">
+                            <i class="icon-package me-1"></i>Quantity <span class="text-danger">*</span>
+                        </label>
+                        <input type="number" id="bulkQuantity" min="0" class="form-control" placeholder="0" style="font-size: 16px; padding: 10px;" />
+                    </div>
+                </div>
+
+                <!-- Cover Image -->
+                <div class="mb-3">
+                    <label class="form-label" style="font-size: 16px; font-weight: 600;">
+                        <i class="icon-image me-1"></i>Cover Image <span class="text-danger">*</span>
+                    </label>
+                    <input type="file" id="bulkCoverImage" accept="image/*" class="form-control" style="font-size: 16px; padding: 10px;" onchange="previewBulkCoverImage(this)" />
+                    <div id="bulkCoverImagePreview" class="mt-3" style="display:none;">
+                        <img id="bulkCoverPreviewImg" src="#" style="width:200px; height:200px; object-fit:cover; border-radius:12px; border: 3px solid #e0e0e0;" alt="Cover Preview">
+                    </div>
+                </div>
+
+                <!-- Additional Images -->
+                <div class="mb-3">
+                    <label class="form-label" style="font-size: 16px; font-weight: 600;">
+                        <i class="icon-images me-1"></i>Additional Images
+                    </label>
+                    <input type="file" id="bulkAdditionalImages" accept="image/*" multiple class="form-control" style="font-size: 16px; padding: 10px;" onchange="previewBulkAdditionalImages(this)" />
+                    <div id="bulkAdditionalImagesPreview" class="mt-3 d-flex gap-3 flex-wrap"></div>
+                </div>
+
+                <div class="alert alert-warning">
+                    <i class="icon-info me-2"></i>
+                    <strong>Note:</strong> This will create variants for all combinations of selected sizes and colors.
+                    <br />
+                    <span id="combinationCount">Select sizes and colors to see total combinations.</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-lg btn-secondary" data-bs-dismiss="modal" style="font-size: 16px;">
+                    <i class="icon-x me-2"></i>Cancel
+                </button>
+                <button type="button" class="btn btn-lg btn-success" onclick="createBulkVariants()" style="font-size: 16px;">
+                    <i class="icon-check me-2"></i>Create All Variants
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Single Variant Modal -->
 <div class="modal fade" id="addVariantModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -251,18 +354,26 @@
         let variants = [];
         let variantCounter = 0;
         let colors = [];
+        let selectedBulkSizes = [];
+        let selectedBulkColors = [];
         const modal = new bootstrap.Modal(document.getElementById('addVariantModal'));
+        const bulkModal = new bootstrap.Modal(document.getElementById('bulkAddModal'));
 
         $(document).ready(function() {
             loadColors();
 
             // Sale price validation
-            $('#variantSalePrice').on('input', function() {
+            $('#variantSalePrice, #bulkSalePrice').on('input', function() {
                 validateSalePrice();
             });
 
-            $('#variantPrice').on('input', function() {
+            $('#variantPrice, #bulkPrice').on('input', function() {
                 validateSalePrice();
+            });
+
+            // Bulk color select change
+            $('#bulkColorSelect').on('change', function() {
+                addBulkColor();
             });
         });
 
@@ -287,16 +398,212 @@
             $.get('@Url.Action("GetColors", "Product", new { area = "Admin" })', function(data) {
                 colors = data;
                 const colorSelect = $('#variantColor');
+                const bulkColorSelect = $('#bulkColorSelect');
+
                 colorSelect.empty();
+                bulkColorSelect.empty();
+
                 colorSelect.append('<option value="">-- Select Color --</option>');
+                bulkColorSelect.append('<option value="">-- Select Color to Add --</option>');
+
                 data.forEach(function(color) {
                     colorSelect.append(`<option value="${color.id}" data-name="${color.name}" data-hex="${color.hexCode || ''}">${color.name}</option>`);
+                    bulkColorSelect.append(`<option value="${color.id}" data-name="${color.name}" data-hex="${color.hexCode || ''}">${color.name}</option>`);
                 });
             }).fail(function() {
                 alert('Failed to load colors. Please refresh the page.');
             });
         }
 
+        // === BULK ADD FUNCTIONS ===
+        function openBulkAddModal() {
+            resetBulkForm();
+            bulkModal.show();
+        }
+
+        function resetBulkForm() {
+            selectedBulkSizes = [];
+            selectedBulkColors = [];
+            $('#bulkSizeInput').val('');
+            $('#bulkPrice').val('');
+            $('#bulkSalePrice').val('');
+            $('#bulkQuantity').val('');
+            $('#bulkCoverImage').val('');
+            $('#bulkAdditionalImages').val('');
+            $('#selectedSizes').empty();
+            $('#selectedColors').empty();
+            $('#bulkCoverImagePreview').hide();
+            $('#bulkAdditionalImagesPreview').empty();
+            updateCombinationCount();
+        }
+
+        function addBulkSize() {
+            const sizeInput = $('#bulkSizeInput');
+            const size = sizeInput.val().trim();
+
+            if (!size) {
+                alert('Please enter a size');
+                return;
+            }
+
+            if (selectedBulkSizes.includes(size)) {
+                alert('This size has already been added');
+                return;
+            }
+
+            selectedBulkSizes.push(size);
+            renderSelectedSizes();
+            sizeInput.val('');
+            updateCombinationCount();
+        }
+
+        function renderSelectedSizes() {
+            const container = $('#selectedSizes');
+            container.empty();
+            selectedBulkSizes.forEach(function(size) {
+                container.append(`
+                    <span class="badge bg-info" style="font-size: 14px; padding: 8px 12px;">
+                        ${size}
+                        <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 10px;" onclick="removeBulkSize('${size}')"></button>
+                    </span>
+                `);
+            });
+        }
+
+        function removeBulkSize(size) {
+            selectedBulkSizes = selectedBulkSizes.filter(s => s !== size);
+            renderSelectedSizes();
+            updateCombinationCount();
+        }
+
+        function addBulkColor() {
+            const colorSelect = $('#bulkColorSelect');
+            const selectedOption = colorSelect.find(':selected');
+            const colorId = colorSelect.val();
+
+            if (!colorId) return;
+
+            if (selectedBulkColors.some(c => c.id == colorId)) {
+                alert('This color has already been added');
+                colorSelect.val('');
+                return;
+            }
+
+            selectedBulkColors.push({
+                id: colorId,
+                name: selectedOption.data('name'),
+                hex: selectedOption.data('hex')
+            });
+
+            renderSelectedColors();
+            colorSelect.val('');
+            updateCombinationCount();
+        }
+
+        function renderSelectedColors() {
+            const container = $('#selectedColors');
+            container.empty();
+            selectedBulkColors.forEach(function(color) {
+                container.append(`
+                    <span class="badge bg-primary d-flex align-items-center" style="font-size: 14px; padding: 8px 12px;">
+                        ${color.hex ? `<div style="width:16px; height:16px; background:${color.hex}; border-radius:50%; border:1px solid #fff; margin-right:6px;"></div>` : ''}
+                        ${color.name}
+                        <button type="button" class="btn-close btn-close-white ms-2" style="font-size: 10px;" onclick="removeBulkColor(${color.id})"></button>
+                    </span>
+                `);
+            });
+        }
+
+        function removeBulkColor(colorId) {
+            selectedBulkColors = selectedBulkColors.filter(c => c.id != colorId);
+            renderSelectedColors();
+            updateCombinationCount();
+        }
+
+        function updateCombinationCount() {
+            const count = selectedBulkSizes.length * selectedBulkColors.length;
+            if (count > 0) {
+                $('#combinationCount').html(`<strong>Total combinations: ${count} variants will be created</strong>`);
+            } else {
+                $('#combinationCount').text('Select sizes and colors to see total combinations.');
+            }
+        }
+
+        function createBulkVariants() {
+            if (selectedBulkSizes.length === 0) {
+                alert('Please add at least one size');
+                return;
+            }
+
+            if (selectedBulkColors.length === 0) {
+                alert('Please add at least one color');
+                return;
+            }
+
+            const price = $('#bulkPrice').val();
+            const quantity = $('#bulkQuantity').val();
+            const coverFile = $('#bulkCoverImage')[0].files[0];
+
+            if (!price || !quantity || !coverFile) {
+                alert('Please fill all required fields (Price, Quantity, Cover Image)');
+                return;
+            }
+
+            const salePrice = $('#bulkSalePrice').val();
+            const additionalFiles = Array.from($('#bulkAdditionalImages')[0].files);
+
+            // Create all combinations
+            selectedBulkSizes.forEach(function(size) {
+                selectedBulkColors.forEach(function(color) {
+                    const variant = {
+                        id: variantCounter++,
+                        size: size,
+                        colorId: color.id,
+                        colorName: color.name,
+                        colorHex: color.hex,
+                        price: parseFloat(price),
+                        salePrice: salePrice ? parseFloat(salePrice) : null,
+                        quantity: parseInt(quantity),
+                        coverImage: coverFile,
+                        coverImageUrl: URL.createObjectURL(coverFile),
+                        additionalImages: additionalFiles
+                    };
+                    variants.push(variant);
+                });
+            });
+
+            updateVariantsDisplay();
+            bulkModal.hide();
+            showToast('success', `${selectedBulkSizes.length * selectedBulkColors.length} variants created successfully!`);
+        }
+
+        function previewBulkCoverImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#bulkCoverPreviewImg').attr('src', e.target.result);
+                    $('#bulkCoverImagePreview').show();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function previewBulkAdditionalImages(input) {
+            $('#bulkAdditionalImagesPreview').empty();
+            if (input.files) {
+                Array.from(input.files).forEach(function(file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        $('#bulkAdditionalImagesPreview').append(
+                            `<img src="${e.target.result}" style="width:100px; height:100px; object-fit:cover; border-radius:8px; border: 2px solid #e0e0e0;" />`
+                        );
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
+        }
+
+        // === SINGLE VARIANT FUNCTIONS ===
         function openAddVariantModal() {
             resetVariantForm();
             modal.show();
@@ -345,8 +652,6 @@
             variants.push(variant);
             updateVariantsDisplay();
             modal.hide();
-
-            // Show success message
             showToast('success', 'Variant added successfully!');
         }
 
@@ -540,6 +845,10 @@
         .btn:hover {
             transform: translateY(-2px);
             transition: all 0.3s ease;
+        }
+
+        .btn-close-white {
+            filter: brightness(0) invert(1);
         }
     </style>
 }
