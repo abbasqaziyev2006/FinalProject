@@ -157,7 +157,36 @@
                         <div class="accordion-body px-0 pb-0 pt-3">
                             <div class="d-flex flex-wrap gap-2">
                                 @{
-                                    var availableSizes = new[] { "XS", "S", "M", "L", "XL", "XXL" };
+                                    // Include numeric shoe sizes (36, 38, 40) and common text sizes.
+                                    // Also include any sizes coming from product variants.
+                                    var numericSizes = new List<string> { "36", "38", "40" };
+                                    var textSizes = new List<string> { "XS", "S", "M", "L", "XL", "XXL" };
+                                    var variantSizes = products
+                                    .SelectMany(p => p.ProductVariants)
+                                    .Select(v => v.Size)
+                                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                                    .Select(s => s.Trim().ToUpper())
+                                    .Distinct()
+                                    .ToList();
+
+                                    var allSizesSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                                    foreach (var s in numericSizes) allSizesSet.Add(s);
+                                    foreach (var s in variantSizes) allSizesSet.Add(s);
+                                    foreach (var s in textSizes) allSizesSet.Add(s);
+
+                                    var availableSizes = allSizesSet
+                                    .OrderBy(s =>
+                                    {
+                                        // numeric sizes first, ordered ascending
+                                        if (int.TryParse(s, out var n)) return n;
+                                        // then known text sizes in the order defined
+                                        var idx = textSizes.IndexOf(s);
+                                        if (idx >= 0) return 1000 + idx;
+                                        // any other sizes afterwards (alphabetical)
+                                        return 2000 + s.GetHashCode();
+                                    })
+                                    .ToArray();
+
                                     foreach (var size in availableSizes)
                                     {
                                         var sizeProductCount = products.Count(p => p.ProductVariants.Any(v => !string.IsNullOrEmpty(v.Size) && v.Size.Equals(size, StringComparison.OrdinalIgnoreCase)));
@@ -740,7 +769,7 @@
             // ============= ADD TO CART =============
             $(document).on('click', '.js-add-cart', function(e) {
                 e.preventDefault();
-                
+
                 const $button = $(this);
                 const variantId = $button.data('variant-id');
 
@@ -850,16 +879,19 @@
                 transform: translateX(100%);
                 opacity: 0;
             }
+
             to {
                 transform: translateX(0);
                 opacity: 1;
             }
         }
+
         @@keyframes slideOut {
             from {
                 transform: translateX(0);
                 opacity: 1;
             }
+
             to {
                 transform: translateX(100%);
                 opacity: 0;
