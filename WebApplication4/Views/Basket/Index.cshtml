@@ -468,8 +468,12 @@
             $('#remove-coupon').on('click', function () {
                 appliedCoupon = null;
                 $('#discount-info').addClass('d-none');
-                updateTotals();
-                showNotification('Discount code removed', 'success');
+
+                // Session'dan kupon kodunu temizle
+                $.post('@Url.Action("RemoveDiscount", "Basket")', function() {
+                    updateTotals();
+                    showNotification('Discount code removed', 'success');
+                });
             });
 
             function reapplyDiscount(total) {

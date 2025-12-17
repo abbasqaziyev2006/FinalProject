@@ -47,7 +47,8 @@ namespace EcommerceCoza.MVC.Controllers
             _logger = logger;
         }
 
-        private ISession Session => _accessor.HttpContext!.Session;
+        private ISession? Session => _accessor.HttpContext?.Session;
+        private const string AppliedDiscountCodeKey = "AppliedDiscountCode";
 
         public async Task<IActionResult> Checkout()
         {
@@ -60,6 +61,30 @@ namespace EcommerceCoza.MVC.Controllers
             model = await _orderService.GetUserAndAddressViewModel(model);
             model.TotalPrice = model.BasketViewModel.TotalPrice;
             model.EndPrice = model.TotalPrice;
+
+            // Session'dan kupon kodunu oku ve otomatik uygula
+            var savedDiscountCode = Session?.GetString(AppliedDiscountCodeKey);
+            if (!string.IsNullOrEmpty(savedDiscountCode))
+            {
+                ViewData["SavedDiscountCode"] = savedDiscountCode;
+
+                // Kupon kodunu model'e uygula
+                var discount = await _orderService.GetDiscount(savedDiscountCode);
+                if (discount != null)
+                {
+                    model.HasAppliedDiscount = true;
+                    model.Discount = savedDiscountCode;
+                    model.DiscountCodeId = discount.Id;
+                    model.DiscountAmount = (model.TotalPrice * discount.SalePercentage) / 100;
+                    model.EndPrice = model.TotalPrice - model.DiscountAmount;
+                    ViewData["DiscountPercentage"] = discount.SalePercentage;
+                }
+                else
+                {
+                    // Geçersiz kupon kodunu session'dan temizle
+                    Session?.Remove(AppliedDiscountCodeKey);
+                }
+            }
 
             return View(model);
         }
@@ -221,6 +246,9 @@ namespace EcommerceCoza.MVC.Controllers
 
             _basketManager.CleanBasket();
 
+            // Sipariş tamamlandığında session'dan kupon kodunu temizle
+            Session?.Remove(AppliedDiscountCodeKey);
+
             return RedirectToAction("Confirmation", new { id = lastOrder.Id });
         }
 
@@ -281,7 +309,8 @@ namespace EcommerceCoza.MVC.Controllers
                 {
                     _logger.LogInformation("Order already exists, redirecting to confirmation");
                     _basketManager.CleanBasket();
-                    Session.Remove(orderToken);
+                    Session?.Remove(orderToken);
+                    Session?.Remove(AppliedDiscountCodeKey);
                     return RedirectToAction("Confirmation", new { id = existingOrder.Id });
                 }
 
@@ -301,7 +330,8 @@ namespace EcommerceCoza.MVC.Controllers
                 }
 
                 _basketManager.CleanBasket();
-                Session.Remove(orderToken);
+                Session?.Remove(orderToken);
+                Session?.Remove(AppliedDiscountCodeKey);
 
                 return RedirectToAction("Confirmation", new { id = lastOrder.Id });
             }
@@ -399,12 +429,17 @@ namespace EcommerceCoza.MVC.Controllers
 
             if (discount == null)
             {
+
+                Session?.Remove(AppliedDiscountCodeKey);
                 return Json(new
                 {
                     success = false,
                     message = "Invalid or expired discount code"
                 });
             }
+
+ 
+            Session?.SetString(AppliedDiscountCodeKey, discountCode);
 
             var basket = await _basketManager.GetBasketAsync();
             var discountAmount = (basket.TotalPrice * discount.SalePercentage) / 100;

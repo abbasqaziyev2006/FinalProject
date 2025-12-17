@@ -58,92 +58,140 @@ class DarkModeTheme {
         const isDark = document.documentElement.classList.contains(this.DARK_CLASS);
 
         if (isDark) {
-            // Force background colors on common containers
+            // Elements to force dark styling for readability (checkout / basket / form areas)
             const containerSelectors = [
-                'body',
-                '.container',
-                '.product-card',
-                '.pc__img-wrapper',
+                '.checkout-form',
+                '.billing-info__wrapper',
+                '.checkout__totals-wrapper',
+                '.checkout__totals',
+                '.checkout-cart-items',
+                '.checkout-totals',
+                '.sticky-content',
                 '.bg-white',
-                '.bg-light'
+                '.bg-light',
+                '.cart-item',
+                '.modal-content'
             ];
 
             containerSelectors.forEach(selector => {
                 const elements = document.querySelectorAll(selector);
                 elements.forEach(el => {
                     el.setAttribute('data-dark-mode-applied', 'true');
+                    // dark panel background, readable text and subtle border
+                    el.style.setProperty('background-color', '#121216', 'important');
+                    el.style.setProperty('color', '#e8e8e8', 'important');
+                    el.style.setProperty('border-color', 'rgba(255,255,255,0.06)', 'important');
                 });
             });
 
-            // Force text colors on product cards and filters
+            // Text selectors including step headings and table cells
             const textSelectors = [
-                '.product-card .pc__title',
-                '.product-card h6',
-                '.product-card h5',
-                '.product-card h4',
-                '.product-card a',
-                '.product-card .product-card__title',
-                '.product-card .pc__price',
-                '.product-card .product-card__price',
-                '.aside a',
-                '.aside li',
-                '.aside label',
-                '.aside h3',
-                '.aside h4',
-                '.aside h5',
-                '.widget a',
-                '.widget li',
-                '.widget label',
-                '.widget h3',
-                '.widget h4',
-                '.widget h5',
-                '.widget-title',
-                '.list-unstyled li',
-                '.list-unstyled a'
+                '.page-title',
+                '.checkout-steps__item',
+                '.checkout-steps__item-title',
+                '.checkout-steps__item-number',
+                '.checkout-form h4',
+                '.checkout__totals h3',
+                '.checkout-cart-items th',
+                '.checkout-cart-items td',
+                '.checkout-totals th',
+                '.checkout-totals td',
+                '.cart-item h5',
+                '.cart-item p',
+                '.checkout__payment-methods .form-check-label',
+                '.modal-header h5',
+                '.modal-body',
+                '.text-muted'
             ];
 
             textSelectors.forEach(selector => {
                 const elements = document.querySelectorAll(selector);
                 elements.forEach(el => {
-                    if (selector.includes('.aside') || selector.includes('.widget') || selector.includes('.list-unstyled')) {
-                        el.style.setProperty('color', '#e8e8e8', 'important');
+                    // muted text slightly lighter, headings brighter
+                    if (el.classList.contains('text-muted') || selector.includes('modal-body')) {
+                        el.style.setProperty('color', '#cfcfd1', 'important');
                     } else {
                         el.style.setProperty('color', '#f0f0f0', 'important');
                     }
                 });
             });
-        } else {
-            // Remove forced styles in light mode
-            const textSelectors = [
-                '.product-card .pc__title',
-                '.product-card h6',
-                '.product-card h5',
-                '.product-card h4',
-                '.product-card a',
-                '.product-card .product-card__title',
-                '.product-card .pc__price',
-                '.product-card .product-card__price',
-                '.aside a',
-                '.aside li',
-                '.aside label',
-                '.aside h3',
-                '.aside h4',
-                '.aside h5',
-                '.widget a',
-                '.widget li',
-                '.widget label',
-                '.widget h3',
-                '.widget h4',
-                '.widget h5',
-                '.widget-title',
-                '.list-unstyled li',
-                '.list-unstyled a'
+
+            // Inputs and form-controls
+            const inputSelectors = [
+                '.form-control',
+                '.form-floating .form-control',
+                '.input-group .form-control',
+                '.form-check-input'
             ];
 
-            textSelectors.forEach(selector => {
+            inputSelectors.forEach(selector => {
+                const inputs = document.querySelectorAll(selector);
+                inputs.forEach(i => {
+                    i.style.setProperty('background-color', '#1b1b1f', 'important');
+                    i.style.setProperty('color', '#e8e8e8', 'important');
+                    i.style.setProperty('border-color', 'rgba(255,255,255,0.08)', 'important');
+                });
+            });
+
+            // Buttons: ensure text contrast
+            const buttonSelectors = [
+                '.btn-primary',
+                '.btn-checkout',
+                '.btn'
+            ];
+
+            buttonSelectors.forEach(selector => {
+                const buttons = document.querySelectorAll(selector);
+                buttons.forEach(b => {
+                    b.style.setProperty('color', '#fff', 'important');
+                });
+            });
+
+        } else {
+            // Remove forced inline styles when switching back to light
+            const allSelectors = [
+                '.checkout-form',
+                '.billing-info__wrapper',
+                '.checkout__totals-wrapper',
+                '.checkout__totals',
+                '.checkout-cart-items',
+                '.checkout-totals',
+                '.sticky-content',
+                '.bg-white',
+                '.bg-light',
+                '.cart-item',
+                '.modal-content',
+                '.page-title',
+                '.checkout-steps__item',
+                '.checkout-steps__item-title',
+                '.checkout-steps__item-number',
+                '.checkout-form h4',
+                '.checkout__totals h3',
+                '.checkout-cart-items th',
+                '.checkout-cart-items td',
+                '.checkout-totals th',
+                '.checkout-totals td',
+                '.cart-item h5',
+                '.cart-item p',
+                '.checkout__payment-methods .form-check-label',
+                '.modal-header h5',
+                '.modal-body',
+                '.text-muted',
+                '.form-control',
+                '.form-floating .form-control',
+                '.input-group .form-control',
+                '.form-check-input',
+                '.btn-primary',
+                '.btn-checkout',
+                '.btn'
+            ];
+
+            allSelectors.forEach(selector => {
                 const elements = document.querySelectorAll(selector);
                 elements.forEach(el => {
+                    el.style.removeProperty('background-color');
                     el.style.removeProperty('color');
+                    el.style.removeProperty('border-color');
                 });
             });
         }
@@ -175,6 +223,9 @@ class DarkModeTheme {
         if (!skipUI) {
             this.updateToggleUI();
             this.forceStyleApplication();
+        } else {
+            // ensure forced styles applied even when skipping UI updates (initial load)
+            this.forceStyleApplication();
         }
     }
 
@@ -192,7 +243,8 @@ class DarkModeTheme {
 
         if (!skipUI) {
             this.updateToggleUI();
-            // Ensure any inline 'dark-mode' forced styles are removed immediately
+            this.forceStyleApplication();
+        } else {
             this.forceStyleApplication();
         }
     }

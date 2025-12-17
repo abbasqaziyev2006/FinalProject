@@ -140,10 +140,18 @@
                             <div class="checkout__discount-code my-3 p-3 border-top border-bottom">
                                 <h5 class="mb-3">@Localizer["DiscountCode"]</h5>
                                 <div class="input-group">
-                                    <input type="text" id="discountCode" class="form-control" placeholder="@Localizer["EnterDiscount"]">
+                                    <input type="text" id="discountCode" class="form-control" placeholder="@Localizer["EnterDiscount"]" value="@(Model?.Discount ?? "")">
                                     <button type="button" id="applyDiscountBtn" class="btn btn-outline-secondary">@Localizer["Apply"]</button>
                                 </div>
-                                <small id="discountMessage" class="d-block mt-2"></small>
+                                <small id="discountMessage" class="d-block mt-2">
+                                    @if (Model?.HasAppliedDiscount == true && !string.IsNullOrEmpty(Model.Discount))
+                                    {
+                                        var discountPercentage = ViewData["DiscountPercentage"] as int? ?? 0;
+                                        var discountFormat = Localizer["DiscountAppliedFormat"].Value ?? string.Empty;
+                                        var discountMessage = discountFormat.Replace("{0}", discountPercentage.ToString());
+                                        <span class="text-success">✓ @discountMessage</span>
+                                    }
+                                </small>
                             </div>
 
                             <table class="checkout-totals">
@@ -154,7 +162,16 @@
                                     </tr>
                                     <tr>
                                         <th>@Localizer["Discount"]</th>
-                                        <td align="right" id="discountAmount">-@CurrencyService.GetSymbol()0.00</td>
+                                        <td align="right" id="discountAmount">
+                                            @if (Model?.HasAppliedDiscount == true && Model.DiscountAmount > 0)
+                                            {
+                                                <text>-@CurrencyService.Format(Model.DiscountAmount)</text>
+                                            }
+                                            else
+                                            {
+                                                <text>-@CurrencyService.GetSymbol()0.00</text>
+                                            }
+                                        </td>
                                     </tr>
                                     <tr>
                                         <th>@Localizer["Shipping"]</th>
@@ -196,8 +213,8 @@
                             </div>
                         </div>
 
-                        <input type="hidden" id="hasAppliedDiscount" asp-for="HasAppliedDiscount" />
-                        <input type="hidden" id="discountField" asp-for="Discount" />
+                        <input type="hidden" id="hasAppliedDiscount" asp-for="HasAppliedDiscount" value="@(Model?.HasAppliedDiscount.ToString().ToLower() ?? "false")" />
+                        <input type="hidden" id="discountField" asp-for="Discount" value="@(Model?.Discount ?? "")" />
 
                         <button type="submit" class="btn btn-primary btn-checkout w-100 btn-lg" id="placeOrderBtn">@Localizer["PlaceOrder"]</button>
                     </div>
@@ -214,14 +231,43 @@
             let currentTotalPrice = @(Model?.TotalPrice ?? 0);
             const currencySymbol = '@CurrencyService.GetSymbol()';
 
-            const msgEnterDiscount = '@Localizer["EnterDiscountCodeWarning"]';
-            const msgDiscountAppliedFormat = '@Localizer["DiscountAppliedFormat"]';
-            const msgInvalidCode = '@Localizer["InvalidDiscountCode"]';
-            const msgErrorApplying = '@Localizer["ErrorApplyingDiscount"]';
+            const msgEnterDiscount = '@(Localizer["EnterDiscountCodeWarning"].Value ?? "")';
+            const msgDiscountAppliedFormat = '@(Localizer["DiscountAppliedFormat"].Value ?? "")';
+            const msgInvalidCode = '@(Localizer["InvalidDiscountCode"].Value ?? "")';
+            const msgErrorApplying = '@(Localizer["ErrorApplyingDiscount"].Value ?? "")';
 
             // Prevent theme.js from hijacking the form submission
             $('#checkoutForm').off('submit');
             $('#placeOrderBtn').off('click');
+
+            // Otomatik kupon uygulama - Eğer model'de kupon yoksa session'dan uygula
+            @{
+                    var savedDiscountCode = ViewData["SavedDiscountCode"] as string;
+                    var hasAppliedDiscount = Model?.HasAppliedDiscount == true;
+            }
+            @if (!string.IsNullOrEmpty(savedDiscountCode) && !hasAppliedDiscount)
+            {
+                    <text>
+                    // Sayfa yüklendiğinde otomatik olarak kupon kodunu uygula
+                    setTimeout(function() {
+                        $('#discountCode').val('@Html.Raw(savedDiscountCode)');
+                        $('#applyDiscountBtn').click();
+                    }, 500);
+                    </text>
+            }
+            else if (hasAppliedDiscount)
+            {
+                    <text>
+                    // Model'de zaten kupon uygulanmış, sadece fiyatları güncelle (mesaj zaten server-side'da gösteriliyor)
+                    $(function() {
+                        const discount = parseFloat('@(Model?.DiscountAmount ?? 0)');
+                        const finalTotal = parseFloat('@(Model?.EndPrice ?? Model?.TotalPrice ?? 0)');
+
+                        $('#discountAmount').text('-' + currencySymbol + discount.toFixed(2));
+                        $('#totalPrice').text(currencySymbol + finalTotal.toFixed(2));
+                    });
+                    </text>
+            }
 
             // Handle discount code application
             $('#applyDiscountBtn').click(function () {

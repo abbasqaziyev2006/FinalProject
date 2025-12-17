@@ -1,5 +1,6 @@
 ﻿using EcommerceCoza.BLL.Services;
 using EcommerceCoza.BLL.Services.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -12,12 +13,17 @@ namespace EcommerceCoza.MVC.Controllers
     {
         private readonly BasketManager _basketManager;
         private readonly IOrderService _orderService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private const string AppliedDiscountCodeKey = "AppliedDiscountCode";
 
-        public BasketController(BasketManager basketManager, IOrderService orderService)
+        public BasketController(BasketManager basketManager, IOrderService orderService, IHttpContextAccessor httpContextAccessor)
         {
             _basketManager = basketManager;
             _orderService = orderService;
+            _httpContextAccessor = httpContextAccessor;
         }
+
+        private ISession? Session => _httpContextAccessor.HttpContext?.Session;
 
         [HttpPost]
         public async Task<IActionResult> Add(int productVariantId, int quantity)
@@ -94,6 +100,13 @@ namespace EcommerceCoza.MVC.Controllers
         }
 
         [HttpPost]
+        public IActionResult RemoveDiscount()
+        {
+            Session?.Remove(AppliedDiscountCodeKey);
+            return Json(new { success = true });
+        }
+
+        [HttpPost]
         public async Task<IActionResult> ApplyDiscount(string discountCode)
         {
             if (string.IsNullOrWhiteSpace(discountCode))
@@ -109,12 +122,17 @@ namespace EcommerceCoza.MVC.Controllers
 
             if (discount == null)
             {
+                // Geçersiz kupon kodunu session'dan temizle
+                Session?.Remove(AppliedDiscountCodeKey);
                 return Json(new
                 {
                     success = false,
                     message = "Invalid or expired discount code"
                 });
             }
+
+            // Geçerli kupon kodunu session'a kaydet
+            Session?.SetString(AppliedDiscountCodeKey, discountCode);
 
             var basket = await _basketManager.GetBasketAsync();
             var originalTotal = basket.TotalPrice;
