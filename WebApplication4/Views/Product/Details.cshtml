@@ -410,7 +410,24 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-            const variants = @Html.Raw(Json.Serialize(Model.ProductVariants));
+            @* Serialize variants to JS with prices converted to current currency on server side.
+               Reason: client-side code previously used raw DB prices and only prefixed the currency symbol,
+               so conversion mismatched the server-rendered shop prices. We convert here so JS updates match shop. *@
+            @{
+                    var jsVariants = Model.ProductVariants.Select(v => new
+                    {
+                            id = v.Id,
+                            price = CurrencyService.ConvertFromBaseUsd(v.Price),
+                            salePrice = v.SalePrice.HasValue ? CurrencyService.ConvertFromBaseUsd(v.SalePrice.Value) : (decimal?)null,
+                            coverImageName = v.CoverImageName,
+                            imageNames = v.ImageNames,
+                            quantity = v.Quantity,
+                            colorId = v.ColorId,
+                            size = v.Size,
+                            colorName = v.ColorName
+                    }).ToList();
+            }
+            const variants = @Html.Raw(Json.Serialize(jsVariants));
             const currencySymbol = '@CurrencyService.GetSymbol()';
 
             function formatPrice(price) {

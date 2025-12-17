@@ -1,7 +1,6 @@
 ﻿using EcommerceCoza.BLL.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 
-
 namespace EcommerceCoza.MVC.Controllers
 {
     public class ShopController : Controller
@@ -19,16 +18,13 @@ namespace EcommerceCoza.MVC.Controllers
         public async Task<IActionResult> Index()
         {
             var model = await _shopService.GetShopViewModelAsync();
-
             // Order products so newest items show first, then take the first page
             var orderedProducts = model.Products.OrderByDescending(p => p.Id).ToList();
             var firstPageProducts = orderedProducts.Take(PageSize).ToList();
             model.Products = firstPageProducts;
-
             ViewBag.ProductCount = firstPageProducts.Count;
             ViewBag.TotalProducts = orderedProducts.Count;
             ViewBag.PageSize = PageSize;
-
             return View(model);
         }
 
@@ -38,7 +34,6 @@ namespace EcommerceCoza.MVC.Controllers
             // Get full product list and apply same ordering as Index
             var fullModel = await _shopService.GetShopViewModelAsync();
             var ordered = fullModel.Products.OrderByDescending(p => p.Id).ToList();
-
             var products = ordered.Skip(skip).Take(take).ToList();
 
             if (!products.Any())
@@ -81,8 +76,56 @@ namespace EcommerceCoza.MVC.Controllers
             }).ToList();
 
             var hasMore = (skip + products.Count) < ordered.Count;
-
             return Json(new { hasMore, products = productData, total = ordered.Count });
+        }
+
+
+        [HttpGet]
+        public async Task<IActionResult> SearchProducts(string query)
+        {
+            try
+            {
+                _logger.LogInformation($"Search request received: '{query}'");
+
+                // Validate query (return empty results, HTTP 200)
+                if (string.IsNullOrWhiteSpace(query) || query.Length < 2)
+                {
+                    _logger.LogWarning("Search query too short or empty");
+                    return Ok(new { products = new List<object>() });
+                }
+
+                var model = await _shopService.GetShopViewModelAsync();
+
+                var searchResults = model.Products
+                    .Where(p =>
+                        (p.Name != null && p.Name.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
+                        (p.Category?.Name != null && p.Category.Name.Contains(query, StringComparison.OrdinalIgnoreCase)) ||
+                        (p.Brand?.Name != null && p.Brand.Name.Contains(query, StringComparison.OrdinalIgnoreCase))
+                    )
+                    .Take(10)
+                    .Select(p => new
+                    {
+                        id = p.Id,
+                        name = p.Name,
+                        basePrice = p.BasePrice,
+                        coverImageName = p.ProductVariants.FirstOrDefault()?.CoverImageName ?? "no-image.png",
+                        categoryName = p.Category?.Name ?? "Uncategorized",
+                        brandName = p.Brand?.Name,
+                        detailsUrl = p.DetailsUrl,
+                        rating = p.Rating
+                    })
+                    .ToList();
+
+                _logger.LogInformation($"Found {searchResults.Count} products for query: '{query}'");
+
+                return Ok(new { products = searchResults });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error searching products with query: '{query}'");
+                // Return 500 with JSON payload so client can show a proper error
+                return StatusCode(500, new { products = new List<object>(), error = ex.Message });
+            }
         }
     }
 }
