@@ -10,5 +10,6 @@ namespace ECommerceCoza.BLL.Constants
     {
         public static string ProductImagePath = "";
         public static string CategoryImagePath = "";
+        public static string SliderImagePath = "";
     }
 }

@@ -10,11 +10,13 @@ namespace EcommerceCoza.BLL.Services
     {
         private readonly ICategoryService _categoryService;
         private readonly IProductService _productService;
+        private readonly ISliderService _sliderService;
 
-        public HomeManager(ICategoryService categoryService, IProductService productService)
+        public HomeManager(ICategoryService categoryService, IProductService productService, ISliderService sliderService)
         {
             _categoryService = categoryService;
             _productService = productService;
+            _sliderService = sliderService;
         }
 
         public async Task<HomeViewModel> GetHomeViewModelAsync()
@@ -39,23 +41,15 @@ namespace EcommerceCoza.BLL.Services
 
             var homeViewModel = new HomeViewModel
             {
-                // Top 8 categories for carousel
                 FeaturedCategories = categories.Take(8).ToList(),
-
-                // Featured products - first 8 products
                 FeaturedProducts = productsList.Take(8).ToList(),
-
-                // 🆕 Hot Deals - YALNIZ ENDİRİMLİ MƏHSULLAR
-                // Sale price olan və stokda olan məhsullar
-                // Ən böyük endirimdən kiçiyə sıralayırıq
                 HotDeals = productsList
                     .Where(p => p.ProductVariants.Any(v =>
-                        v.SalePrice.HasValue &&           // Sale price təyin olunub
-                        v.SalePrice.Value < v.Price &&    // Sale price normal qiymətdən aşağıdır
-                        v.Quantity > 0                     // Stokda var
+                        v.SalePrice.HasValue &&
+                        v.SalePrice.Value < v.Price &&
+                        v.Quantity > 0
                     ))
                     .OrderByDescending(p => {
-                        // Ən böyük endrim faizini tap
                         var bestDiscount = p.ProductVariants
                             .Where(v => v.SalePrice.HasValue && v.SalePrice.Value < v.Price && v.Quantity > 0)
                             .Select(v => (v.Price - v.SalePrice.Value) / v.Price * 100)
@@ -65,19 +59,15 @@ namespace EcommerceCoza.BLL.Services
                     })
                     .Take(5)
                     .ToList(),
-
-                // New Arrivals - latest 8 products
-                NewArrivals = productsList
-                    .OrderByDescending(p => p.Id)
-                    .Take(8)
-                    .ToList(),
-
-                // Best Sellers - stokda olan məhsullar
-                BestSellers = productsList
-                    .Where(p => p.ProductVariants.Any(v => v.Quantity > 0))
-                    .Take(8)
-                    .ToList()
+                NewArrivals = productsList.OrderByDescending(p => p.Id).Take(8).ToList(),
             };
+
+            // Load active sliders (new)
+            var sliders = await _sliderService.GetAllAsync(
+                predicate: s => !s.IsDeleted && s.IsActive,
+                orderBy: q => q.OrderByDescending(s => s.Id)
+            );
+            homeViewModel.Sliders = sliders.ToList();
 
             return homeViewModel;
         }

@@ -363,6 +363,7 @@ wwwroot\images\products\w415vbl0.lko_IMG_05_2110104546194-0083598d-306e-44a7-8b8
 wwwroot\images\products\w415vbl0.lko_IMG_05_2110104546194-3fa9fd35-6e20-4e0a-97c6-7fcb0d7c776c-.jpg
 wwwroot\images\products\w415vbl0.lko_IMG_05_2110104546194-521efef6-9102-4eb9-8619-a9307306705f-.jpg
 wwwroot\images\products\w415vbl0.lko_IMG_05_2110104546194-ee25ef63-7839-4d75-9284-59a20fb6f45b-.jpg
+wwwroot\images\sliders\71Pyvl6zF4L._AC_SY550_-e07b9083-4141-4da2-8340-70054ba0f09b-.jpg
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map
 wwwroot\lib\bootstrap\dist\css\bootstrap.min.css

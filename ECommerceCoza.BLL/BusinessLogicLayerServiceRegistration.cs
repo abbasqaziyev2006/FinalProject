@@ -28,6 +28,7 @@ namespace EcommerceCoza.BLL
             services.AddScoped<IBrandService, BrandManager>();
             services.AddScoped<IHomeService, HomeManager>();
             services.AddScoped<IShopService, ShopManager>();
+            services.AddScoped<ISliderService, SliderManager>();
             services.AddScoped<IHeaderService, HeaderManager>();
             services.AddScoped<IEmailService, EmailService>();
             services.AddScoped<IFooterService, FooterManager>();

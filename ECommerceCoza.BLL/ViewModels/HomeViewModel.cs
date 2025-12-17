@@ -9,5 +9,6 @@ namespace EcommerceCoza.BLL.ViewModels
         public List<ProductViewModel> HotDeals { get; set; } = [];
         public List<ProductViewModel> NewArrivals { get; set; } = [];
         public List<ProductViewModel> BestSellers { get; set; } = [];
+        public List<SliderViewModel> Sliders { get; set; } = [];
     }
 }

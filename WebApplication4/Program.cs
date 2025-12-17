@@ -45,7 +45,7 @@ namespace EcommerceCoza.MVC
                 options.Password.RequireUppercase = false;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
                 options.Lockout.MaxFailedAccessAttempts = 3;
-                
+
                 // ✅ ADD THIS: Enforce unique emails
                 options.User.RequireUniqueEmail = true;
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
@@ -61,6 +61,7 @@ namespace EcommerceCoza.MVC
 
             FilePathConstants.ProductImagePath = Path.Combine(builder.Environment.WebRootPath, "images", "products");
             FilePathConstants.CategoryImagePath = Path.Combine(builder.Environment.WebRootPath, "images", "collections");
+            FilePathConstants.SliderImagePath = Path.Combine(builder.Environment.WebRootPath, "images", "sliders");
 
             var app = builder.Build();
 

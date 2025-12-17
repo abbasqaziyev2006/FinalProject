@@ -1,0 +1,117 @@
+@using EcommerceCoza.BLL.ViewModels
+@model SliderUpdateViewModel
+
+@{
+    ViewData["Title"] = "Edit Slide";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="main-content">
+    <div class="main-content-inner">
+        <div class="main-content-wrap">
+            <div class="flex items-center flex-wrap justify-between gap20 mb-27">
+                <h3 style="font-size: 28px;">Edit Slide</h3>
+                <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
+                    <li>
+                        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                            <div class="text-tiny">Dashboard</div>
+                        </a>
+                    </li>
+                    <li><i class="icon-chevron-right"></i></li>
+                    <li>
+                        <a asp-area="Admin" asp-controller="Slider" asp-action="Index">
+                            <div class="text-tiny">Slides</div>
+                        </a>
+                    </li>
+                    <li><i class="icon-chevron-right"></i></li>
+                    <li><div class="text-tiny">Edit Slide</div></li>
+                </ul>
+            </div>
+
+            <div class="wg-box">
+                <form asp-area="Admin"
+                      asp-controller="Slider"
+                      asp-action="Edit"
+                      asp-route-id="@Model.Id"
+                      method="post"
+                      enctype="multipart/form-data"
+                      class="form-style-1">
+                    @Html.AntiForgeryToken()
+
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="ImageName" />
+
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <fieldset class="name mb-3">
+                        <div class="body-title">Title <span class="tf-color-1">*</span></div>
+                        <input asp-for="Title" class="flex-grow form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </fieldset>
+
+                    <fieldset class="name mb-3">
+                        <div class="body-title">Line 1</div>
+                        <input asp-for="Line1" class="flex-grow form-control" />
+                        <span asp-validation-for="Line1" class="text-danger"></span>
+                    </fieldset>
+
+                    <fieldset class="name mb-3">
+                        <div class="body-title">Line 2</div>
+                        <input asp-for="Line2" class="flex-grow form-control" />
+                        <span asp-validation-for="Line2" class="text-danger"></span>
+                    </fieldset>
+
+                    <div class="mb-3">
+                        <div class="body-title">Current Image</div>
+                        <div>
+                            @if (!string.IsNullOrEmpty(Model.ImageName))
+                            {
+                                <img src="~/images/sliders/@Model.ImageName" alt="current" style="max-height:120px" class="img-thumbnail" />
+                            }
+                            else
+                            {
+                                <div class="text-muted">No image uploaded.</div>
+                            }
+                        </div>
+                    </div>
+
+                    <fieldset class="mb-3">
+                        <div class="body-title">Change Image</div>
+                        <input asp-for="ImageFile" type="file" class="form-control" />
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    </fieldset>
+
+                    <fieldset class="mb-3">
+                        <div class="body-title">Link</div>
+                        <input asp-for="Link" class="flex-grow form-control" />
+                        <span asp-validation-for="Link" class="text-danger"></span>
+                    </fieldset>
+
+                    <fieldset class="mb-3">
+                        <div class="body-title">Category Icon</div>
+                        <input asp-for="CategoryIcon" class="flex-grow form-control" />
+                        <span asp-validation-for="CategoryIcon" class="text-danger"></span>
+                    </fieldset>
+
+                    <div class="mb-3">
+                        <div class="body-title">Status</div>
+                        <select asp-for="IsActive" class="form-select" aria-label="Is Active">
+                            <option value="true" selected='@(Model.IsActive ? "selected" : null)'>Yes</option>
+                            <option value="false" selected='@(Model.IsActive ? null : "selected")'>No</option>
+                        </select>
+                        <span asp-validation-for="IsActive" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                        <a asp-area="Admin" asp-controller="Slider" asp-action="Index" class="btn btn-secondary">Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

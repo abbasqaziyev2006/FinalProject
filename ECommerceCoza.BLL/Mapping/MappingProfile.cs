@@ -74,6 +74,17 @@ namespace ECommerceCoza.BLL.Mapping
             CreateMap<OrderDetail, OrderDetailViewModel>().ReverseMap();
             CreateMap<OrderDetail, OrderDetailCreateViewModel>().ReverseMap();
             CreateMap<OrderDetail, OrderDetailUpdateViewModel>().ReverseMap();
+
+
+            CreateMap<Slider, SliderViewModel>().ReverseMap();
+            CreateMap<Slider, SliderCreateViewModel>()
+                .ForMember(dest => dest.ImageFile, opt => opt.Ignore())
+                .ReverseMap()
+                .ForMember(dest => dest.ImageName, opt => opt.Ignore());
+            CreateMap<Slider, SliderUpdateViewModel>()
+                .ForMember(dest => dest.ImageFile, opt => opt.Ignore())
+                .ReverseMap()
+                .ForMember(dest => dest.ImageName, opt => opt.Ignore());
         }
     }
 }
