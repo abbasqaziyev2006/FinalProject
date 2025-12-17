@@ -27,7 +27,7 @@ namespace EcommerceCoza.BLL.Services
                 return null!;
 
             var categoryUpdateViewModel = Mapper.Map<CategoryUpdateViewModel>(category);
-            
+
             return categoryUpdateViewModel;
         }
 
@@ -38,21 +38,22 @@ namespace EcommerceCoza.BLL.Services
             if (existingCategory == null)
                 return false;
 
-            existingCategory = Mapper.Map(model, existingCategory);
+            // map incoming values into tracked entity
+            Mapper.Map(model, existingCategory);
 
             if (model.ImageFile != null)
             {
-                if(!_fileService.IsImageFile(model.ImageFile))
+                if (!_fileService.IsImageFile(model.ImageFile))
                     throw new ArgumentException("The file is not a valid image. ", nameof(model.ImageFile));
 
                 var prevImageName = existingCategory.ImageName;
                 existingCategory.ImageName = await _fileService.GenerateFile(model.ImageFile, FilePathConstants.CategoryImagePath);
 
-                if(!string.IsNullOrEmpty(prevImageName))
+                if (!string.IsNullOrEmpty(prevImageName))
                 {
                     var prevFilePath = Path.Combine(FilePathConstants.CategoryImagePath, prevImageName);
 
-                    if(File.Exists(prevFilePath)) 
+                    if (File.Exists(prevFilePath))
                         File.Delete(prevFilePath);
                 }
             }
@@ -62,7 +63,7 @@ namespace EcommerceCoza.BLL.Services
             return true;
         }
 
-        public override async Task CreateAsync (CategoryCreateViewModel model)
+        public override async Task CreateAsync(CategoryCreateViewModel model)
         {
             var category = Mapper.Map<Category>(model);
 
@@ -87,7 +88,5 @@ namespace EcommerceCoza.BLL.Services
                 Text = c.Name,
             }).ToList();
         }
-
-
     }
 }
