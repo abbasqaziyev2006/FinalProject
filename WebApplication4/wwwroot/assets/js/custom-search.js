@@ -18,8 +18,19 @@
         const openSearchBtns = Array.from(document.querySelectorAll('.js-search-popup'));
         const closeSearchBtn = document.querySelector('.js-close-search');
 
+        console.log('custom-search: Initializing...', {
+            searchPopup: !!searchPopup,
+            searchInput: !!searchInput,
+            searchResults: !!searchResults,
+            openSearchBtns: openSearchBtns.length,
+            closeSearchBtn: !!closeSearchBtn
+        });
+
         if (!searchPopup || !searchInput) {
-            console.warn('custom-search: required elements are missing; aborting initialization.');
+            console.error('custom-search: required elements are missing; aborting initialization.', {
+                searchPopup: !!searchPopup,
+                searchInput: !!searchInput
+            });
             return;
         }
 
@@ -39,9 +50,21 @@
 
         // Popup open/close
         function openSearch() {
+            console.log('custom-search: Opening search popup');
+            if (!searchPopup || !searchInput) {
+                console.error('custom-search: Cannot open - elements missing');
+                return;
+            }
             searchPopup.style.display = 'block';
             document.body.style.overflow = 'hidden';
-            setTimeout(() => { try { searchInput.focus(); } catch (e) { } }, 80);
+            setTimeout(() => {
+                try {
+                    searchInput.focus();
+                    console.log('custom-search: Search input focused');
+                } catch (e) {
+                    console.warn('custom-search: Could not focus input', e);
+                }
+            }, 80);
         }
         function closeSearch() {
             searchPopup.style.display = 'none';
@@ -63,10 +86,38 @@
             }
         }
 
-        openSearchBtns.forEach(btn => btn.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); openSearch(); }));
-        if (closeSearchBtn) closeSearchBtn.addEventListener('click', e => { e.preventDefault(); closeSearch(); });
-        searchPopup.addEventListener('click', e => { if (e.target === searchPopup) closeSearch(); });
-        document.addEventListener('keydown', e => { if (e.key === 'Escape' && searchPopup.style.display === 'block') closeSearch(); });
+        // Attach event listeners
+        openSearchBtns.forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('custom-search: Search button clicked');
+                openSearch();
+            });
+        });
+
+        if (closeSearchBtn) {
+            closeSearchBtn.addEventListener('click', function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('custom-search: Close button clicked');
+                closeSearch();
+            });
+        }
+
+        searchPopup.addEventListener('click', function (e) {
+            if (e.target === searchPopup) {
+                console.log('custom-search: Popup background clicked');
+                closeSearch();
+            }
+        });
+
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && searchPopup.style.display === 'block') {
+                console.log('custom-search: Escape key pressed');
+                closeSearch();
+            }
+        });
 
         // Helpers for rendering server results (unchanged)
         function escapeHtml(str) {
@@ -163,11 +214,13 @@
                 return;
             }
 
+            console.log('custom-search: Starting server-side search for:', query);
             showLoading();
             clearResults();
             hideNoResults();
 
             const url = `/Shop/SearchProducts?query=${encodeURIComponent(query)}`;
+            console.log('custom-search: Fetching URL:', url);
             fetch(url, {
                 method: 'GET',
                 headers: { 'X-Requested-With': 'XMLHttpRequest' },
@@ -182,23 +235,26 @@
                 })
                 .then(({ ok, status, json }) => {
                     hideLoading();
+                    console.log('custom-search: Response received', { ok, status, json });
                     if (!ok && status >= 400) {
                         const errMsg = (json && json.error) ? json.error : `Search request failed with status ${status}`;
+                        console.error('custom-search: Search failed', { status, error: errMsg });
                         clearResults();
                         if (searchResults) searchResults.innerHTML = `<div class="alert alert-danger m-3"><strong>Error:</strong> ${escapeHtml(errMsg)}</div>`;
                         return;
                     }
                     const products = json && (json.products || json.data || json.items) ? (json.products || json.data || json.items) : (Array.isArray(json) ? json : []);
+                    console.log('custom-search: Products found', products.length);
                     renderResults(products);
                 })
                 .catch(err => {
                     hideLoading();
                     clearResults();
+                    console.error('custom-search: Fetch error', err);
                     if (searchResults) {
                         const message = escapeHtml(err.message || 'Unknown error');
                         searchResults.innerHTML = `<div class="alert alert-danger m-3"><strong>Search Error:</strong> ${message}<br/><small>Open DevTools Network tab and inspect /Shop/SearchProducts response.</small></div>`;
                     }
-                    console.error('custom-search fetch error:', err);
                 });
         }
 
@@ -220,13 +276,17 @@
         // Debounced input handler
         searchInput.addEventListener('input', function () {
             const q = this.value || '';
+            console.log('custom-search: Input changed:', q);
             clearTimeout(debounceTimer);
             if (q.trim().length < 2) {
                 // quick reset for short queries
                 performSearch(q);
                 return;
             }
-            debounceTimer = setTimeout(() => performSearch(q), DEBOUNCE_MS);
+            debounceTimer = setTimeout(() => {
+                console.log('custom-search: Performing search for:', q);
+                performSearch(q);
+            }, DEBOUNCE_MS);
         });
 
         // Enter -> if server results exist navigate to first; if client-side navigate to first matching product

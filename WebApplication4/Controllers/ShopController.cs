@@ -25,6 +25,10 @@ namespace EcommerceCoza.MVC.Controllers
             ViewBag.ProductCount = firstPageProducts.Count;
             ViewBag.TotalProducts = orderedProducts.Count;
             ViewBag.PageSize = PageSize;
+
+            // IMPORTANT: expose the full ordered product list for accurate counts/filters
+            ViewBag.AllProducts = orderedProducts;
+
             return View(model);
         }
 

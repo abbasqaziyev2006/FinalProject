@@ -15,7 +15,7 @@ using WebApplication4.Services;
 
 namespace EcommerceCoza.MVC.Controllers
 {
-    [Authorize] 
+    [Authorize]
     public class OrderController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
@@ -45,8 +45,6 @@ namespace EcommerceCoza.MVC.Controllers
             _stripeSettings = stripeSettings.Value;
             _accessor = accessor;
             _logger = logger;
-
-            StripeConfiguration.ApiKey = _stripeSettings.SecretKey;
         }
 
         private ISession Session => _accessor.HttpContext!.Session;
@@ -117,6 +115,14 @@ namespace EcommerceCoza.MVC.Controllers
 
             if (model.PaymentMethod == ECommerceCoza.DAL.DataContext.Entities.PaymentMethod.Stripe)
             {
+                if (string.IsNullOrWhiteSpace(_stripeSettings.SecretKey))
+                {
+                    _logger.LogError("Stripe SecretKey is not configured");
+                    ModelState.AddModelError("", "Payment processing is currently unavailable. Please contact support.");
+                    model = await _orderService.GetUserAndAddressViewModel(model);
+                    return View(model);
+                }
+
                 var user = await _userManager.GetUserAsync(User);
                 if (user == null)
                 {
@@ -140,7 +146,7 @@ namespace EcommerceCoza.MVC.Controllers
                     ? model.EndPrice
                     : _currencyService.ConvertBetweenCurrencies(model.EndPrice, currentCurrency, Currency.USD);
 
-                var stripeCurrency = "usd"; 
+                var stripeCurrency = "usd";
 
                 try
                 {
@@ -369,7 +375,7 @@ namespace EcommerceCoza.MVC.Controllers
             if (order == null)
                 return NotFound();
 
-       
+
             var user = await _userManager.GetUserAsync(User);
             if (order.AppUserId != user?.Id && !User.IsInRole("Admin"))
                 return Forbid();

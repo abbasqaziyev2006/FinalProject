@@ -1,4 +1,5 @@
 ﻿using EcommerceCoza.BLL.Services;
+using EcommerceCoza.BLL.Services.Contracts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -10,10 +11,12 @@ namespace EcommerceCoza.MVC.Controllers
     public class BasketController : Controller
     {
         private readonly BasketManager _basketManager;
+        private readonly IOrderService _orderService;
 
-        public BasketController(BasketManager basketManager)
+        public BasketController(BasketManager basketManager, IOrderService orderService)
         {
             _basketManager = basketManager;
+            _orderService = orderService;
         }
 
         [HttpPost]
@@ -21,7 +24,7 @@ namespace EcommerceCoza.MVC.Controllers
         {
             try
             {
- 
+
                 var basket = await _basketManager.AddToBasketAsync(productVariantId, quantity);
 
                 return Json(new
@@ -88,6 +91,44 @@ namespace EcommerceCoza.MVC.Controllers
         {
             var model = await _basketManager.GetBasketAsync();
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApplyDiscount(string discountCode)
+        {
+            if (string.IsNullOrWhiteSpace(discountCode))
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Please enter a discount code"
+                });
+            }
+
+            var discount = await _orderService.GetDiscount(discountCode);
+
+            if (discount == null)
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Invalid or expired discount code"
+                });
+            }
+
+            var basket = await _basketManager.GetBasketAsync();
+            var originalTotal = basket.TotalPrice;
+            var discountAmount = (originalTotal * discount.SalePercentage) / 100;
+            var finalPrice = originalTotal - discountAmount;
+
+            return Json(new
+            {
+                success = true,
+                salePercentage = discount.SalePercentage,
+                originalTotal = Math.Round(originalTotal, 2),
+                discountAmount = Math.Round(discountAmount, 2),
+                finalPrice = Math.Round(finalPrice, 2)
+            });
         }
 
         private async Task<string> RenderPartialViewToString(string viewName, object model)

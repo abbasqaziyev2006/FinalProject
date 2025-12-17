@@ -361,26 +361,131 @@
 
             function updateTotals() {
                 $.get('@Url.Action("GetBasket", "Basket")', data => {
-                    const formatted = `${currencySymbol} ${data.totalPrice.toFixed(2)}`;
+                    const totalPrice = parseFloat(data.totalPrice);
 
-                    $('#cart-subtotal, #cart-subtotal-bottom').text(formatted);
                     $('#cart-items-count, #cart-items-count-bottom').text(data.totalCount);
                     $('.js-cart-items-count, .header__cart-count')
                         .text(data.totalCount || 0);
 
-                    if (appliedCoupon) reapplyDiscount(data.totalPrice);
+                    if (appliedCoupon) {
+                        reapplyDiscount(totalPrice);
+                    } else {
+                        const formatted = `${currencySymbol} ${totalPrice.toFixed(2)}`;
+                        $('#cart-subtotal, #cart-subtotal-bottom').html(formatted);
+                    }
                 });
             }
 
             /* ================= DISCOUNT ================= */
 
+            // Localization strings
+            const msgEnterDiscount = '@Localizer["EnterDiscountCodeWarning"]';
+            const msgDiscountAppliedFormat = '@Localizer["DiscountAppliedFormat"]';
+            const msgInvalidCode = '@Localizer["InvalidDiscountCode"]';
+            const msgErrorApplying = '@Localizer["ErrorApplyingDiscount"]';
+
+            // Handle coupon form submission
+            $('#coupon-form').on('submit', function (e) {
+                e.preventDefault();
+
+                const couponCode = $('#coupon-code-input').val().trim();
+
+                if (!couponCode) {
+                    $('#coupon-message')
+                        .text('⚠ ' + msgEnterDiscount)
+                        .css('color', '#dc3545')
+                        .removeClass('text-success')
+                        .addClass('text-danger');
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("ApplyDiscount", "Basket")',
+                    type: 'POST',
+                    data: { discountCode: couponCode },
+                    dataType: 'json',
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            appliedCoupon = {
+                                code: couponCode,
+                                salePercentage: response.salePercentage
+                            };
+
+                            const discount = parseFloat(response.discountAmount);
+                            const finalPrice = parseFloat(response.finalPrice);
+                            const originalTotal = parseFloat(response.originalTotal);
+
+                            $('#discount-info').removeClass('d-none');
+                            $('#discount-code').text(couponCode);
+                            $('#discount-percentage').text(response.salePercentage);
+                            $('#discount-amount').text(`${currencySymbol} ${discount.toFixed(2)}`);
+
+                            $('#cart-subtotal').html(
+                                `<span class="text-decoration-line-through text-muted me-2">
+                                    ${currencySymbol} ${originalTotal.toFixed(2)}
+                                </span>${currencySymbol} ${finalPrice.toFixed(2)}`
+                            );
+
+                            $('#cart-subtotal-bottom').html(
+                                `<span class="text-decoration-line-through text-muted me-2">
+                                    ${currencySymbol} ${originalTotal.toFixed(2)}
+                                </span>${currencySymbol} ${finalPrice.toFixed(2)}`
+                            );
+
+                            const appliedText = msgDiscountAppliedFormat.replace('{0}', response.salePercentage);
+                            $('#coupon-message')
+                                .text('✓ ' + appliedText)
+                                .css('color', '#28a745')
+                                .removeClass('text-danger')
+                                .addClass('text-success');
+
+                            $('#coupon-code-input').val('');
+                            $('#couponCollapse').collapse('hide');
+
+                            showNotification('Discount code applied successfully!', 'success');
+                        } else {
+                            $('#coupon-message')
+                                .text('⚠ ' + (response.message || msgInvalidCode))
+                                .css('color', '#dc3545')
+                                .removeClass('text-success')
+                                .addClass('text-danger');
+                        }
+                    },
+                    error: function () {
+                        $('#coupon-message')
+                            .text('⚠ ' + msgErrorApplying)
+                            .css('color', '#dc3545')
+                            .removeClass('text-success')
+                            .addClass('text-danger');
+                    }
+                });
+            });
+
+            // Handle remove coupon button
+            $('#remove-coupon').on('click', function () {
+                appliedCoupon = null;
+                $('#discount-info').addClass('d-none');
+                updateTotals();
+                showNotification('Discount code removed', 'success');
+            });
+
             function reapplyDiscount(total) {
+                if (!appliedCoupon) return;
+
                 const discount = (total * appliedCoupon.salePercentage) / 100;
                 const finalPrice = total - discount;
 
                 $('#discount-info').removeClass('d-none');
                 $('#discount-amount').text(`${currencySymbol} ${discount.toFixed(2)}`);
                 $('#cart-subtotal').html(
+                    `<span class="text-decoration-line-through text-muted me-2">
+                        ${currencySymbol} ${total.toFixed(2)}
+                    </span>${currencySymbol} ${finalPrice.toFixed(2)}`
+                );
+                $('#cart-subtotal-bottom').html(
                     `<span class="text-decoration-line-through text-muted me-2">
                         ${currencySymbol} ${total.toFixed(2)}
                     </span>${currencySymbol} ${finalPrice.toFixed(2)}`
@@ -423,32 +528,27 @@
 
     <style>
         @@keyframes slideIn {
-            from
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
 
-        {
-            transform: translateX(100%);
-            opacity: 0;
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        }
         @@keyframes slideOut {
-            from
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
 
-        {
-            transform: translateX(0);
-            opacity: 1;
-        }
-
-        to {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
         }
     </style>
 }

@@ -18,7 +18,15 @@
         .Select(g => g.First().Variant)
         .ToList();
 
-    var productColorIds = uniqueColors.Select(c => c.ColorId).Where(id => id > 0).Distinct().ToList();
+    // Build product color tokens: prefer numeric Id (as string), otherwise use hex or name (lowercase)
+    var productColorTokens = uniqueColors
+        .Select(c => c.ColorId > 0
+            ? c.ColorId.ToString()
+            : (!string.IsNullOrEmpty(c.ColorHexCode) ? c.ColorHexCode.ToLower() : (!string.IsNullOrEmpty(c.ColorName) ? c.ColorName.ToLower() : "")))
+        .Where(s => !string.IsNullOrEmpty(s))
+        .Distinct()
+        .ToList();
+
     var productSizes = Model.ProductVariants.Where(v => !string.IsNullOrEmpty(v.Size)).Select(v => v.Size).Distinct().ToList();
 
     var lowestPrice = Model.ProductVariants.Any()
@@ -55,7 +63,7 @@
      data-product-id="@Model.Id"
      data-product-category="@Model.CategoryId"
      data-product-brand="@Model.BrandId"
-     data-product-colors="@string.Join(",", productColorIds)"
+     data-product-colors="@string.Join(",", productColorTokens)"
      data-product-sizes="@string.Join(",", productSizes)"
      data-product-price="@lowestPrice"
      data-product-name="@Model.Name"
