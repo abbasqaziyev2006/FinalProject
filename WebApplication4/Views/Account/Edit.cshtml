@@ -3,104 +3,138 @@
 
 <main class="pt-90">
     <div class="mb-5 pb-5"></div>
-
     <section class="my-account container">
         <h2 class="page-title mt-4 mb-5">Account Details</h2>
-
         <div class="row">
-            <!-- LEFT MENU -->
             <div class="col-lg-3">
                 <ul class="account-nav">
                     <li><a asp-controller="Account" asp-action="Index" class="menu-link menu-link_us-s">Dashboard</a></li>
                     <li><a asp-controller="Order" asp-action="Index" class="menu-link menu-link_us-s">Orders</a></li>
                     <li><a asp-controller="Address" asp-action="Index" class="menu-link menu-link_us-s">Addresses</a></li>
-                    <li><a asp-controller="Account" asp-action="Edit" class="menu-link menu-link_us-s">Account Details</a></li>
+                    <li><a asp-controller="Account" asp-action="Edit" class="menu-link menu-link_us-s menu-link_active">Account Details</a></li>
                     <li><a asp-controller="Wishlist" asp-action="Index" class="menu-link menu-link_us-s">Wishlist</a></li>
                     <li><a asp-controller="Account" asp-action="Logout" class="menu-link menu-link_us-s">Logout</a></li>
                 </ul>
             </div>
-
-            <!-- RIGHT CONTENT -->
             <div class="col-lg-9">
                 <div class="page-content my-account__edit">
-                    <div class="my-account__edit-form">
+                    @if (TempData["SuccessMessage"] != null)
+                    {
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            @TempData["SuccessMessage"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
 
-                        <form asp-action="Edit" asp-controller="Account" method="post" class="needs-validation" novalidate>
-                            @Html.AntiForgeryToken()
+                    @if (ViewData.ModelState.Values.Any(m => m.Errors.Any()))
+                    {
+                        <div class="alert alert-danger" role="alert">
+                            <ul class="mb-0">
+                                @foreach (var error in ViewData.ModelState.Values.SelectMany(m => m.Errors))
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            </ul>
+                        </div>
+                    }
+
+                    <form method="POST" asp-action="Edit" asp-controller="Account" class="needs-validation">
+                        @Html.AntiForgeryToken()
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                        <div class="my-account__edit-form">
+                            <h5 class="mb-4">Personal Information</h5>
 
                             <div class="row">
-
-                                <!-- FIRST NAME -->
                                 <div class="col-md-6">
-                                    <div class="form-floating my-3">
-                                        <input asp-for="FirstName" class="form-control" placeholder="First Name" />
-                                        <label asp-for="FirstName"></label>
+                                    <div class="form-floating mb-3">
+                                        <input id="username" class="form-control form-control_gray" asp-for="UserName" autocomplete="username">
+                                        <label for="username">Username *</label>
+                                        <span asp-validation-for="UserName" class="text-danger"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input id="email" type="email" class="form-control form-control_gray" asp-for="Email" autocomplete="email">
+                                        <label for="email">Email Address *</label>
+                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input id="firstname" class="form-control form-control_gray" asp-for="FirstName" autocomplete="given-name">
+                                        <label for="firstname">First Name</label>
                                         <span asp-validation-for="FirstName" class="text-danger"></span>
                                     </div>
                                 </div>
 
-                                <!-- LAST NAME -->
                                 <div class="col-md-6">
-                                    <div class="form-floating my-3">
-                                        <input asp-for="LastName" class="form-control" placeholder="Last Name" />
-                                        <label asp-for="LastName"></label>
+                                    <div class="form-floating mb-3">
+                                        <input id="lastname" class="form-control form-control_gray" asp-for="LastName" autocomplete="family-name">
+                                        <label for="lastname">Last Name</label>
                                         <span asp-validation-for="LastName" class="text-danger"></span>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- EMAIL -->
-                                <div class="col-md-12">
-                                    <div class="form-floating my-3">
-                                        <input asp-for="Email" class="form-control" placeholder="Email" />
-                                        <label asp-for="Email"></label>
-                                        <span asp-validation-for="Email" class="text-danger"></span>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input id="phone" class="form-control form-control_gray" asp-for="PhoneNumber" autocomplete="tel">
+                                        <label for="phone">Mobile Phone</label>
+                                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- PASSWORD SECTION TITLE -->
-                                <div class="col-md-12">
-                                    <h5 class="text-uppercase my-3">Password Change</h5>
-                                </div>
+                            <div class="mt-5 mb-4">
+                                <h5>Password Change</h5>
+                                <p class="text-secondary">Leave blank if you don't want to change your password</p>
+                            </div>
 
-                                <!-- CURRENT PASSWORD -->
+                            <div class="row">
                                 <div class="col-md-12">
-                                    <div class="form-floating my-3">
-                                        <input asp-for="CurrentPassword" class="form-control" placeholder="Current Password" />
-                                        <label asp-for="CurrentPassword"></label>
+                                    <div class="form-floating mb-3">
+                                        <input id="current-password" type="password" class="form-control form-control_gray" asp-for="CurrentPassword" autocomplete="current-password">
+                                        <label for="current-password">Current Password</label>
                                         <span asp-validation-for="CurrentPassword" class="text-danger"></span>
                                     </div>
                                 </div>
+                            </div>
 
-                                <!-- NEW PASSWORD -->
-                                <div class="col-md-12">
-                                    <div class="form-floating my-3">
-                                        <input asp-for="NewPassword" class="form-control" placeholder="New Password" />
-                                        <label asp-for="NewPassword"></label>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input id="new-password" type="password" class="form-control form-control_gray" asp-for="NewPassword" autocomplete="new-password">
+                                        <label for="new-password">New Password</label>
                                         <span asp-validation-for="NewPassword" class="text-danger"></span>
                                     </div>
                                 </div>
 
-                                <!-- CONFIRM PASSWORD -->
-                                <div class="col-md-12">
-                                    <div class="form-floating my-3">
-                                        <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm New Password" />
-                                        <label asp-for="ConfirmPassword"></label>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input id="confirm-password" type="password" class="form-control form-control_gray" asp-for="ConfirmPassword" autocomplete="new-password">
+                                        <label for="confirm-password">Confirm New Password</label>
                                         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
                                     </div>
                                 </div>
-
-                                <!-- SAVE BUTTON -->
-                                <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary my-3">Save Changes</button>
-                                </div>
-
                             </div>
-                        </form>
 
-                    </div>
+                            <div class="my-account__edit-form__buttons">
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
-
         </div>
     </section>
 </main>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

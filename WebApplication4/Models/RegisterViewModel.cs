@@ -31,5 +31,10 @@ namespace EcommerceCoza.MVC.Models
         [Display(Name = "Confirm Password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match")]
         public required string ConfirmPassword { get; set; }
+
+        [Required(ErrorMessage = "Phone number is required")]
+        [Phone(ErrorMessage = "Invalid phone number")]
+        [Display(Name = "Phone Number")]
+        public required string PhoneNumber { get; set; }
     }
 }

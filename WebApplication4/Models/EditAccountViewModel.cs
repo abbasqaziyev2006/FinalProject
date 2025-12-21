@@ -4,11 +4,18 @@ namespace EcommerceCoza.MVC.Models
 {
     public class EditAccountViewModel
     {
+        [Required(ErrorMessage = "Username is required.")]
+        [StringLength(50, ErrorMessage = "Username cannot exceed 50 characters.")]
+        public string? UserName { get; set; }
+
         [StringLength(50, ErrorMessage = "First name cannot exceed 50 characters.")]
         public string? FirstName { get; set; }
 
         [StringLength(50, ErrorMessage = "Last name cannot exceed 50 characters.")]
         public string? LastName { get; set; }
+
+        [Phone(ErrorMessage = "Invalid phone number")]
+        public string? PhoneNumber { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid email address.")]

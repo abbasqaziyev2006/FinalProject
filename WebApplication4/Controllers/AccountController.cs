@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using EcommerceCoza.BLL.Services;
+using System.Text.RegularExpressions;
 
 namespace EcommerceCoza.MVC.Controllers
 {
@@ -19,20 +20,27 @@ namespace EcommerceCoza.MVC.Controllers
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IWishlistItemService _wishlistItemService;
         private readonly IProductService _productService;
+        private readonly IEmailService _email_service;
         private readonly IEmailService _emailService;
         private readonly BasketManager _basketManager;
 
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, RoleManager<IdentityRole> roleManager, IWishlistItemService userWishlistItemService, IProductService productService, IEmailService emailService, BasketManager basketManager)
+        public AccountController(
+            UserManager<AppUser> userManager,
+            SignInManager<AppUser> signInManager,
+            RoleManager<IdentityRole> roleManager,
+            IWishlistItemService userWishlistItemService,
+            IProductService productService,
+            IEmailService emailService,
+            BasketManager basketManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _wishlistItemService = userWishlistItemService;
             _productService = productService;
-            _emailService = emailService;
+            _email_service = emailService;
             _basketManager = basketManager;
         }
-
 
         [Authorize]
         public async Task<IActionResult> Index()
@@ -83,12 +91,27 @@ namespace EcommerceCoza.MVC.Controllers
                 return View(model);
             }
 
+            // If RegisterViewModel contains PhoneNumber, optionally check uniqueness
+            if (!string.IsNullOrEmpty(model.PhoneNumber))
+            {
+                var normalizedPhone = Regex.Replace(model.PhoneNumber, @"\D", "");
+                var phoneExists = await _userManager.Users
+                    .AnyAsync(u => !string.IsNullOrEmpty(u.PhoneNumber) && Regex.Replace(u.PhoneNumber, @"\D", "") == normalizedPhone);
+
+                if (phoneExists)
+                {
+                    ModelState.AddModelError("PhoneNumber", "This phone number is already registered.");
+                    return View(model);
+                }
+            }
+
             var user = new AppUser
             {
                 UserName = model.UserName,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,
+                PhoneNumber = model.PhoneNumber
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -106,7 +129,7 @@ namespace EcommerceCoza.MVC.Controllers
             // Automatically sign in the user after registration
             await _signInManager.SignInAsync(user, isPersistent: false);
 
-            // Guest səbətini yeni istifadəçiyə köçür
+            // Transfer guest basket to new user
             _basketManager.TransferGuestBasketToUser();
 
             TempData["SuccessMessage"] = "Your account has been created successfully!";
@@ -124,7 +147,6 @@ namespace EcommerceCoza.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            // Use direct query to handle potential duplicates gracefully
             var normalizedEmail = model.Email.ToUpper();
             var users = await _userManager.Users
                 .Where(u => u.NormalizedEmail == normalizedEmail)
@@ -138,10 +160,7 @@ namespace EcommerceCoza.MVC.Controllers
 
             if (users.Count > 1)
             {
-                // Critical: Multiple accounts with same email
                 ModelState.AddModelError("", "Multiple accounts found with this email. Please contact support to resolve this issue.");
-                // Log this error for admin attention
-                // You can add logging here: _logger.LogError($"Duplicate email found: {model.Email}");
                 return View(model);
             }
 
@@ -161,7 +180,6 @@ namespace EcommerceCoza.MVC.Controllers
                 return View(model);
             }
 
-            // Guest səbətini login olan istifadəçiyə köçür
             _basketManager.TransferGuestBasketToUser();
 
             if (!string.IsNullOrEmpty(model.ReturnUrl))
@@ -180,14 +198,15 @@ namespace EcommerceCoza.MVC.Controllers
             if (user == null)
                 return BadRequest();
 
+            // Populate view model including phone so it remains visible after save
             var editAccountViewModel = new EditAccountViewModel
             {
+                UserName = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
-
+                PhoneNumber = user.PhoneNumber
             };
-
 
             return View(editAccountViewModel);
         }
@@ -199,7 +218,6 @@ namespace EcommerceCoza.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            //find user
             var username = User.Identity!.Name ?? "";
 
             var user = await _userManager.FindByNameAsync(username);
@@ -207,10 +225,9 @@ namespace EcommerceCoza.MVC.Controllers
             if (user == null)
                 return BadRequest();
 
-            //check password
+            // Password change
             if (!string.IsNullOrEmpty(model.CurrentPassword) && !string.IsNullOrEmpty(model.NewPassword))
             {
-                // Check if new password is the same as current password
                 if (model.CurrentPassword == model.NewPassword)
                 {
                     ModelState.AddModelError("NewPassword", "New password cannot be the same as the current password.");
@@ -221,16 +238,14 @@ namespace EcommerceCoza.MVC.Controllers
                 if (!resultPassword.Succeeded)
                 {
                     foreach (var error in resultPassword.Errors)
-                    {
                         ModelState.AddModelError("", error.Description);
-                    }
                     return View(model);
                 }
             }
 
-            if (model.Email != user.Email /*&& !string.IsNullOrEmpty(model.Email) && !string.IsNullOrEmpty(user.Email)*/)
+            // Email change
+            if (model.Email != user.Email)
             {
-                // Check if new email already exists
                 var existingUser = await _userManager.Users
                     .Where(u => u.NormalizedEmail == model.Email.ToUpper() && u.Id != user.Id)
                     .FirstOrDefaultAsync();
@@ -245,12 +260,54 @@ namespace EcommerceCoza.MVC.Controllers
                 if (!resultEmail.Succeeded)
                 {
                     foreach (var error in resultEmail.Errors)
-                    {
                         ModelState.AddModelError("", error.Description);
-                    }
-
                     return View(model);
                 }
+            }
+
+            // Phone update with uniqueness check and proper persistence
+            if ((model.PhoneNumber ?? "") != (user.PhoneNumber ?? ""))
+            {
+                var newPhoneNormalized = Regex.Replace(model.PhoneNumber ?? "", @"\D", "");
+                if (string.IsNullOrEmpty(newPhoneNormalized))
+                {
+                    ModelState.AddModelError("PhoneNumber", "Phone number is invalid.");
+                    return View(model);
+                }
+
+                var otherUsersWithPhone = await _userManager.Users
+                    .Where(u => !string.IsNullOrEmpty(u.PhoneNumber) && u.Id != user.Id)
+                    .ToListAsync();
+
+                if (otherUsersWithPhone.Any(u => Regex.Replace(u.PhoneNumber ?? "", @"\D", "") == newPhoneNormalized))
+                {
+                    ModelState.AddModelError("PhoneNumber", "This phone number is already in use by another account.");
+                    return View(model);
+                }
+
+                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, model.PhoneNumber);
+                if (!setPhoneResult.Succeeded)
+                {
+                    foreach (var error in setPhoneResult.Errors)
+                        ModelState.AddModelError("", error.Description);
+                    return View(model);
+                }
+            }
+
+            // Username change
+            if (model.UserName != user.UserName)
+            {
+                var existingUser = await _userManager.Users
+                    .Where(u => u.NormalizedUserName == model.UserName.ToUpper() && u.Id != user.Id)
+                    .FirstOrDefaultAsync();
+
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("UserName", "This username is already in use by another account.");
+                    return View(model);
+                }
+
+                user.UserName = model.UserName;
             }
 
             if (model.FirstName != user.FirstName)
@@ -264,13 +321,11 @@ namespace EcommerceCoza.MVC.Controllers
             if (!resultTotal.Succeeded)
             {
                 foreach (var error in resultTotal.Errors)
-                {
                     ModelState.AddModelError("", error.Description);
-                }
             }
 
-            return RedirectToAction(nameof(Index));
-
+            // Reload model so the saved phone is displayed if user is redirected back to Edit
+            return RedirectToAction(nameof(Edit));
         }
 
         public IActionResult ForgotPassword()
@@ -284,13 +339,11 @@ namespace EcommerceCoza.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            // Use direct query to handle potential duplicates
             var normalizedEmail = model.Email.ToUpper();
             var users = await _userManager.Users
                 .Where(u => u.NormalizedEmail == normalizedEmail)
                 .ToListAsync();
 
-            // Don't reveal that the user does not exist or that there are duplicates
             if (users.Count == 0 || users.Count > 1)
             {
                 TempData["ForgotPasswordStatus"] = "If the email exists in our system, a password reset link has been sent.";
@@ -299,18 +352,14 @@ namespace EcommerceCoza.MVC.Controllers
 
             var user = users[0];
 
-            // Generate password reset token
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
 
-            // Encode the token for URL
             var encodedToken = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(token));
 
-            // Create reset link
             var resetLink = Url.Action("ResetPassword", "Account",
                 new { userId = user.Id, token = encodedToken },
                 Request.Scheme);
 
-            // Send email
             var subject = "Password Reset Request";
             var message = $@"
                 <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
@@ -328,17 +377,12 @@ namespace EcommerceCoza.MVC.Controllers
                     <p style='color: #999; font-size: 11px;'>This is an automated message from your E-Commerce Store. Please do not reply to this email.</p>
                 </div>";
 
-
-            var emailSent = await _emailService.SendEmailAsync(user.Email!, subject, message, "Admin");
+            var emailSent = await _email_service.SendEmailAsync(user.Email!, subject, message, "Admin");
 
             if (emailSent)
-            {
                 TempData["ForgotPasswordStatus"] = "A password reset link has been sent to your email.";
-            }
             else
-            {
                 TempData["ForgotPasswordStatus"] = "There was an error sending the email. Please try again later.";
-            }
 
             return View();
         }
@@ -346,9 +390,7 @@ namespace EcommerceCoza.MVC.Controllers
         public IActionResult ResetPassword(string userId, string token)
         {
             if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
-            {
                 return BadRequest("Invalid password reset link.");
-            }
 
             var model = new ResetPasswordViewModel
             {
@@ -372,6 +414,7 @@ namespace EcommerceCoza.MVC.Controllers
                 ModelState.AddModelError("", "Invalid user.");
                 return View(model);
             }
+
             var isSamePassword = await _userManager.CheckPasswordAsync(user, model.NewPassword);
             if (isSamePassword)
             {
@@ -386,9 +429,7 @@ namespace EcommerceCoza.MVC.Controllers
             if (!result.Succeeded)
             {
                 foreach (var error in result.Errors)
-                {
                     ModelState.AddModelError("", error.Description);
-                }
                 return View(model);
             }
 
@@ -399,7 +440,6 @@ namespace EcommerceCoza.MVC.Controllers
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-
             return RedirectToAction("Index", "Home");
         }
 

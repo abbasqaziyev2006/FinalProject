@@ -1,4 +1,5 @@
-﻿@model EcommerceCoza.BLL.ViewModels.UserListViewModel
+﻿WebApplication4\Areas\Admin\Views\User\Index.cshtml
+@model EcommerceCoza.BLL.ViewModels.UserListViewModel
 
 <div class="main-content">
 
@@ -73,11 +74,12 @@
                                             </td>
                                             <td>
                                                 <div class="list-icon-function">
-                                                    <a asp-area="Admin" asp-controller="User" asp-action="Edit" asp-route-id="@user.Id" title="Edit">
-                                                        <div class="item edit">
-                                                            <i class="icon-edit-3"></i>
-                                                        </div>
-                                                    </a>
+                                                    <form asp-area="Admin" asp-controller="User" asp-action="Delete" asp-route-id="@user.Id" method="post" class="d-inline delete-form">
+                                                        @Html.AntiForgeryToken()
+                                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Delete user" onclick="return confirm('Are you sure you want to delete user @user.UserName?');">
+                                                            <i class="icon-trash-2"></i> Delete
+                                                        </button>
+                                                    </form>
                                                 </div>
                                             </td>
                                         </tr>

@@ -62,6 +62,14 @@
                         <div class="pb-3"></div>
 
                         <div class="form-floating mb-3">
+                            <input id="phone" class="form-control form-control_gray" asp-for="PhoneNumber" autocomplete="tel">
+                            <label for="phone">Mobile Phone *</label>
+                            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                        </div>
+
+                        <div class="pb-3"></div>
+
+                        <div class="form-floating mb-3">
                             <input id="password" type="password" class="form-control form-control_gray" asp-for="Password" autocomplete="new-password">
                             <label for="password">Password *</label>
                             <span asp-validation-for="Password" class="text-danger"></span>
