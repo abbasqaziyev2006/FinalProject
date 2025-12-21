@@ -17,3 +17,4 @@ namespace EcommerceCoza.BLL.ViewModels
 
     public class SocialUpdateViewModel { }
 }
+

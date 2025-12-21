@@ -8,6 +8,6 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
     public abstract class AdminController : Controller
     {
     }
-    }
+}
 
 
