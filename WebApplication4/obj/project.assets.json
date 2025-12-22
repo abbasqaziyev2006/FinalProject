@@ -8979,9 +8979,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\EcommerceCoza.MVC.csproj",
+      "projectUniqueName": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\FinalProjectSon\\WebApplication4\\EcommerceCoza.MVC.csproj",
       "projectName": "EcommerceCoza.MVC",
-      "projectPath": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\EcommerceCoza.MVC.csproj",
+      "projectPath": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\FinalProjectSon\\WebApplication4\\EcommerceCoza.MVC.csproj",
       "packagesPath": "C:\\Users\\O Sebnem K Cemengul\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\FinalProjectSon\\WebApplication4\\obj\\",
       "projectStyle": "PackageReference",
@@ -9004,8 +9004,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj": {
-              "projectPath": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj"
+            "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\FinalProjectSon\\ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj": {
+              "projectPath": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\FinalProjectSon\\ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj"
             }
           }
         }
