@@ -1,5 +1,4 @@
-﻿// <full Program.cs with only the Stripe assignment block changed at the end>
-using ECommerceCoza.BLL.Constants;
+﻿using ECommerceCoza.BLL.Constants;
 using ECommerceCoza.DAL.DataContext.Entities;
 using ECommerceCoza.DAL.DataContext;
 using Microsoft.AspNetCore.Identity;
