@@ -53,11 +53,12 @@
                                                 −
                                             </button>
 
-                                            <span class="qty-display px-3 fw-normal"
-                                                  data-variant-id="@item.ProductVariantId"
-                                                  style="font-size: 16px; min-width: 30px; text-align: center; display: inline-block;">
-                                                @item.Quantity
-                                            </span>
+                                            <input type="number"
+                                                   min="1"
+                                                   class="qty-input form-control form-control-sm text-center"
+                                                   data-variant-id="@item.ProductVariantId"
+                                                   value="@item.Quantity"
+                                                   style="width: 70px; height: 30px; font-size: 16px; display: inline-block;">
 
                                             <button type="button"
                                                     class="qty-btn qty-increase btn btn-sm border-0 bg-light"
@@ -123,7 +124,7 @@
                         <!-- Proceed to checkout button -->
                         <a asp-controller="Order"
                            asp-action="Checkout"
-                           class="btn w-100 rounded-pill py-3 mb-4 text-uppercase fw-bold"
+                           class="btn btn-checkout w-100 rounded-pill py-3 mb-4 text-uppercase fw-bold"
                            style="background: #ffd814; border: none; color: #000; font-size: 15px; letter-spacing: 0.5px;">
                             @Localizer["ProceedToCheckout"]
                         </a>
@@ -258,6 +259,8 @@
             const currencySymbol = '@CurrencyService.GetSymbol()';
             let appliedCoupon = null;
             let variantIdToDelete = null;
+            let qtyInputToRestore = null;
+            let qtyOldValueToRestore = null;
 
             /* ================= QUANTITY ================= */
 
@@ -267,7 +270,8 @@
 
             $(document).on('click', '.qty-decrease', function () {
                 const variantId = $(this).data('variant-id');
-                const qty = parseInt($(`.qty-display[data-variant-id="${variantId}"]`).text());
+                const $input = $(`.qty-input[data-variant-id="${variantId}"]`);
+                const qty = parseInt($input.val());
 
                 if (qty > 1) {
                     changeQuantity(variantId, -1);
@@ -277,6 +281,35 @@
                         $(`.btn-delete[data-variant-id="${variantId}"]`).data('product-name')
                     );
                 }
+            });
+
+            // store old value on focus so we can compute delta on change
+            $(document).on('focus', '.qty-input', function () {
+                $(this).data('old', $(this).val());
+            });
+
+            // handle manual input changes
+            $(document).on('change', '.qty-input', function () {
+                const $this = $(this);
+                const variantId = $this.data('variant-id');
+                let newQty = parseInt($this.val());
+                const oldQty = parseInt($this.data('old') || $this.val() || 0);
+
+                if (isNaN(newQty) || newQty < 1) {
+                    // If user typed 0 or invalid, ask to delete item
+                    qtyInputToRestore = $this;
+                    qtyOldValueToRestore = oldQty;
+                    showDeleteConfirmation(
+                        variantId,
+                        $(`.btn-delete[data-variant-id="${variantId}"]`).data('product-name')
+                    );
+                    return;
+                }
+
+                const delta = newQty - oldQty;
+                if (delta === 0) return;
+
+                changeQuantity(variantId, delta);
             });
 
             /* ================= DELETE ================= */
@@ -294,11 +327,25 @@
                 $('#deleteConfirmModal').modal('show');
             }
 
+            // if modal hidden and user canceled, restore input value if needed
+            $('#deleteConfirmModal').on('hidden.bs.modal', function () {
+                // if we had an input waiting to be restored and deletion was cancelled
+                if (qtyInputToRestore) {
+                    qtyInputToRestore.val(qtyOldValueToRestore);
+                    qtyInputToRestore = null;
+                    qtyOldValueToRestore = null;
+                    variantIdToDelete = null;
+                }
+            });
+
             $('#confirmDeleteBtn').on('click', function () {
                 if (!variantIdToDelete) return;
 
                 $('#deleteConfirmModal').modal('hide');
                 removeItem(variantIdToDelete);
+                // prevent restoring when confirmed
+                qtyInputToRestore = null;
+                qtyOldValueToRestore = null;
                 variantIdToDelete = null;
             });
 
@@ -334,7 +381,7 @@
 
             function changeQuantity(variantId, change) {
                 const $item = $(`.cart-item[data-variant-id="${variantId}"]`);
-                const $qty = $item.find('.qty-display');
+                const $qty = $item.find('.qty-input, .qty-display');
                 const $buttons = $item.find('.qty-btn');
 
                 $buttons.prop('disabled', true);
@@ -348,11 +395,28 @@
                         ?.find(x => x.productVariantId === variantId);
 
                     if (item) {
-                        $qty.text(item.quantity);
+                        if ($qty.is('input')) {
+                            $qty.val(item.quantity);
+                            $qty.data('old', item.quantity);
+                        } else {
+                            $qty.text(item.quantity);
+                        }
+
                         $item.find('.item-price')
                             .text(`${currencySymbol} ${item.totalPrice.toFixed(2)}`);
                         updateTotals();
+                    } else {
+                        // fallback: refresh totals if server didn't return item
+                        updateTotals();
                     }
+                })
+                .fail(() => {
+                    // on failure, try to restore the input to previous value
+                    if ($qty.is('input')) {
+                        const prev = parseInt($qty.data('old') || 1);
+                        $qty.val(prev);
+                    }
+                    showNotification('@Localizer["ErrorUpdatingQuantity"]', 'danger');
                 })
                 .always(() => $buttons.prop('disabled', false));
             }

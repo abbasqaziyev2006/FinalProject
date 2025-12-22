@@ -1,5 +1,6 @@
 ﻿@using ECommerceCoza.DAL.DataContext.Entities
-@model Order
+@using EcommerceCoza.BLL.ViewModels
+@model OrderViewModel
 
 @{
     ViewData["Title"] = "Order Confirmation";
@@ -51,7 +52,7 @@
                 </div>
                 <div class="order-info__item">
                     <label>Date</label>
-                    <span>@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")</span>
+                    <span>@Model.CreatedAt?.ToString("dd/MM/yyyy HH:mm")</span>
                 </div>
                 <div class="order-info__item">
                     <label>Total</label>
@@ -82,11 +83,17 @@
                                 {
                                     <tr>
                                         <td>
-                                            <strong>@item.ProductVariant?.Product?.Name</strong>
-                                            @if (item.ProductVariant?.Color != null)
+                                            <strong>@item.ProductVariant?.ProductName</strong>
+                                            @if (!string.IsNullOrEmpty(item.ProductVariant?.ColorName))
                                             {
                                                 <br />
-                                                <small class="text-muted">Color: @item.ProductVariant.Color.Name</small>
+                                                <small class="text-muted">
+                                                    Color: @item.ProductVariant.ColorName
+                                                    @if (!string.IsNullOrEmpty(item.ProductVariant.ColorHexCode))
+                                                    {
+                                                        <span style="display:inline-block;width:12px;height:12px;border-radius:50%;margin-left:6px;vertical-align:middle;background:@item.ProductVariant.ColorHexCode;border:1px solid rgba(0,0,0,0.12)"></span>
+                                                    }
+                                                </small>
                                             }
                                             @if (!string.IsNullOrEmpty(item.ProductVariant?.Size))
                                             {

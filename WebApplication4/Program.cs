@@ -1,4 +1,5 @@
-﻿using ECommerceCoza.BLL.Constants;
+﻿// <full Program.cs with only the Stripe assignment block changed at the end>
+using ECommerceCoza.BLL.Constants;
 using ECommerceCoza.DAL.DataContext.Entities;
 using ECommerceCoza.DAL.DataContext;
 using Microsoft.AspNetCore.Identity;
@@ -23,6 +24,16 @@ namespace EcommerceCoza.MVC
             // Add services to the container.
             builder.Services.AddHttpContextAccessor();
             builder.Services.AddScoped<ICurrencyService, CurrencyService>();
+
+            // Add distributed cache + session (required for HttpContext.Session)
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.Cookie.Name = ".EcommerceCoza.Session";
+                options.IdleTimeout = TimeSpan.FromDays(30);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
             // Localization
             builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -153,10 +164,25 @@ namespace EcommerceCoza.MVC
 
             app.UseRouting();
 
+            // Enable session middleware before authentication/authorization so controllers can use HttpContext.Session
+            app.UseSession();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
-            StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+            // --- START: Guarded Stripe configuration with logging ---
+            var stripeKey = builder.Configuration["Stripe:SecretKey"];
+            if (string.IsNullOrWhiteSpace(stripeKey))
+            {
+                app.Logger.LogWarning("Stripe SecretKey is not configured. Stripe payments will be disabled. Set Stripe:SecretKey via User Secrets / environment variable / appsettings.");
+            }
+            else
+            {
+                StripeConfiguration.ApiKey = stripeKey;
+                app.Logger.LogInformation("Stripe SecretKey loaded (length {Length}). Stripe payments enabled in this environment.", stripeKey.Length);
+            }
+            // --- END: Guarded Stripe configuration with logging ---
+
             app.MapControllerRoute(
                 name: "areas",
                 pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");

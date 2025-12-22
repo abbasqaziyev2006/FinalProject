@@ -39,7 +39,6 @@ namespace EcommerceCoza.BLL.ViewModels
         public string FormattedDeliveredDate => DeliveredDate?.ToString("yyyy-MM-dd") ?? "";
         public string FormattedCanceledDate => CanceledDate?.ToString("yyyy-MM-dd") ?? "";
     }
-
     public class OrderCreateViewModel
     {
         public bool HasAppliedDiscount { get; set; }
@@ -48,10 +47,10 @@ namespace EcommerceCoza.BLL.ViewModels
         public string? AppUserId { get; set; }
         public decimal DiscountAmount { get; set; }
         public decimal EndPrice { get; set; }
-        public List<OrderDetailCreateViewModel> OrderDetails { get; set; } = [];
+        public List<OrderDetailCreateViewModel> OrderDetails { get; set; } = new();
         public bool GiftWrap { get; set; }
         public string? Note { get; set; }
-        public string Email { get; set; } = null!;
+        public string? Email { get; set; }
         public OrderStatus OrderStatus { get; set; }
         public PaymentMethod PaymentMethod { get; set; }
         public AddressCreateViewModel? AddressCreateViewModel { get; set; }

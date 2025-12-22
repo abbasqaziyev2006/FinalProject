@@ -35,6 +35,16 @@
         </div>
 
         <form asp-action="Checkout" asp-controller="Order" method="post" id="checkoutForm">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @if (TempData["CheckoutError"] != null)
+                {
+                    <div class="text-danger">@TempData["CheckoutError"]</div>
+                }
+            </div>
+
             <div class="checkout-form">
                 <div class="billing-info__wrapper">
                     <div class="row">
@@ -236,41 +246,26 @@
             const msgInvalidCode = '@(Localizer["InvalidDiscountCode"].Value ?? "")';
             const msgErrorApplying = '@(Localizer["ErrorApplyingDiscount"].Value ?? "")';
 
-            // Prevent theme.js from hijacking the form submission
-            $('#checkoutForm').off('submit');
-            $('#placeOrderBtn').off('click');
+            // Keep client-side validation and allow normal POST.
+            // Disable submit button on submit to prevent double posts.
+            $('#checkoutForm').on('submit', function () {
+                $('#placeOrderBtn').prop('disabled', true).text('@Localizer["Processing"]' ?? 'Processing...');
+                return true;
+            });
 
-            // Otomatik kupon uygulama - Eğer model'de kupon yoksa session'dan uygula
-            @{
-                    var savedDiscountCode = ViewData["SavedDiscountCode"] as string;
-                    var hasAppliedDiscount = Model?.HasAppliedDiscount == true;
-            }
-            @if (!string.IsNullOrEmpty(savedDiscountCode) && !hasAppliedDiscount)
+            // Auto-apply saved coupon from server when present
+            @if (ViewData["SavedDiscountCode"] != null && string.IsNullOrEmpty(Model?.Discount))
             {
                     <text>
-                    // Sayfa yüklendiğinde otomatik olarak kupon kodunu uygula
-                    setTimeout(function() {
-                        $('#discountCode').val('@Html.Raw(savedDiscountCode)');
+                    setTimeout(function () {
+                        $('#discountCode').val('@ViewData["SavedDiscountCode"]');
                         $('#applyDiscountBtn').click();
-                    }, 500);
-                    </text>
-            }
-            else if (hasAppliedDiscount)
-            {
-                    <text>
-                    // Model'de zaten kupon uygulanmış, sadece fiyatları güncelle (mesaj zaten server-side'da gösteriliyor)
-                    $(function() {
-                        const discount = parseFloat('@(Model?.DiscountAmount ?? 0)');
-                        const finalTotal = parseFloat('@(Model?.EndPrice ?? Model?.TotalPrice ?? 0)');
-
-                        $('#discountAmount').text('-' + currencySymbol + discount.toFixed(2));
-                        $('#totalPrice').text(currencySymbol + finalTotal.toFixed(2));
-                    });
+                    }, 300);
                     </text>
             }
 
             // Handle discount code application
-            $('#applyDiscountBtn').click(function () {
+            $('#applyDiscountBtn').on('click', function () {
                 const discountCode = $('#discountCode').val().trim();
 
                 if (!discountCode) {

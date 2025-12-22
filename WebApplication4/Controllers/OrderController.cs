@@ -10,6 +10,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Stripe;
 using Stripe.Checkout;
+using Stripe.Climate;
 using WebApplication4.Models;
 using WebApplication4.Services;
 
@@ -62,13 +63,12 @@ namespace EcommerceCoza.MVC.Controllers
             model.TotalPrice = model.BasketViewModel.TotalPrice;
             model.EndPrice = model.TotalPrice;
 
-            // Session'dan kupon kodunu oku ve otomatik uygula
+            // Read saved discount code from session and apply if present
             var savedDiscountCode = Session?.GetString(AppliedDiscountCodeKey);
             if (!string.IsNullOrEmpty(savedDiscountCode))
             {
                 ViewData["SavedDiscountCode"] = savedDiscountCode;
 
-                // Kupon kodunu model'e uygula
                 var discount = await _orderService.GetDiscount(savedDiscountCode);
                 if (discount != null)
                 {
@@ -81,7 +81,6 @@ namespace EcommerceCoza.MVC.Controllers
                 }
                 else
                 {
-                    // Geçersiz kupon kodunu session'dan temizle
                     Session?.Remove(AppliedDiscountCodeKey);
                 }
             }
@@ -114,16 +113,39 @@ namespace EcommerceCoza.MVC.Controllers
 
             if (!ModelState.IsValid)
             {
+                // Collect ModelState errors into a readable string
+                var errors = new List<string>();
+                foreach (var entry in ModelState.Values)
+                {
+                    foreach (var err in entry.Errors)
+                    {
+                        var msg = err.ErrorMessage;
+                        if (string.IsNullOrEmpty(msg) && err.Exception != null)
+                            msg = err.Exception.Message;
+                        errors.Add(msg);
+                    }
+                }
+
+                var errorText = errors.Count > 0 ? string.Join(" | ", errors) : "Validation failed";
+                // Log full error for server-side troubleshooting
+                _logger.LogWarning("Checkout POST - ModelState invalid. Errors: {Errors}", errorText);
+
+                // Surface errors in the UI
+                TempData["CheckoutError"] = errorText;
+
+                // Rehydrate any required view model pieces and return view
                 model = await _orderService.GetUserAndAddressViewModel(model);
                 return View(model);
             }
 
+            // Discount handling
             if (model.HasAppliedDiscount && model.Discount != null)
             {
                 var d = await _orderService.GetDiscount(model.Discount);
                 if (d == null)
                 {
                     ModelState.AddModelError("", "Invalid discount code");
+                    TempData["CheckoutError"] = "Invalid discount code";
                     model = await _orderService.GetUserAndAddressViewModel(model);
                     return View(model);
                 }
@@ -137,13 +159,14 @@ namespace EcommerceCoza.MVC.Controllers
                 model.EndPrice = model.TotalPrice;
             }
 
-
+            // Stripe flow
             if (model.PaymentMethod == ECommerceCoza.DAL.DataContext.Entities.PaymentMethod.Stripe)
             {
                 if (string.IsNullOrWhiteSpace(_stripeSettings.SecretKey))
                 {
                     _logger.LogError("Stripe SecretKey is not configured");
                     ModelState.AddModelError("", "Payment processing is currently unavailable. Please contact support.");
+                    TempData["CheckoutError"] = "Payment processing is currently unavailable. Please contact support.";
                     model = await _orderService.GetUserAndAddressViewModel(model);
                     return View(model);
                 }
@@ -157,14 +180,12 @@ namespace EcommerceCoza.MVC.Controllers
 
                 var orderToken = Guid.NewGuid().ToString();
 
-
                 var serializerSettings = new JsonSerializerSettings
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                     NullValueHandling = NullValueHandling.Ignore
                 };
                 Session.SetString(orderToken, JsonConvert.SerializeObject(model, serializerSettings));
-
 
                 var currentCurrency = _currencyService.GetCurrentCurrency();
                 var amountInUsd = currentCurrency == Currency.USD
@@ -180,30 +201,30 @@ namespace EcommerceCoza.MVC.Controllers
                         PaymentMethodTypes = new List<string> { "card" },
                         Mode = "payment",
                         LineItems = new List<SessionLineItemOptions>
+                {
+                    new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
                         {
-                            new SessionLineItemOptions
+                            Currency = stripeCurrency,
+                            UnitAmount = (long)(amountInUsd * 100),
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
                             {
-                                PriceData = new SessionLineItemPriceDataOptions
-                                {
-                                    Currency = stripeCurrency,
-                                    UnitAmount = (long)(amountInUsd * 100),
-                                    ProductData = new SessionLineItemPriceDataProductDataOptions
-                                    {
-                                        Name = "Order Payment",
-                                        Description = $"Payment for {basket.Items.Count} items"
-                                    }
-                                },
-                                Quantity = 1
+                                Name = "Order Payment",
+                                Description = $"Payment for {basket.Items.Count} items"
                             }
                         },
+                        Quantity = 1
+                    }
+                },
                         SuccessUrl = Url.Action("StripeSuccess", "Order", null, Request.Scheme)
                                       + "?session_id={CHECKOUT_SESSION_ID}",
                         CancelUrl = Url.Action("Checkout", "Order", null, Request.Scheme),
                         Metadata = new Dictionary<string, string>
-                        {
-                            { "OrderToken", orderToken },
-                            { "UserId", user.Id }
-                        }
+                {
+                    { "OrderToken", orderToken },
+                    { "UserId", user.Id }
+                }
                     };
 
                     var service = new SessionService();
@@ -215,12 +236,13 @@ namespace EcommerceCoza.MVC.Controllers
                 {
                     _logger.LogError(ex, "Stripe payment error");
                     ModelState.AddModelError("", $"Payment error: {ex.Message}");
+                    TempData["CheckoutError"] = $"Payment error: {ex.Message}";
                     model = await _orderService.GetUserAndAddressViewModel(model);
                     return View(model);
                 }
             }
 
-
+            // Create order (non‑Stripe or after Stripe succeeded)
             await _orderService.CreateAsync(model);
 
             var username = User.Identity?.Name ?? "";
@@ -246,7 +268,7 @@ namespace EcommerceCoza.MVC.Controllers
 
             _basketManager.CleanBasket();
 
-            // Sipariş tamamlandığında session'dan kupon kodunu temizle
+            // Clear coupon from session after successful order
             Session?.Remove(AppliedDiscountCodeKey);
 
             return RedirectToAction("Confirmation", new { id = lastOrder.Id });
@@ -298,7 +320,6 @@ namespace EcommerceCoza.MVC.Controllers
                     TempData["Error"] = "User not found";
                     return RedirectToAction("Checkout");
                 }
-
 
                 var existingOrder = await _orderService.GetAsync(
                     predicate: x => x.AppUserId == userId &&
@@ -382,7 +403,6 @@ namespace EcommerceCoza.MVC.Controllers
             if (order == null)
                 return NotFound();
 
-
             var user = await _userManager.GetUserAsync(User);
             if (order.AppUserId != user?.Id && !User.IsInRole("Admin"))
                 return Forbid();
@@ -404,7 +424,6 @@ namespace EcommerceCoza.MVC.Controllers
 
             if (order == null)
                 return NotFound();
-
 
             var user = await _userManager.GetUserAsync(User);
             if (order.AppUserId != user?.Id && !User.IsInRole("Admin"))
@@ -429,7 +448,6 @@ namespace EcommerceCoza.MVC.Controllers
 
             if (discount == null)
             {
-
                 Session?.Remove(AppliedDiscountCodeKey);
                 return Json(new
                 {
@@ -438,7 +456,6 @@ namespace EcommerceCoza.MVC.Controllers
                 });
             }
 
- 
             Session?.SetString(AppliedDiscountCodeKey, discountCode);
 
             var basket = await _basketManager.GetBasketAsync();

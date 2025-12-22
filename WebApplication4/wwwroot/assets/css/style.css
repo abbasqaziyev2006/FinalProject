@@ -15604,3 +15604,77 @@ body.coming-soon-page {
     max-width: 80px;
   }
 }
+/* --- Basket / Quantity / Checkout fixes --- */
+.btn-checkout {
+  background-color: #ffd814 !important; /* keep yellow */
+  color: #000 !important;                /* readable black text on yellow */
+  border: none !important;
+  box-shadow: none;
+  transition: background-color .15s ease;
+}
+.btn-checkout:hover,
+.btn-checkout:focus {
+  background-color: #f7ca00 !important;
+  color: #000 !important;
+  outline: none;
+}
+
+/* input quantity styling so digits (0) are not clipped and use monospaced numerals */
+.qty-input {
+  display: inline-block;
+  width: 70px;
+  height: 36px;
+  padding: 0.25rem 0.5rem;
+  font-size: 16px;
+  line-height: 1;
+  text-align: center;
+  box-sizing: border-box;      /* ensures padding doesn't overflow width */
+  vertical-align: middle;
+  border: 1px solid #e4e4e4;
+  border-radius: 4px;
+  -webkit-font-variant-numeric: tabular-nums;
+  font-variant-numeric: tabular-nums; /* better digit alignment */
+  z-index: 2;                    /* avoid overlap with adjacent buttons */
+}
+
+/* small safety: prevent +/- buttons overlapping the input on very narrow layouts */
+.qty-btn {
+  z-index: 3;
+}
+/* --- Basket / Quantity / Checkout fixes --- */
+.btn-checkout {
+  background-color: #ffd814 !important; /* keep yellow */
+  color: #000 !important;                /* readable black text on yellow */
+  border: none !important;
+  box-shadow: none;
+  transition: background-color .15s ease;
+}
+.btn-checkout:hover,
+.btn-checkout:focus {
+  background-color: #f7ca00 !important;
+  color: #000 !important;
+  outline: none;
+}
+
+/* input quantity styling so digits (0) are not clipped and use monospaced numerals */
+.qty-input {
+  display: inline-block;
+  width: 70px;
+  height: 36px;
+  padding: 0.25rem 0.5rem;
+  font-size: 16px;
+  line-height: 1;
+  text-align: center;
+  box-sizing: border-box;      /* ensures padding doesn't overflow width */
+  vertical-align: middle;
+  border: 1px solid #e4e4e4;
+  border-radius: 4px;
+  -webkit-font-variant-numeric: tabular-nums;
+  font-variant-numeric: tabular-nums; /* better digit alignment */
+  z-index: 2;                    /* avoid overlap with adjacent buttons */
+}
+
+/* small safety: prevent +/- buttons overlapping the input on very narrow layouts */
+.qty-btn {
+  z-index: 3;
+}

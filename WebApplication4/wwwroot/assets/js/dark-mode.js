@@ -136,7 +136,7 @@ class DarkModeTheme {
             // Buttons: ensure text contrast
             const buttonSelectors = [
                 '.btn-primary',
-                '.btn-checkout',
+                 '.btn-checkout', 
                 '.btn'
             ];
 
