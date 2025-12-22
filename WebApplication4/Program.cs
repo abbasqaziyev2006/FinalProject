@@ -169,18 +169,18 @@ namespace EcommerceCoza.MVC
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //// --- START: Guarded Stripe configuration with logging ---
-            //var stripeKey = builder.Configuration["Stripe:SecretKey"];
-            //if (string.IsNullOrWhiteSpace(stripeKey))
-            //{
-            //    app.Logger.LogWarning("Stripe SecretKey is not configured. Stripe payments will be disabled. Set Stripe:SecretKey via User Secrets / environment variable / appsettings.");
-            //}
-            //else
-            //{
-            //    StripeConfiguration.ApiKey = stripeKey;
-            //    app.Logger.LogInformation("Stripe SecretKey loaded (length {Length}). Stripe payments enabled in this environment.", stripeKey.Length);
-            //}
-            //// --- END: Guarded Stripe configuration with logging ---
+            // --- START: Guarded Stripe configuration with logging ---
+            var stripeKey = builder.Configuration["Stripe:SecretKey"];
+            if (string.IsNullOrWhiteSpace(stripeKey))
+            {
+                app.Logger.LogWarning("Stripe SecretKey is not configured. Stripe payments will be disabled. Set Stripe:SecretKey via User Secrets / environment variable / appsettings.");
+            }
+            else
+            {
+                StripeConfiguration.ApiKey = stripeKey;
+                app.Logger.LogInformation("Stripe SecretKey loaded (length {Length}). Stripe payments enabled in this environment.", stripeKey.Length);
+            }
+            // --- END: Guarded Stripe configuration with logging ---
 
             app.MapControllerRoute(
                 name: "areas",

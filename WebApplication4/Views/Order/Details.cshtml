@@ -10,6 +10,15 @@
     <section class="my-account container">
         <h2 class="page-title">@Localizer["OrderDetails"]</h2>
 
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">@TempData["Success"]</div>
+        }
+
         <div class="row">
             <!-- Order Details -->
             <div class="col-12">
@@ -19,11 +28,22 @@
                             <h5>@Localizer["OrderedDetails"]</h5>
                         </div>
                         <div class="col-6 text-end">
-                            <a class="btn btn-sm btn-danger" asp-action="Index">@Localizer["Back"]</a>
+                            <a class="btn btn-sm btn-secondary" asp-action="Index">@Localizer["Back"]</a>
+
+                            @* Cancel button: shown only when user authenticated and order is not Completed/Cancelled *@
+                            @if ((User.Identity?.IsAuthenticated ?? false) &&
+                                                        (Model.OrderStatus != OrderStatus.Cancelled && Model.OrderStatus != OrderStatus.Completed))
+                            {
+                                <form asp-action="Cancel" asp-controller="Order" method="post" class="d-inline ms-2" onsubmit="return confirm('Are you sure you want to cancel this order?');">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="id" value="@Model.Id" />
+                                    <button type="submit" class="btn btn-sm btn-danger">Cancel</button>
+                                </form>
+                            }
                         </div>
                     </div>
 
-                    <!-- Order Info Cards for Better Responsive -->
+                    <!-- Order Info Cards -->
                     <div class="row g-3">
                         <div class="col-md-6">
                             <div class="card border">
@@ -76,6 +96,7 @@
                     </div>
                 </div>
             </div>
+
 
             <!-- Ordered Items -->
             <div class="col-12">
@@ -197,6 +218,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 </main>

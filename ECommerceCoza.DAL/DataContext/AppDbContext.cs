@@ -27,6 +27,8 @@ namespace ECommerceCoza.DAL.DataContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder); 
+
             modelBuilder.Entity<Product>()
                 .Property(p => p.BasePrice)
                 .HasPrecision(18, 2);
@@ -35,8 +37,12 @@ namespace ECommerceCoza.DAL.DataContext
                 .Property(pv => pv.Price)
                 .HasPrecision(18, 2);
 
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<AppUser>()
+                .HasIndex(u => u.PhoneNumberNormalized)
+                .IsUnique()
+                .HasFilter("[PhoneNumberNormalized] IS NOT NULL");
         }
+
 
         public override int SaveChanges()
         {
@@ -59,7 +65,7 @@ namespace ECommerceCoza.DAL.DataContext
             foreach (var entry in entries)
             {
                 var timeStamp = (TimeStample)entry.Entity;
-
+                
                 if (entry.State == EntityState.Added)
                     timeStamp.CreatedAt = DateTime.UtcNow.AddHours(4);
 

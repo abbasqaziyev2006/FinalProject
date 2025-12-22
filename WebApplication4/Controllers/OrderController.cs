@@ -87,21 +87,11 @@ namespace EcommerceCoza.MVC.Controllers
 
             return View(model);
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Checkout(OrderCreateViewModel model)
         {
-            if (model.AddressCreateViewModel == null)
-            {
-                ModelState.AddModelError("", "Address is required");
-            }
-
-            if (!model.AcceptTermsConditions)
-            {
-                ModelState.AddModelError("", "Terms and conditions must be accepted");
-            }
-
+            // 1. Səbəti və detalları yenidən yükləyirik (təhlükəsizlik üçün)
             var basket = await _basketManager.GetBasketAsync();
             model.BasketViewModel = basket;
             model.OrderDetails = await _orderDetailService.GetOrderDetailCreateViewModels();
@@ -109,169 +99,96 @@ namespace EcommerceCoza.MVC.Controllers
             if (basket.Items.Count == 0)
             {
                 ModelState.AddModelError("", "Your basket is empty");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                // Collect ModelState errors into a readable string
-                var errors = new List<string>();
-                foreach (var entry in ModelState.Values)
-                {
-                    foreach (var err in entry.Errors)
-                    {
-                        var msg = err.ErrorMessage;
-                        if (string.IsNullOrEmpty(msg) && err.Exception != null)
-                            msg = err.Exception.Message;
-                        errors.Add(msg);
-                    }
-                }
-
-                var errorText = errors.Count > 0 ? string.Join(" | ", errors) : "Validation failed";
-                // Log full error for server-side troubleshooting
-                _logger.LogWarning("Checkout POST - ModelState invalid. Errors: {Errors}", errorText);
-
-                // Surface errors in the UI
-                TempData["CheckoutError"] = errorText;
-
-                // Rehydrate any required view model pieces and return view
-                model = await _orderService.GetUserAndAddressViewModel(model);
                 return View(model);
             }
 
-            // Discount handling
+            // 2. Məbləği Hesablayırıq (EndPrice mütləq dolmalıdır)
+            model.TotalPrice = basket.TotalPrice;
+
             if (model.HasAppliedDiscount && model.Discount != null)
             {
                 var d = await _orderService.GetDiscount(model.Discount);
-                if (d == null)
+                if (d != null)
                 {
-                    ModelState.AddModelError("", "Invalid discount code");
-                    TempData["CheckoutError"] = "Invalid discount code";
-                    model = await _orderService.GetUserAndAddressViewModel(model);
-                    return View(model);
+                    model.DiscountCodeId = d.Id;
+                    model.DiscountAmount = (model.TotalPrice * d.SalePercentage) / 100;
+                    model.EndPrice = model.TotalPrice - model.DiscountAmount;
                 }
-
-                model.DiscountCodeId = d.Id;
-                model.DiscountAmount = (model.TotalPrice * d.SalePercentage) / 100;
-                model.EndPrice = model.TotalPrice - model.DiscountAmount;
             }
             else
             {
                 model.EndPrice = model.TotalPrice;
             }
 
-            // Stripe flow
+            // MƏBLƏĞİN SIFIR OLMADIĞINI YOXLAYIN
+            if (model.EndPrice <= 0)
+            {
+                ModelState.AddModelError("", "Invalid order amount.");
+                return View(model);
+            }
+
+            // 3. Stripe Flow
             if (model.PaymentMethod == ECommerceCoza.DAL.DataContext.Entities.PaymentMethod.Stripe)
             {
-                if (string.IsNullOrWhiteSpace(_stripeSettings.SecretKey))
-                {
-                    _logger.LogError("Stripe SecretKey is not configured");
-                    ModelState.AddModelError("", "Payment processing is currently unavailable. Please contact support.");
-                    TempData["CheckoutError"] = "Payment processing is currently unavailable. Please contact support.";
-                    model = await _orderService.GetUserAndAddressViewModel(model);
-                    return View(model);
-                }
-
                 var user = await _userManager.GetUserAsync(User);
-                if (user == null)
-                {
-                    _logger.LogError("User not found during checkout");
-                    return BadRequest("User not found");
-                }
-
                 var orderToken = Guid.NewGuid().ToString();
 
-                var serializerSettings = new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
-                    NullValueHandling = NullValueHandling.Ignore
-                };
+                // Modeli session-a yazırıq (Stripe-dan qayıdanda istifadə üçün)
+                var serializerSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
                 Session.SetString(orderToken, JsonConvert.SerializeObject(model, serializerSettings));
 
-                var currentCurrency = _currencyService.GetCurrentCurrency();
-                var amountInUsd = currentCurrency == Currency.USD
-                    ? model.EndPrice
-                    : _currencyService.ConvertBetweenCurrencies(model.EndPrice, currentCurrency, Currency.USD);
+                // Stripe üçün qəpik hesabı (Məsələn: 10.50 AZN -> 1050)
+                // Birbaşa AZN göndərmək daha etibarlıdır
+                long totalAmountInCents = (long)Math.Round(model.EndPrice * 100);
 
-                var stripeCurrency = "usd";
+                var options = new SessionCreateOptions
+                {
+                    PaymentMethodTypes = new List<string> { "card" },
+                    Mode = "payment",
+                    LineItems = new List<SessionLineItemOptions>
+            {
+                new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        Currency = "azn", // Birbaşa AZN istifadə edirik
+                        UnitAmount = totalAmountInCents,
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = "Order Payment",
+                            Description = $"Payment for {basket.Items.Count} items"
+                        }
+                    },
+                    Quantity = 1
+                }
+            },
+                    SuccessUrl = Url.Action("StripeSuccess", "Order", new { session_id = "{CHECKOUT_SESSION_ID}" }, Request.Scheme),
+                    CancelUrl = Url.Action("Checkout", "Order", null, Request.Scheme),
+                    Metadata = new Dictionary<string, string>
+            {
+                { "OrderToken", orderToken },
+                { "UserId", user.Id }
+            }
+                };
 
+                var service = new SessionService();
                 try
                 {
-                    var options = new SessionCreateOptions
-                    {
-                        PaymentMethodTypes = new List<string> { "card" },
-                        Mode = "payment",
-                        LineItems = new List<SessionLineItemOptions>
-                {
-                    new SessionLineItemOptions
-                    {
-                        PriceData = new SessionLineItemPriceDataOptions
-                        {
-                            Currency = stripeCurrency,
-                            UnitAmount = (long)(amountInUsd * 100),
-                            ProductData = new SessionLineItemPriceDataProductDataOptions
-                            {
-                                Name = "Order Payment",
-                                Description = $"Payment for {basket.Items.Count} items"
-                            }
-                        },
-                        Quantity = 1
-                    }
-                },
-                        SuccessUrl = Url.Action("StripeSuccess", "Order", null, Request.Scheme)
-                                      + "?session_id={CHECKOUT_SESSION_ID}",
-                        CancelUrl = Url.Action("Checkout", "Order", null, Request.Scheme),
-                        Metadata = new Dictionary<string, string>
-                {
-                    { "OrderToken", orderToken },
-                    { "UserId", user.Id }
-                }
-                    };
-
-                    var service = new SessionService();
                     var session = await service.CreateAsync(options);
-
                     return Redirect(session.Url);
                 }
                 catch (StripeException ex)
                 {
-                    _logger.LogError(ex, "Stripe payment error");
-                    ModelState.AddModelError("", $"Payment error: {ex.Message}");
-                    TempData["CheckoutError"] = $"Payment error: {ex.Message}";
-                    model = await _orderService.GetUserAndAddressViewModel(model);
+                    _logger.LogError(ex, "Stripe API Error");
+                    ModelState.AddModelError("", "Payment error: " + ex.Message);
                     return View(model);
                 }
             }
 
-            // Create order (non‑Stripe or after Stripe succeeded)
+            // Əgər nağd ödənişdirsə:
             await _orderService.CreateAsync(model);
-
-            var username = User.Identity?.Name ?? "";
-            var currentUser = await _userManager.FindByNameAsync(username);
-
-            if (currentUser == null)
-            {
-                _logger.LogError("User not found after order creation");
-                return BadRequest("User not found");
-            }
-
-            var userOrders = await _orderService.GetOrderViewModelsAsync(currentUser.Id);
-            var lastOrder = userOrders
-                .Where(o => o.CreatedAt >= DateTime.UtcNow.AddMinutes(-5))
-                .OrderByDescending(o => o.Id)
-                .FirstOrDefault();
-
-            if (lastOrder == null)
-            {
-                _logger.LogError("Order creation failed - no recent order found");
-                return BadRequest("Order creation failed");
-            }
-
             _basketManager.CleanBasket();
-
-            // Clear coupon from session after successful order
-            Session?.Remove(AppliedDiscountCodeKey);
-
-            return RedirectToAction("Confirmation", new { id = lastOrder.Id });
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -469,6 +386,52 @@ namespace EcommerceCoza.MVC.Controllers
                 discountAmount = Math.Round(discountAmount, 2),
                 finalPrice = Math.Round(finalPrice, 2)
             });
+        }
+
+        // Debug / UX helper — graceful GET redirect if someone visits /Order/Cancel directly
+        [HttpGet]
+        public IActionResult Cancel(int id)
+        {
+            // If user opens /Order/Cancel in browser, send them back to details with a message
+            TempData["Error"] = "Please cancel orders from the Order Details page (use the Cancel button).";
+            return RedirectToAction("Details", new { id });
+        }
+
+        // Ensure POST route explicitly matches /Order/Cancel and keep antiforgery validation
+        [HttpPost]
+        [Route("Order/Cancel")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CancelPost(int id)
+        {
+            var order = await _orderService.GetAsync(predicate: x => x.Id == id && !x.IsDeleted);
+            if (order == null) return NotFound();
+
+            var user = await _userManager.GetUserAsync(User);
+            if (order.AppUserId != user?.Id && !User.IsInRole("Admin"))
+                return Forbid();
+
+            if (order.OrderStatus == OrderStatus.Cancelled || order.OrderStatus == OrderStatus.Completed)
+            {
+                TempData["Error"] = "Order cannot be cancelled.";
+                return RedirectToAction("Details", new { id });
+            }
+
+            var updateModel = new OrderUpdateViewModel
+            {
+                Id = id,
+                OrderStatus = OrderStatus.Cancelled,
+                CanceledDate = DateTime.UtcNow
+            };
+
+            var success = await _orderService.UpdateAsync(id, updateModel);
+            if (!success)
+            {
+                TempData["Error"] = "Failed to cancel order. Please try again later.";
+                return RedirectToAction("Details", new { id });
+            }
+
+            TempData["Success"] = "Order cancelled successfully.";
+            return RedirectToAction("Details", new { id });
         }
     }
 }
