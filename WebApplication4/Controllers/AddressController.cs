@@ -46,7 +46,7 @@ namespace WebApplication4.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // EDIT: load existing address
+
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -73,7 +73,7 @@ namespace WebApplication4.Controllers
             return View(updateVm);
         }
 
-        // EDIT: save changes
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, AddressUpdateViewModel model)
@@ -82,7 +82,6 @@ namespace WebApplication4.Controllers
                 return BadRequest();
 
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            // ensure the address belongs to the current user
             var existing = await _addressService.GetByIdAsync(id);
             if (existing is null || existing.AppUserId != userId)
                 return NotFound();
@@ -90,7 +89,7 @@ namespace WebApplication4.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            model.AppUserId = userId; // enforce ownership
+            model.AppUserId = userId; 
             var ok = await _addressService.UpdateAsync(id, model);
             if (!ok)
             {

@@ -96,15 +96,15 @@ namespace ECommerceCoza.BLL.Services
             if (existingVariant == null)
                 return false;
 
-            // Update basic properties
+   
             existingVariant.Size = model.Size;
             existingVariant.ColorId = model.ColorId;
             existingVariant.Price = model.Price;
-            existingVariant.SalePrice = model.SalePrice;  // 🆕 Sale Price əlavə edildi
+            existingVariant.SalePrice = model.SalePrice;  
             existingVariant.Quantity = model.Quantity;
             existingVariant.ProductId = model.ProductId;
 
-            // Handle cover image update
+
             if (model.CoverImageFile != null)
             {
                 if (!_fileService.IsImageFile(model.CoverImageFile))
@@ -121,7 +121,6 @@ namespace ECommerceCoza.BLL.Services
                 }
             }
 
-            // Handle deleted images
             if (!string.IsNullOrEmpty(model.DeletedImageIds))
             {
                 var deletedIds = model.DeletedImageIds
@@ -146,20 +145,18 @@ namespace ECommerceCoza.BLL.Services
                 }
             }
 
-            // Handle new image files
             if (model.ImageFiles != null && model.ImageFiles.Any())
             {
-                // Validate all files first
+
                 foreach (var imageFile in model.ImageFiles)
                 {
                     if (!_fileService.IsImageFile(imageFile))
                         throw new ArgumentException("One of the files is not a valid image.", nameof(model.ImageFiles));
                 }
 
-                // Initialize the list if null
+
                 existingVariant.ProductImages ??= new List<ProductImage>();
 
-                // Add new images to existing ones
                 foreach (var imageFile in model.ImageFiles)
                 {
                     var imageName = await _fileService.GenerateFile(imageFile, FilePathConstants.ProductImagePath);
@@ -176,7 +173,6 @@ namespace ECommerceCoza.BLL.Services
             return true;
         }
 
-        // 🆕 Custom GetAsync metodu - Price və SalePrice ilə
         public async Task<ProductVariantViewModel?> GetVariantWithPriceAsync(int id)
         {
             var variant = await Repository.GetAsync(
@@ -194,9 +190,9 @@ namespace ECommerceCoza.BLL.Services
             {
                 Id = variant.Id,
                 ProductName = variant.Product?.Name ?? string.Empty,
-                Price = variant.Price,  // 🆕
-                SalePrice = variant.SalePrice,  // 🆕
-                Priced = variant.Price,  // Köhnə uyğunluq
+                Price = variant.Price, 
+                SalePrice = variant.SalePrice,  
+                Priced = variant.Price,  
                 ProductId = variant.ProductId,
                 Quantity = variant.Quantity,
                 ColorId = variant.ColorId,
@@ -210,7 +206,7 @@ namespace ECommerceCoza.BLL.Services
             return viewModel;
         }
 
-        // 🆕 GetAllAsync override - bütün variant-lar üçün Price və SalePrice
+
         public async Task<List<ProductVariantViewModel>> GetAllVariantsWithPriceAsync(int productId)
         {
             var variants = await Repository.GetAllAsync(
@@ -225,9 +221,9 @@ namespace ECommerceCoza.BLL.Services
             {
                 Id = variant.Id,
                 ProductName = variant.Product?.Name ?? string.Empty,
-                Price = variant.Price,  // 🆕
-                SalePrice = variant.SalePrice,  // 🆕
-                Priced = variant.Price,  // Köhnə uyğunluq
+                Price = variant.Price,  
+                SalePrice = variant.SalePrice,  
+                Priced = variant.Price,  
                 ProductId = variant.ProductId,
                 Quantity = variant.Quantity,
                 ColorId = variant.ColorId,

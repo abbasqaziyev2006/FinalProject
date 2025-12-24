@@ -18,15 +18,12 @@ namespace EcommerceCoza.MVC.Controllers
         public async Task<IActionResult> Index()
         {
             var model = await _shopService.GetShopViewModelAsync();
-            // Order products so newest items show first, then take the first page
             var orderedProducts = model.Products.OrderByDescending(p => p.Id).ToList();
             var firstPageProducts = orderedProducts.Take(PageSize).ToList();
             model.Products = firstPageProducts;
             ViewBag.ProductCount = firstPageProducts.Count;
             ViewBag.TotalProducts = orderedProducts.Count;
             ViewBag.PageSize = PageSize;
-
-            // IMPORTANT: expose the full ordered product list for accurate counts/filters
             ViewBag.AllProducts = orderedProducts;
 
             return View(model);
@@ -35,7 +32,6 @@ namespace EcommerceCoza.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> LoadMoreProducts(int skip = 0, int take = PageSize)
         {
-            // Get full product list and apply same ordering as Index
             var fullModel = await _shopService.GetShopViewModelAsync();
             var ordered = fullModel.Products.OrderByDescending(p => p.Id).ToList();
             var products = ordered.Skip(skip).Take(take).ToList();
@@ -91,7 +87,6 @@ namespace EcommerceCoza.MVC.Controllers
             {
                 _logger.LogInformation($"Search request received: '{query}'");
 
-                // Validate query (return empty results, HTTP 200)
                 if (string.IsNullOrWhiteSpace(query) || query.Length < 2)
                 {
                     _logger.LogWarning("Search query too short or empty");
@@ -127,7 +122,6 @@ namespace EcommerceCoza.MVC.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, $"Error searching products with query: '{query}'");
-                // Return 500 with JSON payload so client can show a proper error
                 return StatusCode(500, new { products = new List<object>(), error = ex.Message });
             }
         }

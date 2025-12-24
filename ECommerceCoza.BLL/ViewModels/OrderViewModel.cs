@@ -1,4 +1,5 @@
 ﻿using ECommerceCoza.DAL.DataContext.Entities;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace EcommerceCoza.BLL.ViewModels
@@ -58,7 +59,13 @@ namespace EcommerceCoza.BLL.ViewModels
         public bool AcceptTermsConditions { get; set; }
         public decimal TotalPrice { get; set; }
         public BasketViewModel? BasketViewModel { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? PhoneNumber { get; set; }
     }
+
+ 
+
 
     public class OrderUpdateViewModel
     {

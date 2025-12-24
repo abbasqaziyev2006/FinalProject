@@ -29,7 +29,7 @@ namespace EcommerceCoza.MVC
             builder.Services.AddSession(options =>
             {
                 options.Cookie.Name = ".EcommerceCoza.Session";
-                options.IdleTimeout = TimeSpan.FromDays(30);
+                options.IdleTimeout = TimeSpan.FromHours(1);
                 options.Cookie.HttpOnly = true;
                 options.Cookie.IsEssential = true;
             });

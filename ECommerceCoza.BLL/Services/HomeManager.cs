@@ -21,13 +21,13 @@ namespace EcommerceCoza.BLL.Services
 
         public async Task<HomeViewModel> GetHomeViewModelAsync()
         {
-            // Get active categories
+
             var categories = await _categoryService.GetAllAsync(
                 predicate: x => !x.IsDeleted,
                 orderBy: x => x.OrderBy(c => c.Id)
             );
 
-            // Get all products with their related data
+
             var products = await _productService.GetAllAsync(
                 predicate: x => !x.IsDeleted,
                 include: x => x
@@ -62,7 +62,6 @@ namespace EcommerceCoza.BLL.Services
                 NewArrivals = productsList.OrderByDescending(p => p.Id).Take(8).ToList(),
             };
 
-            // Load active sliders (new)
             var sliders = await _sliderService.GetAllAsync(
                 predicate: s => !s.IsDeleted && s.IsActive,
                 orderBy: q => q.OrderByDescending(s => s.Id)

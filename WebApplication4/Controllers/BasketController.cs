@@ -122,7 +122,7 @@ namespace EcommerceCoza.MVC.Controllers
 
             if (discount == null)
             {
-                // Geçersiz kupon kodunu session'dan temizle
+       
                 Session?.Remove(AppliedDiscountCodeKey);
                 return Json(new
                 {
@@ -131,7 +131,7 @@ namespace EcommerceCoza.MVC.Controllers
                 });
             }
 
-            // Geçerli kupon kodunu session'a kaydet
+
             Session?.SetString(AppliedDiscountCodeKey, discountCode);
 
             var basket = await _basketManager.GetBasketAsync();

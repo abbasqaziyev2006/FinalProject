@@ -14,9 +14,9 @@ namespace EcommerceCoza.BLL.ViewModels
     {
         public int Id { get; set; }
         public string ProductName { get; set; } = null!;
-        public decimal Price { get; set; }  // 🆕 Regular Price
-        public decimal? SalePrice { get; set; }  // 🆕 Sale Price
-        public decimal Priced { get; set; }  // Deprecated - saxlayırıq uyğunluq üçün
+        public decimal Price { get; set; } 
+        public decimal? SalePrice { get; set; }  
+        public decimal Priced { get; set; }  
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         public int ColorId { get; set; }
@@ -27,7 +27,6 @@ namespace EcommerceCoza.BLL.ViewModels
         public string? CoverImageName { get; set; }
         public IList<string> ImageNames { get; set; } = [];
 
-        // 🆕 Helper property - endirimli qiymət varsa onu, yoxsa adi qiyməti qaytarır
         public decimal DisplayPrice => SalePrice ?? Price;
         public bool HasDiscount => SalePrice.HasValue && SalePrice.Value < Price;
     }

@@ -12,7 +12,7 @@
             <div class="col-lg-2">
                 <ul class="account-nav">
                     <li><a asp-controller="Account" asp-action="Index" class="menu-link menu-link_us-s">@Localizer["Dashboard"]</a></li>
-                    <li><a asp-controller="Order" asp-action="Index" class="menu-link menu-link_us-s">@Localizer["Orders"]</a></li>
+                    <li><a asp-controller="Order" asp-action="Index" class="menu-link menu-link_us-s active">@Localizer["Orders"]</a></li>
                     <li><a asp-controller="Address" asp-action="Index" class="menu-link menu-link_us-s">@Localizer["Addresses"]</a></li>
                     <li><a asp-controller="Account" asp-action="Edit" class="menu-link menu-link_us-s">@Localizer["AccountDetails"]</a></li>
                     <li><a asp-controller="Wishlist" asp-action="Index" class="menu-link menu-link_us-s">@Localizer["Wishlist"]</a></li>
@@ -21,70 +21,70 @@
             </div>
 
             <div class="col-lg-10">
-                <div class="wg-table table-all-user">
+                <div class="wg-table table-all-user shadow-sm p-3 bg-white rounded">
                     <div class="table-responsive">
-                        @if (Model == null || Model.Count == 0)
+                        @if (Model == null || !Model.Any())
                         {
                             <div class="alert alert-info">@Localizer["No Orders"]</div>
                         }
                         else
                         {
-                            <table class="table table-striped table-bordered">
-                                <thead>
+                            <table class="table table-hover align-middle border">
+                                <thead class="table-light">
                                     <tr>
-                                        <th style="width: 80px">@Localizer["OrderNo"]</th>
-                                        <th>@Localizer["Name"]</th>
+                                        <th class="text-center" style="width: 70px">#</th>
+                                        <th style="min-width: 150px">@Localizer["Name"]</th>
                                         <th class="text-center">@Localizer["Phone"]</th>
-                                        <th class="text-center">@Localizer["Subtotal"]</th>
-                                        <th class="text-center">@Localizer["Tax"]</th>
                                         <th class="text-center">@Localizer["Total"]</th>
                                         <th class="text-center">@Localizer["Status"]</th>
                                         <th class="text-center">@Localizer["OrderDate"]</th>
                                         <th class="text-center">@Localizer["Items"]</th>
-                                        <th class="text-center">@Localizer["DeliveredOn"]</th>
-                                        <th></th>
+                                        <th class="text-center">@Localizer["Action"]</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var order in Model)
                                     {
                                         <tr>
-                                            <td class="text-center">@order.Id</td>
-                                            <td class="text-center">@(order.Address?.FirstName ?? "N/A") @(order.Address?.LastName ?? "")</td>
-                                            <td class="text-center">@order.Phone</td>
-                                            <td class="text-center">@CurrencyService.Format(order.TotalPrice)</td>
-                                            <td class="text-center">@CurrencyService.Format(order.Tax)</td>
-                                            <td class="text-center">@CurrencyService.Format(order.EndPrice)</td>
-                                            <td class="text-center">
-                                                @switch (order.OrderStatus)
+                                            <td class="text-center fw-bold">@order.Id</td>
+                                            <td>
+                                                @if (order.Address != null)
                                                 {
-                                                    case ECommerceCoza.DAL.DataContext.Entities.OrderStatus.Completed:
-                                                        <span class="badge bg-success">@Localizer["Completed"]</span>
-                                                        break;
-                                                    case ECommerceCoza.DAL.DataContext.Entities.OrderStatus.Cancelled:
-                                                        <span class="badge bg-danger">@Localizer["Cancelled"]</span>
-                                                        break;
-                                                    case ECommerceCoza.DAL.DataContext.Entities.OrderStatus.InProgress:
-                                                        <span class="badge bg-warning">@Localizer["InProgress"]</span>
-                                                        break;
-                                                    case ECommerceCoza.DAL.DataContext.Entities.OrderStatus.OnHold:
-                                                        <span class="badge bg-secondary">@Localizer["OnHold"]</span>
-                                                        break;
-                                                    default:
-                                                        <span class="badge bg-info">@order.OrderStatus</span>
-                                                        break;
+                                                    <span>@order.Address.FirstName @order.Address.LastName</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted small">@Localizer["NoAddress"]</span>
                                                 }
                                             </td>
-                                            <td class="text-center">@order.FormattedCreatedAt</td>
-                                            <td class="text-center">@order.TotalCount</td>
-                                            <td class="text-center">@order.FormattedDeliveredDate</td>
                                             <td class="text-center">
-                                                <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id">
-                                                    <div class="list-icon-function view-icon">
-                                                        <div class="item eye">
-                                                            <i class="fa fa-eye"></i>
-                                                        </div>
-                                                    </div>
+                                                @* Əgər Address-də telefon varsa onu, yoxdursa birbaşa Order-dəki telefonu göstər *@
+                                                @(order.Address?.Phone ?? order.Phone ?? "—")
+                                            </td>
+                                            <td class="text-center fw-bold text-primary">
+                                                @CurrencyService.Format(order.EndPrice)
+                                            </td>
+                                            <td class="text-center">
+                                                @{
+                                                    var statusBadge = order.OrderStatus switch
+                                                    {
+                                                        ECommerceCoza.DAL.DataContext.Entities.OrderStatus.Completed => "bg-success",
+                                                        ECommerceCoza.DAL.DataContext.Entities.OrderStatus.Cancelled => "bg-danger",
+                                                        ECommerceCoza.DAL.DataContext.Entities.OrderStatus.InProgress => "bg-warning text-dark",
+                                                        ECommerceCoza.DAL.DataContext.Entities.OrderStatus.OnHold => "bg-secondary",
+                                                        _ => "bg-info"
+                                                    };
+                                                }
+                                                <span class="badge @statusBadge">@order.OrderStatus</span>
+                                            </td>
+                                            <td class="text-center small">@order.FormattedCreatedAt</td>
+                                            <td class="text-center">
+                                                <span class="badge rounded-pill bg-light text-dark border">@order.TotalCount</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a asp-controller="Order" asp-action="Details" asp-route-id="@order.Id"
+                                                   class="btn btn-sm btn-outline-primary shadow-sm">
+                                                    <i class="fa fa-eye"></i>
                                                 </a>
                                             </td>
                                         </tr>

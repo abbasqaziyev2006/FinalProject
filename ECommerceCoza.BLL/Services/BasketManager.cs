@@ -61,7 +61,7 @@ namespace EcommerceCoza.BLL.Services
             return await BuildBasketViewModelAsync(basket);
         }
 
-        // Keep synchronous AddToBasket for backward compatibility
+
         public void AddToBasket(int productVariantId, int quantity)
         {
             var basket = GetBasketFromCookie();
@@ -81,10 +81,10 @@ namespace EcommerceCoza.BLL.Services
             SaveBasketToCookie(basket);
         }
 
-        // NEW: Async add that returns the updated BasketViewModel built from the in-memory list
+    
         public async Task<BasketViewModel> AddToBasketAsync(int productVariantId, int quantity)
         {
-            // Read current basket from request cookie (may be old), update the in-memory list and save.
+
             var basket = GetBasketFromCookie();
             var basketItem = basket.FirstOrDefault(item => item.ProductVariantId == productVariantId);
 
@@ -99,10 +99,9 @@ namespace EcommerceCoza.BLL.Services
                 });
             }
 
-            // Persist new state to response cookie
             SaveBasketToCookie(basket);
 
-            // Build and return the BasketViewModel from the updated list (no reliance on Request.Cookies)
+
             return await BuildBasketViewModelAsync(basket);
         }
 
@@ -144,7 +143,7 @@ namespace EcommerceCoza.BLL.Services
             var cookieName = GetBasketCookieName();
             var cookieOptions = new CookieOptions
             {
-                Expires = DateTimeOffset.UtcNow.AddDays(30), // 30 gün yadda saxla
+                Expires = DateTimeOffset.UtcNow.AddDays(30), 
                 HttpOnly = true
             };
 
@@ -196,7 +195,6 @@ namespace EcommerceCoza.BLL.Services
             _httpContextAccessor.HttpContext?.Response.Cookies.Delete(guestCookieName);
         }
 
-        // Helper: build a BasketViewModel from in-memory cookie list
         private async Task<BasketViewModel> BuildBasketViewModelAsync(List<BasketCookieItemViewModel> basket)
         {
             var basketViewModel = new BasketViewModel();

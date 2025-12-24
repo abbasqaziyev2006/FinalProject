@@ -72,31 +72,27 @@ namespace EcommerceCoza.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            // Check if email already exists to prevent duplicates
-            var existingUserByEmail = await _userManager.Users
-                .Where(u => u.NormalizedEmail == model.Email.ToUpper())
-                .FirstOrDefaultAsync();
-
-            if (existingUserByEmail != null)
+         
+            if (await _userManager.Users.AnyAsync(u => u.NormalizedEmail == model.Email.ToUpper()))
             {
                 ModelState.AddModelError("Email", "This email is already registered.");
                 return View(model);
             }
 
-            // Check if username already exists
-            var existingUserByName = await _userManager.FindByNameAsync(model.UserName);
-            if (existingUserByName != null)
+            if (await _userManager.FindByNameAsync(model.UserName) != null)
             {
                 ModelState.AddModelError("UserName", "This username is already taken.");
                 return View(model);
             }
 
-            // If RegisterViewModel contains PhoneNumber, optionally check uniqueness
-            if (!string.IsNullOrEmpty(model.PhoneNumber))
+            string? phoneNormalized = null;
+
+            if (!string.IsNullOrWhiteSpace(model.PhoneNumber))
             {
-                var normalizedPhone = Regex.Replace(model.PhoneNumber, @"\D", "");
+                phoneNormalized = Regex.Replace(model.PhoneNumber, @"\D", "");
+
                 var phoneExists = await _userManager.Users
-                    .AnyAsync(u => !string.IsNullOrEmpty(u.PhoneNumber) && Regex.Replace(u.PhoneNumber, @"\D", "") == normalizedPhone);
+                    .AnyAsync(u => u.PhoneNumberNormalized == phoneNormalized);
 
                 if (phoneExists)
                 {
@@ -111,28 +107,23 @@ namespace EcommerceCoza.MVC.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Email = model.Email,
-                PhoneNumber = model.PhoneNumber
+                PhoneNumber = model.PhoneNumber,
+                PhoneNumberNormalized = phoneNormalized
             };
 
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
             {
-                foreach (var item in result.Errors)
-                {
-                    ModelState.AddModelError("", item.Description);
-                }
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError("", error.Description);
 
                 return View(model);
             }
 
-            // Automatically sign in the user after registration
-            await _signInManager.SignInAsync(user, isPersistent: false);
-
-            // Transfer guest basket to new user
+            await _signInManager.SignInAsync(user, false);
             _basketManager.TransferGuestBasketToUser();
 
-            TempData["SuccessMessage"] = "Your account has been created successfully!";
             return RedirectToAction("Index", "Home");
         }
 
@@ -198,7 +189,6 @@ namespace EcommerceCoza.MVC.Controllers
             if (user == null)
                 return BadRequest();
 
-            // Populate view model including phone so it remains visible after save
             var editAccountViewModel = new EditAccountViewModel
             {
                 UserName = user.UserName,
@@ -225,7 +215,7 @@ namespace EcommerceCoza.MVC.Controllers
             if (user == null)
                 return BadRequest();
 
-            // Password change
+     
             if (!string.IsNullOrEmpty(model.CurrentPassword) && !string.IsNullOrEmpty(model.NewPassword))
             {
                 if (model.CurrentPassword == model.NewPassword)
@@ -243,7 +233,6 @@ namespace EcommerceCoza.MVC.Controllers
                 }
             }
 
-            // Email change
             if (model.Email != user.Email)
             {
                 var existingUser = await _userManager.Users
@@ -265,7 +254,7 @@ namespace EcommerceCoza.MVC.Controllers
                 }
             }
 
-            // Phone update with uniqueness check and proper persistence
+      
             if ((model.PhoneNumber ?? "") != (user.PhoneNumber ?? ""))
             {
                 var newPhoneNormalized = Regex.Replace(model.PhoneNumber ?? "", @"\D", "");
@@ -294,7 +283,6 @@ namespace EcommerceCoza.MVC.Controllers
                 }
             }
 
-            // Username change
             if (model.UserName != user.UserName)
             {
                 var existingUser = await _userManager.Users
@@ -324,7 +312,6 @@ namespace EcommerceCoza.MVC.Controllers
                     ModelState.AddModelError("", error.Description);
             }
 
-            // Reload model so the saved phone is displayed if user is redirected back to Edit
             return RedirectToAction(nameof(Edit));
         }
 

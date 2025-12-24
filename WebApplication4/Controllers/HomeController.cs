@@ -80,7 +80,6 @@ namespace EcommerceCoza.MVC.Controllers
                     </html>
                 ";
 
-                // Send email to admin (abbasqaziyev119@gmail.com) using Admin credentials
                 var emailSent = await _emailService.SendEmailAsync(adminEmail, subject, body, "Admin");
 
                 if (emailSent)
