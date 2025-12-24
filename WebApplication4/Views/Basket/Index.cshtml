@@ -1,0 +1,622 @@
+﻿@model EcommerceCoza.BLL.ViewModels.BasketViewModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@inject WebApplication4.Services.ICurrencyService CurrencyService
+
+<main class="bg-light" style="padding-top: 120px; padding-bottom: 60px; min-height: 100vh;">
+    <div class="container" style="max-width: 1400px;">
+        <div class="row">
+            <!-- Left side - Shopping Cart -->
+            <div class="col-lg-8 mb-3">
+                <div class="bg-white rounded shadow-sm p-4">
+                    <h2 class="h4 mb-4">
+                        @Localizer["ShoppingCart"]
+                    </h2>
+
+                    @if (Model.Items.Any())
+                    {
+                        <!-- Header -->
+                        <div class="row border-bottom pb-2 mb-3">
+                            <div class="col text-end">
+                                <small class="text-muted">@Localizer["Price"]</small>
+                            </div>
+                        </div>
+
+                        @foreach (var item in Model.Items)
+                        {
+                            <div class="cart-item border-bottom py-3 mb-3" data-variant-id="@item.ProductVariantId">
+                                <div class="row align-items-center">
+                                    <!-- Product Image -->
+                                    <div class="col-auto">
+                                        <img src="~/images/products/@item.ImageName"
+                                             alt="@item.ProductName"
+                                             class="rounded"
+                                             style="width: 120px; height: 150px; object-fit: cover;">
+                                    </div>
+
+                                    <!-- Product Details -->
+                                    <div class="col">
+                                        <h5 class="mb-2 fw-normal">@item.ProductName</h5>
+                                        <p class="text-muted mb-3" style="font-size: 14px;">
+                                            <strong>@Localizer["Color"]:</strong> @item.ColorName
+                                            @if (!string.IsNullOrEmpty(item.Size))
+                                            {
+                                                <span class="ms-3"><strong>@Localizer["Size"]:</strong> @item.Size</span>
+                                            }
+                                        </p>
+
+                                        <!-- Quantity Controls -->
+                                        <div class="d-flex align-items-center gap-2">
+                                            <button type="button"
+                                                    class="qty-btn qty-decrease btn btn-sm border-0 bg-light"
+                                                    data-variant-id="@item.ProductVariantId"
+                                                    style="width: 30px; height: 30px; border-radius: 4px;">
+                                                −
+                                            </button>
+
+                                            <input type="number"
+                                                   min="1"
+                                                   class="qty-input form-control form-control-sm text-center"
+                                                   data-variant-id="@item.ProductVariantId"
+                                                   value="@item.Quantity"
+                                                   style="width: 70px; height: 30px; font-size: 16px; display: inline-block;">
+
+                                            <button type="button"
+                                                    class="qty-btn qty-increase btn btn-sm border-0 bg-light"
+                                                    data-variant-id="@item.ProductVariantId"
+                                                    style="width: 30px; height: 30px; border-radius: 4px;">
+                                                +
+                                            </button>
+
+                                            <button type="button"
+                                                    class="btn-delete btn btn-link text-decoration-none text-dark p-0 ms-2"
+                                                    data-variant-id="@item.ProductVariantId"
+                                                    data-product-name="@item.ProductName"
+                                                    style="font-size: 14px;">
+                                                @Localizer["Delete"]
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Price -->
+                                    <div class="col-auto text-end">
+                                        <p class="fw-bold mb-0 item-price" style="font-size: 20px;">
+                                            @CurrencyService.Format(item.TotalPrice)
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <!-- Subtotal at bottom -->
+                        <div class="text-end mt-4 pt-3 border-top">
+                            <p class="mb-0">
+                                <span class="text-muted">
+                                    @Localizer["Subtotal"] (<span id="cart-items-count-bottom">@Model.TotalCount</span> @Localizer["Items"]):
+                                </span>
+                                <strong class="ms-3" style="font-size: 20px;" id="cart-subtotal-bottom">
+                                    @CurrencyService.Format(Model.TotalPrice)
+                                </strong>
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="#ddd" stroke-width="1" class="mb-3">
+                                <circle cx="9" cy="21" r="1" />
+                                <circle cx="20" cy="21" r="1" />
+                                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                            </svg>
+                            <h5 class="mb-3">@Localizer["YourBasketIsEmpty"]</h5>
+                            <a asp-controller="Shop" asp-action="Index" class="btn btn-primary px-4">
+                                @Localizer["ContinueShopping"]
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Right side - Order Summary -->
+            <div class="col-lg-4">
+                @if (Model.Items.Any())
+                {
+                    <div class="bg-white rounded shadow-sm p-4">
+                        <!-- Proceed to checkout button -->
+                        <a asp-controller="Order"
+                           asp-action="Checkout"
+                           class="btn btn-checkout w-100 rounded-pill py-3 mb-4 text-uppercase fw-bold"
+                           style="background: #ffd814; border: none; color: #000; font-size: 15px; letter-spacing: 0.5px;">
+                            @Localizer["ProceedToCheckout"]
+                        </a>
+
+                        <!-- Subtotal -->
+                        <div class="mb-3">
+                            <p class="mb-2" style="font-size: 14px;">
+                                <span class="text-muted">
+                                    @Localizer["Subtotal"] (<span id="cart-items-count">@Model.TotalCount</span> @Localizer["Items"]):
+                                </span>
+                            </p>
+                            <p class="mb-0">
+                                <strong style="font-size: 22px;" id="cart-subtotal">
+                                    @CurrencyService.Format(Model.TotalPrice)
+                                </strong>
+                            </p>
+                        </div>
+
+                        <!-- Discount Info -->
+                        <div id="discount-info" class="alert alert-success d-none mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong id="discount-code"></strong>
+                                    <div class="small">@Localizer["Discount"]: <span id="discount-percentage"></span>%</div>
+                                    <div class="small text-success">-<span id="discount-amount"></span></div>
+                                </div>
+                                <button type="button" class="btn-close" id="remove-coupon"></button>
+                            </div>
+                        </div>
+
+                        <hr>
+
+                        <!-- Coupon Code -->
+                        <div class="mt-3">
+                            <a href="#"
+                               class="text-decoration-none text-primary"
+                               data-bs-toggle="collapse"
+                               data-bs-target="#couponCollapse"
+                               style="font-size: 14px;">
+                                @Localizer["EnterCouponCode"]
+                            </a>
+                            <div class="collapse mt-3" id="couponCollapse">
+                                <form id="coupon-form" class="d-flex gap-2">
+                                    @Html.AntiForgeryToken()
+                                    <input type="text"
+                                           id="coupon-code-input"
+                                           name="couponCode"
+                                           class="form-control"
+                                           placeholder="@Localizer["EnterCode"]"
+                                           style="font-size: 14px;">
+                                    <button type="submit" class="btn btn-secondary" style="font-size: 14px;">
+                                        @Localizer["Apply"]
+                                    </button>
+                                </form>
+                                <div id="coupon-message" class="mt-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title" id="deleteConfirmModalLabel">@Localizer["ConfirmDeletion"]</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pt-2">
+                <p class="mb-2">@Localizer["AreYouSureToRemove"]</p>
+                <p class="text-muted mb-0" id="productNameToDelete"></p>
+            </div>
+            <div class="modal-footer border-0 pt-2">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@Localizer["Cancel"]</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">@Localizer["Delete"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f5f5f5;
+    }
+
+    .cart-item:hover {
+        background-color: #fafafa;
+    }
+
+    .qty-btn {
+        color: #333;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 18px;
+        font-weight: 300;
+    }
+
+        .qty-btn:hover {
+            background-color: #e0e0e0 !important;
+        }
+
+        .qty-btn:active {
+            transform: scale(0.95);
+        }
+
+    .btn-delete:hover {
+        text-decoration: underline !important;
+        color: #c7511f !important;
+    }
+
+    .btn[style*="background: #ffd814"]:hover {
+        background-color: #f7ca00 !important;
+    }
+
+    .modal-content {
+        border-radius: 12px;
+    }
+
+    .modal-header .btn-close:focus {
+        box-shadow: none;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            const currencySymbol = '@CurrencyService.GetSymbol()';
+            let appliedCoupon = null;
+            let variantIdToDelete = null;
+            let qtyInputToRestore = null;
+            let qtyOldValueToRestore = null;
+
+            /* ================= QUANTITY ================= */
+
+            $(document).on('click', '.qty-increase', function () {
+                changeQuantity($(this).data('variant-id'), 1);
+            });
+
+            $(document).on('click', '.qty-decrease', function () {
+                const variantId = $(this).data('variant-id');
+                const $input = $(`.qty-input[data-variant-id="${variantId}"]`);
+                const qty = parseInt($input.val());
+
+                if (qty > 1) {
+                    changeQuantity(variantId, -1);
+                } else {
+                    showDeleteConfirmation(
+                        variantId,
+                        $(`.btn-delete[data-variant-id="${variantId}"]`).data('product-name')
+                    );
+                }
+            });
+
+            // store old value on focus so we can compute delta on change
+            $(document).on('focus', '.qty-input', function () {
+                $(this).data('old', $(this).val());
+            });
+
+            // handle manual input changes
+            $(document).on('change', '.qty-input', function () {
+                const $this = $(this);
+                const variantId = $this.data('variant-id');
+                let newQty = parseInt($this.val());
+                const oldQty = parseInt($this.data('old') || $this.val() || 0);
+
+                if (isNaN(newQty) || newQty < 1) {
+                    // If user typed 0 or invalid, ask to delete item
+                    qtyInputToRestore = $this;
+                    qtyOldValueToRestore = oldQty;
+                    showDeleteConfirmation(
+                        variantId,
+                        $(`.btn-delete[data-variant-id="${variantId}"]`).data('product-name')
+                    );
+                    return;
+                }
+
+                const delta = newQty - oldQty;
+                if (delta === 0) return;
+
+                changeQuantity(variantId, delta);
+            });
+
+            /* ================= DELETE ================= */
+
+            $(document).on('click', '.btn-delete', function () {
+                showDeleteConfirmation(
+                    $(this).data('variant-id'),
+                    $(this).data('product-name')
+                );
+            });
+
+            function showDeleteConfirmation(variantId, productName) {
+                variantIdToDelete = variantId;
+                $('#productNameToDelete').text(productName);
+                $('#deleteConfirmModal').modal('show');
+            }
+
+            // if modal hidden and user canceled, restore input value if needed
+            $('#deleteConfirmModal').on('hidden.bs.modal', function () {
+                // if we had an input waiting to be restored and deletion was cancelled
+                if (qtyInputToRestore) {
+                    qtyInputToRestore.val(qtyOldValueToRestore);
+                    qtyInputToRestore = null;
+                    qtyOldValueToRestore = null;
+                    variantIdToDelete = null;
+                }
+            });
+
+            $('#confirmDeleteBtn').on('click', function () {
+                if (!variantIdToDelete) return;
+
+                $('#deleteConfirmModal').modal('hide');
+                removeItem(variantIdToDelete);
+                // prevent restoring when confirmed
+                qtyInputToRestore = null;
+                qtyOldValueToRestore = null;
+                variantIdToDelete = null;
+            });
+
+            function removeItem(variantId) {
+                const $item = $(`.cart-item[data-variant-id="${variantId}"]`);
+                const productName = $item.find('h5').text().trim();
+
+                $item.css('opacity', '0.5');
+
+                $.post('@Url.Action("Remove", "Basket")', { id: variantId })
+                    .done(() => {
+                        $item.fadeOut(300, function () {
+                            $(this).remove();
+
+                            if ($('.cart-item').length === 0) {
+                                location.reload();
+                            } else {
+                                updateTotals();
+                                showNotification(
+                                    `Product removed from your basket!`,
+                                    'success'
+                                );
+                            }
+                        });
+                    })
+                    .fail(() => {
+                        $item.css('opacity', '1');
+                        showNotification('@Localizer["ErrorRemovingItem"]', 'danger');
+                    });
+            }
+
+            /* ================= UPDATE QUANTITY ================= */
+
+            function changeQuantity(variantId, change) {
+                const $item = $(`.cart-item[data-variant-id="${variantId}"]`);
+                const $qty = $item.find('.qty-input, .qty-display');
+                const $buttons = $item.find('.qty-btn');
+
+                $buttons.prop('disabled', true);
+
+                $.post('@Url.Action("ChangeQuantity", "Basket")', {
+                    productVariantId: variantId,
+                    change: change
+                })
+                .done(res => {
+                    const item = res?.basketViewModel?.items
+                        ?.find(x => x.productVariantId === variantId);
+
+                    if (item) {
+                        if ($qty.is('input')) {
+                            $qty.val(item.quantity);
+                            $qty.data('old', item.quantity);
+                        } else {
+                            $qty.text(item.quantity);
+                        }
+
+                        $item.find('.item-price')
+                            .text(`${currencySymbol} ${item.totalPrice.toFixed(2)}`);
+                        updateTotals();
+                    } else {
+                        // fallback: refresh totals if server didn't return item
+                        updateTotals();
+                    }
+                })
+                .fail(() => {
+                    // on failure, try to restore the input to previous value
+                    if ($qty.is('input')) {
+                        const prev = parseInt($qty.data('old') || 1);
+                        $qty.val(prev);
+                    }
+                    showNotification('@Localizer["ErrorUpdatingQuantity"]', 'danger');
+                })
+                .always(() => $buttons.prop('disabled', false));
+            }
+
+            /* ================= TOTALS ================= */
+
+            function updateTotals() {
+                $.get('@Url.Action("GetBasket", "Basket")', data => {
+                    const totalPrice = parseFloat(data.totalPrice);
+
+                    $('#cart-items-count, #cart-items-count-bottom').text(data.totalCount);
+                    $('.js-cart-items-count, .header__cart-count')
+                        .text(data.totalCount || 0);
+
+                    if (appliedCoupon) {
+                        reapplyDiscount(totalPrice);
+                    } else {
+                        const formatted = `${currencySymbol} ${totalPrice.toFixed(2)}`;
+                        $('#cart-subtotal, #cart-subtotal-bottom').html(formatted);
+                    }
+                });
+            }
+
+            /* ================= DISCOUNT ================= */
+
+            // Localization strings
+            const msgEnterDiscount = '@Localizer["EnterDiscountCodeWarning"]';
+            const msgDiscountAppliedFormat = '@Localizer["DiscountAppliedFormat"]';
+            const msgInvalidCode = '@Localizer["InvalidDiscountCode"]';
+            const msgErrorApplying = '@Localizer["ErrorApplyingDiscount"]';
+
+            // Handle coupon form submission
+            $('#coupon-form').on('submit', function (e) {
+                e.preventDefault();
+
+                const couponCode = $('#coupon-code-input').val().trim();
+
+                if (!couponCode) {
+                    $('#coupon-message')
+                        .text('⚠ ' + msgEnterDiscount)
+                        .css('color', '#dc3545')
+                        .removeClass('text-success')
+                        .addClass('text-danger');
+                    return;
+                }
+
+                $.ajax({
+                    url: '@Url.Action("ApplyDiscount", "Basket")',
+                    type: 'POST',
+                    data: { discountCode: couponCode },
+                    dataType: 'json',
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            appliedCoupon = {
+                                code: couponCode,
+                                salePercentage: response.salePercentage
+                            };
+
+                            const discount = parseFloat(response.discountAmount);
+                            const finalPrice = parseFloat(response.finalPrice);
+                            const originalTotal = parseFloat(response.originalTotal);
+
+                            $('#discount-info').removeClass('d-none');
+                            $('#discount-code').text(couponCode);
+                            $('#discount-percentage').text(response.salePercentage);
+                            $('#discount-amount').text(`${currencySymbol} ${discount.toFixed(2)}`);
+
+                            $('#cart-subtotal').html(
+                                `<span class="text-decoration-line-through text-muted me-2">
+                                    ${currencySymbol} ${originalTotal.toFixed(2)}
+                                </span>${currencySymbol} ${finalPrice.toFixed(2)}`
+                            );
+
+                            $('#cart-subtotal-bottom').html(
+                                `<span class="text-decoration-line-through text-muted me-2">
+                                    ${currencySymbol} ${originalTotal.toFixed(2)}
+                                </span>${currencySymbol} ${finalPrice.toFixed(2)}`
+                            );
+
+                            const appliedText = msgDiscountAppliedFormat.replace('{0}', response.salePercentage);
+                            $('#coupon-message')
+                                .text('✓ ' + appliedText)
+                                .css('color', '#28a745')
+                                .removeClass('text-danger')
+                                .addClass('text-success');
+
+                            $('#coupon-code-input').val('');
+                            $('#couponCollapse').collapse('hide');
+
+                            showNotification('Discount code applied successfully!', 'success');
+                        } else {
+                            $('#coupon-message')
+                                .text('⚠ ' + (response.message || msgInvalidCode))
+                                .css('color', '#dc3545')
+                                .removeClass('text-success')
+                                .addClass('text-danger');
+                        }
+                    },
+                    error: function () {
+                        $('#coupon-message')
+                            .text('⚠ ' + msgErrorApplying)
+                            .css('color', '#dc3545')
+                            .removeClass('text-success')
+                            .addClass('text-danger');
+                    }
+                });
+            });
+
+            // Handle remove coupon button
+            $('#remove-coupon').on('click', function () {
+                appliedCoupon = null;
+                $('#discount-info').addClass('d-none');
+
+                // Session'dan kupon kodunu temizle
+                $.post('@Url.Action("RemoveDiscount", "Basket")', function() {
+                    updateTotals();
+                    showNotification('Discount code removed', 'success');
+                });
+            });
+
+            function reapplyDiscount(total) {
+                if (!appliedCoupon) return;
+
+                const discount = (total * appliedCoupon.salePercentage) / 100;
+                const finalPrice = total - discount;
+
+                $('#discount-info').removeClass('d-none');
+                $('#discount-amount').text(`${currencySymbol} ${discount.toFixed(2)}`);
+                $('#cart-subtotal').html(
+                    `<span class="text-decoration-line-through text-muted me-2">
+                        ${currencySymbol} ${total.toFixed(2)}
+                    </span>${currencySymbol} ${finalPrice.toFixed(2)}`
+                );
+                $('#cart-subtotal-bottom').html(
+                    `<span class="text-decoration-line-through text-muted me-2">
+                        ${currencySymbol} ${total.toFixed(2)}
+                    </span>${currencySymbol} ${finalPrice.toFixed(2)}`
+                );
+            }
+
+            /* ================= NOTIFICATION ================= */
+
+            function showNotification(message, type) {
+                $('.basket-notification').remove();
+
+                const bg = type === 'success' ? '#28a745' : '#dc3545';
+
+                const toast = $('<div>')
+                    .addClass('basket-notification')
+                    .text(message)
+                    .css({
+                        position: 'fixed',
+                        top: '20px',
+                        right: '20px',
+                        background: bg,
+                        color: '#fff',
+                        padding: '14px 22px',
+                        borderRadius: '8px',
+                        zIndex: 10000,
+                        boxShadow: '0 6px 15px rgba(0,0,0,.15)',
+                        animation: 'slideIn .3s ease-out'
+                    });
+
+                $('body').append(toast);
+
+                setTimeout(() => {
+                    toast.css('animation', 'slideOut .3s ease-out');
+                    setTimeout(() => toast.remove(), 300);
+                }, 2500);
+            }
+
+        });
+    </script>
+
+    <style>
+        @@keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    </style>
+}

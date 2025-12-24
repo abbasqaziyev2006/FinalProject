@@ -1,0 +1,900 @@
+﻿@using EcommerceCoza.BLL.ViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject WebApplication4.Services.ICurrencyService CurrencyService
+
+@{
+    ShopViewModel model = Model;
+    var products = model.Products;
+    var categories = model.Categories;
+    var brands = model.Brands;
+    var colors = model.Colors;
+}
+
+
+<main class="pt-90">
+    <div class="mb-5 pb-3"></div>
+    <section class="shop-main container d-flex pt-4 pt-xl-5">
+        <!-- Sidebar Filters -->
+        <div class="shop-sidebar side-sticky bg-body" id="shopFilter">
+            <div class="aside-header d-flex d-lg-none align-items-center">
+                <h3 class="text-uppercase fs-6 mb-0">@Localizer["FilterBy"]</h3>
+                <button class="btn-close-lg js-close-aside btn-close-aside ms-auto"></button>
+            </div>
+
+            <div class="pt-4 pt-lg-0"></div>
+
+            <!-- Categories Filter -->
+            <div class="accordion" id="filters-accordion">
+                <!-- Categories -->
+                <div class="accordion-item mb-4 pb-3 border-0">
+                    <h5 class="accordion-header" id="accordion-heading-categories">
+                        <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordion-filter-categories" aria-expanded="true" aria-controls="accordion-filter-categories">
+                            @Localizer["ProductCategories"]
+                            <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
+                                <g aria-hidden="true" stroke="none" fill-rule="evenodd">
+                                    <path d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
+                                </g>
+                            </svg>
+                        </button>
+                    </h5>
+                    <div id="accordion-filter-categories" class="accordion-collapse collapse show border-0"
+                         aria-labelledby="accordion-heading-categories">
+                        <div class="accordion-body px-0 pb-0 pt-3">
+                            <ul class="list list-unstyled mb-0">
+                                <li class="list-item mb-2">
+                                    <a href="#" class="menu-link py-1 text-decoration-none category-filter active" data-category-id="all">
+                                        @Localizer["AllCategories"] (@products.Count)
+                                    </a>
+                                </li>
+                                @foreach (var category in categories)
+                                {
+                                    var categoryProductCount = products.Count(p => p.CategoryId == category.Id);
+                                    <li class="list-item mb-2">
+                                        <a href="#" class="menu-link py-1 text-decoration-none category-filter" data-category-id="@category.Id">
+                                            @category.Name (@categoryProductCount)
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Brands Filter -->
+                @if (brands != null && brands.Any())
+                {
+                    <div class="accordion-item mb-4 pb-3 border-0">
+                        <h5 class="accordion-header" id="accordion-heading-brands">
+                            <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordion-filter-brands" aria-expanded="true" aria-controls="accordion-filter-brands">
+                                @Localizer["Brands"]
+                                <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
+                                    <g aria-hidden="true" stroke="none" fill-rule="evenodd">
+                                        <path d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
+                                    </g>
+                                </svg>
+                            </button>
+                        </h5>
+                        <div id="accordion-filter-brands" class="accordion-collapse collapse show border-0"
+                             aria-labelledby="accordion-heading-brands">
+                            <div class="accordion-body px-0 pb-0 pt-3">
+                                <ul class="list list-unstyled mb-0">
+                                    @foreach (var brand in brands)
+                                    {
+                                        var brandProductCount = products.Count(p => p.BrandId == brand.Id);
+                                        @if (brandProductCount > 0)
+                                        {
+                                            <li class="list-item mb-2">
+                                                <label class="form-check d-flex align-items-center" style="cursor: pointer;">
+                                                    <input class="form-check-input brand-filter me-2" type="checkbox" data-brand-id="@brand.Id" value="@brand.Id">
+                                                    <span class="form-check-label">@brand.Name (@brandProductCount)</span>
+                                                </label>
+                                            </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Colors Filter -->
+                @if (colors != null && colors.Any())
+                {
+                    <div class="accordion-item mb-4 pb-3 border-0">
+                        <h5 class="accordion-header" id="accordion-heading-colors">
+                            <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#accordion-filter-colors" aria-expanded="true" aria-controls="accordion-filter-colors">
+                                @Localizer["Colors"]
+                                <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
+                                    <g aria-hidden="true" stroke="none" fill-rule="evenodd">
+                                        <path d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
+                                    </g>
+                                </svg>
+                            </button>
+                        </h5>
+                        <div id="accordion-filter-colors" class="accordion-collapse collapse show border-0"
+                             aria-labelledby="accordion-heading-colors">
+                            <div class="accordion-body px-0 pb-0 pt-3">
+                                <div class="d-flex flex-wrap gap-2">
+                                    @foreach (var color in colors)
+                                    {
+                                        var colorProductCount = products.Count(p => p.ProductVariants.Any(v => v.ColorId == color.Id));
+                                        @if (colorProductCount > 0)
+                                        {
+                                            <label class="position-relative" style="cursor: pointer;" title="@color.Name (@colorProductCount)">
+                                                <input type="checkbox" class="color-filter d-none" data-color-id="@color.Id" value="@color.Id">
+                                                <span class="swatch-color"
+                                                      style="background-color: @color.HexCode; width: 32px; height: 32px; border-radius: 50%; display: inline-block; border: 2px solid #e0e0e0; transition: all 0.3s ease;">
+                                                </span>
+                                                <span class="color-check position-absolute top-50 start-50 translate-middle d-none" style="color: white; font-size: 14px; font-weight: bold;">✓</span>
+                                            </label>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <!-- Size Filter -->
+                <div class="accordion-item mb-4 pb-3 border-0">
+                    <h5 class="accordion-header" id="accordion-heading-sizes">
+                        <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordion-filter-sizes" aria-expanded="true" aria-controls="accordion-filter-sizes">
+                            @Localizer["Sizes"]
+                            <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
+                                <g aria-hidden="true" stroke="none" fill-rule="evenodd">
+                                    <path d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
+                                </g>
+                            </svg>
+                        </button>
+                    </h5>
+                    <div id="accordion-filter-sizes" class="accordion-collapse collapse show border-0"
+                         aria-labelledby="accordion-heading-sizes">
+                        <div class="accordion-body px-0 pb-0 pt-3">
+                            <div class="d-flex flex-wrap gap-2">
+                                @{
+
+                                    var numericSizes = new List<string> { "36", "38", "40" };
+                                    var textSizes = new List<string> { "XS", "S", "M", "L", "XL", "XXL" };
+                                    var variantSizes = products
+                                    .SelectMany(p => p.ProductVariants)
+                                    .Select(v => v.Size)
+                                    .Where(s => !string.IsNullOrWhiteSpace(s))
+                                    .Select(s => s.Trim().ToUpper())
+                                    .Distinct()
+                                    .ToList();
+
+                                    var allSizesSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                                    foreach (var s in numericSizes) allSizesSet.Add(s);
+                                    foreach (var s in variantSizes) allSizesSet.Add(s);
+                                    foreach (var s in textSizes) allSizesSet.Add(s);
+
+                                    var availableSizes = allSizesSet
+                                    .OrderBy(s =>
+                                    {
+                                        // numeric sizes first, ordered ascending
+                                        if (int.TryParse(s, out var n)) return n;
+                                        // then known text sizes in the order defined
+                                        var idx = textSizes.IndexOf(s);
+                                        if (idx >= 0) return 1000 + idx;
+                                        // any other sizes afterwards (alphabetical)
+                                        return 2000 + s.GetHashCode();
+                                    })
+                                    .ToArray();
+
+                                    foreach (var size in availableSizes)
+                                    {
+                                        var sizeProductCount = products.Count(p => p.ProductVariants.Any(v => !string.IsNullOrEmpty(v.Size) && v.Size.Equals(size, StringComparison.OrdinalIgnoreCase)));
+                                        if (sizeProductCount > 0)
+                                        {
+                                            <label class="size-filter-label" style="cursor: pointer;">
+                                                <input type="checkbox" class="size-filter d-none" data-size="@size" value="@size">
+                                                <span class="size-badge" style="display: inline-block; padding: 8px 16px; border: 1px solid #ddd; border-radius: 4px; font-weight: 500; transition: all 0.3s ease;">
+                                                    @size
+                                                </span>
+                                                <small class="text-muted ms-1">(@sizeProductCount)</small>
+                                            </label>
+                                        }
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Price Filter -->
+                <div class="accordion-item mb-4 border-0">
+                    <h5 class="accordion-header" id="accordion-heading-price">
+                        <button class="accordion-button p-0 border-0 fs-5 text-uppercase collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#accordion-filter-price" aria-expanded="false" aria-controls="accordion-filter-price">
+                            @Localizer["Price"]
+                            <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
+                                <g aria-hidden="true" stroke="none" fill-rule="evenodd">
+                                    <path d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
+                                </g>
+                            </svg>
+                        </button>
+                    </h5>
+                    <div id="accordion-filter-price" class="accordion-collapse collapse border-0"
+                         aria-labelledby="accordion-heading-price">
+                        <div class="accordion-body px-0 pb-0 pt-3">
+                            @{
+                                var minPrice = products.Any() ? (int)products.Min(p => p.BasePrice) : 0;
+                                var maxPrice = products.Any() ? (int)products.Max(p => p.BasePrice) : 1000;
+                            }
+                            <input class="price-range-slider" type="text" name="price_range" value=""
+                                   data-slider-min="@minPrice"
+                                   data-slider-max="@maxPrice"
+                                   data-slider-step="5"
+                                   data-slider-value="[@minPrice,@maxPrice]"
+                                   data-currency="$" />
+                            <div class="price-range__info d-flex align-items-center mt-3">
+                                <div class="me-auto">
+                                    <span class="text-secondary">@Localizer["Min"]: </span>
+                                    <span class="price-range__min fw-medium">$@minPrice</span>
+                                </div>
+                                <div>
+                                    <span class="text-secondary">@Localizer["Max"]: </span>
+                                    <span class="price-range__max fw-medium">$@maxPrice</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reset Button -->
+                <div class="mt-4 pt-3 border-top">
+                    <button class="btn btn-outline-dark w-100 text-uppercase fw-medium btn-sm js-reset-filters">
+                        @Localizer["ResetFilters"]
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Shop Content -->
+        <div class="shop-list flex-grow-1">
+            <!-- Banner Slider -->
+            <div class="swiper-container js-swiper-slider slideshow slideshow_small slideshow_split mb-5" data-settings='{
+            "autoplay": {
+              "delay": 5000
+            },
+            "slidesPerView": 1,
+            "effect": "fade",
+            "loop": true,
+            "pagination": {
+              "el": ".slideshow-pagination",
+              "type": "bullets",
+              "clickable": true
+            }
+          }'>
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <div class="slide-split h-100 d-block d-md-flex overflow-hidden">
+                            <div class="slide-split_text position-relative d-flex align-items-center"
+                                 style="background-color: #f5e6e0;">
+                                <div class="slideshow-text container p-3 p-xl-5">
+                                    <h2 class="text-uppercase section-title fw-normal mb-3 animate animate_fade animate_btt animate_delay-2">
+                                        @Localizer["Discover Our Collection"]
+                                    </h2>
+                                    <p class="mb-0 animate animate_fade animate_btt animate_delay-5">
+                                        @Localizer["Shop Latest Trends"]
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="slide-split_media position-relative">
+                                <div class="slideshow-bg" style="background-color: #f5e6e0;">
+                                    <img loading="lazy" src="~/assets/images/shop/shop_banner3.jpg" width="630" height="450"
+                                         alt="Shop Collection" class="slideshow-bg__img object-fit-cover" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container p-3 p-xl-5">
+                    <div class="slideshow-pagination d-flex align-items-center position-absolute bottom-0 mb-4 pb-xl-2"></div>
+                </div>
+            </div>
+
+            <!-- Shop Controls -->
+            <div class="d-flex justify-content-between mb-4 pb-md-2 flex-wrap gap-3">
+                <div class="breadcrumb mb-0 d-none d-md-block">
+                    <a asp-controller="Home" asp-action="Index" class="menu-link menu-link_us-s text-uppercase fw-medium">@Localizer["Home"]</a>
+                    <span class="breadcrumb-separator menu-link fw-medium ps-1 pe-1">/</span>
+                    <span class="menu-link menu-link_us-s text-uppercase fw-medium">@Localizer["Shop"]</span>
+                </div>
+
+                <div class="shop-acs d-flex align-items-center justify-content-between gap-3 flex-wrap">
+                    <select class="shop-acs__select form-select w-auto border-0 py-0" aria-label="Sort Items" name="sort-products" id="sortProducts">
+                        <option value="default" selected>@Localizer["DefaultSorting"]</option>
+                        <option value="name-asc">@Localizer["AlphabeticallyAZ"]</option>
+                        <option value="name-desc">@Localizer["AlphabeticallyZA"]</option>
+                        <option value="price-asc">@Localizer["PriceLowHigh"]</option>
+                        <option value="price-desc">@Localizer["PriceHighLow"]</option>
+                        <option value="date-desc">@Localizer["DateNewOld"]</option>
+                        <option value="date-asc">@Localizer["DateOldNew"]</option>
+                    </select>
+
+                    <div class="shop-asc__seprator mx-2 bg-light d-none d-md-block" style="width: 1px; height: 20px;"></div>
+
+                    <div class="col-size align-items-center d-none d-lg-flex gap-2">
+                        <span class="text-uppercase fw-medium">@Localizer["View"]</span>
+                        <button class="btn-link fw-medium js-cols-size" data-target="products-grid" data-cols="2">2</button>
+                        <button class="btn-link fw-medium js-cols-size active" data-target="products-grid" data-cols="3">3</button>
+                        <button class="btn-link fw-medium js-cols-size" data-target="products-grid" data-cols="4">4</button>
+                    </div>
+
+                    <div class="shop-filter d-flex align-items-center d-lg-none">
+                        <button class="btn-link btn-link_f d-flex align-items-center ps-0 js-open-aside" data-aside="shopFilter">
+                            <svg class="d-inline-block align-middle me-2" width="14" height="10" viewBox="0 0 14 10" fill="none"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <use href="#icon_filter" />
+                            </svg>
+                            <span class="text-uppercase fw-medium d-inline-block align-middle">@Localizer["Filter"]</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Products Count -->
+            <div class="mb-4">
+                <p class="text-secondary">
+                    @Localizer["Showing"] <span id="productsCount">@products.Count</span> @Localizer["of"] <span id="totalProducts">@ViewBag.TotalProducts</span> @Localizer["Products"]
+                </p>
+            </div>
+
+            <!-- Products Grid -->
+            <div class="products-grid row row-cols-2 row-cols-md-3 g-3" id="products-grid">
+                @foreach (var product in products)
+                {
+                    @await Html.PartialAsync("_ProductCard", product)
+                }
+            </div>
+
+            <!-- Loading Indicator -->
+            <div id="loading-indicator" class="text-center py-5" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-secondary">@Localizer["LoadingMoreProducts"]</p>
+            </div>
+
+            <!-- No More Products Message -->
+            <div id="no-more-products" class="text-center py-5" style="display: none;">
+                <p class="text-secondary fs-5">@Localizer["NoMoreProducts"]</p>
+            </div>
+
+            @if (!products.Any())
+            {
+                <div class="text-center py-5">
+                    <p class="text-secondary fs-5">@Localizer["NoProductsFound"]</p>
+                </div>
+            }
+        </div>
+    </section>
+    <div class="mb-5 pb-5"></div>
+</main>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            let currentSkip = @ViewBag.PageSize;
+            let isLoading = false;
+            let hasMoreProducts = true;
+            const pageSize = @ViewBag.PageSize;
+            let allLoadedProducts = [];
+            let filteredProducts = [];
+            let selectedCategory = 'all';
+            let selectedBrands = [];
+            let selectedColors = [];
+            let selectedSizes = [];
+            let minPrice = @(products.Any() ? products.Min(p => p.BasePrice) : 0);
+            let maxPrice = @(products.Any() ? products.Max(p => p.BasePrice) : 1000);
+
+            // Store initially loaded products
+            $('.product-card-wrapper').each(function() {
+                const colorIds = $(this).data('product-colors');
+                const sizes = $(this).data('product-sizes');
+                allLoadedProducts.push({
+                    element: $(this),
+                    id: $(this).data('product-id'),
+                    category: $(this).data('product-category'),
+                    brand: parseInt($(this).data('product-brand')) || 0,
+                    colors: colorIds ? colorIds.toString().split(',').map(id => parseInt(id)) : [],
+                    sizes: sizes ? sizes.toString().split(',').map(s => s.trim().toUpperCase()) : [],
+                    price: parseFloat($(this).data('product-price')),
+                    name: $(this).data('product-name'),
+                    date: $(this).data('product-date')
+                });
+            });
+            filteredProducts = [...allLoadedProducts];
+
+            // ============= INFINITE SCROLL =============
+            $(window).on('scroll', function() {
+                if (isLoading || !hasMoreProducts) return;
+
+                const scrollTop = $(window).scrollTop();
+                const windowHeight = $(window).height();
+                const documentHeight = $(document).height();
+                const scrollPercentage = (scrollTop + windowHeight) / documentHeight;
+
+                // Trigger when user scrolls to 80% of page
+                if (scrollPercentage > 0.8) {
+                    loadMoreProducts();
+                }
+            });
+
+            function loadMoreProducts() {
+                if (isLoading || !hasMoreProducts) return;
+
+                isLoading = true;
+                $('#loading-indicator').show();
+
+                $.ajax({
+                    url: '@Url.Action("LoadMoreProducts", "Shop")',
+                    type: 'GET',
+                    data: {
+                        skip: currentSkip,
+                        take: pageSize
+                    },
+                    success: function(response) {
+                        if (response.hasMore === false || response.products.length === 0) {
+                            hasMoreProducts = false;
+                            $('#loading-indicator').hide();
+                            $('#no-more-products').show();
+                            return;
+                        }
+
+                        // Append new products to grid
+                        response.products.forEach(function(product) {
+                            const productHtml = createProductCard(product);
+                            $('#products-grid').append(productHtml);
+
+                            // Store product data for filtering
+                            const $newProduct = $('.product-card-wrapper').last();
+                            allLoadedProducts.push({
+                                element: $newProduct,
+                                id: product.id,
+                                category: product.categoryId,
+                                brand: product.brandId,
+                                colors: product.colorIds ? product.colorIds.split(',').map(id => parseInt(id)) : [],
+                                sizes: product.sizes ? product.sizes.split(',').map(s => s.trim().toUpperCase()) : [],
+                                price: product.basePrice,
+                                name: product.name,
+                                date: product.id
+                            });
+                        });
+
+                        currentSkip += pageSize;
+                        $('#totalProducts').text(allLoadedProducts.length);
+
+                        // Apply current filters to newly loaded products
+                        applyFilters();
+
+                        hasMoreProducts = response.hasMore;
+                        if (!hasMoreProducts) {
+                            $('#no-more-products').show();
+                        }
+                    },
+                    error: function() {
+                        console.error('Error loading products');
+                    },
+                    complete: function() {
+                        isLoading = false;
+                        $('#loading-indicator').hide();
+                    }
+                });
+            }
+
+            function createProductCard(product) {
+                const variant = product.firstVariant;
+                const hasStock = variant && variant.quantity > 0;
+                const imageUrl = variant?.coverImageName || 'product-placeholder.jpg';
+                const secondImage = variant?.imageNames?.[0] || imageUrl;
+
+                return `
+                    <div class="product-card-wrapper"
+                         data-product-id="${product.id}"
+                         data-product-category="${product.categoryId}"
+                         data-product-brand="${product.brandId}"
+                         data-product-colors="${product.colorIds}"
+                         data-product-sizes="${product.sizes}"
+                         data-product-price="${product.basePrice}"
+                         data-product-name="${product.name}"
+                         data-product-date="${product.id}">
+                        <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+                            <div class="pc__img-wrapper">
+                                <div class="swiper-container background-img js-swiper-slider" data-settings='{"resizeObserver": true}'>
+                                    <div class="swiper-wrapper">
+                                        <div class="swiper-slide">
+                                            <a href="/Product/Details/${product.detailsUrl}">
+                                                <img loading="lazy" src="~/assets/images/products/${imageUrl}" width="330" height="400" alt="${product.name}" class="pc__img">
+                                            </a>
+                                        </div>
+                                        ${secondImage !== imageUrl ? `
+                                        <div class="swiper-slide">
+                                            <a href="/Product/Details/${product.detailsUrl}">
+                                                <img loading="lazy" src="~/assets/images/products/${secondImage}" width="330" height="400" alt="${product.name}" class="pc__img">
+                                            </a>
+                                        </div>
+                                        ` : ''}
+                                    </div>
+                                    <span class="pc__img-prev"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_prev_sm" /></svg></span>
+                                    <span class="pc__img-next"><svg width="7" height="11" viewBox="0 0 7 11" xmlns="http://www.w3.org/2000/svg"><use href="#icon_next_sm" /></svg></span>
+                                </div>
+                                ${hasStock ? `
+                                <button class="pc__atc btn anim_appear-bottom btn position-absolute border-0 text-uppercase fw-medium js-add-cart"
+                                        data-variant-id="${variant.id}"
+                                        title="@Localizer["AddToCart"]">
+                                    @Localizer["AddToCart"]
+                                </button>
+                                ` : `
+                                <div class="pc__atc btn position-absolute border-0 text-uppercase fw-medium bg-secondary text-white" style="cursor: not-allowed;">
+                                    @Localizer["OutOfStock"]
+                                </div>
+                                `}
+                            </div>
+                            <div class="pc__info position-relative">
+                                <p class="pc__category">
+                                    ${product.brandName ? `<span class="fw-medium text-primary">${product.brandName}</span>` : ''}
+                                    ${product.brandName && product.categoryName ? '<span class="text-muted"> • </span>' : ''}
+                                    ${product.categoryName ? `<span>${product.categoryName}</span>` : ''}
+                                </p>
+                                <h6 class="pc__title">
+                                    <a href="/Product/Details/${product.detailsUrl}">${product.name}</a>
+                                </h6>
+                                <div class="product-card__price d-flex">
+                                    <span class="money price">$${product.basePrice.toFixed(2)}</span>
+                                </div>
+                                ${product.variants.length > 1 ? `
+                                <div class="d-flex align-items-center mt-1">
+                                    ${product.variants.slice(0, 5).map(v =>
+                                        v.colorHexCode ? `<a href="#" class="swatch-color pc__swatch-color" style="background-color: ${v.colorHexCode};" title="${v.colorName}"></a>` : ''
+                                    ).join('')}
+                                    ${product.variants.length > 5 ? `<span class="text-secondary small ms-1">+${product.variants.length - 5}</span>` : ''}
+                                </div>
+                                ` : ''}
+                                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
+                                        data-product-id="${product.id}"
+                                        title="@Localizer["AddToWishlist"]">
+                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <use href="#icon_heart" />
+                                    </svg>
+                                </button>
+                                ${!hasStock ? `
+                                <div class="pc-labels position-absolute top-0 start-0">
+                                    <span class="pc-label pc-label_sale d-block text-white bg-danger">@Localizer["OutOfStock"]</span>
+                                </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // ============= CATEGORY FILTER =============
+            $('.category-filter').on('click', function(e) {
+                e.preventDefault();
+                $('.category-filter').removeClass('text-primary fw-bold active');
+                $(this).addClass('text-primary fw-bold active');
+
+                selectedCategory = $(this).data('category-id');
+                applyFilters();
+            });
+
+            // ============= BRAND FILTER =============
+            $('.brand-filter').on('change', function() {
+                selectedBrands = [];
+                $('.brand-filter:checked').each(function() {
+                    selectedBrands.push(parseInt($(this).data('brand-id')));
+                });
+                console.log('Selected brands:', selectedBrands);
+                applyFilters();
+            });
+
+            // ============= COLOR FILTER =============
+            $('.color-filter').on('change', function() {
+                const $label = $(this).closest('label');
+                const $swatch = $label.find('.swatch-color');
+                const $check = $label.find('.color-check');
+
+                if ($(this).is(':checked')) {
+                    $swatch.css('border-color', '#000');
+                    $swatch.css('box-shadow', '0 0 0 2px #000');
+                    $check.removeClass('d-none');
+                } else {
+                    $swatch.css('border-color', '#e0e0e0');
+                    $swatch.css('box-shadow', 'none');
+                    $check.addClass('d-none');
+                }
+
+                selectedColors = [];
+                $('.color-filter:checked').each(function() {
+                    selectedColors.push(parseInt($(this).data('color-id')));
+                });
+                console.log('Selected colors:', selectedColors);
+                applyFilters();
+            });
+
+            // ============= SIZE FILTER =============
+            $('.size-filter').on('change', function() {
+                const $label = $(this).closest('label');
+                const $badge = $label.find('.size-badge');
+
+                if ($(this).is(':checked')) {
+                    $badge.css({
+                        'background-color': '#000',
+                        'color': '#fff',
+                        'border-color': '#000'
+                    });
+                } else {
+                    $badge.css({
+                        'background-color': 'transparent',
+                        'color': '#000',
+                        'border-color': '#ddd'
+                    });
+                }
+
+                selectedSizes = [];
+                $('.size-filter:checked').each(function() {
+                    selectedSizes.push($(this).data('size').toString().toUpperCase());
+                });
+                console.log('Selected sizes:', selectedSizes);
+                applyFilters();
+            });
+
+            // ============= PRICE RANGE FILTER =============
+            if ($('.price-range-slider').length) {
+                $('.price-range-slider').on('change', function() {
+                    const values = $(this).val().split(',');
+                    minPrice = parseFloat(values[0]);
+                    maxPrice = parseFloat(values[1]);
+                    applyFilters();
+                });
+            }
+
+            // ============= SORT PRODUCTS =============
+            $('#sortProducts').on('change', function() {
+                const sortBy = $(this).val();
+                sortProducts(sortBy);
+            });
+
+            // ============= RESET FILTERS =============
+            $('.js-reset-filters').on('click', function() {
+                selectedCategory = 'all';
+                selectedBrands = [];
+                selectedColors = [];
+                selectedSizes = [];
+
+                $('.category-filter').removeClass('text-primary fw-bold active');
+                $('.category-filter[data-category-id="all"]').addClass('text-primary fw-bold active');
+                $('.brand-filter').prop('checked', false);
+
+                // Reset color filters
+                $('.color-filter').prop('checked', false);
+                $('.color-filter').each(function() {
+                    const $label = $(this).closest('label');
+                    const $swatch = $label.find('.swatch-color');
+                    const $check = $label.find('.color-check');
+                    $swatch.css('border-color', '#e0e0e0');
+                    $swatch.css('box-shadow', 'none');
+                    $check.addClass('d-none');
+                });
+
+                // Reset size filters
+                $('.size-filter').prop('checked', false);
+                $('.size-filter').each(function() {
+                    const $label = $(this).closest('label');
+                    const $badge = $label.find('.size-badge');
+                    $badge.css({
+                        'background-color': 'transparent',
+                        'color': '#000',
+                        'border-color': '#ddd'
+                    });
+                });
+
+                if ($('.price-range-slider').length) {
+                    const slider = $('.price-range-slider').data('ionRangeSlider');
+                    if (slider) {
+                        slider.reset();
+                    }
+                }
+
+                $('#sortProducts').val('default');
+                minPrice = @(products.Any() ? products.Min(p => p.BasePrice) : 0);
+                maxPrice = @(products.Any() ? products.Max(p => p.BasePrice) : 1000);
+                applyFilters();
+            });
+
+            // ============= APPLY FILTERS =============
+            function applyFilters() {
+                filteredProducts = allLoadedProducts.filter(product => {
+                    const categoryMatch = selectedCategory === 'all' || product.category == selectedCategory;
+                    const brandMatch = selectedBrands.length === 0 || selectedBrands.includes(product.brand);
+                    const colorMatch = selectedColors.length === 0 || selectedColors.some(colorId => product.colors.includes(colorId));
+                    const sizeMatch = selectedSizes.length === 0 || selectedSizes.some(size => product.sizes.includes(size));
+                    const priceMatch = product.price >= minPrice && product.price <= maxPrice;
+                    return categoryMatch && brandMatch && colorMatch && sizeMatch && priceMatch;
+                });
+
+                // Hide all products
+                allLoadedProducts.forEach(p => p.element.hide());
+
+                // Show filtered products
+                filteredProducts.forEach(p => p.element.show());
+
+                // Update count
+                $('#productsCount').text(filteredProducts.length);
+
+                console.log('Filtered products:', filteredProducts.length);
+            }
+
+            // ============= SORT PRODUCTS =============
+            function sortProducts(sortBy) {
+                const $grid = $('#products-grid');
+                let sorted = [...filteredProducts];
+
+                switch(sortBy) {
+                    case 'name-asc':
+                        sorted.sort((a, b) => a.name.localeCompare(b.name));
+                        break;
+                    case 'name-desc':
+                        sorted.sort((a, b) => b.name.localeCompare(a.name));
+                        break;
+                    case 'price-asc':
+                        sorted.sort((a, b) => a.price - b.price);
+                        break;
+                    case 'price-desc':
+                        sorted.sort((a, b) => b.price - a.price);
+                        break;
+                    case 'date-asc':
+                        sorted.sort((a, b) => a.date - b.date);
+                        break;
+                    case 'date-desc':
+                        sorted.sort((a, b) => b.date - a.date);
+                        break;
+                }
+
+                // Reorder DOM elements
+                sorted.forEach(product => {
+                    $grid.append(product.element);
+                });
+            }
+
+            // ============= ADD TO CART =============
+            $(document).on('click', '.js-add-cart', function(e) {
+                e.preventDefault();
+
+                const $button = $(this);
+                const variantId = $button.data('variant-id');
+
+                if (!variantId) {
+                    console.warn('Product variant ID not found');
+                    return;
+                }
+
+                // Disable button
+                $button.prop('disabled', true);
+                const originalText = $button.text();
+
+                const formData = new FormData();
+                formData.append('productVariantId', variantId);
+                formData.append('quantity', 1);
+
+                $.ajax({
+                    url: '/Basket/Add',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        // Update cart count
+                        if (response && response.totalCount !== undefined) {
+                            $('.js-cart-items-count, .header__cart-count').text(response.totalCount);
+                            $('.js-cart-items-count, .header__cart-count').show();
+                        } else {
+                            // Fallback: fetch basket count
+                            $.get('/Basket/GetBasket', function(data) {
+                                if (data && data.totalCount !== undefined) {
+                                    $('.js-cart-items-count, .header__cart-count').text(data.totalCount);
+                                }
+                            });
+                        }
+
+                        // Show success notification with localized message
+                        showSuccessNotification('@Localizer["ProductAddedToCart"]');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error adding to cart:', error);
+                        showErrorNotification('@Localizer["ErrorAddingToCart"]');
+                    },
+                    complete: function() {
+                        // Re-enable button
+                        $button.prop('disabled', false);
+                        $button.text(originalText);
+                    }
+                });
+            });
+
+            function showSuccessNotification(message) {
+                const toast = $('<div>')
+                    .addClass('basket-toast')
+                    .text(message)
+                    .css({
+                        'position': 'fixed',
+                        'top': '20px',
+                        'right': '20px',
+                        'background': '#28a745',
+                        'color': 'white',
+                        'padding': '15px 25px',
+                        'border-radius': '5px',
+                        'z-index': '10000',
+                        'box-shadow': '0 4px 6px rgba(0,0,0,0.1)',
+                        'animation': 'slideIn 0.3s ease-out'
+                    });
+
+                $('body').append(toast);
+
+                setTimeout(() => {
+                    toast.css('animation', 'slideOut 0.3s ease-out');
+                    setTimeout(() => toast.remove(), 300);
+                }, 2000);
+            }
+
+            function showErrorNotification(message) {
+                const toast = $('<div>')
+                    .addClass('basket-toast')
+                    .text(message)
+                    .css({
+                        'position': 'fixed',
+                        'top': '20px',
+                        'right': '20px',
+                        'background': '#dc3545',
+                        'color': 'white',
+                        'padding': '15px 25px',
+                        'border-radius': '5px',
+                        'z-index': '10000',
+                        'box-shadow': '0 4px 6px rgba(0,0,0,0.1)',
+                        'animation': 'slideIn 0.3s ease-out'
+                    });
+
+                $('body').append(toast);
+
+                setTimeout(() => {
+                    toast.css('animation', 'slideOut 0.3s ease-out');
+                    setTimeout(() => toast.remove(), 300);
+                }, 2000);
+            }
+        });
+    </script>
+
+    <style>
+        @@keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    </style>
+}

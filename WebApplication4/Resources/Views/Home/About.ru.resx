@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="PageTitle" xml:space="preserve"><value>О нас</value></data>
+	<data name="StoryHeading" xml:space="preserve"><value>Наша история</value></data>
+	<data name="StoryParagraph1" xml:space="preserve"><value>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Исключая тех, кто виновен, не несет последствий для невиновных.</value></data>
+	<data name="StoryParagraph2" xml:space="preserve"><value>В благотворные дни видел их; моря и свет сменяют сезоны. Земля плодородна, семена растут, трава множится; циклы творения продолжаются.</value></data>
+	<data name="MissionHeading" xml:space="preserve"><value>Наша миссия</value></data>
+	<data name="MissionText" xml:space="preserve"><value>Мы применяем совместный труд и практики для достижения удобных и эффективных результатов.</value></data>
+	<data name="VisionHeading" xml:space="preserve"><value>Наше видение</value></data>
+	<data name="VisionText" xml:space="preserve"><value>Мы применяем совместный труд и практики для достижения удобных и эффективных результатов.</value></data>
+	<data name="CompanyHeading" xml:space="preserve"><value>Компания</value></data>
+	<data name="CompanyText" xml:space="preserve"><value>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Уважение к элементам и ценностям. Растем с поддержкой команды. Динамичная структура, плавные потоки. Сильный фундамент в будущее.</value></data>
+	<data name="ImageAltAbout" xml:space="preserve"><value>Изображение о нас</value></data>
+</root>

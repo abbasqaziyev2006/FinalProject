@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="PageTitle" xml:space="preserve"><value>Заказ получен</value></data>
+	<data name="OrderCompleted" xml:space="preserve"><value>Ваш заказ выполнен!</value></data>
+	<data name="ThanksMessage" xml:space="preserve"><value>Спасибо. Ваш заказ был получен.</value></data>
+	<data name="OrderNumber" xml:space="preserve"><value>Номер заказа</value></data>
+	<data name="Date" xml:space="preserve"><value>Дата</value></data>
+	<data name="Total" xml:space="preserve"><value>Итого</value></data>
+	<data name="PaymentMethod" xml:space="preserve"><value>Способ оплаты</value></data>
+	<data name="OrderDetails" xml:space="preserve"><value>Детали заказа</value></data>
+	<data name="Product" xml:space="preserve"><value>ТОВАР</value></data>
+	<data name="Quantity" xml:space="preserve"><value>КОЛИЧЕСТВО</value></data>
+	<data name="Price" xml:space="preserve"><value>ЦЕНА</value></data>
+	<data name="Subtotal" xml:space="preserve"><value>ИТОГО</value></data>
+	<data name="NoItems" xml:space="preserve"><value>Нет товаров в этом заказе</value></data>
+	<data name="SubtotalLabel" xml:space="preserve"><value>ПРОМЕЖУТОЧНЫЙ ИТОГ</value></data>
+	<data name="Discount" xml:space="preserve"><value>СКИДКА</value></data>
+	<data name="Shipping" xml:space="preserve"><value>ДОСТАВКА</value></data>
+	<data name="Free" xml:space="preserve"><value>Бесплатно</value></data>
+	<data name="ShippingAddress" xml:space="preserve"><value>Адрес доставки</value></data>
+	<data name="RecipientInfo" xml:space="preserve"><value>Информация о получателе</value></data>
+	<data name="Phone" xml:space="preserve"><value>Телефон</value></data>
+	<data name="Address" xml:space="preserve"><value>Адрес</value></data>
+	<data name="ViewOrders" xml:space="preserve"><value>Просмотреть мои заказы</value></data>
+	<data name="ContinueShopping" xml:space="preserve"><value>Продолжить покупки</value></data>
+	<data name="DirectBankTransfer" xml:space="preserve"><value>Прямой банковский перевод</value></data>
+	<data name="CashOnDelivery" xml:space="preserve"><value>Наличный расчет при доставке</value></data>
+</root>

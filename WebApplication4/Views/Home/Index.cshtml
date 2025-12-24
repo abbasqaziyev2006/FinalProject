@@ -1,0 +1,401 @@
+﻿@using EcommerceCoza.BLL.ViewModels
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+@inject WebApplication4.Services.ICurrencyService CurrencyService
+@model HomeViewModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<!-- Hero Slideshow -->
+<section class="swiper-container js-swiper-slider swiper-number-pagination slideshow" data-settings='{
+        "autoplay": {
+          "delay": 5000
+        },
+        "slidesPerView": 1,
+        "effect": "fade",
+        "loop": true
+      }'>
+    <div class="swiper-wrapper">
+        @if (Model.Sliders != null && Model.Sliders.Any())
+        {
+            foreach (var slider in Model.Sliders)
+            {
+                <div class="swiper-slide">
+                    <div class="overflow-hidden position-relative h-100">
+                        <div class="slideshow-character position-absolute bottom-0 pos_right-center">
+                            <img loading="lazy" src="~/images/sliders/@slider.ImageName" width="542" height="733"
+                                 alt="@slider.Title"
+                                 class="slideshow-character__img animate animate_fade animate_btt animate_delay-9 w-auto h-auto" />
+                            <div class="character_markup type2">
+                                <p class="text-uppercase font-sofia mark-grey-color animate animate_fade animate_btt animate_delay-10 mb-0">
+                                    @slider.Line2
+                                </p>
+                            </div>
+                        </div>
+                        <div class="slideshow-text container position-absolute start-50 top-50 translate-middle">
+                            <h6 class="text_dash text-uppercase fs-base fw-medium animate animate_fade animate_btt animate_delay-3">
+                                @slider.Line1
+                            </h6>
+                            <h2 class="h1 fw-normal mb-0 animate animate_fade animate_btt animate_delay-5">@slider.Title</h2>
+                            <h2 class="h1 fw-bold animate animate_fade animate_btt animate_delay-5">@slider.Line2</h2>
+                            @if (!string.IsNullOrEmpty(slider.Link))
+                            {
+                                <a href="@slider.Link"
+                                   class="btn-link btn-link_lg default-underline fw-medium animate animate_fade animate_btt animate_delay-7">
+                                    @Localizer["Shop Now"]
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="container">
+        <div class="slideshow-pagination slideshow-number-pagination d-flex align-items-center position-absolute bottom-0 mb-5">
+        </div>
+    </div>
+</section>
+<div class="container mw-1620 bg-white border-radius-10">
+    <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
+
+    <!-- Featured Categories Section -->
+    @if (Model.FeaturedCategories.Any())
+    {
+        <section class="category-carousel container">
+            <h2 class="section-title text-center mb-3 pb-xl-2 mb-xl-4">@Localizer["Shop By Category"]</h2>
+
+            <div class="position-relative">
+                <div class="swiper-container js-swiper-slider" data-settings='{
+                                  "autoplay": {
+                                    "delay": 5000
+                                  },
+                                  "slidesPerView": 8,
+                                  "slidesPerGroup": 1,
+                                  "effect": "none",
+                                  "loop": false,
+                                  "navigation": {
+                                    "nextEl": ".products-carousel__next-1",
+                                    "prevEl": ".products-carousel__prev-1"
+                                  },
+                                  "breakpoints": {
+                                    "320": {
+                                      "slidesPerView": 2,
+                                      "slidesPerGroup": 1,
+                                      "spaceBetween": 15
+                                    },
+                                    "768": {
+                                      "slidesPerView": 4,
+                                      "slidesPerGroup": 1,
+                                      "spaceBetween": 30
+                                    },
+                                    "992": {
+                                      "slidesPerView": 6,
+                                      "slidesPerGroup": 1,
+                                      "spaceBetween": 45
+                                    },
+                                    "1200": {
+                                      "slidesPerView": 8,
+                                      "slidesPerGroup": 1,
+                                      "spaceBetween": 30
+                                    }
+                                  }
+                                }'>
+                    <div class="swiper-wrapper">
+                        @foreach (var category in Model.FeaturedCategories)
+                        {
+                            <div class="swiper-slide">
+                                @if (!string.IsNullOrEmpty(category.ImageName))
+                                {
+                                    <img loading="lazy" class="w-100 h-auto mb-3" src="~/images/collections/@category.ImageName" width="124" height="124" alt="@category.Name"
+                                         style="object-fit: cover; border-radius: 50%;" />
+                                }
+                                else
+                                {
+                                    <div class="w-100 mb-3 bg-light d-flex align-items-center justify-content-center"
+                                         style="height: 124px; border-radius: 50%;">
+                                        <span class="text-secondary">@category.Name.Substring(0, 1)</span>
+                                    </div>
+                                }
+                                <div class="text-center">
+                                    <a asp-controller="Shop" asp-action="Index" class="menu-link fw-medium">@category.Name</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                @if (Model.FeaturedCategories.Count > 8)
+                {
+                    <div class="products-carousel__prev products-carousel__prev-1 position-absolute top-50 d-flex align-items-center justify-content-center">
+                        <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                            <use href="#icon_prev_md" />
+                        </svg>
+                    </div>
+                    <div class="products-carousel__next products-carousel__next-1 position-absolute top-50 d-flex align-items-center justify-content-center">
+                        <svg width="25" height="25" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
+                            <use href="#icon_next_md" />
+                        </svg>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+
+    <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
+
+    <!-- Hot Deals Section -->
+    @if (Model.HotDeals.Any())
+    {
+        <section class="hot-deals container">
+            <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">@Localizer["HotDeals"]</h2>
+            <div class="row">
+                <div class="col-md-6 col-lg-4 col-xl-20per d-flex align-items-center flex-column justify-content-center py-4 align-items-md-start">
+                    <h2>@Localizer["SummerSale"]</h2>
+                    <h2 class="fw-bold">@Localizer["UpTo60PercentOff"]</h2>
+
+                    <div class="position-relative d-flex align-items-center text-center pt-xxl-4 js-countdown mb-3"
+                         data-date="@DateTime.Now.AddMonths(1).ToString("dd-MM-yyyy")" data-time="23:59">
+                        <div class="day countdown-unit">
+                            <span class="countdown-num d-block"></span>
+                            <span class="countdown-word text-uppercase text-secondary">@Localizer["Days"]</span>
+                        </div>
+
+                        <div class="hour countdown-unit">
+                            <span class="countdown-num d-block"></span>
+                            <span class="countdown-word text-uppercase text-secondary">@Localizer["Hours"]</span>
+                        </div>
+
+                        <div class="min countdown-unit">
+                            <span class="countdown-num d-block"></span>
+                            <span class="countdown-word text-uppercase text-secondary">@Localizer["Mins"]</span>
+                        </div>
+
+                        <div class="sec countdown-unit">
+                            <span class="countdown-num d-block"></span>
+                            <span class="countdown-word text-uppercase text-secondary">@Localizer["Sec"]</span>
+                        </div>
+                    </div>
+
+                    <a asp-controller="Shop" asp-action="Index" class="btn-link default-underline text-uppercase fw-medium mt-3">@Localizer["ViewAll"]</a>
+                </div>
+
+                @foreach (var product in Model.HotDeals.Take(4))
+                {
+                    var firstVariant = product.ProductVariants
+                    .FirstOrDefault(v => v.SalePrice.HasValue && v.SalePrice.Value < v.Price && v.Quantity > 0);
+
+                    if (firstVariant == null) continue; 
+
+                    var discountPercent = (int)Math.Round((1 - (firstVariant.SalePrice.Value / firstVariant.Price)) * 100);
+
+                    <div class="col-md-6 col-lg-4 col-xl-20per">
+                        <div class="product-card product-card_style3 mb-3 mb-md-4 mb-xxl-5">
+                            <div class="pc__img-wrapper position-relative">
+                                @if (!string.IsNullOrEmpty(firstVariant.CoverImageName))
+                                {
+                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
+                                        <img loading="lazy" src="~/images/products/@firstVariant.CoverImageName" width="258" height="313"
+                                             alt="@product.Name" class="pc__img">
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">
+                                        <img loading="lazy" src="~/images/products/product-placeholder.jpg" width="258" height="313"
+                                             alt="@product.Name" class="pc__img">
+                                    </a>
+                                }
+
+                               
+                                <div class="pc-labels position-absolute top-0 start-0">
+                                    <span class="pc-label pc-label_sale d-block text-white"
+                                          style="background: #dc3545; font-size: 14px; padding: 6px 12px; font-weight: 700; border-radius: 0;">
+                                        -@discountPercent%
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="pc__info position-relative">
+                                <h6 class="pc__title">
+                                    <a asp-controller="Product" asp-action="Details" asp-route-id="@product.DetailsUrl">@product.Name</a>
+                                </h6>
+
+                              
+                                <div class="product-card__price d-flex align-items-center gap-2">
+                                    @if (firstVariant.SalePrice.HasValue && firstVariant.SalePrice.Value < firstVariant.Price)
+                                    {
+                                       
+                                        <span class="money price fw-bold text-danger">
+                                            @CurrencyService.Format(firstVariant.SalePrice.Value)
+                                        </span>
+                                    
+                                        <span class="money text-decoration-line-through text-secondary" style="font-size: 0.9em;">
+                                            @CurrencyService.Format(firstVariant.Price)
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="money price text-secondary">@CurrencyService.Format(firstVariant.Price)</span>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </section>
+    }
+    
+
+    <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
+
+    <!-- Featured Products Section -->
+    @if (Model.FeaturedProducts.Any())
+    {
+        <section class="products-grid container">
+            <h2 class="section-title text-center mb-3 pb-xl-3 mb-xl-4">@Localizer["Featured Products"]</h2>
+            <div class="row justify-content-center">
+                @foreach (var product in Model.FeaturedProducts.Take(8))
+                {
+                    <div class="col-6 col-md-4 col-lg-3">
+                        <partial name="_ProductCard" model="product" />
+                    </div>
+                }
+            </div>
+
+            <div class="text-center mt-2">
+                <a asp-controller="Shop" asp-action="Index" class="btn-link btn-link_lg default-underline text-uppercase fw-medium">
+                    @Localizer["View All Products"]
+                </a>
+            </div>
+        </section>
+    }
+
+    <div class="mb-3 mb-xl-5 pt-1 pb-4"></div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+         
+            $.get('/Basket/GetBasket', function (data) {
+                if (data && data.totalCount !== undefined) {
+                    $('.js-cart-items-count').text(data.totalCount);
+                    if (data.totalCount > 0) {
+                        $('.js-cart-items-count').show();
+                    } else {
+                        $('.js-cart-items-count').hide();
+                    }
+                }
+            });
+
+           
+            $(document).on('click', '.js-add-cart', function(e) {
+                e.preventDefault();
+
+                const $button = $(this);
+                const variantId = $button.data('variant-id');
+
+                if (!variantId) {
+                    console.warn('Product variant ID not found');
+                    return;
+                }
+
+            
+                $button.prop('disabled', true);
+                const originalText = $button.text();
+
+                const formData = new FormData();
+                formData.append('productVariantId', variantId);
+                formData.append('quantity', 1);
+
+                $.ajax({
+                    url: '/Basket/Add',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        
+                        if (response && response.totalCount !== undefined) {
+                            $('.js-cart-items-count, .header__cart-count').text(response.totalCount);
+                            $('.js-cart-items-count, .header__cart-count').show();
+                        } else {
+                            $.get('/Basket/GetBasket', function(data) {
+                                if (data && data.totalCount !== undefined) {
+                                    $('.js-cart-items-count, .header__cart-count').text(data.totalCount);
+                                }
+                            });
+                        }
+
+              
+                        showSuccessNotification('@Localizer["ProductAddedToCart"]');
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error adding to cart:', error);
+                        alert('@Localizer["ErrorAddingToCart"]');
+                    },
+                    complete: function() {
+                       
+                        $button.prop('disabled', false);
+                        $button.text(originalText);
+                    }
+                });
+            });
+
+            function showSuccessNotification(message) {
+                const toast = $('<div>')
+                    .addClass('basket-toast')
+                    .text(message)
+                    .css({
+                        'position': 'fixed',
+                        'top': '20px',
+                        'right': '20px',
+                        'background': '#28a745',
+                        'color': 'white',
+                        'padding': '15px 25px',
+                        'border-radius': '5px',
+                        'z-index': '10000',
+                        'box-shadow': '0 4px 6px rgba(0,0,0,0.1)',
+                        'animation': 'slideIn 0.3s ease-out'
+                    });
+
+                $('body').append(toast);
+
+                setTimeout(() => {
+                    toast.css('animation', 'slideOut 0.3s ease-out');
+                    setTimeout(() => toast.remove(), 300);
+                }, 2000);
+            }
+        });
+    </script>
+
+    <style>
+        @@keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+        }
+    </style>
+}

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="PageTitle" xml:space="preserve"><value>Çatdırılma və Ödəniş</value></data>
+	<data name="ShoppingBag" xml:space="preserve"><value>Alış-veriş Səbəti</value></data>
+	<data name="ManageItems" xml:space="preserve"><value>Öz Məhsul Siyahınızı İdarə Edin</value></data>
+	<data name="ShippingCheckout" xml:space="preserve"><value>Çatdırılma və Ödəniş</value></data>
+	<data name="CheckoutItems" xml:space="preserve"><value>Məhsul Siyahınızı Ödəyin</value></data>
+	<data name="Confirmation" xml:space="preserve"><value>Təsdiqləmə</value></data>
+	<data name="ReviewSubmit" xml:space="preserve"><value>Sifarişinizi Yoxlayın və Göndərin</value></data>
+	<data name="ShippingDetails" xml:space="preserve"><value>ÇATDIRMA MƏLUMATLARI</value></data>
+	<data name="FirstName" xml:space="preserve"><value>Ad</value></data>
+	<data name="LastName" xml:space="preserve"><value>Soyad</value></data>
+	<data name="PhoneNumber" xml:space="preserve"><value>Telefon Nömrəsi</value></data>
+	<data name="PostalCode" xml:space="preserve"><value>Poçt Kodu</value></data>
+	<data name="City" xml:space="preserve"><value>Şəhər</value></data>
+	<data name="Country" xml:space="preserve"><value>Ölkə</value></data>
+	<data name="Address" xml:space="preserve"><value>Ünvan</value></data>
+	<data name="Company" xml:space="preserve"><value>Şirkət (İsteğe Bağlı)</value></data>
+	<data name="YourOrder" xml:space="preserve"><value>Sizin Sifarişiniz</value></data>
+	<data name="Product" xml:space="preserve"><value>MƏHSUL</value></data>
+	<data name="Subtotal" xml:space="preserve"><value>ARA CƏM</value></data>
+	<data name="DiscountCode" xml:space="preserve"><value>Endirim Kodu</value></data>
+	<data name="EnterDiscount" xml:space="preserve"><value>Endirim kodunu daxil edin</value></data>
+	<data name="Apply" xml:space="preserve"><value>Tətbiq Et</value></data>
+	<data name="Discount" xml:space="preserve"><value>ENDİRİM</value></data>
+	<data name="Shipping" xml:space="preserve"><value>ÇATDIRMA</value></data>
+	<data name="Free" xml:space="preserve"><value>Pulsuz</value></data>
+	<data name="Total" xml:space="preserve"><value>CƏMİ</value></data>
+	<data name="PaymentMethod" xml:space="preserve"><value>Ödəniş Üsulu</value></data>
+	<data name="DirectBankTransfer" xml:space="preserve"><value>Birbaşa Bank Köçürməsi</value></data>
+	<data name="CheckPayment" xml:space="preserve"><value>Çek Ödənişləri</value></data>
+	<data name="CashOnDelivery" xml:space="preserve"><value>Çatdırılarkən Nağd Ödəniş</value></data>
+	<data name="CreditCard" xml:space="preserve"><value>Kredit / Debit Kartı (Stripe)</value></data>
+	<data name="AcceptTerms" xml:space="preserve"><value>Şərtlər və müddəaları qəbul edirəm</value></data>
+	<data name="PlaceOrder" xml:space="preserve"><value>SİFARİŞİ VER</value></data>
+	<data name="EmptyBasket" xml:space="preserve"><value>Səbətiniz boşdur</value></data>
+	<data name="Required" xml:space="preserve"><value>*</value></data>
+	<data name="EnterDiscountCodeWarning" xml:space="preserve"><value>Zəhmət olmasa endirim kodunu daxil edin</value></data>
+	<data name="DiscountAppliedFormat" xml:space="preserve"><value>Endirim tətbiq olundu! ({0}% endirim)</value></data>
+	<data name="InvalidDiscountCode" xml:space="preserve"><value>Yanlış endirim kodu</value></data>
+	<data name="ErrorApplyingDiscount" xml:space="preserve"><value>Endirim kodu tətbiq edilərkən xəta baş verdi</value></data>
+	<data name="TermsAndConditions" xml:space="preserve"><value>şərtlər və müddəalar</value></data>
+</root>

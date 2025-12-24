@@ -1,0 +1,250 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" lang="en-US">
+<head>
+    <title>@ViewData["Title"] - Admin Panel</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="~/Admin/css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/css/animation.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/css/bootstrap-select.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/css/style.css">
+    <link rel="stylesheet" href="~/font/fonts.css">
+    <link rel="stylesheet" href="~/icon/style.css">
+    <link rel="shortcut icon" href="~/Admin/images/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="~/Admin/css/sweetalert.min.css">
+    <link rel="stylesheet" type="text/css" href="~/Admin/css/custom.css">
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+<body class="body">
+    <div id="wrapper">
+        <div id="page" class="">
+            <div class="layout-wrap">
+                <!-- Sidebar Menu -->
+                <div class="section-menu-left">
+                    <div class="box-logo">
+                        <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" id="site-logo-inner">
+                            <img class="" id="logo_header" alt="" src="~/Admin/images/logo/logo.png"
+                                 data-light="~/Admin/images/logo/logo.png" data-dark="~/Admin/images/logo/logo.png">
+                        </a>
+                        <div class="button-show-hide">
+                            <i class="icon-menu-left"></i>
+                        </div>
+                    </div>
+                    <div class="center">
+                        <div class="center-item">
+                            <div class="center-heading">Main Home</div>
+                            <ul class="menu-list">
+                                <li class="menu-item">
+                                    <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" class="">
+                                        <div class="icon"><i class="icon-grid"></i></div>
+                                        <div class="text">Dashboard</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="center-item">
+                            <ul class="menu-list">
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="icon-shopping-cart"></i></div>
+                                        <div class="text">Products</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a asp-area="Admin" asp-controller="Product" asp-action="Create" class="">
+                                                <div class="text">Add Product</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="">
+                                                <div class="text">Products</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="icon-layers"></i></div>
+                                        <div class="text">Brand</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a asp-area="Admin" asp-controller="Brand" asp-action="Create" class="">
+                                                <div class="text">New Brand</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a asp-area="Admin" asp-controller="Brand" asp-action="Index" class="">
+                                                <div class="text">Brands</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <!-- Slider menu added -->
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="icon-picture"></i></div>
+                                        <div class="text">Slider</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a asp-area="Admin" asp-controller="Slider" asp-action="Create" class="">
+                                                <div class="text">Add Slide</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a asp-area="Admin" asp-controller="Slider" asp-action="Index" class="">
+                                                <div class="text">Slides</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="icon-layers"></i></div>
+                                        <div class="text">Category</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a asp-area="Admin" asp-controller="Category" asp-action="Create" class="">
+                                                <div class="text">New Category</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="">
+                                                <div class="text">Categories</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item has-children">
+                                    <a href="javascript:void(0);" class="menu-item-button">
+                                        <div class="icon"><i class="icon-gift"></i></div>
+                                        <div class="text">Coupons</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a asp-area="Admin" asp-controller="DiscountCode" asp-action="Create" class="">
+                                                <div class="text">Add Coupon</div>
+                                            </a>
+                                        </li>
+                                        <li class="sub-menu-item">
+                                            <a asp-area="Admin" asp-controller="DiscountCode" asp-action="Index" class="">
+                                                <div class="text">Coupons</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item has-children">
+                                    <a class="menu-item-button">
+                                        <div class="icon"><i class="icon-file-plus"></i></div>
+                                        <div class="text">Order</div>
+                                    </a>
+                                    <ul class="sub-menu">
+                                        <li class="sub-menu-item">
+                                            <a asp-area="Admin" asp-controller="Order" asp-action="Index" class="">
+                                                <div class="text">Orders</div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a asp-area="Admin"
+                                               asp-controller="Order"
+                                               asp-action="Tracking">
+                                                <div class="text">Order Tracking</div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item">
+                                    <a asp-area="Admin" asp-controller="User" asp-action="Index" class="">
+                                        <div class="icon"><i class="icon-user"></i></div>
+                                        <div class="text">Users</div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Content Area -->
+                <div class="section-content-right">
+                    <div class="header-dashboard">
+                        <div class="wrap">
+                            <div class="header-left">
+                                <a asp-area="" asp-controller="Home" asp-action="Index">
+                                    <img class="" id="logo_header_mobile" alt="" src="~/Admin/images/logo/logo.png"
+                                         data-width="154px" data-height="52px">
+                                </a>
+                                <div class="button-show-hide">
+                                    <i class="icon-menu-left"></i>
+                                </div>
+                            </div>
+                            <div class="header-grid">
+                                <div class="popup-wrap user type-header">
+                                    <div class="dropdown">
+                                        <button class="btn btn-secondary dropdown-toggle" type="button"
+                                                id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <span class="header-user wg-user">
+                                                <span class="image">
+                                                    <img src="~/Admin/images/avatar/user-1.png" alt="">
+                                                </span>
+                                                <span class="flex flex-column">
+                                                    <span class="body-title mb-2">@User.Identity?.Name</span>
+                                                    <span class="text-tiny">Admin</span>
+                                                </span>
+                                            </span>
+                                        </button>
+                                        <ul class="dropdown-menu dropdown-menu-end has-content"
+                                            aria-labelledby="dropdownMenuButton3">
+                                            <li>
+                                                <a asp-area="" asp-controller="Account" asp-action="Index" class="user-item">
+                                                    <div class="icon">
+                                                        <i class="icon-user"></i>
+                                                    </div>
+                                                    <div class="body-title-2">Account</div>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                                                    <button type="submit" class="user-item" style="width:100%; text-align:left; border:none; background:transparent; cursor:pointer;">
+                                                        <div class="icon">
+                                                            <i class="icon-log-out"></i>
+                                                        </div>
+                                                        <div class="body-title-2">Log out</div>
+                                                    </button>
+                                                </form>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Page Content -->
+                    @RenderBody()
+
+                    <div class="bottom-page">
+                        <div class="body-text">Copyright © @DateTime.Now.Year SurfsideMedia</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="~/Admin/js/jquery.min.js"></script>
+    <script src="~/Admin/js/bootstrap.min.js"></script>
+    <script src="~/Admin/js/bootstrap-select.min.js"></script>
+    <script src="~/Admin/js/sweetalert.min.js"></script>
+    <script src="~/Admin/js/apexcharts/apexcharts.js"></script>
+    <script src="~/Admin/js/main.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

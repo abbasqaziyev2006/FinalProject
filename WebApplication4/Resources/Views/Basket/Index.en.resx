@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="Product" xml:space="preserve"><value>Product</value></data>
+	<data name="Price" xml:space="preserve"><value>Price</value></data>
+	<data name="Quantity" xml:space="preserve"><value>Quantity</value></data>
+	<data name="Subtotal" xml:space="preserve"><value>Subtotal</value></data>
+	<data name="Color" xml:space="preserve"><value>Color</value></data>
+	<data name="Size" xml:space="preserve"><value>Size</value></data>
+
+	<data name="CouponCode" xml:space="preserve"><value>Coupon Code</value></data>
+	<data name="ApplyCoupon" xml:space="preserve"><value>APPLY COUPON</value></data>
+	<data name="UpdateCart" xml:space="preserve"><value>UPDATE CART</value></data>
+
+	<data name="CartTotals" xml:space="preserve"><value>Cart Totals</value></data>
+	<data name="Shipping" xml:space="preserve"><value>Shipping</value></data>
+	<data name="FreeShipping" xml:space="preserve"><value>Free shipping</value></data>
+	<data name="FlatRate" xml:space="preserve"><value>Flat rate: $49</value></data>
+	<data name="LocalPickup" xml:space="preserve"><value>Local pickup: $8</value></data>
+	<data name="ShippingTo" xml:space="preserve"><value>Shipping to {0}</value></data>
+	<data name="ChangeAddress" xml:space="preserve"><value>CHANGE ADDRESS</value></data>
+	<data name="VAT" xml:space="preserve"><value>VAT</value></data>
+	<data name="Total" xml:space="preserve"><value>Total</value></data>
+	<data name="ProceedToCheckout" xml:space="preserve"><value>PROCEED TO CHECKOUT</value></data>
+</root>

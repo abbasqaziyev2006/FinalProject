@@ -1,0 +1,231 @@
+﻿@using EcommerceCoza.BLL.ViewModels
+@model OrderViewModel
+@inject WebApplication4.Services.ICurrencyService currencyService
+<div class="main-content">
+    <style>
+        .table-transaction > tbody > tr:nth-of-type(odd) {
+            --bs-table-accent-bg: #fff !important;
+        }
+
+        .product-img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .bg-pending {
+            background-color: #fff3e0;
+            color: #ef6c00;
+        }
+
+        .bg-completed {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .bg-cancelled {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .info-card {
+            background: #f9f9f9;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #ececec;
+        }
+    </style>
+
+    <div class="main-content-inner">
+        <div class="main-content-wrap">
+            <div class="flex items-center flex-wrap justify-between gap20 mb-27">
+                <h3>Order Details <span class="text-muted">#@Model.Id</span></h3>
+                <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
+                    <li>
+                        <a asp-action="Index">
+                            <div class="text-tiny">Orders</div>
+                        </a>
+                    </li>
+                    <li><i class="icon-chevron-right"></i></li>
+                    <li><div class="text-tiny">Order Items</div></li>
+                </ul>
+            </div>
+
+            @* 1. Ordered Items Table *@
+            <div class="wg-box shadow-sm border-0">
+                <div class="flex items-center justify-between gap10 flex-wrap mb-4">
+                    <h5>Ordered Items (@Model.TotalCount)</h5>
+                    <a class="tf-button style-1 w208" asp-action="Index">Back to List</a>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle border">
+                        <thead class="bg-light">
+                            <tr>
+                                <th class="ps-3">Product</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Qty</th>
+                                <th class="text-center">Variant</th>
+                                <th class="text-center">Subtotal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.OrderDetails)
+                            {
+                                <tr>
+                                    <td class="ps-3">
+                                        <div class="d-flex align-items-center gap-3">
+                                            @if (item.ProductVariant != null && !string.IsNullOrEmpty(item.ProductVariant.CoverImageName))
+                                            {
+                                                <img src="~/images/products/@item.ProductVariant.CoverImageName" alt="" class="product-img">
+                                            }
+                                            else
+                                            {
+                                                <img src="~/images/products/@item.ProductVariant.CoverImageName alt="" class="product-img">
+                                            }
+                                            <div>
+                                                <div class="fw-bold text-dark">@(item.ProductVariant?.ProductName ?? "Unknown Product")</div>
+                                                <small class="text-muted">Variant ID: @item.ProductVariantId</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-center">@currencyService.Format(item.TotalPrice)</td>
+                                    <td class="text-center">@item.Quantity</td>
+                                    <td class="text-center">
+                                        @if (item.ProductVariant != null)
+                                        {
+                                            <div class="small text-muted">
+                                                @if (!string.IsNullOrEmpty(item.ProductVariant.ColorName))
+                                                {
+                                                    <span>Color: <strong>@item.ProductVariant.ColorName</strong></span>
+                                                    <br />
+         }
+                                                @if (!string.IsNullOrEmpty(item.ProductVariant.Size))
+                                                {
+                                                    <span>Size: <strong>@item.ProductVariant.Size</strong></span>
+                                                }
+                                            </div>
+                                        }
+                                        else
+                                        {
+
+                                            <span>—</span>
+                                        }
+                                    </td>
+                                    <td class="text-center fw-bold">@currencyService.Format(item.TotalPrice * item.Quantity)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @* 2. Shipping Address Section *@
+            <div class="wg-box mt-5 shadow-sm border-0">
+                <h5 class="mb-3 border-bottom pb-2">Shipping Information</h5>
+                <div class="row">
+                    <div class="col-md-7">
+                        <div class="info-card">
+                            @if (Model.Address != null)
+                            {
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <p class="mb-1 text-muted small">Customer Name</p>
+                                        <p class="fw-bold">@Model.Address.FirstName @Model.Address.LastName</p>
+
+                                        @if (!string.IsNullOrEmpty(Model.Address.Company))
+                                        {
+                                            <p class="mb-1 text-muted small">Company</p>
+                                            <p class="fw-semibold">@Model.Address.Company</p>
+                                        }
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p class="mb-1 text-muted small">Contact</p>
+                                        <p class="mb-0"><strong>Phone:</strong> @Model.Address.Phone</p>
+                                        <p class="mb-0"><strong>Email:</strong> @Model.Email</p>
+                                    </div>
+                                    <div class="col-12 mt-3">
+                                        <p class="mb-1 text-muted small">Full Address</p>
+                                        <p class="mb-0 fw-medium">
+                                            @Model.Address.Adress, @Model.Address.City, @Model.Address.PostalCode
+                                        </p>
+                                        <p class="mb-0 fw-bold text-uppercase" style="letter-spacing: 1px; color: #555;">@Model.Address.Country</p>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="text-center p-4">
+                                    <i class="icon-map-pin text-muted mb-2" style="font-size: 2rem;"></i>
+                                    <p class="text-danger italic">No shipping address found for this order.</p>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    @* Order Note *@
+                    <div class="col-md-5">
+                        <div class="info-card h-100">
+                            <h6 class="mb-2">Customer Note</h6>
+                            <p class="@(string.IsNullOrEmpty(Model.Note) ? "text-muted italic" : "text-dark")">
+                                @(string.IsNullOrEmpty(Model.Note) ? "No note provided by customer." : Model.Note)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @* 3. Transactions Summary *@
+            <div class="wg-box mt-5 shadow-sm border-0">
+                <h5 class="mb-3 border-bottom pb-2">Order Summary & Payment</h5>
+                <div class="table-responsive">
+                    <table class="table table-bordered table-transaction align-middle">
+                        <tbody>
+                            <tr>
+                                <th class="bg-light" style="width: 15%;">Subtotal</th>
+                                <td style="width: 18%;">@currencyService.Format(Model.TotalPrice)</td>
+                                <th class="bg-light" style="width: 15%;">Discount</th>
+                                <td class="text-danger" style="width: 18%;">@currencyService.Format(Model.DiscountAmount)</td>
+                                <th class="bg-light" style="width: 15%;">Grand Total</th>
+                                <td class="fw-bold text-primary fs-5">@currencyService.Format(Model.EndPrice)</td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Payment Method</th>
+                                <td class="text-uppercase fw-semibold">@Model.PaymentMethod</td>
+                                <th class="bg-light">Order Date</th>
+                                <td>@Model.FormattedCreatedAt</td>
+                                <th class="bg-light">Current Status</th>
+                                <td>
+                                    @{
+                                        var statusClass = Model.OrderStatus switch
+                                        {
+                                            ECommerceCoza.DAL.DataContext.Entities.OrderStatus.Completed => "bg-completed",
+                                            ECommerceCoza.DAL.DataContext.Entities.OrderStatus.Cancelled => "bg-cancelled",
+                                            _ => "bg-pending"
+                                        };
+                                    }
+                                    <span class="status-badge @statusClass">@Model.OrderStatus</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="bg-light">Delivered On</th>
+                                <td>@(string.IsNullOrEmpty(Model.FormattedDeliveredDate) ? "—" : Model.FormattedDeliveredDate)</td>
+                                <th class="bg-light">Canceled On</th>
+                                <td colspan="3">@(string.IsNullOrEmpty(Model.FormattedCanceledDate) ? "—" : Model.FormattedCanceledDate)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

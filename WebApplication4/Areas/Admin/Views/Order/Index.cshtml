@@ -1,0 +1,194 @@
+﻿@using EcommerceCoza.BLL.ViewModels
+@model List<OrderViewModel>
+@inject WebApplication4.Services.ICurrencyService CurrencyService
+
+<div class="main-content">
+    <div class="main-content-inner">
+        <div class="main-content-wrap">
+            <div class="flex items-center flex-wrap justify-between gap20 mb-27">
+                <h3>Orders Management</h3>
+                <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
+                    <li>
+                        <a asp-controller="Dashboard" asp-action="Index">
+                            <div class="text-tiny">Dashboard</div>
+                        </a>
+                    </li>
+                    <li>
+                        <i class="icon-chevron-right"></i>
+                    </li>
+                    <li>
+                        <div class="text-tiny">All Orders</div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="wg-box shadow-sm border-0">
+                <div class="wg-table table-all-user">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle custom-table">
+                            <thead>
+                                <tr>
+                                    <th class="ps-3">Order ID</th>
+                                    <th>Customer</th>
+                                    <th class="text-center">Phone</th>
+                                    <th class="text-center">Subtotal</th>
+                                    <th class="text-center">Discount</th>
+                                    <th class="text-center">Total Paid</th>
+                                    <th class="text-center">Status</th>
+                                    <th class="text-center">Date</th>
+                                    <th class="text-center">Qty</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    foreach (var order in Model)
+                                    {
+                                        <tr>
+                                            <td class="ps-3 fw-bold text-dark">#@order.Id</td>
+                                            <td>
+                                                <div class="d-flex flex-column">
+                                                    @if (order.Address != null)
+                                                    {
+                                                        <span class="fw-semibold">@order.Address.FirstName @order.Address.LastName</span>
+                                                        <small class="text-muted">@order.Email</small>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="text-muted italic">No Name</span>
+                                                    }
+                                                </div>
+                                            </td>
+                                            <td class="text-center text-secondary">@order.Phone</td>
+                                            <td class="text-center">@CurrencyService.Format(order.TotalPrice)</td>
+                                            <td class="text-center">
+                                                @if (order.DiscountAmount > 0)
+                                                {
+                                                    <span class="text-danger fw-medium">-@CurrencyService.Format(order.DiscountAmount)</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">0.00</span>
+                                                }
+                                            </td>
+                                            <td class="text-center fw-bold text-dark">@CurrencyService.Format(order.EndPrice)</td>
+                                            <td class="text-center">
+                                                @{
+                                                    var statusBadge = order.OrderStatus switch
+                                                    {
+                                                        ECommerceCoza.DAL.DataContext.Entities.OrderStatus.Completed => "status-completed",
+                                                        ECommerceCoza.DAL.DataContext.Entities.OrderStatus.Cancelled => "status-cancelled",
+                                                        _ => "status-pending"
+                                                    };
+                                                }
+                                                <span class="status-pill @statusBadge">@order.OrderStatus</span>
+                                            </td>
+                                            <td class="text-center text-muted" style="font-size: 0.85rem;">
+                                                @order.CreatedAt?.ToString("dd MMM yyyy")
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge bg-light text-dark border">@order.TotalCount</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <a asp-action="Details" asp-route-id="@order.Id" class="btn-view" title="View Details">
+                                                    <i class="icon-eye"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="10" class="text-center py-5 text-muted">
+                                            <i class="icon-package d-block mb-2" style="font-size: 2rem;"></i>
+                                            No orders found in the database.
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Ümumi Table Dizaynı */
+    .custom-table {
+        border-collapse: separate;
+        border-spacing: 0 8px;
+    }
+
+        .custom-table thead th {
+            background-color: #f8f9fa;
+            border: none;
+            color: #6c757d;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 15px 10px;
+        }
+
+        .custom-table tbody tr {
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+            .custom-table tbody tr:hover {
+                background-color: #fdfdfd !important;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            }
+
+    /* Status Pill Dizaynı */
+    .status-pill {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        display: inline-block;
+        text-transform: capitalize;
+    }
+
+    .status-completed {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+    }
+
+    .status-cancelled {
+        background-color: #ffebee;
+        color: #c62828;
+    }
+
+    .status-pending {
+        background-color: #fff3e0;
+        color: #ef6c00;
+    }
+
+
+    .btn-view {
+        color: #495057;
+        background: #f1f3f5;
+        padding: 8px;
+        border-radius: 8px;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .btn-view:hover {
+            background: #212529;
+            color: #fff;
+        }
+
+    .wg-box {
+        background: #fff;
+        padding: 25px;
+        border-radius: 15px;
+    }
+</style>

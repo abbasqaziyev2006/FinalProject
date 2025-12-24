@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="FilterBy" xml:space="preserve"><value>Filter By</value></data>
+	<data name="ProductCategories" xml:space="preserve"><value>Product Categories</value></data>
+	<data name="Color" xml:space="preserve"><value>Color</value></data>
+	<data name="Sizes" xml:space="preserve"><value>Sizes</value></data>
+	<data name="Brands" xml:space="preserve"><value>Brands</value></data>
+	<data name="Price" xml:space="preserve"><value>Price</value></data>
+	<data name="ResetFilters" xml:space="preserve"><value>Reset Filters</value></data>
+	<data name="Home" xml:space="preserve"><value>Home</value></data>
+	<data name="TheShop" xml:space="preserve"><value>The Shop</value></data>
+	<data name="DefaultSorting" xml:space="preserve"><value>Default Sorting</value></data>
+	<data name="Featured" xml:space="preserve"><value>Featured</value></data>
+	<data name="BestSelling" xml:space="preserve"><value>Best selling</value></data>
+	<data name="AlphabeticallyAZ" xml:space="preserve"><value>Alphabetically, A-Z</value></data>
+	<data name="AlphabeticallyZA" xml:space="preserve"><value>Alphabetically, Z-A</value></data>
+	<data name="PriceLowHigh" xml:space="preserve"><value>Price, low to high</value></data>
+	<data name="PriceHighLow" xml:space="preserve"><value>Price, high to low</value></data>
+	<data name="DateOldNew" xml:space="preserve"><value>Date, old to new</value></data>
+	<data name="DateNewOld" xml:space="preserve"><value>Date, new to old</value></data>
+	<data name="View" xml:space="preserve"><value>View</value></data>
+	<data name="Filter" xml:space="preserve"><value>Filter</value></data>
+	<data name="WomenAccessories" xml:space="preserve"><value>Women's Accessories</value></data>
+	<data name="AccessoriesText" xml:space="preserve"><value>Accessories are the best way to update your look. Add a little edge with new styles and new colors, or go for timeless pieces.</value></data>
+	<data name="AddToCart" xml:space="preserve"><value>Add To Cart</value></data>
+	<data name="Category" xml:space="preserve"><value>Category</value></data>
+	<data name="Reviews" xml:space="preserve"><value>reviews</value></data>
+	<data name="Min" xml:space="preserve"><value>Min</value></data>
+	<data name="Max" xml:space="preserve"><value>Max</value></data>
+	<data name="LoadMore" xml:space="preserve"><value>Load More</value></data>
+	<data name="NoMoreProducts" xml:space="preserve"><value>No more products</value></data>
+	<data name="Dresses" xml:space="preserve"><value>Dresses</value></data>
+	<data name="Shorts" xml:space="preserve"><value>Shorts</value></data>
+	<data name="Sweatshirts" xml:space="preserve"><value>Sweatshirts</value></data>
+	<data name="Jackets" xml:space="preserve"><value>Jackets</value></data>
+	<data name="TShirts" xml:space="preserve"><value>T-Shirts and Tops</value></data>
+	<data name="Jeans" xml:space="preserve"><value>Jeans</value></data>
+	<data name="Trousers" xml:space="preserve"><value>Trousers</value></data>
+	<data name="Jumpers" xml:space="preserve"><value>Jumpers and Cardigans</value></data>
+</root>

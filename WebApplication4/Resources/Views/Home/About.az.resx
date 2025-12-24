@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="PageTitle" xml:space="preserve"><value>Haqqımızda</value></data>
+	<data name="StoryHeading" xml:space="preserve"><value>Hekayəmiz</value></data>
+	<data name="StoryParagraph1" xml:space="preserve"><value>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Günahı olmayanları cəzalandıran heç bir nəticə doğurmur.</value></data>
+	<data name="StoryParagraph2" xml:space="preserve"><value>Gözəl günlərdə onları gördü; dənizlərin işığı fəsilləri dəyişir. Qadınlar və torpaq bərəkət gətirir, toxumlar cücərir, otlar çoxalır; yaradılış dövrləri davam edir.</value></data>
+	<data name="MissionHeading" xml:space="preserve"><value>Missiyamız</value></data>
+	<data name="MissionText" xml:space="preserve"><value>Xidmətimizi yaxşılaşdırmaq üçün rahat nəticə verən seçilmiş əmək və əməkdaşlıq tətbiq edirik.</value></data>
+	<data name="VisionHeading" xml:space="preserve"><value>Vizyonumuz</value></data>
+	<data name="VisionText" xml:space="preserve"><value>Xidmətimizi yaxşılaşdırmaq üçün rahat nəticə verən seçilmiş əmək və əməkdaşlıq tətbiq edirik.</value></data>
+	<data name="CompanyHeading" xml:space="preserve"><value>Şirkət</value></data>
+	<data name="CompanyText" xml:space="preserve"><value>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementlərdə hörmət və dəyər. Komanda dəstəyi ilə inkişaf edirik. Dinamik struktur, rahat axın. Güclü əsaslar gələcəyə doğru.</value></data>
+	<data name="ImageAltAbout" xml:space="preserve"><value>Haqqımızda şəkil</value></data>
+</root>
