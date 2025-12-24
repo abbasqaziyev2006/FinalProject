@@ -54,21 +54,20 @@ namespace EcommerceCoza.MVC.Controllers
         [HttpGet]
         public async Task<IActionResult> Checkout()
         {
-            // 1. Səbət və Detalları gətir
+         
             var model = new OrderCreateViewModel
             {
                 BasketViewModel = await _basketManager.GetBasketAsync(),
                 OrderDetails = await _orderDetailService.GetOrderDetailCreateViewModels()
             };
 
-            // 2. İstifadəçi və Adres məlumatlarını doldur
+         
             model = await _orderService.GetUserAndAddressViewModel(model);
 
-            // 3. Qiymət hesablaması (TAX YOXDUR)
+         
             model.TotalPrice = model.BasketViewModel.TotalPrice;
             model.EndPrice = model.TotalPrice;
 
-            // 4. Endirim varsa tətbiq et
             var savedDiscountCode = Session?.GetString(AppliedDiscountCodeKey);
             if (!string.IsNullOrEmpty(savedDiscountCode))
             {
@@ -92,19 +91,18 @@ namespace EcommerceCoza.MVC.Controllers
             var basket = await _basketManager.GetBasketAsync();
             if (basket.Items.Count == 0) return RedirectToAction("Index", "Shop");
 
-            // --- N/A PROBLEMİNİN HƏLLİ (Addım 1) ---
-            // Formdan gəlməsə belə, User məlumatlarını məcburi doldururuq
+        
             var user = await _userManager.GetUserAsync(User);
             model.AppUserId = user.Id;
             model.Email = user.Email;
-            model.FirstName = user.FirstName; // ViewModel-də varsa
-            model.LastName = user.LastName;   // ViewModel-də varsa
-            model.PhoneNumber = user.PhoneNumber; // ViewModel-də varsa
+            model.FirstName = user.FirstName;
+            model.LastName = user.LastName;   
+            model.PhoneNumber = user.PhoneNumber; 
 
             model.BasketViewModel = basket;
             model.TotalPrice = basket.TotalPrice;
 
-            // Endirim hesablama
+          
             if (model.HasAppliedDiscount && !string.IsNullOrEmpty(model.Discount))
             {
                 var d = await _orderService.GetDiscount(model.Discount);
@@ -117,16 +115,16 @@ namespace EcommerceCoza.MVC.Controllers
             }
             else { model.EndPrice = model.TotalPrice; }
 
-            // STRIPE ÖDƏNİŞİ
+
             if (model.PaymentMethod == ECommerceCoza.DAL.DataContext.Entities.PaymentMethod.Stripe)
             {
                 var orderToken = Guid.NewGuid().ToString();
 
-                // Valyuta Çevrimi (AZN -> USD)
+             
                 var currentCurrency = _currencyService.GetCurrentCurrency();
                 decimal stripeAmount = model.EndPrice;
 
-                // Stripe AZN dəstəkləmədiyi üçün USD-yə çeviririk
+              
                 if (currentCurrency == Currency.AZN)
                 {
                     stripeAmount = _currencyService.ConvertBetweenCurrencies(model.EndPrice, Currency.AZN, Currency.USD);
@@ -134,7 +132,7 @@ namespace EcommerceCoza.MVC.Controllers
 
                 long totalAmountInCents = (long)Math.Round(stripeAmount * 100);
 
-                // Modeli sessiyaya yazırıq (Artıq User məlumatları içindədir)
+               
                 var serializerSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
                 Session.SetString(orderToken, JsonConvert.SerializeObject(model, serializerSettings));
 
@@ -145,7 +143,7 @@ namespace EcommerceCoza.MVC.Controllers
                     LineItems = new List<SessionLineItemOptions> {
                         new SessionLineItemOptions {
                             PriceData = new SessionLineItemPriceDataOptions {
-                                Currency = "usd", // Həmişə USD gedir (konvertasiya olunub)
+                                Currency = "usd",
                                 UnitAmount = totalAmountInCents,
                                 ProductData = new SessionLineItemPriceDataProductDataOptions { Name = $"Order Payment ({currentCurrency})" }
                             },
@@ -154,7 +152,7 @@ namespace EcommerceCoza.MVC.Controllers
                     },
                     SuccessUrl = $"{Request.Scheme}://{Request.Host}/Order/StripeSuccess?session_id={{CHECKOUT_SESSION_ID}}",
                     CancelUrl = $"{Request.Scheme}://{Request.Host}/Order/Checkout",
-                    // User ID-ni Metadata-da daşıyırıq (Ehtiyat üçün)
+                 
                     Metadata = new Dictionary<string, string> { { "OrderToken", orderToken }, { "UserId", user.Id } }
                 };
 
@@ -163,7 +161,7 @@ namespace EcommerceCoza.MVC.Controllers
                 return Redirect(session.Url);
             }
 
-            // NAĞD ÖDƏNİŞ
+            
             await _orderService.CreateAsync(model);
             _basketManager.CleanBasket();
             return RedirectToAction("Index");
@@ -186,23 +184,20 @@ namespace EcommerceCoza.MVC.Controllers
 
                 var model = JsonConvert.DeserializeObject<OrderCreateViewModel>(json);
 
-                // --- N/A PROBLEMİNİN HƏLLİ (Addım 2 - Final) ---
-                // Sessiyada nəsə itibsə, Metadata-dan bərpa edirik
                 var user = await _userManager.FindByIdAsync(session.Metadata["UserId"]);
 
                 model.AppUserId = user.Id;
                 model.Email = user.Email;
-                model.FirstName ??= user.FirstName; // Əgər boşdursa user-dən götür
+                model.FirstName ??= user.FirstName; 
                 model.LastName ??= user.LastName;
                 model.PhoneNumber ??= user.PhoneNumber;
 
                 model.PaymentMethod = ECommerceCoza.DAL.DataContext.Entities.PaymentMethod.Stripe;
                 model.OrderStatus = OrderStatus.InProgress;
 
-                // Veritabanına yaz
+          
                 await _orderService.CreateAsync(model);
 
-                // Təmizlik
                 _basketManager.CleanBasket();
                 Session?.Remove(orderToken);
                 Session?.Remove(AppliedDiscountCodeKey);
@@ -223,16 +218,14 @@ namespace EcommerceCoza.MVC.Controllers
             var user = await _userManager.GetUserAsync(User);
             if (user == null) return Unauthorized();
 
-            // DİQQƏT: GetOrderViewModelsAsync metodu daxilində mütləq .Include(x => x.Address) olmalıdır.
-            // Əgər servisdə yoxdursa, aşağıdakı dövr daxilində address-in null olmadığını yoxlayın.
+   
             var orders = await _orderService.GetOrderViewModelsAsync(user.Id);
 
             foreach (var order in orders)
             {
-                // Detalları hesablayırıq
+       
                 order.TotalCount = order.OrderDetails?.Sum(x => x.Quantity) ?? 0;
 
-                // Əgər Address null gəlirsə, bazadan təkrar Include ilə çəkməyi servisdə təmin edin.
             }
 
             return View(orders);
@@ -244,10 +237,10 @@ namespace EcommerceCoza.MVC.Controllers
                 predicate: x => x.Id == id && !x.IsDeleted,
                 include: x => x.Include(o => o.OrderDetails)
                                 .ThenInclude(od => od.ProductVariant)
-                                    .ThenInclude(pv => pv.Product!) // Məhsul adı üçün
+                                    .ThenInclude(pv => pv.Product!) 
                                 .Include(o => o.OrderDetails)
                                 .ThenInclude(od => od.ProductVariant)
-                                    .ThenInclude(pv => pv.Color)   // <--- RƏNG ÜÇÜN BU VACİBDİR
+                                    .ThenInclude(pv => pv.Color)   
                                 .Include(o => o.Address));
 
             if (order == null) return NotFound();
@@ -264,7 +257,6 @@ namespace EcommerceCoza.MVC.Controllers
             Session?.SetString(AppliedDiscountCodeKey, discountCode);
             var basket = await _basketManager.GetBasketAsync();
 
-            // Tax olmadan sadə hesablama
             var discountAmount = (basket.TotalPrice * discount.SalePercentage) / 100;
 
             return Json(new
@@ -277,14 +269,14 @@ namespace EcommerceCoza.MVC.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Cancel(int id) // Adı sadəcə Cancel etdik
+        public async Task<IActionResult> Cancel(int id) 
         {
             var order = await _orderService.GetAsync(predicate: x => x.Id == id);
             if (order == null) return NotFound();
 
             if (order.OrderStatus == OrderStatus.Completed || order.OrderStatus == OrderStatus.Cancelled)
             {
-                TempData["Error"] = "Bu sifarişi ləğv etmək olmaz.";
+                TempData["Error"] = "This order cannot be cancelled.";
                 return RedirectToAction("Details", new { id });
             }
 
@@ -296,8 +288,8 @@ namespace EcommerceCoza.MVC.Controllers
             };
 
             await _orderService.UpdateAsync(id, updateModel);
-            TempData["Success"] = "Sifariş uğurla ləğv edildi.";
-            return RedirectToAction("Index"); // Ləğvdən sonra siyahıya qayıt
+            TempData["Success"] = "Order cancelled successfully.";
+            return RedirectToAction("Index"); 
         }
     }
 }
