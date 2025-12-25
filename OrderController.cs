@@ -1,0 +1,532 @@
+using EcommerceCoza.BLL.Services;
+using EcommerceCoza.BLL.Services.Contracts;
+using EcommerceCoza.BLL.ViewModels;
+using ECommerceCoza.DAL.DataContext.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
+using Stripe;
+using Stripe.Checkout;
+using Stripe.Climate;
+using WebApplication4.Models;
+using WebApplication4.Services;
+
+namespace EcommerceCoza.MVC.Controllers
+{
+    [Authorize]
+    public class OrderController : Controller
+    {
+        private readonly UserManager<AppUser> _userManager;
+        private readonly IOrderService _orderService;
+        private readonly IOrderDetailService _orderDetailService;
+        private readonly BasketManager _basketManager;
+        private readonly ICurrencyService _currencyService;
+        private readonly StripeSettings _stripeSettings;
+        private readonly IHttpContextAccessor _accessor;
+        private readonly ILogger<OrderController> _logger;
+
+        public OrderController(
+            IOrderService orderService,
+            UserManager<AppUser> userManager,
+            IOrderDetailService orderDetailService,
+            BasketManager basketManager,
+            ICurrencyService currencyService,
+            IOptions<StripeSettings> stripeSettings,
+            IHttpContextAccessor accessor,
+            ILogger<OrderController> logger)
+        {
+            _orderService = orderService;
+            _userManager = userManager;
+            _orderDetailService = orderDetailService;
+            _basketManager = basketManager;
+            _currencyService = currencyService;
+            _stripeSettings = stripeSettings.Value;
+            _accessor = accessor;
+            _logger = logger;
+        }
+
+        private ISession? Session => _accessor.HttpContext?.Session;
+        private const string AppliedDiscountCodeKey = "AppliedDiscountCode";
+
+        public async Task<IActionResult> Checkout()
+        {
+            var model = new OrderCreateViewModel
+            {
+                BasketViewModel = await _basketManager.GetBasketAsync(),
+                OrderDetails = await _orderDetailService.GetOrderDetailCreateViewModels()
+            };
+
+            model = await _orderService.GetUserAndAddressViewModel(model);
+            model.TotalPrice = model.BasketViewModel.TotalPrice;
+            model.EndPrice = model.TotalPrice;
+
+            // Read saved discount code from session and apply if present
+            var savedDiscountCode = Session?.GetString(AppliedDiscountCodeKey);
+            if (!string.IsNullOrEmpty(savedDiscountCode))
+            {
+                ViewData["SavedDiscountCode"] = savedDiscountCode;
+
+                var discount = await _orderService.GetDiscount(savedDiscountCode);
+                if (discount != null)
+                {
+                    model.HasAppliedDiscount = true;
+                    model.Discount = savedDiscountCode;
+                    model.DiscountCodeId = discount.Id;
+                    model.DiscountAmount = (model.TotalPrice * discount.SalePercentage) / 100;
+                    model.EndPrice = model.TotalPrice - model.DiscountAmount;
+                    ViewData["DiscountPercentage"] = discount.SalePercentage;
+                }
+                else
+                {
+                    Session?.Remove(AppliedDiscountCodeKey);
+                }
+            }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Checkout(OrderCreateViewModel model)
+        {
+            if (model.AddressCreateViewModel == null)
+            {
+                ModelState.AddModelError("", "Address is required");
+            }
+
+            if (!model.AcceptTermsConditions)
+            {
+                ModelState.AddModelError("", "Terms and conditions must be accepted");
+            }
+
+            var basket = await _basketManager.GetBasketAsync();
+            model.BasketViewModel = basket;
+            model.OrderDetails = await _orderDetailService.GetOrderDetailCreateViewModels();
+
+            if (basket.Items.Count == 0)
+            {
+                ModelState.AddModelError("", "Your basket is empty");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                // Collect ModelState errors into a readable string
+                var errors = new List<string>();
+                foreach (var entry in ModelState.Values)
+                {
+                    foreach (var err in entry.Errors)
+                    {
+                        var msg = err.ErrorMessage;
+                        if (string.IsNullOrEmpty(msg) && err.Exception != null)
+                            msg = err.Exception.Message;
+                        errors.Add(msg);
+                    }
+                }
+
+                var errorText = errors.Count > 0 ? string.Join(" | ", errors) : "Validation failed";
+                // Log full error for server-side troubleshooting
+                _logger.LogWarning("Checkout POST - ModelState invalid. Errors: {Errors}", errorText);
+
+                // Surface errors in the UI
+                TempData["CheckoutError"] = errorText;
+
+                // Rehydrate any required view model pieces and return view
+                model = await _orderService.GetUserAndAddressViewModel(model);
+                return View(model);
+            }
+
+            // Discount handling
+            if (model.HasAppliedDiscount && model.Discount != null)
+            {
+                var d = await _orderService.GetDiscount(model.Discount);
+                if (d == null)
+                {
+                    ModelState.AddModelError("", "Invalid discount code");
+                    TempData["CheckoutError"] = "Invalid discount code";
+                    model = await _orderService.GetUserAndAddressViewModel(model);
+                    return View(model);
+                }
+
+                model.DiscountCodeId = d.Id;
+                model.DiscountAmount = (model.TotalPrice * d.SalePercentage) / 100;
+                model.EndPrice = model.TotalPrice - model.DiscountAmount;
+            }
+            else
+            {
+                model.EndPrice = model.TotalPrice;
+            }
+
+            // Stripe flow
+            if (model.PaymentMethod == ECommerceCoza.DAL.DataContext.Entities.PaymentMethod.Stripe)
+            {
+                if (string.IsNullOrWhiteSpace(_stripeSettings.SecretKey))
+                {
+                    _logger.LogError("Stripe SecretKey is not configured");
+                    ModelState.AddModelError("", "Payment processing is currently unavailable. Please contact support.");
+                    TempData["CheckoutError"] = "Payment processing is currently unavailable. Please contact support.";
+                    model = await _orderService.GetUserAndAddressViewModel(model);
+                    return View(model);
+                }
+
+                var user = await _userManager.GetUserAsync(User);
+                if (user == null)
+                {
+                    _logger.LogError("User not found during checkout");
+                    return BadRequest("User not found");
+                }
+
+                var orderToken = Guid.NewGuid().ToString();
+
+                var serializerSettings = new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+                Session.SetString(orderToken, JsonConvert.SerializeObject(model, serializerSettings));
+
+                var currentCurrency = _currencyService.GetCurrentCurrency();
+                var amountInUsd = currentCurrency == Currency.USD
+                    ? model.EndPrice
+                    : _currencyService.ConvertBetweenCurrencies(model.EndPrice, currentCurrency, Currency.USD);
+
+                // Stripe expects currency like "usd"
+                var stripeCurrency = "usd";
+
+                // compute cents and block zero-amount sessions
+                var amountInCents = (long)Math.Round(amountInUsd * 100m);
+                _logger.LogInformation("Stripe checkout amount (cents): {Cents}", amountInCents);
+
+                if (amountInCents <= 0)
+                {
+                    _logger.LogWarning("Attempt to create Stripe session for zero amount");
+                    ModelState.AddModelError("", "Order total is zero � cannot process a card payment.");
+                    TempData["CheckoutError"] = "Order total is zero � verify cart/discounts.";
+                    model = await _orderService.GetUserAndAddressViewModel(model);
+                    return View(model);
+                }
+
+                try
+                {
+                    var options = new SessionCreateOptions
+                    {
+                        PaymentMethodTypes = new List<string> { "card" },
+                        Mode = "payment",
+                        LineItems = new List<SessionLineItemOptions>
+                        {
+                            new SessionLineItemOptions
+                            {
+                                PriceData = new SessionLineItemPriceDataOptions
+                                {
+                                    Currency = stripeCurrency,
+                                    UnitAmount = amountInCents,
+                                    ProductData = new SessionLineItemPriceDataProductDataOptions
+                                    {
+                                        Name = "Order Payment",
+                                        Description = $"Payment for {basket.Items.Count} items"
+                                    }
+                                },
+                                Quantity = 1
+                            }
+                        },
+                        SuccessUrl = Url.Action("StripeSuccess", "Order", null, Request.Scheme)
+                                      + "?session_id={CHECKOUT_SESSION_ID}",
+                        CancelUrl = Url.Action("Checkout", "Order", null, Request.Scheme),
+                        Metadata = new Dictionary<string, string>
+                        {
+                            { "OrderToken", orderToken },
+                            { "UserId", user.Id }
+                        }
+                    };
+
+                    var service = new SessionService();
+                    var session = await service.CreateAsync(options);
+
+                    return Redirect(session.Url);
+                }
+                catch (StripeException ex)
+                {
+                    _logger.LogError(ex, "Stripe payment error");
+                    ModelState.AddModelError("", $"Payment error: {ex.Message}");
+                    TempData["CheckoutError"] = $"Payment error: {ex.Message}";
+                    model = await _orderService.GetUserAndAddressViewModel(model);
+                    return View(model);
+                }
+            }
+
+            // Create order (non?Stripe or after Stripe succeeded)
+            await _orderService.CreateAsync(model);
+
+            var username = User.Identity?.Name ?? "";
+            var currentUser = await _userManager.FindByNameAsync(username);
+
+            if (currentUser == null)
+            {
+                _logger.LogError("User not found after order creation");
+                return BadRequest("User not found");
+            }
+
+            var userOrders = await _order_service.GetOrderViewModelsAsync(currentUser.Id);
+            var lastOrder = userOrders
+                .Where(o => o.CreatedAt >= DateTime.UtcNow.AddMinutes(-5))
+                .OrderByDescending(o => o.Id)
+                .FirstOrDefault();
+
+            if (lastOrder == null)
+            {
+                _logger.LogError("Order creation failed - no recent order found");
+                return BadRequest("Order creation failed");
+            }
+
+            _basket_manager.CleanBasket();
+
+            // Clear coupon from session after successful order
+            Session?.Remove(AppliedDiscountCodeKey);
+
+            return RedirectToAction("Confirmation", new { id = lastOrder.Id });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> StripeSuccess(string session_id)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(session_id))
+                {
+                    TempData["Error"] = "Invalid payment session";
+                    return RedirectToAction("Checkout");
+                }
+
+                var service = new SessionService();
+                var session = await service.GetAsync(session_id);
+
+                if (session.PaymentStatus != "paid")
+                {
+                    TempData["Error"] = "Payment was not completed successfully";
+                    return RedirectToAction("Checkout");
+                }
+
+                var orderToken = session.Metadata["OrderToken"];
+                var userId = session.Metadata["UserId"];
+
+                var json = Session.GetString(orderToken);
+                if (string.IsNullOrWhiteSpace(json))
+                {
+                    _logger.LogError("Order data not found in session for token: {OrderToken}", orderToken);
+                    TempData["Error"] = "Session expired. Please try again.";
+                    return RedirectToAction("Checkout");
+                }
+
+                var model = JsonConvert.DeserializeObject<OrderCreateViewModel>(json);
+                if (model == null)
+                {
+                    _logger.LogError("Failed to deserialize order data");
+                    TempData["Error"] = "Invalid order data";
+                    return RedirectToAction("Checkout");
+                }
+
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    _logger.LogError("User not found: {UserId}", userId);
+                    TempData["Error"] = "User not found";
+                    return RedirectToAction("Checkout");
+                }
+
+                var existingOrder = await _orderService.GetAsync(
+                    predicate: x => x.AppUserId == userId &&
+                                    x.EndPrice == model.EndPrice &&
+                                    x.CreatedAt >= DateTime.UtcNow.AddMinutes(-5));
+
+                if (existingOrder != null)
+                {
+                    _logger.LogInformation("Order already exists, redirecting to confirmation");
+                    _basketManager.CleanBasket();
+                    Session?.Remove(orderToken);
+                    Session?.Remove(AppliedDiscountCodeKey);
+                    return RedirectToAction("Confirmation", new { id = existingOrder.Id });
+                }
+
+                await _orderService.CreateAsync(model);
+
+                var userOrders = await _orderService.GetOrderViewModelsAsync(userId);
+                var lastOrder = userOrders
+                    .Where(o => o.CreatedAt >= DateTime.UtcNow.AddMinutes(-5))
+                    .OrderByDescending(o => o.Id)
+                    .FirstOrDefault();
+
+                if (lastOrder == null)
+                {
+                    _logger.LogError("Order creation failed");
+                    TempData["Error"] = "Order creation failed";
+                    return RedirectToAction("Checkout");
+                }
+
+                _basketManager.CleanBasket();
+                Session?.Remove(orderToken);
+                Session?.Remove(AppliedDiscountCodeKey);
+
+                return RedirectToAction("Confirmation", new { id = lastOrder.Id });
+            }
+            catch (StripeException ex)
+            {
+                _logger.LogError(ex, "Stripe verification error");
+                TempData["Error"] = "Payment verification failed. Please contact support.";
+                return RedirectToAction("Checkout");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Unexpected error during payment success callback");
+                TempData["Error"] = "An unexpected error occurred. Please contact support.";
+                return RedirectToAction("Checkout");
+            }
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var username = User.Identity?.Name ?? "";
+            var user = await _userManager.FindByNameAsync(username);
+
+            if (user == null)
+                return BadRequest("User not found");
+
+            var orders = await _orderService.GetOrderViewModelsAsync(user.Id);
+
+            foreach (var order in orders)
+            {
+                order.TotalCount = order.OrderDetails.Sum(x => x.Quantity);
+            }
+
+            return View(orders);
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var order = await _orderService.GetAsync(
+                predicate: x => x.Id == id && !x.IsDeleted,
+                include: x => x.Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.ProductVariant)
+                    .ThenInclude(pv => pv.Product!)
+                    .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.ProductVariant)
+                    .ThenInclude(pv => pv.Color!)
+                    .Include(o => o.Address));
+
+            if (order == null)
+                return NotFound();
+
+            var user = await _userManager.GetUserAsync(User);
+            if (order.AppUserId != user?.Id && !User.IsInRole("Admin"))
+                return Forbid();
+
+            return View(order);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            var order = await _orderService.GetAsync(predicate: x => x.Id == id && !x.IsDeleted);
+            if (order == null)
+            {
+                _logger.LogWarning("Cancel attempt for non-existing order {OrderId}", id);
+                return NotFound();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+
+            if (order.AppUserId != user?.Id && !User.IsInRole("Admin"))
+            {
+                _logger.LogWarning("Unauthorized cancel attempt for order {OrderId} by {User}", id, user?.Id);
+                return Forbid();
+            }
+
+            if (order.OrderStatus == OrderStatus.Cancelled || order.OrderStatus == OrderStatus.Completed)
+            {
+                TempData["Error"] = "Order cannot be cancelled.";
+                return RedirectToAction("Details", new { id });
+            }
+
+            var updateModel = new OrderUpdateViewModel
+            {
+                Id = id,
+                OrderStatus = OrderStatus.Cancelled,
+                CanceledDate = DateTime.UtcNow
+            };
+
+            var success = await _orderService.UpdateAsync(id, updateModel);
+            if (!success)
+            {
+                _logger.LogError("Failed to cancel order {OrderId}", id);
+                TempData["Error"] = "Failed to cancel order. Please try again later.";
+                return RedirectToAction("Details", new { id });
+            }
+
+            TempData["Success"] = "Order cancelled successfully.";
+            return RedirectToAction("Details", new { id });
+        }
+
+        public async Task<IActionResult> Confirmation(int id)
+        {
+            var order = await _orderService.GetAsync(
+                predicate: x => x.Id == id && !x.IsDeleted,
+                include: x => x.Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.ProductVariant)
+                    .ThenInclude(pv => pv.Product!)
+                    .Include(o => o.OrderDetails)
+                    .ThenInclude(od => od.ProductVariant)
+                    .ThenInclude(pv => pv.Color!)
+                    .Include(o => o.Address));
+
+            if (order == null)
+                return NotFound();
+
+            var user = await _userManager.GetUserAsync(User);
+            if (order.AppUserId != user?.Id && !User.IsInRole("Admin"))
+                return Forbid();
+
+            return View(order);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ApplyDiscount(string discountCode)
+        {
+            if (string.IsNullOrWhiteSpace(discountCode))
+            {
+                return Json(new
+                {
+                    success = false,
+                    message = "Please enter a discount code"
+                });
+            }
+
+            var discount = await _orderService.GetDiscount(discountCode);
+
+            if (discount == null)
+            {
+                Session?.Remove(AppliedDiscountCodeKey);
+                return Json(new
+                {
+                    success = false,
+                    message = "Invalid or expired discount code"
+                });
+            }
+
+            Session?.SetString(AppliedDiscountCodeKey, discountCode);
+
+            var basket = await _basketManager.GetBasketAsync();
+            var discountAmount = (basket.TotalPrice * discount.SalePercentage) / 100;
+            var finalPrice = basket.TotalPrice - discountAmount;
+
+            return Json(new
+            {
+                success = true,
+                salePercentage = discount.SalePercentage,
+                discountAmount = Math.Round(discountAmount, 2),
+                finalPrice = Math.Round(finalPrice, 2)
+            });
+        }
+    }
+}

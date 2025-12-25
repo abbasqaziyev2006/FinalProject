@@ -1,0 +1,1482 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\areas\\admin\\views\\shared\\_adminlayout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\areas\\admin\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\areas\\admin\\views\\dashboard\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\areas\\admin\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\areas\\admin\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\areas\\admin\\views\\order\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\areas\\admin\\views\\order\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\viewmodels\\productvariantviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\viewmodels\\productvariantviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\areas\\admin\\views\\order\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\areas\\admin\\views\\order\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\home\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\product\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\product\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\shop\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\shop\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\services\\icurrencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\services\\icurrencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\services\\currencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\services\\currencyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\viewmodels\\orderviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\viewmodels\\orderviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\controllers\\addresscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\controllers\\currencycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\controllers\\currencycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\controllers\\ordercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\basket\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\basket\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\account\\register.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\account\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\account\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\viewcomponents\\headerviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\viewcomponents\\headerviewcomponent.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\models\\registerviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\models\\registerviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\models\\forgotpasswordviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\models\\forgotpasswordviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\models\\editaccountviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\models\\editaccountviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\models\\currency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\models\\currency.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\models\\accountviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\models\\accountviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\controllers\\shopcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\controllers\\shopcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\controllers\\basketcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\controllers\\basketcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.dal\\datacontext\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|solutionrelative:ecommercecoza.dal\\datacontext\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.dal\\datacontext\\entities\\social.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|solutionrelative:ecommercecoza.dal\\datacontext\\entities\\social.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.dal\\datacontext\\entities\\slider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|solutionrelative:ecommercecoza.dal\\datacontext\\entities\\slider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.dal\\datacontext\\entities\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|solutionrelative:ecommercecoza.dal\\datacontext\\entities\\order.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.dal\\datacontext\\entities\\bio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|solutionrelative:ecommercecoza.dal\\datacontext\\entities\\bio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.dal\\datacontext\\entities\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|solutionrelative:ecommercecoza.dal\\datacontext\\entities\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.dal\\datacontext\\entities\\address.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|solutionrelative:ecommercecoza.dal\\datacontext\\entities\\address.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\businesslogiclayerserviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\businesslogiclayerserviceregistration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.dal\\ecommercecoza.dal.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|solutionrelative:ecommercecoza.dal\\ecommercecoza.dal.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\viewmodels\\userviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\viewmodels\\userviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\viewmodels\\socialviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\viewmodels\\socialviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\viewmodels\\sliderviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\viewmodels\\sliderviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\viewmodels\\homeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\viewmodels\\homeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\services\\slidermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\services\\slidermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\services\\productvariantmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\services\\productvariantmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\services\\ordermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\services\\ordermanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\services\\orderdetailmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\services\\orderdetailmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\services\\homemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\services\\homemanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\services\\basketmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\services\\basketmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\mapping\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\mapping\\mappingprofile.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\constants\\filepathconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\constants\\filepathconstants.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\services\\contracts\\iorderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\services\\contracts\\iorderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\order\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\order\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\order\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\order\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\Migrations\\20251224132617_appuserupdate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:ECommerceCoza.DAL\\Migrations\\20251224132617_appuserupdate.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\order\\confirmation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\order\\confirmation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\order\\checkout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\order\\checkout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\wwwroot\\assets\\js\\dark-mode.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\wwwroot\\assets\\js\\dark-mode.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\wwwroot\\assets\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\wwwroot\\assets\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\areas\\admin\\views\\user\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\areas\\admin\\views\\user\\details.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\areas\\admin\\views\\user\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\areas\\admin\\views\\user\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\areas\\admin\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\areas\\admin\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\account\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\account\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\areas\\admin\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\areas\\admin\\controllers\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\resources\\views\\home\\index.en.resx||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\resources\\views\\home\\index.en.resx||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\areas\\admin\\views\\slider\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\areas\\admin\\views\\slider\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\areas\\admin\\views\\slider\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\areas\\admin\\views\\slider\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.dal\\migrations\\20251217195302_slider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|solutionrelative:ecommercecoza.dal\\migrations\\20251217195302_slider.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\areas\\admin\\views\\slider\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\areas\\admin\\views\\slider\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\areas\\admin\\controllers\\slidercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\areas\\admin\\controllers\\slidercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.bll\\services\\contracts\\isliderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{649A1145-5ADF-4AF8-915D-DAF481475DF9}|ECommerceCoza.BLL\\ECommerceCoza.BLL.csproj|solutionrelative:ecommercecoza.bll\\services\\contracts\\isliderservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\wwwroot\\assets\\css\\dark-mode.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\wwwroot\\assets\\css\\dark-mode.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\address\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\address\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\address\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\address\\edit.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\address\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\address\\create.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\wishlist\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\wishlist\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\resources\\views\\shared\\_layout.az.resx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\resources\\views\\shared\\_layout.az.resx||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\resources\\views\\shared\\_layout.en.resx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\resources\\views\\shared\\_layout.en.resx||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\resources\\views\\shared\\_layout.ru.resx||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\resources\\views\\shared\\_layout.ru.resx||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\resources\\views\\basket\\index.az.resx||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\resources\\views\\basket\\index.az.resx||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\webapplication4\\resources\\views\\basket\\index.az.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
+      "RelativeMoniker": "D:0:0:{A05BB3FE-2C30-4099-89D3-C45BB98D58A6}|WebApplication4\\EcommerceCoza.MVC.csproj|solutionrelative:webapplication4\\resources\\views\\basket\\index.az.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|c:\\users\\o sebnem k cemengul\\source\\repos\\finalprojectson\\ecommercecoza.dal\\migrations\\20251222155954_addphonenumbernormalizedindex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{59842F85-73D7-4364-9490-2F5D85C8B730}|ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj|solutionrelative:ecommercecoza.dal\\migrations\\20251222155954_addphonenumbernormalizedindex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 11,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AddressController.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\AddressController.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Controllers\\AddressController.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\AddressController.cs",
+              "RelativeToolTip": "WebApplication4\\Controllers\\AddressController.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-27T05:45:38.623Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Dashboard\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Areas\\Admin\\Views\\Dashboard\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Dashboard\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Areas\\Admin\\Views\\Dashboard\\Index.cshtml",
+              "ViewState": "AgIAADIBAAAAAAAAAAAqwEIBAAAWAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-24T20:26:59.921Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Order\\Details.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Areas\\Admin\\Views\\Order\\Details.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Order\\Details.cshtml",
+              "RelativeToolTip": "WebApplication4\\Areas\\Admin\\Views\\Order\\Details.cshtml",
+              "ViewState": "AgIAAEEAAAAAAAAAAAAAAFwAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-24T19:45:05.836Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ProductVariantViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ViewModels\\ProductVariantViewModel.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\ViewModels\\ProductVariantViewModel.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ViewModels\\ProductVariantViewModel.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\ViewModels\\ProductVariantViewModel.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAAAB0AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T18:56:49.537Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Order\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Areas\\Admin\\Views\\Order\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Order\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Areas\\Admin\\Views\\Order\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAKsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-24T19:36:50.139Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Home\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Home\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Home\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Home\\Index.cshtml",
+              "ViewState": "AgIAAHgBAAAAAAAAAAAAAEUBAAALAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-17T20:28:14.878Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "_AdminLayout.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "RelativeToolTip": "WebApplication4\\Areas\\Admin\\Views\\Shared\\_AdminLayout.cshtml",
+              "ViewState": "AgIAANsAAAAAAAAAAAAqwOQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-17T19:57:51.49Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Product\\Details.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Product\\Details.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Product\\Details.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Product\\Details.cshtml",
+              "ViewState": "AgIAALABAAAAAAAAAAAqwM4BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-24T20:12:32.991Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "OrderController.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Controllers\\OrderController.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Areas\\Admin\\Controllers\\OrderController.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Controllers\\OrderController.cs",
+              "RelativeToolTip": "WebApplication4\\Areas\\Admin\\Controllers\\OrderController.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAmwCsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T19:40:33.41Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Shop\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Shop\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Shop\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Shop\\Index.cshtml",
+              "ViewState": "AgIAADYDAAAAAAAAAAAAAJ8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-24T19:57:33.422Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ICurrencyService.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Services\\ICurrencyService.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Services\\ICurrencyService.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Services\\ICurrencyService.cs",
+              "RelativeToolTip": "WebApplication4\\Services\\ICurrencyService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T15:49:03.809Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "CurrencyService.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Services\\CurrencyService.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Services\\CurrencyService.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Services\\CurrencyService.cs",
+              "RelativeToolTip": "WebApplication4\\Services\\CurrencyService.cs",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAYwCQAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-22T15:48:46.407Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "OrderViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ViewModels\\OrderViewModel.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\ViewModels\\OrderViewModel.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ViewModels\\OrderViewModel.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\ViewModels\\OrderViewModel.cs",
+              "ViewState": "AgIAAAIAAAAAAAAAAAAnwAwAAAAlAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-22T12:52:54.302Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\appsettings.json",
+              "RelativeDocumentMoniker": "WebApplication4\\appsettings.json",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\appsettings.json",
+              "RelativeToolTip": "WebApplication4\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAADAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-12-17T19:25:46.954Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": ".gitignore",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\.gitignore",
+              "RelativeDocumentMoniker": ".gitignore",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\.gitignore",
+              "RelativeToolTip": ".gitignore",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
+              "Icon": "00000000-0000-0000-0000-000000000000.000000|iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAG/SURBVDhPrZRNTgIxFMerDIaEhHgU97JxwUKGGaNeQJdyCY0XUBDWGhg4AB\u002BuvQk7OQCRFTP1fXWmMxUMCT94ee177eu/LVQdFK31kTSJ0WgEIa0SMJ2A6QTHcF9iicQqlYpa/6zv2\u002B2HD5nuEkWR/l4udRzHZBtjGzFor1YrPR6P9WKx0MNhpN96vTuZThyLJ1AJLK/iJFFxjBanBsXIozqkWq2qev1c1Wq19063e0ZBwBNP4JaQ6WRC/i8ajQb5wWBAvnxyghpOqQPkC8L5IEEQKjgxaqOTFsCd65tb6nmlkur1\u002BxwXCgX58KfT7QptwvCK52wrSLcJvtUKOABkQ6HFXwbGsmMRBkchzpjNphLZDSrEn5G1qnsp\u002BPEtheloXouRnXDTTjhb5tXmeyg0IgzuliHp\u002By0OANbiOCDXp1IYo3mMUxBT8/mMA/8QhGH6ZzC4Zwi5ZqoQB9M3h62I/\u002B/SAQpniBmtPvdQyGeYUdgyX8pl05eIBSxmTzQYEYbc42AuJQWLGJNQEcrJG4A4BTHneSW2sqfKOyybkxXMPbAvrx3IsyLzkPJFmUcWYtDntjG6lIvnp8cvKXNIlPoFvstpJRlQPIAAAAAASUVORK5CYII=",
+              "WhenOpened": "2025-12-24T19:17:36.731Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "CurrencyController.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\CurrencyController.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Controllers\\CurrencyController.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\CurrencyController.cs",
+              "RelativeToolTip": "WebApplication4\\Controllers\\CurrencyController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T14:30:26.117Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "OrderController.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\OrderController.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Controllers\\OrderController.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\OrderController.cs",
+              "RelativeToolTip": "WebApplication4\\Controllers\\OrderController.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAAAAEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T19:24:22.77Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "WebApplication4\\Controllers\\HomeController.cs",
+              "ViewState": "AgIAAEIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T19:02:17.673Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Program.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Program.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Program.cs",
+              "RelativeToolTip": "WebApplication4\\Program.cs",
+              "ViewState": "AgIAALMAAAAAAAAAAAAAABUAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T20:06:37.449Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "WebApplication4\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-21T20:28:43.054Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "WebApplication4\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\appsettings.Development.json",
+              "RelativeToolTip": "WebApplication4\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-12-17T19:25:56.376Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Basket\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Basket\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Basket\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Basket\\Index.cshtml",
+              "ViewState": "AgIAAHEAAAAAAAAAAAAlwH4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-17T19:24:53.196Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "Register.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Account\\Register.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Account\\Register.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Account\\Register.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Account\\Register.cshtml",
+              "ViewState": "AgIAABsAAAAAAAAAAAAlwC0AAAAwAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-21T21:16:59.58Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Account\\Login.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Account\\Login.cshtml",
+              "ViewState": "AgIAABgAAAAAAAAAAAAQwDEAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-22T15:17:37.266Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 24,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Account\\Edit.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Account\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Account\\Edit.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Account\\Edit.cshtml",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAAwHYAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T05:44:45.531Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "HeaderViewComponent.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\ViewComponents\\HeaderViewComponent.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\ViewComponents\\HeaderViewComponent.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\ViewComponents\\HeaderViewComponent.cs",
+              "RelativeToolTip": "WebApplication4\\ViewComponents\\HeaderViewComponent.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T19:06:29.244Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
+              "Title": "RegisterViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Models\\RegisterViewModel.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Models\\RegisterViewModel.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Models\\RegisterViewModel.cs",
+              "RelativeToolTip": "WebApplication4\\Models\\RegisterViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-21T21:16:38.099Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 27,
+              "Title": "ForgotPasswordViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Models\\ForgotPasswordViewModel.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Models\\ForgotPasswordViewModel.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Models\\ForgotPasswordViewModel.cs",
+              "RelativeToolTip": "WebApplication4\\Models\\ForgotPasswordViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-21T19:53:01.051Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 28,
+              "Title": "EditAccountViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Models\\EditAccountViewModel.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Models\\EditAccountViewModel.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Models\\EditAccountViewModel.cs",
+              "RelativeToolTip": "WebApplication4\\Models\\EditAccountViewModel.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAiwCAAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-21T20:49:15.486Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 29,
+              "Title": "Currency.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Models\\Currency.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Models\\Currency.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Models\\Currency.cs",
+              "RelativeToolTip": "WebApplication4\\Models\\Currency.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T19:04:04.637Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 31,
+              "Title": "ShopController.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\ShopController.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Controllers\\ShopController.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\ShopController.cs",
+              "RelativeToolTip": "WebApplication4\\Controllers\\ShopController.cs",
+              "ViewState": "AgIAAGMAAAAAAAAAAAAqwHsAAABYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T19:02:47.299Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 33,
+              "Title": "AppDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\AppDbContext.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.DAL\\DataContext\\AppDbContext.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\AppDbContext.cs",
+              "RelativeToolTip": "ECommerceCoza.DAL\\DataContext\\AppDbContext.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAA8wCMAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T19:48:03.39Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 34,
+              "Title": "Social.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\Entities\\Social.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.DAL\\DataContext\\Entities\\Social.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\Entities\\Social.cs",
+              "RelativeToolTip": "ECommerceCoza.DAL\\DataContext\\Entities\\Social.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T19:48:57.917Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 30,
+              "Title": "AccountViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Models\\AccountViewModel.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Models\\AccountViewModel.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Models\\AccountViewModel.cs",
+              "RelativeToolTip": "WebApplication4\\Models\\AccountViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-21T19:52:58.551Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 35,
+              "Title": "Slider.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\Entities\\Slider.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.DAL\\DataContext\\Entities\\Slider.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\Entities\\Slider.cs",
+              "RelativeToolTip": "ECommerceCoza.DAL\\DataContext\\Entities\\Slider.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T18:57:55.307Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 32,
+              "Title": "BasketController.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\BasketController.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Controllers\\BasketController.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Controllers\\BasketController.cs",
+              "RelativeToolTip": "WebApplication4\\Controllers\\BasketController.cs",
+              "ViewState": "AgIAAJMAAAAAAAAAAAAmwLAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T19:23:50.284Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 36,
+              "Title": "Order.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\Entities\\Order.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.DAL\\DataContext\\Entities\\Order.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\Entities\\Order.cs",
+              "RelativeToolTip": "ECommerceCoza.DAL\\DataContext\\Entities\\Order.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-22T18:06:50.225Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 37,
+              "Title": "Bio.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\Entities\\Bio.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.DAL\\DataContext\\Entities\\Bio.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\Entities\\Bio.cs",
+              "RelativeToolTip": "ECommerceCoza.DAL\\DataContext\\Entities\\Bio.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T18:57:37.935Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 38,
+              "Title": "AppUser.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\Entities\\AppUser.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.DAL\\DataContext\\Entities\\AppUser.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\Entities\\AppUser.cs",
+              "RelativeToolTip": "ECommerceCoza.DAL\\DataContext\\Entities\\AppUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-22T15:54:53.274Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 39,
+              "Title": "Address.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\Entities\\Address.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.DAL\\DataContext\\Entities\\Address.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\DataContext\\Entities\\Address.cs",
+              "RelativeToolTip": "ECommerceCoza.DAL\\DataContext\\Entities\\Address.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T13:22:38.927Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 40,
+              "Title": "BusinessLogicLayerServiceRegistration.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\BusinessLogicLayerServiceRegistration.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\BusinessLogicLayerServiceRegistration.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\BusinessLogicLayerServiceRegistration.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\BusinessLogicLayerServiceRegistration.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAAACIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T19:46:32.742Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 41,
+              "Title": "ECommerceCoza.DAL.csproj",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\FinalProjectSon\\ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj",
+              "RelativeDocumentMoniker": "ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\Source\\Repos\\FinalProjectSon\\ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj",
+              "RelativeToolTip": "ECommerceCoza.DAL\\ECommerceCoza.DAL.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-12-17T19:41:53.739Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 42,
+              "Title": "UserViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ViewModels\\UserViewModel.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\ViewModels\\UserViewModel.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ViewModels\\UserViewModel.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\ViewModels\\UserViewModel.cs",
+              "ViewState": "AgIAAA0AAAAAAAAAAAAAADYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-21T20:10:45.026Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 43,
+              "Title": "SocialViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ViewModels\\SocialViewModel.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\ViewModels\\SocialViewModel.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ViewModels\\SocialViewModel.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\ViewModels\\SocialViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-21T20:10:18.931Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 44,
+              "Title": "SliderViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ViewModels\\SliderViewModel.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\ViewModels\\SliderViewModel.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ViewModels\\SliderViewModel.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\ViewModels\\SliderViewModel.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAADwvyYAAAAqAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T19:47:28.523Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 45,
+              "Title": "HomeViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ViewModels\\HomeViewModel.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\ViewModels\\HomeViewModel.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\ViewModels\\HomeViewModel.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\ViewModels\\HomeViewModel.cs",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAuwAsAAAA+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T20:32:13.982Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 46,
+              "Title": "SliderManager.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\SliderManager.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\Services\\SliderManager.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\SliderManager.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\Services\\SliderManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAFEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T19:45:05.277Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 47,
+              "Title": "ProductVariantManager.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\ProductVariantManager.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\Services\\ProductVariantManager.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\ProductVariantManager.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\Services\\ProductVariantManager.cs",
+              "ViewState": "AgIAANAAAAAAAAAAAAAmwN8AAAAoAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T18:54:43.955Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 49,
+              "Title": "OrderDetailManager.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\OrderDetailManager.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\Services\\OrderDetailManager.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\OrderDetailManager.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\Services\\OrderDetailManager.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAIwCIAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T14:32:56.261Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 50,
+              "Title": "HomeManager.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\HomeManager.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\Services\\HomeManager.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\HomeManager.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\Services\\HomeManager.cs",
+              "ViewState": "AgIAADMAAAAAAAAAAAAAAD8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T20:29:46.911Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 51,
+              "Title": "BasketManager.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\BasketManager.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\Services\\BasketManager.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\BasketManager.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\Services\\BasketManager.cs",
+              "ViewState": "AgIAANoAAAAAAAAAAAAAAMQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T18:52:23.902Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 53,
+              "Title": "FilePathConstants.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Constants\\FilePathConstants.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\Constants\\FilePathConstants.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Constants\\FilePathConstants.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\Constants\\FilePathConstants.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T19:44:08.07Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 48,
+              "Title": "OrderManager.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\OrderManager.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\Services\\OrderManager.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\OrderManager.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\Services\\OrderManager.cs",
+              "ViewState": "AgIAAI8AAAAAAAAAAAAAAJsAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T14:13:12.999Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 54,
+              "Title": "IOrderService.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\Contracts\\IOrderService.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\Services\\Contracts\\IOrderService.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\Contracts\\IOrderService.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\Services\\Contracts\\IOrderService.cs",
+              "ViewState": "AgIAAAEAAAAAAAAAAAAvwA0AAAAjAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T14:08:22.601Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 55,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Order\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Order\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Order\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Order\\Index.cshtml",
+              "ViewState": "AgIAACUAAAAAAAAAAAAAAD4AAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T05:26:00.218Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 52,
+              "Title": "MappingProfile.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Mapping\\MappingProfile.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\Mapping\\MappingProfile.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Mapping\\MappingProfile.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\Mapping\\MappingProfile.cs",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAAAFYAAABIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T19:44:38.288Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 56,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Order\\Details.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Order\\Details.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Order\\Details.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Order\\Details.cshtml",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAAAMkAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-22T14:36:02.772Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{56df62a4-05a3-4e5b-aa1a-99371ccfb997}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
+              "Title": "20251224132617_appuserupdate.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\Migrations\\20251224132617_appuserupdate.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.DAL\\Migrations\\20251224132617_appuserupdate.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\Migrations\\20251224132617_appuserupdate.cs",
+              "RelativeToolTip": "ECommerceCoza.DAL\\Migrations\\20251224132617_appuserupdate.cs",
+              "ViewState": "AgIAABkAAAAAAAAAAAAQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-24T13:26:17.648Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 59,
+              "Title": "Checkout.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Order\\Checkout.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Order\\Checkout.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Order\\Checkout.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Order\\Checkout.cshtml",
+              "ViewState": "AgIAADsBAAAAAAAAAAAAwDsAAAB/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-17T19:25:13.107Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "Confirmation.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Order\\Confirmation.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Order\\Confirmation.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Order\\Confirmation.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Order\\Confirmation.cshtml",
+              "ViewState": "AgIAAGkBAAAAAAAAAAAAAAYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-22T12:57:02.281Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 85,
+              "Title": "20251222155954_AddPhoneNumberNormalizedIndex.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\Migrations\\20251222155954_AddPhoneNumberNormalizedIndex.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.DAL\\Migrations\\20251222155954_AddPhoneNumberNormalizedIndex.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\Migrations\\20251222155954_AddPhoneNumberNormalizedIndex.cs",
+              "RelativeToolTip": "ECommerceCoza.DAL\\Migrations\\20251222155954_AddPhoneNumberNormalizedIndex.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-22T15:59:54.679Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 60,
+              "Title": "dark-mode.js",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\wwwroot\\assets\\js\\dark-mode.js",
+              "RelativeDocumentMoniker": "WebApplication4\\wwwroot\\assets\\js\\dark-mode.js",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\wwwroot\\assets\\js\\dark-mode.js",
+              "RelativeToolTip": "WebApplication4\\wwwroot\\assets\\js\\dark-mode.js",
+              "ViewState": "AgIAAH0AAAAAAAAAAAAlwIoAAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-12-17T19:29:13.428Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 61,
+              "Title": "style.css",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\wwwroot\\assets\\css\\style.css",
+              "RelativeDocumentMoniker": "WebApplication4\\wwwroot\\assets\\css\\style.css",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\wwwroot\\assets\\css\\style.css",
+              "RelativeToolTip": "WebApplication4\\wwwroot\\assets\\css\\style.css",
+              "ViewState": "AgIAAA09AAAAAAAAAAAAAPA8AAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-12-17T21:09:40.084Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 62,
+              "Title": "Details.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\User\\Details.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Areas\\Admin\\Views\\User\\Details.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\User\\Details.cshtml",
+              "RelativeToolTip": "WebApplication4\\Areas\\Admin\\Views\\User\\Details.cshtml",
+              "ViewState": "AgIAAFsAAAAAAAAAAAAQwHQAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-21T20:08:13.542Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 64,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Areas\\Admin\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Controllers\\UserController.cs",
+              "RelativeToolTip": "WebApplication4\\Areas\\Admin\\Controllers\\UserController.cs",
+              "ViewState": "AgIAAKQAAAAAAAAAAAAAAOMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-21T20:16:15.159Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 63,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\User\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Areas\\Admin\\Views\\User\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\User\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Areas\\Admin\\Views\\User\\Index.cshtml",
+              "ViewState": "AgIAAE0AAAAAAAAAAAAwwGsAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-21T19:56:57.931Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 65,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Account\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Account\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Account\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Account\\Index.cshtml",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAUwCQAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T05:29:10.791Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 66,
+              "Title": "AdminController.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Controllers\\AdminController.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Areas\\Admin\\Controllers\\AdminController.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Controllers\\AdminController.cs",
+              "RelativeToolTip": "WebApplication4\\Areas\\Admin\\Controllers\\AdminController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T19:50:03.887Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 67,
+              "Title": "Index.en.resx",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Resources\\Views\\Home\\Index.en.resx",
+              "RelativeDocumentMoniker": "WebApplication4\\Resources\\Views\\Home\\Index.en.resx",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Resources\\Views\\Home\\Index.en.resx",
+              "RelativeToolTip": "WebApplication4\\Resources\\Views\\Home\\Index.en.resx",
+              "ViewState": "AgIAABAAAAAAAAAAAAAAAB0AAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-12-17T20:50:31.863Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 68,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Slider\\Edit.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Areas\\Admin\\Views\\Slider\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Slider\\Edit.cshtml",
+              "RelativeToolTip": "WebApplication4\\Areas\\Admin\\Views\\Slider\\Edit.cshtml",
+              "ViewState": "AgIAAFsAAAAAAAAAAAAQwHQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-17T20:01:07.632Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 70,
+              "Title": "20251217195302_Slider.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\Migrations\\20251217195302_Slider.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.DAL\\Migrations\\20251217195302_Slider.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.DAL\\Migrations\\20251217195302_Slider.cs",
+              "RelativeToolTip": "ECommerceCoza.DAL\\Migrations\\20251217195302_Slider.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T19:53:02.669Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 72,
+              "Title": "SliderController.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Controllers\\SliderController.cs",
+              "RelativeDocumentMoniker": "WebApplication4\\Areas\\Admin\\Controllers\\SliderController.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Controllers\\SliderController.cs",
+              "RelativeToolTip": "WebApplication4\\Areas\\Admin\\Controllers\\SliderController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T19:50:39.462Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 69,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Slider\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Areas\\Admin\\Views\\Slider\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Slider\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Areas\\Admin\\Views\\Slider\\Index.cshtml",
+              "ViewState": "AgIAAFMAAAAAAAAAAAAQwGMAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-17T19:40:30.079Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 71,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Slider\\Create.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Areas\\Admin\\Views\\Slider\\Create.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Areas\\Admin\\Views\\Slider\\Create.cshtml",
+              "RelativeToolTip": "WebApplication4\\Areas\\Admin\\Views\\Slider\\Create.cshtml",
+              "ViewState": "AgIAANsAAAAAAAAAAAAUwPQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-12-17T19:40:09.084Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 73,
+              "Title": "ISliderService.cs",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\Contracts\\ISliderService.cs",
+              "RelativeDocumentMoniker": "ECommerceCoza.BLL\\Services\\Contracts\\ISliderService.cs",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\ECommerceCoza.BLL\\Services\\Contracts\\ISliderService.cs",
+              "RelativeToolTip": "ECommerceCoza.BLL\\Services\\Contracts\\ISliderService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAUAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-12-17T19:46:00.731Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 74,
+              "Title": "dark-mode.css",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\wwwroot\\assets\\css\\dark-mode.css",
+              "RelativeDocumentMoniker": "WebApplication4\\wwwroot\\assets\\css\\dark-mode.css",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\wwwroot\\assets\\css\\dark-mode.css",
+              "RelativeToolTip": "WebApplication4\\wwwroot\\assets\\css\\dark-mode.css",
+              "ViewState": "AgIAAC8CAAAAAAAAAAAAAEkCAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-12-17T19:37:15.637Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 75,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Address\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Address\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Address\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Address\\Index.cshtml",
+              "ViewState": "AgIAACUAAAAAAAAAAAAAACwAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T05:24:18.19Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 76,
+              "Title": "Edit.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Address\\Edit.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Address\\Edit.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Address\\Edit.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Address\\Edit.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGQAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T06:11:37.932Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 77,
+              "Title": "Create.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Address\\Create.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Address\\Create.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Address\\Create.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Address\\Create.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAF0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T05:45:58.101Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 78,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Wishlist\\Index.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Wishlist\\Index.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Wishlist\\Index.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Wishlist\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T05:27:08.659Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 79,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "WebApplication4\\Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "WebApplication4\\Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AgIAAAIDAAAAAAAAAAAQwPcCAAAaAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-11-27T04:55:16.625Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 80,
+              "Title": "_Layout.az.resx",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Resources\\Views\\Shared\\_Layout.az.resx",
+              "RelativeDocumentMoniker": "WebApplication4\\Resources\\Views\\Shared\\_Layout.az.resx",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Resources\\Views\\Shared\\_Layout.az.resx",
+              "RelativeToolTip": "WebApplication4\\Resources\\Views\\Shared\\_Layout.az.resx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-27T04:55:10.79Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 81,
+              "Title": "_Layout.en.resx",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Resources\\Views\\Shared\\_Layout.en.resx",
+              "RelativeDocumentMoniker": "WebApplication4\\Resources\\Views\\Shared\\_Layout.en.resx",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Resources\\Views\\Shared\\_Layout.en.resx",
+              "RelativeToolTip": "WebApplication4\\Resources\\Views\\Shared\\_Layout.en.resx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-27T04:55:05.867Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 82,
+              "Title": "_Layout.ru.resx",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Resources\\Views\\Shared\\_Layout.ru.resx",
+              "RelativeDocumentMoniker": "WebApplication4\\Resources\\Views\\Shared\\_Layout.ru.resx",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Resources\\Views\\Shared\\_Layout.ru.resx",
+              "RelativeToolTip": "WebApplication4\\Resources\\Views\\Shared\\_Layout.ru.resx",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-27T04:54:58.33Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 83,
+              "Title": "Index.az.resx",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "RelativeDocumentMoniker": "WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "RelativeToolTip": "WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "ViewState": "AgIAAAQAAAAAAAAAAAAuwAkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-27T04:53:32.06Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 84,
+              "Title": "Index.az.resx",
+              "DocumentMoniker": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "RelativeDocumentMoniker": "WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "ToolTip": "C:\\Users\\O Sebnem K Cemengul\\source\\repos\\FinalProjectSon\\WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "RelativeToolTip": "WebApplication4\\Resources\\Views\\Basket\\Index.az.resx",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-11-27T04:49:54.29Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
