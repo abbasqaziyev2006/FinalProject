@@ -77,10 +77,9 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
 
             try
             {
-                // Create product first
+         
                 await _productService.CreateAsync(model);
 
-                // Get the created product by name (since we just created it)
                 var allProducts = await _productService.GetAllAsync(
                     predicate: p => p.Name == model.Name && !p.IsDeleted,
                     include: q => q.Include(p => p.ProductVariants!)
@@ -93,7 +92,7 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
                     return Json(new { success = false, message = "Failed to create product" });
                 }
 
-                // Create variants if provided
+                
                 if (variants != null && variants.Any())
                 {
                     foreach (var variantDto in variants)
@@ -224,7 +223,6 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
             }
         }
 
-        // ========== AJAX Methods ==========
 
         [HttpGet]
         public async Task<IActionResult> GetColors()
@@ -349,7 +347,6 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
         }
     }
 
-    // Helper DTO class
     public class VariantDto
     {
         public string? Size { get; set; }

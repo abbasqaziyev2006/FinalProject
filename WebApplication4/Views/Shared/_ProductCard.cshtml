@@ -5,7 +5,6 @@
 @{
     var firstVariant = Model.ProductVariants.FirstOrDefault();
 
-    // Deduplicate color keys (prefer ColorId, else color hex, else color name)
     var uniqueColors = Model.ProductVariants
         .Select(v => new
         {
@@ -18,7 +17,6 @@
         .Select(g => g.First().Variant)
         .ToList();
 
-    // Build product color tokens: prefer numeric Id (as string), otherwise use hex or name (lowercase)
     var productColorTokens = uniqueColors
         .Select(c => c.ColorId > 0
             ? c.ColorId.ToString()
@@ -44,7 +42,7 @@
     var displayColors = uniqueColors.Take(displayColorLimit).ToList();
     var remainingColorCount = Math.Max(0, uniqueColors.Count - displayColorLimit);
 
-    // choose initial image filename (cover preferred, else first additional image, else placeholder)
+
     string initialImage = "product-placeholder.jpg";
     if (firstVariant != null)
     {
@@ -267,25 +265,24 @@
             var $sw = $(this);
             var $card = $sw.closest('.product-card-wrapper');
 
-            // mark active
             $card.find('.pc__swatch-color').removeClass('active');
             $sw.addClass('active');
 
-            // update main image (prefer cover image, fallback to first-image, fallback to placeholder)
+ 
             var cover = $sw.data('cover-image') || '';
             var firstImg = $sw.data('first-image') || '';
             var imgFile = cover || firstImg || 'product-placeholder.jpg';
             var $img = $card.find('.main-product-image').first();
             $img.attr('src', '/images/products/' + imgFile);
 
-            // update add-to-cart variant id
+        
             var variantId = $sw.data('variant-id');
             var $atc = $card.find('.js-add-cart').first();
             if (variantId && $atc.length) {
                 $atc.attr('data-variant-id', variantId);
             }
 
-            // update price display (if price data present)
+     
             var price = $sw.data('price');
             var sale = $sw.data('sale-price');
             var $priceContainer = $card.find('.product-card__price .price-current').first();
@@ -299,7 +296,7 @@
             }
         });
 
-        // mark first visible swatch active on load and ensure image matches
+   
         $(function () {
             $('.product-card-wrapper').each(function () {
                 var $card = $(this);
@@ -307,13 +304,13 @@
                 if ($first.length) {
                     $first.addClass('active');
 
-                    // synchronize image with active swatch
+                   
                     var cover = $first.data('cover-image') || '';
                     var firstImg = $first.data('first-image') || '';
                     var imgFile = cover || firstImg || 'product-placeholder.jpg';
                     $card.find('.main-product-image').attr('src', '/images/products/' + imgFile);
 
-                    // ensure add-to-cart uses this variant id
+                  
                     var variantId = $first.data('variant-id');
                     if (variantId) {
                         $card.find('.js-add-cart').attr('data-variant-id', variantId);

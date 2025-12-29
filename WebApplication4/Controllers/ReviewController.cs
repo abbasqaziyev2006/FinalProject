@@ -18,7 +18,6 @@ public class ReviewController : Controller
         _userManager = userManager;
     }
 
-    // Rəy əlavə etmək (Məsələn: Məhsulun detal səhifəsindəki formdan gəlir)
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Review review)
@@ -41,7 +40,7 @@ public class ReviewController : Controller
         return RedirectToAction("Details", "Product", new { id = review.ProductId });
     }
 
-    // Rəyi silmək
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Delete(int id)
@@ -60,7 +59,7 @@ public class ReviewController : Controller
         return RedirectToAction("Details", "Product", new { id = productId });
     }
 
-    // Məhsulun ümumi balını yeniləyən köməkçi metod
+
     private async Task UpdateProductRating(int productId)
     {
         var averageRating = await _reviewService.GetAverageRatingByProductIdAsync(productId);

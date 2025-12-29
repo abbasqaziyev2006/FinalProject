@@ -16,7 +16,7 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
             _sliderService = sliderService;
         }
 
-        // GET: Admin/Slider/Index
+   
         public async Task<IActionResult> Index()
         {
             var sliders = await _sliderService.GetAllAsync(
@@ -26,13 +26,13 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
             return View(sliders.ToList());
         }
 
-        // GET: Admin/Slider/Create
+       
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Admin/Slider/Create
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(SliderCreateViewModel model)
@@ -53,7 +53,6 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
             }
         }
 
-        // GET: Admin/Slider/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             var model = await _sliderService.GetSliderUpdateViewModelAsync(id);
@@ -64,7 +63,7 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
             return View(model);
         }
 
-        // POST: Admin/Slider/Edit/5
+     
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, SliderUpdateViewModel model)
@@ -94,7 +93,6 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
             }
         }
 
-        // POST: Admin/Slider/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)

@@ -6,7 +6,7 @@ public class Review : TimeStample
     public double Rating { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
 
-    // Foreign Keys
+
     public int ProductId { get; set; }
     public Product? Product { get; set; }
 
