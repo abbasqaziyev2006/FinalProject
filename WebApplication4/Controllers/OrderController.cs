@@ -247,23 +247,39 @@ namespace EcommerceCoza.MVC.Controllers
             return View(order);
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ApplyDiscount(string discountCode)
+
+      [HttpPost]
+      [ValidateAntiForgeryToken]
+public async Task<IActionResult> ApplyDiscount(string discountCode)
         {
+            if (string.IsNullOrWhiteSpace(discountCode))
+                return Json(new { success = false, message = "Please enter a discount code" });
+
             var discount = await _orderService.GetDiscount(discountCode);
-            if (discount == null) return Json(new { success = false });
+            if (discount == null)
+            {
+                Session?.Remove(AppliedDiscountCodeKey);
+                return Json(new
+                {
+                    success = false,
+                    message = "Invalid or expired discount code"
+                });
+            }
 
             Session?.SetString(AppliedDiscountCodeKey, discountCode);
-            var basket = await _basketManager.GetBasketAsync();
 
-            var discountAmount = (basket.TotalPrice * discount.SalePercentage) / 100;
+            var basket = await _basketManager.GetBasketAsync();
+            var originalTotal = basket.TotalPrice;
+            var discountAmount = (originalTotal * discount.SalePercentage) / 100;
+            var finalPrice = originalTotal - discountAmount;
 
             return Json(new
             {
                 success = true,
+                salePercentage = discount.SalePercentage,
+                originalTotal = Math.Round(originalTotal, 2),
                 discountAmount = Math.Round(discountAmount, 2),
-                finalPrice = Math.Round(basket.TotalPrice - discountAmount, 2)
+                finalPrice = Math.Round(finalPrice, 2)
             });
         }
 

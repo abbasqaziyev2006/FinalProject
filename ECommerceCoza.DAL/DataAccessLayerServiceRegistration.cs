@@ -33,6 +33,7 @@ namespace EcommerceCoza.DAL
             services.AddScoped<IDiscountCodeRepository, DiscountCodeRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IColorRepository, ColorRepository>();
+            services.AddScoped<IReviewRepository, ReviewRepository>();
 
             return services;
         }

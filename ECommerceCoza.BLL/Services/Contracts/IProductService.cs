@@ -11,5 +11,6 @@ namespace EcommerceCoza.BLL.Services.Contracts
         Task<List<SelectListItem>> GetProductSelectListItemsAsync();
         Task<ProductUpdateViewModel> GetUpdateViewModelAsync(int id);
         Task<List<ProductViewModel>> GetProductsAndCategory();
+        Task UpdateAsync(ProductViewModel product);
     }
 }

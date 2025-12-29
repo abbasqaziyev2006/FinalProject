@@ -14,10 +14,13 @@ namespace EcommerceCoza.BLL.ViewModels
         public int TotalOrders { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsActive { get; set; }
+
+        public bool IsAdmin { get; set; }
     }
+
     public class UserListViewModel
     {
-        public List<UserViewModel> Users { get; set; } = [];
+        public List<UserViewModel> Users { get; set; } = new();
         public string? SearchTerm { get; set; }
     }
 

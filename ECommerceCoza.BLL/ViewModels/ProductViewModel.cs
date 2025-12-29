@@ -1,5 +1,6 @@
 ﻿using ECommerceCoza.DAL.DataContext.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
 namespace EcommerceCoza.BLL.ViewModels
 {
@@ -20,8 +21,11 @@ namespace EcommerceCoza.BLL.ViewModels
         public List<ProductVariantViewModel> ProductVariants { get; set; } = [];
         public bool IsInWishlist { get; set; }
         public List<int> WishlistItemIds { get; set; } = [];
-        public int Rating { get; set; }
+        public double Rating { get; set; }
         public int ReviewCount { get; set; }
+
+        // Add this property:
+        public List<ReviewViewModel> Reviews { get; set; } = new();
     }
 
     public class ProductCreateViewModel
@@ -48,6 +52,4 @@ namespace EcommerceCoza.BLL.ViewModels
         public List<SelectListItem> CategorySelectListItems { get; set; } = [];
         public List<SelectListItem> BrandSelectListItems { get; set; } = [];
     }
-
-
 }

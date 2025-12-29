@@ -801,6 +801,44 @@ namespace ECommerceCoza.DAL.Migrations
                     b.ToTable("ProductVariants");
                 });
 
+            modelBuilder.Entity("Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("float");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Reviews");
+                });
+
             modelBuilder.Entity("ECommerceCoza.DAL.DataContext.Entities.Address", b =>
                 {
                     b.HasOne("ECommerceCoza.DAL.DataContext.Entities.AppUser", "AppUser")
@@ -969,6 +1007,23 @@ namespace ECommerceCoza.DAL.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Review", b =>
+                {
+                    b.HasOne("ECommerceCoza.DAL.DataContext.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("ECommerceCoza.DAL.DataContext.Entities.Product", "Product")
+                        .WithMany("Reviews")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ECommerceCoza.DAL.DataContext.Entities.Address", b =>
                 {
                     b.Navigation("Orders");
@@ -1011,6 +1066,8 @@ namespace ECommerceCoza.DAL.Migrations
             modelBuilder.Entity("ECommerceCoza.DAL.DataContext.Entities.Product", b =>
                 {
                     b.Navigation("ProductVariants");
+
+                    b.Navigation("Reviews");
 
                     b.Navigation("WishlistItems");
                 });

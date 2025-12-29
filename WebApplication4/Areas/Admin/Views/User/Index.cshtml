@@ -1,5 +1,4 @@
-﻿WebApplication4\Areas\Admin\Views\User\Index.cshtml
-@model EcommerceCoza.BLL.ViewModels.UserListViewModel
+﻿@model EcommerceCoza.BLL.ViewModels.UserListViewModel
 
 <div class="main-content">
 
@@ -56,6 +55,7 @@
                                 <tbody>
                                     @{
                                         int index = 1;
+                                        var currentUserName = User.Identity?.Name ?? "";
                                     }
                                     @foreach (var user in Model.Users)
                                     {
@@ -80,6 +80,34 @@
                                                             <i class="icon-trash-2"></i> Delete
                                                         </button>
                                                     </form>
+
+                                                    
+                                                    @if (!user.IsAdmin)
+                                                    {
+                                                        <form asp-area="Admin" asp-controller="User" asp-action="PromoteToAdmin" asp-route-id="@user.Id" method="post" class="d-inline ms-2">
+                                                            @Html.AntiForgeryToken()
+                                                            <button type="submit" class="btn btn-sm btn-outline-primary" title="Promote to Admin" onclick="return confirm('Make @user.UserName an admin?');">
+                                                                <i class="icon-user-plus"></i> Make Admin
+                                                            </button>
+                                                        </form>
+                                                    }
+                                                    else
+                                                    {
+                                                       
+                                                        if (!string.Equals(currentUserName, user.UserName, StringComparison.OrdinalIgnoreCase))
+                                                        {
+                                                            <form asp-area="Admin" asp-controller="User" asp-action="RevokeAdmin" asp-route-id="@user.Id" method="post" class="d-inline ms-2">
+                                                                @Html.AntiForgeryToken()
+                                                                <button type="submit" class="btn btn-sm btn-outline-warning" title="Revoke Admin" onclick="return confirm('Revoke admin from @user.UserName?');">
+                                                                    <i class="icon-user-minus"></i> Revoke Admin
+                                                                </button>
+                                                            </form>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="badge bg-success ms-2">Admin (you)</span>
+                                                        }
+                                                    }
                                                 </div>
                                             </td>
                                         </tr>
@@ -103,6 +131,6 @@
     </div>
 
     <div class="bottom-page">
-        <div class="body-text">Copyright © 2024 SurfsideMedia</div>
+        <div class="body-text">Copyright © 2025 SurfsideMedia</div>
     </div>
 </div>

@@ -1,0 +1,38 @@
+@using EcommerceCoza.BLL.ViewModels
+@model IEnumerable<ReviewViewModel>
+<h2>Your Reviews</h2>
+@if (!Model.Any())
+{
+    <div class="alert alert-secondary">You have not submitted any reviews yet.</div>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Rating</th>
+                <th>Comment</th>
+                <th>Date</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var review in Model)
+            {
+                <tr>
+                    <td>@review.ProductName</td>
+                    <td>@review.Rating</td>
+                    <td>@review.Comment</td>
+                    <td>@review.CreatedAt.ToString("g")</td>
+                    <td>
+                        <form asp-action="DeleteReview" method="post" style="display:inline">
+                            <input type="hidden" name="productId" value="@review.ProductId" />
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

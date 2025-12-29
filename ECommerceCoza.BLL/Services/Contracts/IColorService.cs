@@ -9,4 +9,5 @@ namespace EcommerceCoza.BLL.Services.Contracts
         Task<List<SelectListItem>> GetColorSelectListItemsAsync();
         Task<ColorUpdateViewModel> GetColorUpdateViewModelAsync(int id);
     }
+   
 }

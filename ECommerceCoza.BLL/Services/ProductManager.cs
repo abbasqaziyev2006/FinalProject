@@ -114,5 +114,23 @@ namespace EcommerceCoza.BLL.Services
 
             return products.ToList();
         }
+
+        public async Task UpdateAsync(ProductViewModel product)
+        {
+            if (product == null) throw new ArgumentNullException(nameof(product));
+
+            var entity = await Repository.GetByIdAsync(product.Id);
+            if (entity == null) throw new InvalidOperationException("Product not found.");
+
+            // Map updated fields from ProductViewModel to entity
+            entity.Name = product.Name;
+            entity.Description = product.Description;
+            entity.AdditionalInformation = product.AdditionalInformation;
+            entity.BasePrice = product.BasePrice;
+            entity.CategoryId = product.CategoryId;
+            entity.BrandId = product.BrandId;
+
+            await Repository.UpdateAsync(entity);
+        }
     }
 }

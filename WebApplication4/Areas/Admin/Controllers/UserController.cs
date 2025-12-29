@@ -1,6 +1,5 @@
 ﻿using EcommerceCoza.BLL.Services.Contracts;
 using EcommerceCoza.BLL.ViewModels;
-using EcommerceCoza.MVC.Models;
 using ECommerceCoza.DAL.DataContext.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -46,8 +45,11 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
 
             foreach (var user in users)
             {
-                // Get total orders for the user
+               
                 var userOrders = await _orderService.GetOrderViewModelsAsync(user.Id);
+
+             
+                var isAdmin = await _userManager.IsInRoleAsync(user, "Admin");
 
                 userViewModels.Add(new UserViewModel
                 {
@@ -59,7 +61,8 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
                     PhoneNumber = user.PhoneNumber,
                     EmailConfirmed = user.EmailConfirmed,
                     TotalOrders = userOrders.Count,
-                    IsActive = !user.LockoutEnabled || user.LockoutEnd == null || user.LockoutEnd < DateTimeOffset.Now
+                    IsActive = !user.LockoutEnabled || user.LockoutEnd == null || user.LockoutEnd < DateTimeOffset.Now,
+                    IsAdmin = isAdmin
                 });
             }
 
@@ -103,7 +106,7 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
             return View("~/Areas/Admin/Views/User/Edit.cshtml", model);
         }
 
-        // POST: Admin/User/Edit
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(EditUserViewModel model)
@@ -111,17 +114,15 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
             if (model == null)
                 return BadRequest();
 
-            // Ensure roles list is available if we need to redisplay the form
             model.AllRoles = model.AllRoles ?? (await _roleManager.Roles.Select(r => r.Name!).ToListAsync());
 
             if (!ModelState.IsValid)
                 return View("~/Areas/Admin/Views/User/Edit.cshtml", model);
 
-            var user = await _userManager.FindByIdAsync(model.Id);
+            var user = await _userManager.FindByIdAsync(model.Id!);
             if (user == null)
                 return NotFound();
 
-            // Email change: use SetEmailAsync to keep identity metadata consistent
             if (!string.Equals(user.Email, model.Email, StringComparison.OrdinalIgnoreCase))
             {
                 var setEmailResult = await _userManager.SetEmailAsync(user, model.Email);
@@ -134,13 +135,11 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
                 }
             }
 
-            // Update basic properties
             user.FirstName = model.FirstName;
             user.LastName = model.LastName;
             user.PhoneNumber = model.PhoneNumber;
             user.EmailConfirmed = model.EmailConfirmed;
 
-            // Handle IsActive by toggling lockout end (simple approach)
             if (model.IsActive)
             {
                 user.LockoutEnd = null;
@@ -161,7 +160,7 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
                 return View("~/Areas/Admin/Views/User/Edit.cshtml", model);
             }
 
-            // Roles management
+            // Roles management via SelectedRoles
             var currentRoles = (await _userManager.GetRolesAsync(user)).ToList();
             var selectedRoles = model.SelectedRoles ?? new List<string>();
 
@@ -209,7 +208,6 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            // Prevent deletion of the current admin user
             if (user.UserName == User.Identity?.Name)
             {
                 TempData["ErrorMessage"] = "You cannot delete your own account.";
@@ -229,6 +227,98 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-      
+       
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PromoteToAdmin(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return BadRequest();
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return NotFound();
+
+            if (user.UserName == User.Identity?.Name)
+            {
+                TempData["ErrorMessage"] = "You cannot change your own role here.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            const string adminRole = "Admin";
+            if (!await _roleManager.RoleExistsAsync(adminRole))
+            {
+                var createRoleResult = await _roleManager.CreateAsync(new IdentityRole(adminRole));
+                if (!createRoleResult.Succeeded)
+                {
+                    TempData["ErrorMessage"] = "Failed to create Admin role.";
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+
+            if (await _userManager.IsInRoleAsync(user, adminRole))
+            {
+                TempData["ErrorMessage"] = "User is already an admin.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var result = await _userManager.AddToRoleAsync(user, adminRole);
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = $"User '{user.UserName}' promoted to Admin.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = $"Failed to promote user: {string.Join(", ", result.Errors.Select(e => e.Description))}";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+    
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RevokeAdmin(string id)
+        {
+            if (string.IsNullOrEmpty(id))
+                return BadRequest();
+
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+                return NotFound();
+
+           
+            if (user.UserName == User.Identity?.Name)
+            {
+                TempData["ErrorMessage"] = "You cannot revoke your own admin role here.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            const string adminRole = "Admin";
+
+            if (!await _roleManager.RoleExistsAsync(adminRole))
+            {
+                TempData["ErrorMessage"] = "Admin role does not exist.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            if (!await _userManager.IsInRoleAsync(user, adminRole))
+            {
+                TempData["ErrorMessage"] = "User is not an admin.";
+                return RedirectToAction(nameof(Index));
+            }
+
+            var result = await _userManager.RemoveFromRoleAsync(user, adminRole);
+            if (result.Succeeded)
+            {
+                TempData["SuccessMessage"] = $"Admin role revoked from '{user.UserName}'.";
+            }
+            else
+            {
+                TempData["ErrorMessage"] = $"Failed to revoke admin role: {string.Join(", ", result.Errors.Select(e => e.Description))}";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

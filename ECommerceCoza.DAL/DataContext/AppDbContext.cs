@@ -23,6 +23,7 @@ namespace ECommerceCoza.DAL.DataContext
         public DbSet<Address> Addresses { get; set; } = null!;
         public DbSet<Brand> Brands { get; set; } = null!;
         public DbSet<Slider> Sliders { get; set; } = null!;
+        public DbSet<Review> Reviews { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

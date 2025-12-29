@@ -85,6 +85,11 @@ namespace ECommerceCoza.BLL.Mapping
                 .ForMember(dest => dest.ImageFile, opt => opt.Ignore())
                 .ReverseMap()
                 .ForMember(dest => dest.ImageName, opt => opt.Ignore());
+
+            CreateMap<Review, ReviewViewModel>().ReverseMap();
+            CreateMap<Review, ReviewCreateViewModel>().ReverseMap();
+            CreateMap<Review, ReviewUpdateViewModel>().ReverseMap();
+
         }
     }
 }

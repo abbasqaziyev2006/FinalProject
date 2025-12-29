@@ -1,10 +1,10 @@
 ﻿@using EcommerceCoza.BLL.ViewModels
 @model ProductViewModel
+
 @inject WebApplication4.Services.ICurrencyService CurrencyService
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 @{
-
     var firstVariant = Model.ProductVariants.FirstOrDefault();
     var hasDiscount = firstVariant?.HasDiscount ?? false;
     int discountPercent = 0;
@@ -13,7 +13,6 @@
         discountPercent = (int)Math.Round((1 - (firstVariant.SalePrice.Value / firstVariant.Price)) * 100);
     }
 
-   
     var uniqueColors = Model.ProductVariants
         .Select(v => new
         {
@@ -26,12 +25,16 @@
         .Select(g => g.First().Variant)
         .ToList();
 
-
     var uniqueSizes = Model.ProductVariants
         .Where(v => !string.IsNullOrEmpty(v.Size))
         .Select(v => v.Size)
         .Distinct()
         .ToList();
+
+    // Rating calculation with half stars support
+    var fullStars = (int)Math.Floor(Model.Rating);
+    var hasHalfStar = (Model.Rating - fullStars) >= 0.5;
+    var emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
 }
 
 <main class="pt-90">
@@ -46,7 +49,6 @@
                         <div class="product-single__image">
                             <div class="swiper-container">
                                 <div class="swiper-wrapper">
-                                   
                                     @if (!string.IsNullOrEmpty(currentVariant.CoverImageName))
                                     {
                                         <div class="swiper-slide product-single__image-item">
@@ -60,7 +62,7 @@
                                             </a>
                                         </div>
                                     }
-                                    
+
                                     @foreach (var imageName in currentVariant.ImageNames)
                                     {
                                         <div class="swiper-slide product-single__image-item">
@@ -140,28 +142,38 @@
                     </div>
                 }
 
-                <div class="product-single__rating d-flex align-items-center" data-rating="@Model.Rating" data-review-count="@Model.ReviewCount">
+                @* Updated Rating Display with Half Stars *@
+                <div class="product-single__rating d-flex align-items-center mb-3" data-rating="@Model.Rating" data-review-count="@Model.ReviewCount">
                     <div class="reviews-group d-flex">
-                        @for (int i = 1; i <= 5; i++)
+                        @* Full Stars *@
+                        @for (int i = 0; i < fullStars; i++)
                         {
-                            if (i <= Model.Rating)
-                            {
-                                <svg class="review-star active" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                    <use href="#icon_star" />
-                                </svg>
-                            }
-                            else
-                            {
-                                <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
-                                    <use href="#icon_star" />
-                                </svg>
-                            }
+                            <svg class="review-star active" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                                <use href="#icon_star" />
+                            </svg>
+                        }
+                        
+                        @* Half Star *@
+                        @if (hasHalfStar)
+                        {
+                            <svg class="review-star half-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                                <use href="#icon_star" />
+                            </svg>
+                        }
+                        
+                        @* Empty Stars *@
+                        @for (int i = 0; i < emptyStars; i++)
+                        {
+                            <svg class="review-star" viewBox="0 0 9 9" xmlns="http://www.w3.org/2000/svg">
+                                <use href="#icon_star" />
+                            </svg>
                         }
                     </div>
-                    <span class="reviews-note text-lowercase text-secondary ms-1">
+                    <span class="reviews-note text-secondary ms-2">
                         @if (Model.ReviewCount > 0)
                         {
-                            <text>@Model.ReviewCount reviews</text>
+                            <strong>@Model.Rating.ToString("F1")</strong>
+                            <text> (@Model.ReviewCount @(Model.ReviewCount == 1 ? "review" : "reviews"))</text>
                         }
                         else
                         {
@@ -170,7 +182,6 @@
                     </span>
                 </div>
 
-      
                 <div class="product-single__price" id="product-price-container">
                     @if (hasDiscount && firstVariant != null)
                     {
@@ -200,7 +211,6 @@
                     @if (Model.ProductVariants.Any())
                     {
                         <div class="product-single__swatches">
-                           
                             @if (uniqueSizes.Any())
                             {
                                 <div class="product-swatch text-swatches mb-3">
@@ -222,7 +232,6 @@
                                 </div>
                             }
 
-                          
                             <div class="product-swatch text-swatches">
                                 <label>@Localizer["Color"]</label>
                                 <div class="swatch-list">
@@ -331,6 +340,11 @@
                        href="#tab-additional-info" role="tab" aria-controls="tab-additional-info"
                        aria-selected="false">@Localizer["AdditionalInformation"]</a>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link nav-link_underscore" id="tab-reviews-tab" data-bs-toggle="tab"
+                       href="#tab-reviews" role="tab" aria-controls="tab-reviews"
+                       aria-selected="false">@Localizer["Reviews"] (@Model.ReviewCount)</a>
+                </li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab-description" role="tabpanel"
@@ -401,6 +415,27 @@
                         }
                     </div>
                 </div>
+
+                <div class="tab-pane fade" id="tab-reviews" role="tabpanel" aria-labelledby="tab-reviews-tab">
+                    <div class="product-single__reviews">
+                        @await Html.PartialAsync("_Reviews", Model.Reviews)
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @await Html.PartialAsync("_ReviewForm", new EcommerceCoza.BLL.ViewModels.ReviewViewModel
+                            {
+                                ProductId = Model.Id,
+                                ProductName = Model.Name
+                            })
+                        }
+                        else
+                        {
+                            <div class="alert alert-info">
+                                Please <a asp-controller="Account" asp-action="Login">login</a> to leave a review.
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -409,20 +444,19 @@
 @section Scripts {
     <script>
         $(document).ready(function () {
-
             @{
-                    var jsVariants = Model.ProductVariants.Select(v => new
-                    {
-                            id = v.Id,
-                            price = CurrencyService.ConvertFromBaseUsd(v.Price),
-                            salePrice = v.SalePrice.HasValue ? CurrencyService.ConvertFromBaseUsd(v.SalePrice.Value) : (decimal?)null,
-                            coverImageName = v.CoverImageName,
-                            imageNames = v.ImageNames,
-                            quantity = v.Quantity,
-                            colorId = v.ColorId,
-                            size = v.Size,
-                            colorName = v.ColorName
-                    }).ToList();
+                var jsVariants = Model.ProductVariants.Select(v => new
+                {
+                    id = v.Id,
+                    price = CurrencyService.ConvertFromBaseUsd(v.Price),
+                    salePrice = v.SalePrice.HasValue ? CurrencyService.ConvertFromBaseUsd(v.SalePrice.Value) : (decimal?)null,
+                    coverImageName = v.CoverImageName,
+                    imageNames = v.ImageNames,
+                    quantity = v.Quantity,
+                    colorId = v.ColorId,
+                    size = v.Size,
+                    colorName = v.ColorName
+                }).ToList();
             }
             const variants = @Html.Raw(Json.Serialize(jsVariants));
             const currencySymbol = '@CurrencyService.GetSymbol()';
@@ -432,7 +466,6 @@
             }
 
             function refreshGalleryForVariant(matchingVariant) {
-                // build arrays of image filenames (cover first if present)
                 const images = [];
                 if (matchingVariant.coverImageName) images.push(matchingVariant.coverImageName);
                 if (Array.isArray(matchingVariant.imageNames)) {
@@ -441,7 +474,6 @@
                     });
                 }
 
-                // build slides html for main gallery and thumbnails
                 let slidesHtml = '';
                 let thumbsHtml = '';
                 images.forEach(img => {
@@ -464,12 +496,9 @@
                 const $mainWrapper = $('.product-single__image .swiper-wrapper');
                 const $thumbWrapper = $('.product-single__thumbnail .swiper-wrapper');
 
-                // Replace wrappers content
                 if ($mainWrapper.length) $mainWrapper.html(slidesHtml || `<div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto" src="/images/products/product-placeholder.jpg" width="674" height="674" alt="placeholder" /></div>`);
                 if ($thumbWrapper.length) $thumbWrapper.html(thumbsHtml || `<div class="swiper-slide product-single__image-item"><img loading="lazy" class="h-auto" src="/images/products/product-placeholder.jpg" width="104" height="104" alt="placeholder" /></div>`);
 
-                // If Swiper instance exists on the containers, try to update it.
-                // Many themes attach Swiper instance to DOM element as .swiper
                 try {
                     const mainContainer = document.querySelector('.product-single__image .swiper-container');
                     const thumbContainer = document.querySelector('.product-single__thumbnail .swiper-container');
@@ -478,7 +507,6 @@
                         mainContainer.swiper.update();
                         mainContainer.swiper.slideTo(0);
                     } else if (window.Swiper && mainContainer) {
-                        // attempt a minimal re-init if no instance present
                         new Swiper(mainContainer, {
                             navigation: { nextEl: '.swiper-button-next', prevEl: '.swiper-button-prev' },
                             loop: false,
@@ -494,11 +522,9 @@
                         });
                     }
                 } catch (ex) {
-                    // silent fallback - gallery will still show updated images without JS swiper controls
                     console.warn('Swiper update failed', ex);
                 }
 
-                // rebind fancybox (if used) - remove existing attributes then re-add to ensure correct href
                 if (window.$ && $.fancybox) {
                     $('[data-fancybox="gallery"]').fancybox && $('[data-fancybox="gallery"]').fancybox();
                 }
@@ -516,11 +542,8 @@
                 if (matchingVariant) {
                     $('#productVariantId').val(matchingVariant.id);
                     $('#quantity').attr('max', matchingVariant.quantity);
-
-                    // Update price display with discount
                     updatePriceDisplay(matchingVariant);
 
-                    // Update stock status
                     if (matchingVariant.quantity > 0) {
                         $('#stock-status').html('<span class="text-success">@Localizer["InStock"] (' + matchingVariant.quantity + ' @Localizer["Available"])</span>');
                         $('#addToCartBtn').prop('disabled', false);
@@ -529,17 +552,14 @@
                         $('#addToCartBtn').prop('disabled', true);
                     }
 
-                    // Update entire gallery (main + thumbnails) to matching variant images
                     refreshGalleryForVariant(matchingVariant);
                 } else {
-                    // If no exact match, disable add to cart and show message
                     $('#productVariantId').val('');
                     $('#addToCartBtn').prop('disabled', true);
                     $('#stock-status').html('<span class="text-danger">@Localizer["OutOfStock"]</span>');
                 }
             }
 
-            // 🆕 Qiyməti yenilə (DAHA PARLAQ QIRMIZI)
             function updatePriceDisplay(variant) {
                 const hasDiscount = variant.salePrice && variant.salePrice < variant.price;
 
@@ -569,13 +589,9 @@
                 }
             }
 
-            // Handle size and color selection
             $('input[name="size"], input[name="color"]').on('change', updateVariantSelection);
-
-            // on initial load ensure gallery matches the initially selected swatch (color)
             updateVariantSelection();
 
-            // Handle quantity controls
             $('.qty-control__increase').on('click', function () {
                 const input = $(this).siblings('.qty-control__number');
                 const max = parseInt(input.attr('max'));
@@ -627,7 +643,7 @@
                             // Update cart count in header
                             $('.header__cart-count, .js-cart-items-count').text(response.totalCount || 0);
 
-                            // Show success message - using the same style as add-to-basket.js
+                            // Show success message
                             showNotification(response.message || 'Product added to basket successfully!', 'success');
                         } else {
                             showNotification(response.message || 'Failed to add product to basket.', 'danger');
@@ -644,9 +660,8 @@
                 });
             });
 
-            // ✅ Updated notification function to match add-to-basket.js style
+            // Notification helper
             function showNotification(message, type) {
-                // Remove any existing toasts
                 $('.basket-toast').remove();
 
                 const bgColor = type === 'success' ? '#28a745' : '#dc3545';
@@ -700,6 +715,39 @@
                 transform: translateX(100%);
                 opacity: 0;
             }
+        }
+
+        /* Optional half-star styling when using the same star SVG for full/half */
+        .review-star {
+            width: 18px;
+            height: 18px;
+            fill: #e9ecef;
+            margin-right: 6px;
+        }
+
+        .review-star.active use {
+            fill: #ffc107;
+        }
+
+        .review-star.half-star {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .review-star.half-star use {
+            fill: #e9ecef;
+        }
+
+        .review-star.half-star::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg, #ffc107 0%, #ffc107 100%);
+            pointer-events: none;
+            mix-blend-mode: multiply;
         }
     </style>
 }

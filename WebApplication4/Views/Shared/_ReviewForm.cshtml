@@ -1,0 +1,20 @@
+@using EcommerceCoza.BLL.ViewModels
+@model ReviewViewModel
+<form asp-controller="Review" asp-action="Create" method="post">
+    <input type="hidden" asp-for="ProductId" />
+    <div class="mb-2">
+        <label asp-for="Rating" class="form-label">Rating</label>
+        <select asp-for="Rating" class="form-select" required>
+            <option value="">Select</option>
+            @for (int i = 1; i <= 5; i++)
+            {
+                <option value="@i">@i</option>
+            }
+        </select>
+    </div>
+    <div class="mb-2">
+        <label asp-for="Comment" class="form-label">Comment</label>
+        <textarea asp-for="Comment" class="form-control" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Review</button>
+</form>

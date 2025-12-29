@@ -8,4 +8,5 @@
         public bool IsActive { get; set; } = true;
         public List<Product> Products { get; set; } = [];
     }
+
 }

@@ -6,7 +6,29 @@
 @inject WebApplication4.Services.ICurrencyService CurrencyService
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
-<main class="pt-90">
+<main class="pt-90 custom-pt">
+    <style>
+        .custom-pt {
+            padding-top: 160px;
+        }
+        @@media (max-width: 991.98px) {
+            .custom-pt
+
+        {
+            padding-top: 120px;
+        }
+
+        }
+        @@media (max-width: 575.98px) {
+            .custom-pt
+
+        {
+            padding-top: 90px;
+        }
+
+        }
+    </style>
+
     <div class="mb-4 pb-4"></div>
     <section class="shop-checkout container">
         <h2 class="page-title">@Localizer["PageTitle"]</h2>
@@ -246,25 +268,24 @@
             const msgInvalidCode = '@(Localizer["InvalidDiscountCode"].Value ?? "")';
             const msgErrorApplying = '@(Localizer["ErrorApplyingDiscount"].Value ?? "")';
 
-            // Keep client-side validation and allow normal POST.
-            // Disable submit button on submit to prevent double posts.
+
             $('#checkoutForm').on('submit', function () {
                 $('#placeOrderBtn').prop('disabled', true).text('@Localizer["Processing"]' ?? 'Processing...');
                 return true;
             });
 
-            // Auto-apply saved coupon from server when present
+
             @if (ViewData["SavedDiscountCode"] != null && string.IsNullOrEmpty(Model?.Discount))
             {
-                    <text>
-                    setTimeout(function () {
-                        $('#discountCode').val('@ViewData["SavedDiscountCode"]');
-                        $('#applyDiscountBtn').click();
-                    }, 300);
-                    </text>
+                        <text>
+                        setTimeout(function () {
+                            $('#discountCode').val('@ViewData["SavedDiscountCode"]');
+                            $('#applyDiscountBtn').click();
+                        }, 300);
+                        </text>
             }
 
-            // Handle discount code application
+           
             $('#applyDiscountBtn').on('click', function () {
                 const discountCode = $('#discountCode').val().trim();
 
@@ -282,6 +303,9 @@
                     type: 'POST',
                     data: { discountCode: discountCode },
                     dataType: 'json',
+                    headers: {
+                        'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
+                    },
                     success: function (response) {
                         if (response.success) {
                             $('#hasAppliedDiscount').val('true');

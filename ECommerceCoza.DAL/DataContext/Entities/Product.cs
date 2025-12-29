@@ -14,5 +14,6 @@
         public Category? Category { get; set; }
         public List<ProductVariant> ProductVariants { get; set; } = [];
         public List<WishlistItem> WishlistItems { get; set; } = [];
+        public List<Review> Reviews { get; set; } = [];
     }
 }
