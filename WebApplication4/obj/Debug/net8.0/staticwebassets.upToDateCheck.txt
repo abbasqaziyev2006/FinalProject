@@ -229,6 +229,10 @@ wwwroot\images\products\61YS2izI88L._AC_SX679_-b3ba8fa2-bd2b-4fa4-a7cd-3b3aeeccb
 wwwroot\images\products\713M3pxiAxL._AC_SY550_-5b6de635-d8f8-4883-8eff-cbfb66989e78-.jpg
 wwwroot\images\products\713M3pxiAxL._AC_SY550_-8397bcdb-8505-4649-a22b-b7fd408bd5a2-.jpg
 wwwroot\images\products\713M3pxiAxL._AC_SY550_-ef60e020-f707-4390-add4-d596e50baa12-.jpg
+wwwroot\images\products\715CHALzATL._AC_SX522_-37b3529a-c78f-4da3-88d1-16bf5a0d9d8d-.jpg
+wwwroot\images\products\715CHALzATL._AC_SX522_-66decbb0-59e7-4e8b-b238-737b2bd5f901-.jpg
+wwwroot\images\products\715CHALzATL._AC_SX522_-f5ec2aae-1a09-454f-a210-dc3a6b332cbd-.jpg
+wwwroot\images\products\715CHALzATL._AC_SX522_-ffa89150-8158-44ba-a723-c1d9b6311ea2-.jpg
 wwwroot\images\products\71aaCNNz8oL._AC_SY535_-02d336e5-07ca-47e3-bf6a-9eb1fff91738-.jpg
 wwwroot\images\products\71aaCNNz8oL._AC_SY535_-846d52d0-cfc9-4bab-a485-a7b65df19f78-.jpg
 wwwroot\images\products\71aaCNNz8oL._AC_SY535_-f1ed856c-c578-437f-9a65-fca5012e1995-.jpg
@@ -236,6 +240,10 @@ wwwroot\images\products\71bqwQGp8VL._AC_SX522_-0822f93e-78c7-42aa-99ec-451a6a65d
 wwwroot\images\products\71bqwQGp8VL._AC_SX522_-0e820f96-93b1-4384-9bab-e9cd97a3f2ba-.jpg
 wwwroot\images\products\71bqwQGp8VL._AC_SX522_-7ba09785-7aaa-4df6-8bf0-6ffb7bce76e7-.jpg
 wwwroot\images\products\71bqwQGp8VL._AC_SX522_-fde0e589-f6c4-46ce-9f7d-46de2178eea0-.jpg
+wwwroot\images\products\71dnkZQC9iL._AC_SX522_-0e1f1a00-25f5-4476-9f99-ae0a54bb7be0-.jpg
+wwwroot\images\products\71dnkZQC9iL._AC_SX522_-8e3eba78-49ee-4bad-a85a-d113d4b902ee-.jpg
+wwwroot\images\products\71dnkZQC9iL._AC_SX522_-9b4c21f0-4e61-45ad-bc8c-a14a44bf54a7-.jpg
+wwwroot\images\products\71dnkZQC9iL._AC_SX522_-e6e84df6-66cf-44cd-9e6b-ceafd17e7e57-.jpg
 wwwroot\images\products\71DonsP0-sL._AC_SY535_-c7f3e1ce-7772-44d0-89fd-f38515230f89-.jpg
 wwwroot\images\products\71DonsP0-sL._AC_SY535_-e8aaea82-9542-4e10-9f41-e87e0c9afa95-.jpg
 wwwroot\images\products\71DonsP0-sL._AC_SY535_-f7f18be2-718c-4ea0-b2a2-22ac9e950069-.jpg
@@ -322,6 +330,10 @@ wwwroot\images\products\81mR9NVVOGL._AC_SX679_-cfd833a0-9af9-4de0-9586-084b89201
 wwwroot\images\products\81mUQJZECeL._AC_SY535_-619c9ad0-463a-4718-b2a2-55fe2ac227d8-.jpg
 wwwroot\images\products\81mUQJZECeL._AC_SY535_-627dbdb6-e2b9-448e-9d83-0bf02349148f-.jpg
 wwwroot\images\products\81mUQJZECeL._AC_SY535_-81f6e22c-df22-47ff-8641-bbf475a2c71b-.jpg
+wwwroot\images\products\81pOUeIvcLL._AC_SX522_-31ef94e1-1c38-44bc-b612-ab9dd602431c-.jpg
+wwwroot\images\products\81pOUeIvcLL._AC_SX522_-b4b97236-52a7-470b-a3a9-6a937e8ce9e5-.jpg
+wwwroot\images\products\81pOUeIvcLL._AC_SX522_-e4647ab6-fccd-43c6-a82c-50d6a8086158-.jpg
+wwwroot\images\products\81pOUeIvcLL._AC_SX522_-fe9ca775-9401-4a5c-9b5c-0b92d60cb2bd-.jpg
 wwwroot\images\products\81q6dBPLnnL._AC_SX522_-9b620859-a52b-438f-9a56-1ebae4cdd4a4-.jpg
 wwwroot\images\products\81q6dBPLnnL._AC_SX522_-dea0c123-a730-4650-b773-37c05edda2a5-.jpg
 wwwroot\images\products\81q6dBPLnnL._AC_SX522_-f323549d-cd79-4ea1-8255-23e29551c409-.jpg

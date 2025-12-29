@@ -1,4 +1,7 @@
-﻿@{
+﻿@using System.Text.Json
+@model EcommerceCoza.BLL.ViewModels.DashboardViewModel
+
+@{
     Layout = "_AdminLayout";
     ViewData["Title"] = "Dashboard";
 }
@@ -17,7 +20,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Total Orders</div>
-                                        <h4>3</h4>
+                                        <h4>@Model.TotalOrders</h4>
                                     </div>
                                 </div>
                             </div>
@@ -31,7 +34,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Total Amount</div>
-                                        <h4>481.34</h4>
+                                        <h4>@Model.TotalAmount.ToString("0.00")</h4>
                                     </div>
                                 </div>
                             </div>
@@ -45,7 +48,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Pending Orders</div>
-                                        <h4>3</h4>
+                                        <h4>@Model.PendingOrdersCount</h4>
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +62,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Pending Orders Amount</div>
-                                        <h4>481.34</h4>
+                                        <h4>@Model.PendingOrdersAmount.ToString("0.00")</h4>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +78,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Delivered Orders</div>
-                                        <h4>0</h4>
+                                        <h4>@Model.DeliveredOrdersCount</h4>
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +92,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Delivered Orders Amount</div>
-                                        <h4>0.00</h4>
+                                        <h4>@Model.DeliveredOrdersAmount.ToString("0.00")</h4>
                                     </div>
                                 </div>
                             </div>
@@ -103,7 +106,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Canceled Orders</div>
-                                        <h4>0</h4>
+                                        <h4>@Model.CancelledOrdersCount</h4>
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +120,7 @@
                                     </div>
                                     <div>
                                         <div class="body-text mb-2">Canceled Orders Amount</div>
-                                        <h4>0.00</h4>
+                                        <h4>@Model.CancelledOrdersAmount.ToString("0.00")</h4>
                                     </div>
                                 </div>
                             </div>
@@ -153,7 +156,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap10">
-                                <h4>$37,802</h4>
+                                <h4>@Model.TotalAmount.ToString("0.00")</h4>
                                 <div class="box-icon-trending up">
                                     <i class="icon-trending-up"></i>
                                     <div class="body-title number">0.56%</div>
@@ -168,7 +171,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap10">
-                                <h4>$28,305</h4>
+                                <h4>@Model.TotalAmount.ToString("0.00")</h4>
                                 <div class="box-icon-trending up">
                                     <i class="icon-trending-up"></i>
                                     <div class="body-title number">0.56%</div>
@@ -199,7 +202,6 @@
                                         <th>Name</th>
                                         <th class="text-center">Phone</th>
                                         <th class="text-center">Subtotal</th>
-                                        <th class="text-center">Tax</th>
                                         <th class="text-center">Total</th>
                                         <th class="text-center">Status</th>
                                         <th class="text-center">Order Date</th>
@@ -209,27 +211,36 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center">1</td>
-                                        <td class="text-center">Divyansh Kumar</td>
-                                        <td class="text-center">1234567891</td>
-                                        <td class="text-center">$172.00</td>
-                                        <td class="text-center">$36.12</td>
-                                        <td class="text-center">$208.12</td>
-                                        <td class="text-center">ordered</td>
-                                        <td class="text-center">2024-07-11 00:54:14</td>
-                                        <td class="text-center">2</td>
-                                        <td></td>
-                                        <td class="text-center">
-                                            <a href="~/#">
-                                                <div class="list-icon-function view-icon">
-                                                    <div class="item eye">
-                                                        <i class="icon-eye"></i>
+                                    @foreach (var item in Model.RecentOrders)
+                                    {
+                                        <tr>
+                                            <td class="text-center">@item.Id</td>
+                                            <td class="text-center">
+                                                @{
+                                                    var name = item.Address != null
+                                                    ? $"{item.Address.FirstName} {item.Address.LastName}".Trim()
+                                                    : item.AppUserName ?? "—";
+                                                }
+                                                @name
+                                            </td>
+                                            <td class="text-center">@item.Phone</td>
+                                            <td class="text-center">@item.TotalPrice.ToString("0.00")</td>
+                                            <td class="text-center">@item.EndPrice.ToString("0.00")</td>
+                                            <td class="text-center">@item.OrderStatus</td>
+                                            <td class="text-center">@item.FormattedCreatedAt</td>
+                                            <td class="text-center">@item.TotalCount</td>
+                                            <td class="text-center">@item.FormattedDeliveredDate</td>
+                                            <td class="text-center">
+                                                <a asp-area="Admin" asp-controller="Order" asp-action="Details" asp-route-id="@item.Id">
+                                                    <div class="list-icon-function view-icon">
+                                                        <div class="item eye">
+                                                            <i class="icon-eye"></i>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -248,17 +259,17 @@
                     var options = {
                         series: [{
                             name: 'Total',
-                            data: [0.00, 0.00, 0.00, 0.00, 0.00, 273.22, 208.12, 0.00, 0.00, 0.00, 0.00, 0.00]
+                            data: @Html.Raw(JsonSerializer.Serialize(Model.TotalSeries))
                         }, {
                             name: 'Pending',
-                            data: [0.00, 0.00, 0.00, 0.00, 0.00, 273.22, 208.12, 0.00, 0.00, 0.00, 0.00, 0.00]
+                            data: @Html.Raw(JsonSerializer.Serialize(Model.PendingSeries))
                         },
                         {
                             name: 'Delivered',
-                            data: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]
+                            data: @Html.Raw(JsonSerializer.Serialize(Model.DeliveredSeries))
                         }, {
                             name: 'Canceled',
-                            data: [0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00]
+                            data: @Html.Raw(JsonSerializer.Serialize(Model.CancelledSeries))
                         }],
                         chart: {
                             type: 'bar',
