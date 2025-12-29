@@ -1,4 +1,4 @@
-@using EcommerceCoza.BLL.ViewModels
+﻿@using EcommerceCoza.BLL.ViewModels
 @model FooterViewModel
 
 <hr class="mt-5 text-secondary" />
@@ -34,16 +34,15 @@
                     <p><strong class="fw-medium">+1 000-000-0000</strong></p>
                 }
 
-                <ul class="social-links list-unstyled d-flex flex-wrap mb-0">
-                    @if (Model.Socials != null && Model.Socials.Any())
+                <ul class="container social-links list-unstyled d-flex flex-wrap mb-0">
+                    @if (Model.Socials != null)
                     {
                         @foreach (var social in Model.Socials)
                         {
-                            <li>
-                                <a href="@social.Url" class="footer__social-link d-block" target="_blank" rel="noopener noreferrer" title="@social.Name">
-                                    <svg class="svg-icon svg-icon_@social.IconName.ToLower()" width="14" height="15" viewBox="0 0 14 15">
-                                        <use href="#icon_@social.IconName.ToLower()" />
-                                    </svg>
+                            <li class="me-3">
+                                <a href="@social.Url" class="footer__social-link d-block" target="_blank">
+                                  
+                                    <i class="fa-brands @social.IconName"></i>
                                 </a>
                             </li>
                         }
@@ -99,7 +98,7 @@
 
     <div class="footer-bottom">
         <div class="container d-md-flex align-items-center">
-            <span class="footer-copyright me-auto">�@DateTime.Now.Year Surfside Media</span>
+            <span class="footer-copyright me-auto">©@DateTime.Now.Year Surfside Media</span>
             <div class="footer-settings d-md-flex align-items-center">
                 <a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Terms &amp; Conditions</a>
             </div>

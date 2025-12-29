@@ -34,4 +34,5 @@
 	<data name="VAT" xml:space="preserve"><value>НДС</value></data>
 	<data name="Total" xml:space="preserve"><value>Итого</value></data>
 	<data name="ProceedToCheckout" xml:space="preserve"><value>ПЕРЕЙТИ К ОФОРМЛЕНИЮ</value></data>
+	<data name="Sale" xml:space="preserve"><value>Распродажа</value></data>
 </root>

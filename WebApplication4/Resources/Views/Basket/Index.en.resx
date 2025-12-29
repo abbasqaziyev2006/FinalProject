@@ -34,4 +34,8 @@
 	<data name="VAT" xml:space="preserve"><value>VAT</value></data>
 	<data name="Total" xml:space="preserve"><value>Total</value></data>
 	<data name="ProceedToCheckout" xml:space="preserve"><value>PROCEED TO CHECKOUT</value></data>
+	<data name="Discount" xml:space="preserve"><value>Discount</value></data> 
+	<data name="Discount" xml:space="preserve"><value>Endirim</value></data> 
+	<data name="Discount" xml:space="preserve"><value>Скидка</value></data> 
+	<data name="Sale" xml:space="preserve"><value>Sale</value></data>
 </root>

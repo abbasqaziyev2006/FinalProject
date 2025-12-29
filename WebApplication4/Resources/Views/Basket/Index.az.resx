@@ -34,4 +34,5 @@
 	<data name="VAT" xml:space="preserve"><value>ƏDV</value></data>
 	<data name="Total" xml:space="preserve"><value>Cəmi</value></data>
 	<data name="ProceedToCheckout" xml:space="preserve"><value>ÖDƏNİŞƏ KEÇ</value></data>
+	<data name="Sale" xml:space="preserve"><value>Satış</value></data>
 </root>
