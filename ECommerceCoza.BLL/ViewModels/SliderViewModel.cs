@@ -6,8 +6,8 @@ namespace EcommerceCoza.BLL.ViewModels
     {
         public int Id { get; set; }
         public string Title { get; set; } = null!;
-        public string Line1 { get; set; } = null!; // Tagline
-        public string Line2 { get; set; } = null!; // Subtitle
+        public string Line1 { get; set; } = null!; 
+        public string Line2 { get; set; } = null!; 
         public string ImageName { get; set; } = null!;
         public string? Link { get; set; }
         public string? CategoryIcon { get; set; }

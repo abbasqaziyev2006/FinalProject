@@ -288,13 +288,13 @@
                                         <th class="text-end text-success">-@Model.DiscountAmount.ToString("C")</th>
                                     </tr>
                                 }
-                                <tr>
-                                    <th colspan="5" class="text-end">Tax (21%):</th>
-                                    <th class="text-end">@Model.Tax.ToString("C")</th>
-                                </tr>
                                 <tr class="table-active">
                                     <th colspan="5" class="text-end fs-5">Total:</th>
-                                    <th class="text-end fs-5 text-primary">@Model.EndPrice.ToString("C")</th>
+                                    <th class="text-end fs-5 text-primary">
+                                        @(
+                                            (Model.TotalPrice - Model.DiscountAmount).ToString("C")
+                                        )
+                                    </th>
                                 </tr>
                             </tfoot>
                         </table>
