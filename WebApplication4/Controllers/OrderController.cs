@@ -202,7 +202,7 @@ namespace EcommerceCoza.MVC.Controllers
                 Session?.Remove(orderToken);
                 Session?.Remove(AppliedDiscountCodeKey);
 
-                TempData["Success"] = "Ödəniş uğurlu oldu!";
+                TempData["Success"] = "Payment was successful!";
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
