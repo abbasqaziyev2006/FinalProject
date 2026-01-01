@@ -1,5 +1,9 @@
-@using EcommerceCoza.BLL.ViewModels
+﻿@using EcommerceCoza.BLL.ViewModels
 @model IEnumerable<ReviewViewModel>
+@inject Microsoft.AspNetCore.Identity.UserManager<ECommerceCoza.DAL.DataContext.Entities.AppUser> UserManager
+@{
+    var currentUserId = UserManager.GetUserId(User);
+}
 <div class="product-reviews">
     <h4>Reviews (@Model.Count())</h4>
     @if (!Model.Any())
@@ -10,19 +14,34 @@
     {
         foreach (var review in Model)
         {
+            var isOwner = User.Identity.IsAuthenticated && !string.IsNullOrEmpty(currentUserId) && review.AppUserId == currentUserId;
             <div class="review border-bottom mb-3 pb-2">
-                <div>
-                    <strong>@review.UserName</strong>
-                    <span class="ms-2">
-                        @for (int i = 1; i <= 5; i++)
-                        {
-                            var starClass = i <= review.Rating ? "fa fa-star checked text-warning" : "fa fa-star text-muted";
-                            <span class="@starClass" aria-hidden="true"></span>
-                        }
-                    </span>
-                    <span class="text-muted small ms-2">@review.CreatedAt.ToString("g")</span>
+                <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                        <strong>@(string.IsNullOrEmpty(review.UserName) ? "Anonymous" : review.UserName)</strong>
+                        <span class="ms-2">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                var starClass = i <= review.Rating ? "fa fa-star checked text-warning" : "fa fa-star text-muted";
+                                <span class="@starClass" aria-hidden="true"></span>
+                            }
+                        </span>
+                        <span class="text-muted small ms-2">@review.CreatedAt.ToString("g")</span>
+                    </div>
+                    @if (isOwner)
+                    {
+                        <div class="ms-3">
+                            <a asp-controller="Review" asp-action="Edit" asp-route-id="@review.Id" asp-route-returnUrl="@Context.Request.Path" class="btn btn-sm btn-primary me-1">Edit</a>
+                            <form asp-controller="Review" asp-action="Delete" method="post" style="display:inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@review.Id" />
+                                <input type="hidden" name="returnUrl" value="@Context.Request.Path" />
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Bu rəyi silmək istədiyinizə əminsiniz?');">Delete</button>
+                            </form>
+                        </div>
+                    }
                 </div>
-                <div>@review.Comment</div>
+                <div class="mt-2">@review.Comment</div>
             </div>
         }
     }

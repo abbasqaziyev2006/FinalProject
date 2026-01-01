@@ -1529,3 +1529,4 @@ C:\Users\O Sebnem K Cemengul\Source\Repos\FinalProjectLast\WebApplication4\obj\D
 C:\Users\O Sebnem K Cemengul\Source\Repos\FinalProjectLast\WebApplication4\obj\Debug\net8.0\EcommerceCoza.MVC.pdb
 C:\Users\O Sebnem K Cemengul\Source\Repos\FinalProjectLast\WebApplication4\obj\Debug\net8.0\EcommerceCoza.MVC.genruntimeconfig.cache
 C:\Users\O Sebnem K Cemengul\Source\Repos\FinalProjectLast\WebApplication4\obj\Debug\net8.0\ref\EcommerceCoza.MVC.dll
+C:\Users\O Sebnem K Cemengul\Source\Repos\FinalProjectLast\WebApplication4\obj\Debug\net8.0\EcommerceCoza.MVC.MvcApplicationPartsAssemblyInfo.cs

@@ -244,9 +244,9 @@
         var retina = window.devicePixelRatio > 1 ? true : false;
         if (retina) {
             if ($(".dark-theme").length > 0) {
-                $('#logo_header').attr({ src: 'images/logo/logo.png', width: '154px', height: '52px' });
+                $('#logo_header').attr({ src: '/Admin/images/logo/logo.png', width: '154px', height: '52px' });
             } else {
-                $('#logo_header').attr({ src: 'images/logo/logo.png', width: '154px', height: '52px' });
+                $('#logo_header').attr({ src: '/Admin/images/logo/logo.png', width: '154px', height: '52px' });
             }
         }
     };
@@ -273,7 +273,7 @@
         select_colors_theme();
         icon_function();
         box_search();
-        retinaLogos();
+ /*       retinaLogos();*/
         preloader();
     });
 

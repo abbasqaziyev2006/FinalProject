@@ -86,7 +86,10 @@ namespace ECommerceCoza.BLL.Mapping
                 .ReverseMap()
                 .ForMember(dest => dest.ImageName, opt => opt.Ignore());
 
-            CreateMap<Review, ReviewViewModel>().ReverseMap();
+            CreateMap<Review, ReviewViewModel>()
+                 .ForMember(x => x.UserName, opt => opt.MapFrom(src => src.AppUser == null ? "" : src.AppUser.UserName))
+                 .ForMember(x => x.ProductName, opt => opt.MapFrom(src => src.Product == null ? "" : src.Product.Name))
+                 .ReverseMap();
             CreateMap<Review, ReviewCreateViewModel>().ReverseMap();
             CreateMap<Review, ReviewUpdateViewModel>().ReverseMap();
 

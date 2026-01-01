@@ -10,6 +10,8 @@ using System.Text;
 using Microsoft.EntityFrameworkCore;
 using EcommerceCoza.BLL.Services;
 using System.Text.RegularExpressions;
+using EcommerceCoza.BLL.ViewModels;
+using AutoMapper;
 
 namespace EcommerceCoza.MVC.Controllers
 {
@@ -21,8 +23,9 @@ namespace EcommerceCoza.MVC.Controllers
         private readonly IWishlistItemService _wishlistItemService;
         private readonly IProductService _productService;
         private readonly IEmailService _email_service;
-        private readonly IEmailService _emailService;
         private readonly BasketManager _basketManager;
+        private readonly IReviewService _reviewService;
+        private readonly IMapper _mapper;
 
         public AccountController(
             UserManager<AppUser> userManager,
@@ -31,7 +34,9 @@ namespace EcommerceCoza.MVC.Controllers
             IWishlistItemService userWishlistItemService,
             IProductService productService,
             IEmailService emailService,
-            BasketManager basketManager)
+            BasketManager basketManager,
+            IReviewService reviewService,
+            IMapper mapper)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -40,6 +45,8 @@ namespace EcommerceCoza.MVC.Controllers
             _productService = productService;
             _email_service = emailService;
             _basketManager = basketManager;
+            _reviewService = reviewService;
+            _mapper = mapper;
         }
 
         [Authorize]
@@ -72,7 +79,7 @@ namespace EcommerceCoza.MVC.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-         
+
             if (await _userManager.Users.AnyAsync(u => u.NormalizedEmail == model.Email.ToUpper()))
             {
                 ModelState.AddModelError("Email", "This email is already registered.");
@@ -215,7 +222,7 @@ namespace EcommerceCoza.MVC.Controllers
             if (user == null)
                 return BadRequest();
 
-     
+
             if (!string.IsNullOrEmpty(model.CurrentPassword) && !string.IsNullOrEmpty(model.NewPassword))
             {
                 if (model.CurrentPassword == model.NewPassword)
@@ -254,7 +261,7 @@ namespace EcommerceCoza.MVC.Controllers
                 }
             }
 
-      
+
             if ((model.PhoneNumber ?? "") != (user.PhoneNumber ?? ""))
             {
                 var newPhoneNormalized = Regex.Replace(model.PhoneNumber ?? "", @"\D", "");
@@ -433,6 +440,18 @@ namespace EcommerceCoza.MVC.Controllers
         public IActionResult AccessDenied()
         {
             return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Reviews()
+        {
+            var userId = _userManager.GetUserId(User);
+            if (userId == null) return Unauthorized();
+
+            var reviewEntities = await _reviewService.GetReviewsByUserIdAsync(userId);
+            var reviews = _mapper.Map<List<ReviewViewModel>>(reviewEntities);
+
+            return View(reviews);
         }
     }
 }

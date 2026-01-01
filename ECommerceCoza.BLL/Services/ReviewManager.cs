@@ -8,7 +8,13 @@ public class ReviewManager : IReviewService
 
     public async Task<IEnumerable<Review>> GetReviewsByProductIdAsync(int productId) => await _reviewRepo.GetReviewsByProductIdAsync(productId);
 
+    public async Task<IEnumerable<Review>> GetReviewsByUserIdAsync(string userId) => await _reviewRepo.GetReviewsByUserIdAsync(userId);
+
+    public async Task<Review?> GetReviewByUserAndProductAsync(string userId, int productId) => await _reviewRepo.GetReviewByUserAndProductAsync(userId, productId);
+
     public async Task CreateReviewAsync(Review review) => await _reviewRepo.CreateAsync(review);
+
+    public async Task UpdateReviewAsync(Review review) => await _reviewRepo.UpdateAsync(review);
 
     public async Task DeleteReviewAsync(int reviewId)
     {

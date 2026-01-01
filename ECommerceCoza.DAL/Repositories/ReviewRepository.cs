@@ -21,6 +21,16 @@ public class ReviewRepository : EFCoreRepository<Review>, IReviewRepository
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Review>> GetReviewsByUserIdAsync(string userId)
+    {
+        return await _context.Set<Review>()
+            .Include(r => r.Product)
+            .Include(r => r.AppUser)
+            .Where(r => r.AppUserId == userId)
+            .OrderByDescending(r => r.CreatedAt)
+            .ToListAsync();
+    }
+
     public async Task<Review?> GetReviewByUserAndProductAsync(string userId, int productId)
     {
         return await _context.Set<Review>()

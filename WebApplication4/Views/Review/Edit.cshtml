@@ -1,0 +1,53 @@
+﻿@using EcommerceCoza.BLL.ViewModels
+@model ReviewViewModel
+
+<div class="container" style="padding-top: 120px; padding-bottom: 50px;">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body p-5">
+
+                    <h3 class="card-title text-center mb-2">Edit Review</h3>
+                    <p class="text-muted text-center mb-4">for @Model.ProductName</p>
+
+                    <form asp-controller="Review" asp-action="Edit" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="Id" value="@Model.Id" />
+                        <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                        @if (ViewBag.ReturnUrl != null)
+                        {
+                            <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
+                        }
+
+                        <div class="mb-4">
+                            <label for="Rating" class="form-label fw-bold">Rating</label>
+                            <select name="Rating" id="Rating" class="form-select form-select-lg" required>
+                                <option value="">Select a rating</option>
+                                @for (int i = 1; i <= 5; i++)
+                                {
+                                    <option value="@i" selected="@(Model.Rating == i)">@i Star@(i > 1 ? "s" : "")</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Rating" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="Comment" class="form-label fw-bold">Comment</label>
+                            <textarea name="Comment" id="Comment" class="form-control" rows="5" required>@Model.Comment</textarea>
+                            <span asp-validation-for="Comment" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-dark btn-lg">Update Review</button>
+                            <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.ProductId" class="btn btn-outline-secondary btn-lg">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
