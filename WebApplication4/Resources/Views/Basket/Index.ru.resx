@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<resheader name="resmimetype">
 		<value>text/microsoft-resx</value>
@@ -13,26 +13,27 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
 	</resheader>
 
-	<data name="Product" xml:space="preserve"><value>Товар</value></data>
+	<data name="Shopping Cart" xml:space="preserve"><value>Корзина</value></data>
 	<data name="Price" xml:space="preserve"><value>Цена</value></data>
-	<data name="Quantity" xml:space="preserve"><value>Количество</value></data>
-	<data name="Subtotal" xml:space="preserve"><value>Промежуточный итог</value></data>
 	<data name="Color" xml:space="preserve"><value>Цвет</value></data>
 	<data name="Size" xml:space="preserve"><value>Размер</value></data>
-
-	<data name="CouponCode" xml:space="preserve"><value>Купон</value></data>
-	<data name="ApplyCoupon" xml:space="preserve"><value>ПРИМЕНИТЬ КУПОН</value></data>
-	<data name="UpdateCart" xml:space="preserve"><value>ОБНОВИТЬ КОРЗИНУ</value></data>
-
-	<data name="CartTotals" xml:space="preserve"><value>Итоги корзины</value></data>
-	<data name="Shipping" xml:space="preserve"><value>Доставка</value></data>
-	<data name="FreeShipping" xml:space="preserve"><value>Бесплатная доставка</value></data>
-	<data name="FlatRate" xml:space="preserve"><value>Фиксированная ставка: $49</value></data>
-	<data name="LocalPickup" xml:space="preserve"><value>Самовывоз: $8</value></data>
-	<data name="ShippingTo" xml:space="preserve"><value>Доставка в {0}</value></data>
-	<data name="ChangeAddress" xml:space="preserve"><value>ИЗМЕНИТЬ АДРЕС</value></data>
-	<data name="VAT" xml:space="preserve"><value>НДС</value></data>
-	<data name="Total" xml:space="preserve"><value>Итого</value></data>
-	<data name="ProceedToCheckout" xml:space="preserve"><value>ПЕРЕЙТИ К ОФОРМЛЕНИЮ</value></data>
-	<data name="Sale" xml:space="preserve"><value>Распродажа</value></data>
+	<data name="Delete" xml:space="preserve"><value>Удалить</value></data>
+	<data name="Subtotal" xml:space="preserve"><value>Промежуточный итог</value></data>
+	<data name="Items" xml:space="preserve"><value>товаров</value></data>
+	<data name="Your Basket Is Empty" xml:space="preserve"><value>Ваша корзина пуста</value></data>
+	<data name="Continue Shopping" xml:space="preserve"><value>Продолжить покупки</value></data>
+	<data name="Proceed To Checkout" xml:space="preserve"><value>Оформить заказ</value></data>
+	<data name="Discount" xml:space="preserve"><value>Скидка</value></data>
+	<data name="Enter Coupon Code" xml:space="preserve"><value>Введите код купона</value></data>
+	<data name="Enter Code" xml:space="preserve"><value>Введите код</value></data>
+	<data name="Apply" xml:space="preserve"><value>Применить</value></data>
+	<data name="Confirm Deletion" xml:space="preserve"><value>Подтвердите удаление</value></data>
+	<data name="Are You Sure To Remove" xml:space="preserve"><value>Вы уверены, что хотите удалить этот товар?</value></data>
+	<data name="Cancel" xml:space="preserve"><value>Отмена</value></data>
+	<data name="ErrorRemovingItem" xml:space="preserve"><value>Ошибка при удалении товара</value></data>
+	<data name="ErrorUpdatingQuantity" xml:space="preserve"><value>Ошибка при обновлении количества</value></data>
+	<data name="EnterDiscountCodeWarning" xml:space="preserve"><value>Пожалуйста, введите код скидки</value></data>
+	<data name="DiscountAppliedFormat" xml:space="preserve"><value>Скидка применена: {0}%</value></data>
+	<data name="InvalidDiscountCode" xml:space="preserve"><value>Неверный код скидки</value></data>
+	<data name="ErrorApplyingDiscount" xml:space="preserve"><value>Ошибка при применении скидки</value></data>
 </root>

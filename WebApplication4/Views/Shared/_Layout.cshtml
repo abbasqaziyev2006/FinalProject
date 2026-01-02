@@ -1,6 +1,7 @@
 ﻿@inject WebApplication4.Services.ICurrencyService CurrencyService
-@using Microsoft.AspNetCore.Mvc.Localization
-@inject IViewLocalizer Localizer
+@using Microsoft.Extensions.Localization
+@using WebApplication4.Views.Shared
+@inject IStringLocalizer<SharedResources> Localizer
 <!DOCTYPE html>
 <html dir="ltr" lang="en-US">
 
@@ -281,19 +282,19 @@
                 <div class="overflow-hidden">
                     <ul class="navigation__list list-unstyled position-relative">
                         <li class="navigation__item">
-                            <a asp-controller="Home" asp-action="Index" class="navigation__link">Home</a>
+                            <a asp-controller="Home" asp-action="Index" class="navigation__link">@Localizer["Home"]</a>
                         </li>
                         <li class="navigation__item">
-                            <a asp-controller="Shop" asp-action="Index" class="navigation__link">Shop</a>
+                            <a asp-controller="Shop" asp-action="Index" class="navigation__link">@Localizer["Shop"]</a>
                         </li>
                         <li class="navigation__item">
-                            <a asp-controller="Basket" asp-action="Index" class="navigation__link">Cart</a>
+                            <a asp-controller="Basket" asp-action="Index" class="navigation__link">@Localizer["Cart"]</a>
                         </li>
                         <li class="navigation__item">
-                            <a asp-controller="Home" asp-action="About" class="navigation__link">About</a>
+                            <a asp-controller="Home" asp-action="About" class="navigation__link">@Localizer["About"]</a>
                         </li>
                         <li class="navigation__item">
-                            <a asp-controller="Home" asp-action="Contact" class="navigation__link">Contact</a>
+                            <a asp-controller="Home" asp-action="Contact" class="navigation__link">@Localizer["Contact"]</a>
                         </li>
                     </ul>
                 </div>

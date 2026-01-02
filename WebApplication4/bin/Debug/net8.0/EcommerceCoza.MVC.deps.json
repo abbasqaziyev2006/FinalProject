@@ -25,11 +25,11 @@
           "az/EcommerceCoza.MVC.resources.dll": {
             "locale": "az"
           },
-          "en/EcommerceCoza.MVC.resources.dll": {
-            "locale": "en"
-          },
           "ru/EcommerceCoza.MVC.resources.dll": {
             "locale": "ru"
+          },
+          "en/EcommerceCoza.MVC.resources.dll": {
+            "locale": "en"
           }
         }
       },

@@ -61,7 +61,7 @@
         }
 
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="page-title m-0">@Localizer["OrderDetails"]</h2>
+            <h2 class="page-title m-0">@Localizer["Order Details"]</h2>
             <a class="btn btn-outline-secondary btn-sm" asp-action="Index">
                 <i class="fas fa-arrow-left me-2"></i>@Localizer["Back"]
             </a>
@@ -72,7 +72,7 @@
                 <div class="wg-box">
                     <div class="row mb-4 align-items-center">
                         <div class="col-6">
-                            <h5 class="m-0"><i class="fas fa-receipt me-2 text-primary"></i>@Localizer["OrderedDetails"]</h5>
+                            <h5 class="m-0"><i class="fas fa-receipt me-2 text-primary"></i>@Localizer["Ordered Details"]</h5>
                         </div>
                         <div class="col-6 text-end">
                             @if ((User.Identity?.IsAuthenticated ?? false) &&
@@ -81,7 +81,7 @@
                                 <form asp-action="Cancel" asp-controller="Order" method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to cancel this order?');">
                                     @Html.AntiForgeryToken()
                                     <input type="hidden" name="id" value="@Model.Id" />
-                                    <button type="submit" class="btn btn-danger btn-sm px-4">@Localizer["CancelOrder"]</button>
+                                    <button type="submit" class="btn btn-danger btn-sm px-4">@Localizer["Cancel Order"]</button>
                                 </form>
                             }
                         </div>
@@ -91,15 +91,15 @@
                         <div class="col-md-6">
                             <div class="card border-0 bg-light p-3">
                                 <div class="mb-3">
-                                    <small class="text-muted d-block text-uppercase" style="font-size: 10px; letter-spacing: 1px;">@Localizer["OrderNo"]</small>
+                                    <small class="text-muted d-block text-uppercase" style="font-size: 10px; letter-spacing: 1px;">@Localizer["Order No"]</small>
                                     <strong class="fs-5">#@Model.Id</strong>
                                 </div>
                                 <div class="mb-3">
-                                    <small class="text-muted d-block text-uppercase" style="font-size: 10px; letter-spacing: 1px;">@Localizer["OrderDate"]</small>
+                                    <small class="text-muted d-block text-uppercase" style="font-size: 10px; letter-spacing: 1px;">@Localizer["Order Date"]</small>
                                     <span class="fw-medium">@Model.FormattedCreatedAt</span>
                                 </div>
                                 <div>
-                                    <small class="text-muted d-block text-uppercase" style="font-size: 10px; letter-spacing: 1px;">@Localizer["OrderStatus"]</small>
+                                    <small class="text-muted d-block text-uppercase" style="font-size: 10px; letter-spacing: 1px;">@Localizer["Order Status"]</small>
                                     <span class="badge @(Model.OrderStatus == OrderStatus.Completed ? "bg-success" : Model.OrderStatus == OrderStatus.Cancelled ? "bg-danger" : "bg-warning") px-3">
                                         @Model.OrderStatus
                                     </span>
@@ -114,11 +114,11 @@
                                     <span class="fw-medium">@(Model.Address?.Phone ?? "N/A")</span>
                                 </div>
                                 <div class="mb-3">
-                                    <small class="text-muted d-block text-uppercase" style="font-size: 10px; letter-spacing: 1px;">@Localizer["DeliveredDate"]</small>
+                                    <small class="text-muted d-block text-uppercase" style="font-size: 10px; letter-spacing: 1px;">@Localizer["Delivered Date"]</small>
                                     <span class="fw-medium">@(string.IsNullOrEmpty(Model.FormattedDeliveredDate) ? Localizer["Pending"] : Model.FormattedDeliveredDate)</span>
                                 </div>
                                 <div>
-                                    <small class="text-muted d-block text-uppercase" style="font-size: 10px; letter-spacing: 1px;">@Localizer["CanceledDate"]</small>
+                                    <small class="text-muted d-block text-uppercase" style="font-size: 10px; letter-spacing: 1px;">@Localizer["Canceled Date"]</small>
                                     <span class="fw-medium">@(string.IsNullOrEmpty(Model.FormattedCanceledDate) ? "-" : Model.FormattedCanceledDate)</span>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
 
             <div class="col-12">
                 <div class="wg-box">
-                    <h5 class="mb-4">@Localizer["OrderedItems"]</h5>
+                    <h5 class="mb-4">@Localizer["Ordered Items"]</h5>
                     <div class="table-responsive">
                         <table class="table table-hover align-middle">
                             <thead class="table-light">
@@ -183,7 +183,7 @@
 
             <div class="col-md-6">
                 <div class="wg-box">
-                    <h5 class="mb-3 border-bottom pb-2">@Localizer["ShippingAddress"]</h5>
+                    <h5 class="mb-3 border-bottom pb-2">@Localizer["Shipping Address"]</h5>
                     <div class="p-2">
                         <p class="mb-1 fw-bold fs-6">@Model.Address?.FirstName @Model.Address?.LastName</p>
                         @if (!string.IsNullOrEmpty(Model.Address?.Company))
@@ -192,7 +192,7 @@
                         }
                         <p class="mb-1 text-muted">@Model.Address?.Adress</p>
                         <p class="mb-1 text-muted">@Model.Address?.City, @Model.Address?.Country</p>
-                        <p class="mb-3 text-muted">@Localizer["PostalCode"]: @Model.Address?.PostalCode</p>
+                        <p class="mb-3 text-muted">@Localizer["Postal Code"]: @Model.Address?.PostalCode</p>
                         <div class="d-flex align-items-center text-primary fw-bold">
                             <i class="fas fa-phone-alt me-2"></i>
                             <span>@(Model.Address?.Phone ?? "N/A")</span>
@@ -219,11 +219,11 @@
                         </div>
                         <div class="bg-light p-3 rounded">
                             <div class="d-flex justify-content-between small mb-1">
-                                <span class="text-muted">@Localizer["PaymentMethod"]</span>
+                                <span class="text-muted">@Localizer["Payment Method"]</span>
                                 <span class="fw-bold">@Model.PaymentMethod</span>
                             </div>
                             <div class="d-flex justify-content-between small">
-                                <span class="text-muted">@Localizer["TransactionStatus"]</span>
+                                <span class="text-muted">@Localizer["Transaction Status"]</span>
                                 <span class="text-info fw-bold">@Model.OrderStatus</span>
                             </div>
                         </div>

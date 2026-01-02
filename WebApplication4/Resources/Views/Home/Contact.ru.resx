@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<data name="PageTitle" xml:space="preserve"><value>Свяжитесь с нами</value></data>
+	<data name="ContactUs" xml:space="preserve"><value>СВЯЖИТЕСЬ С НАМИ</value></data>
+	<data name="Success" xml:space="preserve"><value>Успешно!</value></data>
+	<data name="Error" xml:space="preserve"><value>Ошибка!</value></data>
+	<data name="GetInTouch" xml:space="preserve"><value>Свяжитесь с нами</value></data>
+	<data name="FormDescription" xml:space="preserve"><value>Заполните форму ниже, и мы свяжемся с вами в ближайшее время.</value></data>
+	<data name="Name" xml:space="preserve"><value>Имя</value></data>
+	<data name="Phone" xml:space="preserve"><value>Телефон</value></data>
+	<data name="Email" xml:space="preserve"><value>Электронная почта</value></data>
+	<data name="YourMessage" xml:space="preserve"><value>Ваше сообщение</value></data>
+	<data name="MessagePlaceholder" xml:space="preserve"><value>Расскажите нам, что у вас на уме...</value></data>
+	<data name="SendMessage" xml:space="preserve"><value>Отправить сообщение</value></data>
+</root>

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
 	<resheader name="resmimetype">
 		<value>text/microsoft-resx</value>
@@ -13,26 +13,27 @@
 		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
 	</resheader>
 
-	<data name="Product" xml:space="preserve"><value>Məhsul</value></data>
+	<data name="Shopping Cart" xml:space="preserve"><value>Səbət</value></data>
 	<data name="Price" xml:space="preserve"><value>Qiymət</value></data>
-	<data name="Quantity" xml:space="preserve"><value>Miqdar</value></data>
-	<data name="Subtotal" xml:space="preserve"><value>Ara cəm</value></data>
 	<data name="Color" xml:space="preserve"><value>Rəng</value></data>
 	<data name="Size" xml:space="preserve"><value>Ölçü</value></data>
-
-	<data name="CouponCode" xml:space="preserve"><value>Kupon Kodu</value></data>
-	<data name="ApplyCoupon" xml:space="preserve"><value>KUPONU TƏTBİQ ET</value></data>
-	<data name="UpdateCart" xml:space="preserve"><value>SƏBƏTİ YENİLƏ</value></data>
-
-	<data name="CartTotals" xml:space="preserve"><value>Səbətin Cəmi</value></data>
-	<data name="Shipping" xml:space="preserve"><value>Çatdırılma</value></data>
-	<data name="FreeShipping" xml:space="preserve"><value>Pulsuz çatdırılma</value></data>
-	<data name="FlatRate" xml:space="preserve"><value>Sabit tarif: $49</value></data>
-	<data name="LocalPickup" xml:space="preserve"><value>Özün götür: $8</value></data>
-	<data name="ShippingTo" xml:space="preserve"><value>{0} ünvanına çatdırılma</value></data>
-	<data name="ChangeAddress" xml:space="preserve"><value>ÜNVANI DƏYİŞ</value></data>
-	<data name="VAT" xml:space="preserve"><value>ƏDV</value></data>
-	<data name="Total" xml:space="preserve"><value>Cəmi</value></data>
-	<data name="ProceedToCheckout" xml:space="preserve"><value>ÖDƏNİŞƏ KEÇ</value></data>
-	<data name="Sale" xml:space="preserve"><value>Satış</value></data>
+	<data name="Delete" xml:space="preserve"><value>Sil</value></data>
+	<data name="Subtotal" xml:space="preserve"><value>Ara cəm</value></data>
+	<data name="Items" xml:space="preserve"><value>məhsul</value></data>
+	<data name="Your Basket Is Empty" xml:space="preserve"><value>Səbətiniz boşdur</value></data>
+	<data name="Continue Shopping" xml:space="preserve"><value>Alış-verişə davam et</value></data>
+	<data name="Proceed To Checkout" xml:space="preserve"><value>Sifarişi tamamla</value></data>
+	<data name="Discount" xml:space="preserve"><value>Endirim</value></data>
+	<data name="Enter Coupon Code" xml:space="preserve"><value>Kupon kodu daxil edin</value></data>
+	<data name="Enter Code" xml:space="preserve"><value>Kodu daxil edin</value></data>
+	<data name="Apply" xml:space="preserve"><value>Tətbiq et</value></data>
+	<data name="Confirm Deletion" xml:space="preserve"><value>Silməyi təsdiqləyin</value></data>
+	<data name="Are You Sure To Remove" xml:space="preserve"><value>Bu məhsulu silmək istədiyinizə əminsiniz?</value></data>
+	<data name="Cancel" xml:space="preserve"><value>Ləğv et</value></data>
+	<data name="ErrorRemovingItem" xml:space="preserve"><value>Məhsul silinərkən xəta baş verdi</value></data>
+	<data name="ErrorUpdatingQuantity" xml:space="preserve"><value>Miqdar yenilənərkən xəta baş verdi</value></data>
+	<data name="EnterDiscountCodeWarning" xml:space="preserve"><value>Zəhmət olmasa endirim kodu daxil edin</value></data>
+	<data name="DiscountAppliedFormat" xml:space="preserve"><value>Endirim tətbiq edildi: {0}%</value></data>
+	<data name="InvalidDiscountCode" xml:space="preserve"><value>Yanlış endirim kodu</value></data>
+	<data name="ErrorApplyingDiscount" xml:space="preserve"><value>Endirim tətbiq edilərkən xəta baş verdi</value></data>
 </root>

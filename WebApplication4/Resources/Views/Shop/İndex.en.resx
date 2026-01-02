@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<data name="Filter By" xml:space="preserve"><value>Filter By</value></data>
+	<data name="Product Categories" xml:space="preserve"><value>Product Categories</value></data>
+	<data name="All Categories" xml:space="preserve"><value>All Categories</value></data>
+	<data name="Brands" xml:space="preserve"><value>Brands</value></data>
+	<data name="Colors" xml:space="preserve"><value>Colors</value></data>
+	<data name="Sizes" xml:space="preserve"><value>Sizes</value></data>
+	<data name="Price" xml:space="preserve"><value>Price</value></data>
+	<data name="Min" xml:space="preserve"><value>Min</value></data>
+	<data name="Max" xml:space="preserve"><value>Max</value></data>
+	<data name="Reset Filters" xml:space="preserve"><value>Reset Filters</value></data>
+	<data name="Discover Our Collection" xml:space="preserve"><value>Discover Our Collection</value></data>
+	<data name="Shop Latest Trends" xml:space="preserve"><value>Shop Latest Trends</value></data>
+	<data name="Home" xml:space="preserve"><value>Home</value></data>
+	<data name="Shop" xml:space="preserve"><value>Shop</value></data>
+	<data name="DefaultSorting" xml:space="preserve"><value>Default Sorting</value></data>
+	<data name="AlphabeticallyAZ" xml:space="preserve"><value>Alphabetically A-Z</value></data>
+	<data name="AlphabeticallyZA" xml:space="preserve"><value>Alphabetically Z-A</value></data>
+	<data name="PriceLowHigh" xml:space="preserve"><value>Price: Low to High</value></data>
+	<data name="PriceHighLow" xml:space="preserve"><value>Price: High to Low</value></data>
+	<data name="DateNewOld" xml:space="preserve"><value>Date: New to Old</value></data>
+	<data name="DateOldNew" xml:space="preserve"><value>Date: Old to New</value></data>
+	<data name="View" xml:space="preserve"><value>View</value></data>
+	<data name="Filter" xml:space="preserve"><value>Filter</value></data>
+	<data name="Showing" xml:space="preserve"><value>Showing</value></data>
+	<data name="of" xml:space="preserve"><value>of</value></data>
+	<data name="Products" xml:space="preserve"><value>Products</value></data>
+	<data name="LoadingMoreProducts" xml:space="preserve"><value>Loading more products...</value></data>
+	<data name="NoMoreProducts" xml:space="preserve"><value>No more products</value></data>
+	<data name="NoProductsFound" xml:space="preserve"><value>No products found</value></data>
+	<data name="AddToCart" xml:space="preserve"><value>Add to Cart</value></data>
+	<data name="OutOfStock" xml:space="preserve"><value>Out of Stock</value></data>
+	<data name="AddToWishlist" xml:space="preserve"><value>Add to Wishlist</value></data>
+	<data name="ProductAddedToCart" xml:space="preserve"><value>Product added to cart</value></data>
+	<data name="ErrorAddingToCart" xml:space="preserve"><value>Error adding to cart</value></data>
+</root>

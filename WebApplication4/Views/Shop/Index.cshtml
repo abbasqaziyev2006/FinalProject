@@ -18,7 +18,7 @@
         <!-- Sidebar Filters -->
         <div class="shop-sidebar side-sticky bg-body" id="shopFilter">
             <div class="aside-header d-flex d-lg-none align-items-center">
-                <h3 class="text-uppercase fs-6 mb-0">@Localizer["FilterBy"]</h3>
+                <h3 class="text-uppercase fs-6 mb-0">@Localizer["Filter By"]</h3>
                 <button class="btn-close-lg js-close-aside btn-close-aside ms-auto"></button>
             </div>
 
@@ -31,7 +31,7 @@
                     <h5 class="accordion-header" id="accordion-heading-categories">
                         <button class="accordion-button p-0 border-0 fs-5 text-uppercase" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#accordion-filter-categories" aria-expanded="true" aria-controls="accordion-filter-categories">
-                            @Localizer["ProductCategories"]
+                            @Localizer["Product Categories"]
                             <svg class="accordion-button__icon type2" viewBox="0 0 10 6" xmlns="http://www.w3.org/2000/svg">
                                 <g aria-hidden="true" stroke="none" fill-rule="evenodd">
                                     <path d="M5.35668 0.159286C5.16235 -0.053094 4.83769 -0.0530941 4.64287 0.159286L0.147611 5.05963C-0.0492049 5.27473 -0.049205 5.62357 0.147611 5.83813C0.344427 6.05323 0.664108 6.05323 0.860924 5.83813L5 1.32706L9.13858 5.83867C9.33589 6.05378 9.65507 6.05378 9.85239 5.83867C10.0492 5.62357 10.0492 5.27473 9.85239 5.06018L5.35668 0.159286Z" />
@@ -45,7 +45,7 @@
                             <ul class="list list-unstyled mb-0">
                                 <li class="list-item mb-2">
                                     <a href="#" class="menu-link py-1 text-decoration-none category-filter active" data-category-id="all">
-                                        @Localizer["AllCategories"] (@products.Count)
+                                        @Localizer["All Categories"] (@products.Count)
                                     </a>
                                 </li>
                                 @foreach (var category in categories)
@@ -249,7 +249,7 @@
                 <!-- Reset Button -->
                 <div class="mt-4 pt-3 border-top">
                     <button class="btn btn-outline-dark w-100 text-uppercase fw-medium btn-sm js-reset-filters">
-                        @Localizer["ResetFilters"]
+                        @Localizer["Reset Filters"]
                     </button>
                 </div>
             </div>

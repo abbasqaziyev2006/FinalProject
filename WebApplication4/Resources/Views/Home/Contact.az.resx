@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<data name="PageTitle" xml:space="preserve"><value>Bizimlə Əlaqə</value></data>
+	<data name="ContactUs" xml:space="preserve"><value>BİZİMLƏ ƏLAQƏ</value></data>
+	<data name="Success" xml:space="preserve"><value>Uğurlu!</value></data>
+	<data name="Error" xml:space="preserve"><value>Xəta!</value></data>
+	<data name="GetInTouch" xml:space="preserve"><value>Bizimlə Əlaqə Saxlayın</value></data>
+	<data name="FormDescription" xml:space="preserve"><value>Aşağıdakı formu doldurun, ən qısa zamanda sizə cavab verəcəyik.</value></data>
+	<data name="Name" xml:space="preserve"><value>Ad</value></data>
+	<data name="Phone" xml:space="preserve"><value>Telefon</value></data>
+	<data name="Email" xml:space="preserve"><value>E-poçt ünvanı</value></data>
+	<data name="YourMessage" xml:space="preserve"><value>Mesajınız</value></data>
+	<data name="MessagePlaceholder" xml:space="preserve"><value>Fikrinizi bizə bildirin...</value></data>
+	<data name="SendMessage" xml:space="preserve"><value>Mesaj Göndər</value></data>
+</root>

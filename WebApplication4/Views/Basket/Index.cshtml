@@ -9,7 +9,7 @@
             <div class="col-lg-8 mb-3">
                 <div class="bg-white rounded shadow-sm p-4">
                     <h2 class="h4 mb-4">
-                        @Localizer["ShoppingCart"]
+                        @Localizer["Shopping Cart"]
                     </h2>
 
                     @if (Model.Items.Any())
@@ -107,9 +107,9 @@
                                 <circle cx="20" cy="21" r="1" />
                                 <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
                             </svg>
-                            <h5 class="mb-3">@Localizer["YourBasketIsEmpty"]</h5>
+                            <h5 class="mb-3">@Localizer["Your Basket Is Empty"]</h5>
                             <a asp-controller="Shop" asp-action="Index" class="btn btn-primary px-4">
-                                @Localizer["ContinueShopping"]
+                                @Localizer["Continue Shopping"]
                             </a>
                         </div>
                     }
@@ -121,12 +121,11 @@
                 @if (Model.Items.Any())
                 {
                     <div class="bg-white rounded shadow-sm p-4">
-                        <!-- Proceed to checkout button -->
                         <a asp-controller="Order"
                            asp-action="Checkout"
                            class="btn btn-checkout w-100 rounded-pill py-3 mb-4 text-uppercase fw-bold"
                            style="background: #ffd814; border: none; color: #000; font-size: 15px; letter-spacing: 0.5px;">
-                            @Localizer["ProceedToCheckout"]
+                            @Localizer["Proceed To Checkout"]
                         </a>
 
                         <!-- Subtotal -->
@@ -164,7 +163,7 @@
                                data-bs-toggle="collapse"
                                data-bs-target="#couponCollapse"
                                style="font-size: 14px;">
-                                @Localizer["EnterCouponCode"]
+                                @Localizer["Enter Coupon Code"]
                             </a>
                             <div class="collapse mt-3" id="couponCollapse">
                                 <form id="coupon-form" class="d-flex gap-2">
@@ -173,7 +172,7 @@
                                            id="coupon-code-input"
                                            name="couponCode"
                                            class="form-control"
-                                           placeholder="@Localizer["EnterCode"]"
+                                           placeholder="@Localizer["Enter Code"]"
                                            style="font-size: 14px;">
                                     <button type="submit" class="btn btn-secondary" style="font-size: 14px;">
                                         @Localizer["Apply"]
@@ -194,11 +193,11 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header border-0 pb-0">
-                <h5 class="modal-title" id="deleteConfirmModalLabel">@Localizer["ConfirmDeletion"]</h5>
+                <h5 class="modal-title" id="deleteConfirmModalLabel">@Localizer["Confirm Deletion"]</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body pt-2">
-                <p class="mb-2">@Localizer["AreYouSureToRemove"]</p>
+                <p class="mb-2">@Localizer["Are You Sure To Remove"]</p>
                 <p class="text-muted mb-0" id="productNameToDelete"></p>
             </div>
             <div class="modal-footer border-0 pt-2">

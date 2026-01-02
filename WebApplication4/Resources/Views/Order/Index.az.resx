@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+
+	<data name="Orders" xml:space="preserve"><value>Sifarişlər</value></data>
+	<data name="Dashboard" xml:space="preserve"><value>İdarə Paneli</value></data>
+	<data name="Addresses" xml:space="preserve"><value>Ünvanlar</value></data>
+	<data name="AccountDetails" xml:space="preserve"><value>Hesab Məlumatları</value></data>
+	<data name="Wishlist" xml:space="preserve"><value>İstək Siyahısı</value></data>
+	<data name="Logout" xml:space="preserve"><value>Çıxış</value></data>
+	<data name="No Orders" xml:space="preserve"><value>Sifariş yoxdur</value></data>
+	<data name="Name" xml:space="preserve"><value>Ad</value></data>
+	<data name="Phone" xml:space="preserve"><value>Telefon</value></data>
+	<data name="Total" xml:space="preserve"><value>Cəmi</value></data>
+	<data name="Status" xml:space="preserve"><value>Status</value></data>
+	<data name="OrderDate" xml:space="preserve"><value>Sifariş Tarixi</value></data>
+	<data name="Items" xml:space="preserve"><value>Məhsullar</value></data>
+	<data name="Action" xml:space="preserve"><value>Əməliyyat</value></data>
+	<data name="NoAddress" xml:space="preserve"><value>Ünvan yoxdur</value></data>
+</root>

@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>2.0</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, ...</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, ...</value>
+	</resheader>
+
+	<data name="Shopping Cart" xml:space="preserve"><value>Shopping Cart</value></data>
+	<data name="Price" xml:space="preserve"><value>Price</value></data>
+	<data name="Color" xml:space="preserve"><value>Color</value></data>
+	<data name="Size" xml:space="preserve"><value>Size</value></data>
+	<data name="Delete" xml:space="preserve"><value>Delete</value></data>
+	<data name="Subtotal" xml:space="preserve"><value>Subtotal</value></data>
+	<data name="Items" xml:space="preserve"><value>items</value></data>
+	<data name="Your Basket Is Empty" xml:space="preserve"><value>Your basket is empty</value></data>
+	<data name="Continue Shopping" xml:space="preserve"><value>Continue Shopping</value></data>
+	<data name="Proceed To Checkout" xml:space="preserve"><value>Proceed to Checkout</value></data>
+	<data name="Discount" xml:space="preserve"><value>Discount</value></data>
+	<data name="Enter Coupon Code" xml:space="preserve"><value>Enter a coupon code</value></data>
+	<data name="Enter Code" xml:space="preserve"><value>Enter code</value></data>
+	<data name="Apply" xml:space="preserve"><value>Apply</value></data>
+	<data name="Confirm Deletion" xml:space="preserve"><value>Confirm Deletion</value></data>
+	<data name="Are You Sure To Remove" xml:space="preserve"><value>Are you sure you want to remove this item?</value></data>
+	<data name="Cancel" xml:space="preserve"><value>Cancel</value></data>
+	<data name="ErrorRemovingItem" xml:space="preserve"><value>Error removing item from cart</value></data>
+	<data name="ErrorUpdatingQuantity" xml:space="preserve"><value>Error updating quantity</value></data>
+	<data name="EnterDiscountCodeWarning" xml:space="preserve"><value>Please enter a discount code</value></data>
+	<data name="DiscountAppliedFormat" xml:space="preserve"><value>Discount applied: {0}% off</value></data>
+	<data name="InvalidDiscountCode" xml:space="preserve"><value>Invalid discount code</value></data>
+	<data name="ErrorApplyingDiscount" xml:space="preserve"><value>Error applying discount</value></data>
+</root>

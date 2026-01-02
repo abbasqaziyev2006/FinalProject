@@ -39,4 +39,10 @@
     <PackageReference Include="Stripe.net" Version="49.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Views\Shop\İndex.en.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+
 </Project>
