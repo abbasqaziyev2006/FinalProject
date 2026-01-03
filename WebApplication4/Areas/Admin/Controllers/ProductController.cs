@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using static EcommerceCoza.BLL.ViewModels.ProductViewModel;
 
 namespace EcommerceCoza.MVC.Areas.Admin.Controllers
 {
@@ -77,7 +78,7 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
 
             try
             {
-         
+
                 await _productService.CreateAsync(model);
 
                 var allProducts = await _productService.GetAllAsync(
@@ -92,7 +93,7 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
                     return Json(new { success = false, message = "Failed to create product" });
                 }
 
-                
+
                 if (variants != null && variants.Any())
                 {
                     foreach (var variantDto in variants)
@@ -345,6 +346,22 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
                 Text = b.Name
             }).ToList();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ToggleActive(int id)
+        {
+            try
+            {
+                var isActive = await _productService.ToggleActiveAsync(id);
+                var status = isActive ? "activated" : "deactivated";
+                return Json(new { success = true, isActive = isActive, message = $"Product {status} successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
     }
 
     public class VariantDto
@@ -352,7 +369,7 @@ namespace EcommerceCoza.MVC.Areas.Admin.Controllers
         public string? Size { get; set; }
         public int ColorId { get; set; }
         public decimal Price { get; set; }
-        public decimal? SalePrice { get; set; }  
+        public decimal? SalePrice { get; set; }
         public int Quantity { get; set; }
         public IFormFile? CoverImageFile { get; set; }
         public List<IFormFile>? ImageFiles { get; set; }

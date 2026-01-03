@@ -75,7 +75,8 @@
                                         <th>Brand</th>
                                         <th class="text-center" style="width:120px">Base Price</th>
                                         <th class="text-center" style="width:100px">Variants</th>
-                                        <th class="text-center" style="width:180px">Actions</th>
+                                        <th class="text-center" style="width:100px">Status</th>
+                                        <th class="text-center" style="width:200px">Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -161,6 +162,16 @@
                                                     <span class="badge bg-secondary">0</span>
                                                 }
                                             </td>
+                                            <td class="text-center">
+                                                <button type="button"
+                                                        class="btn btn-sm toggle-active-btn @(product.IsActive ? "btn-success" : "btn-secondary")"
+                                                        data-product-id="@product.Id"
+                                                        data-is-active="@product.IsActive.ToString().ToLower()"
+                                                        title="@(product.IsActive ? "Click to deactivate" : "Click to activate")">
+                                                    <i class="@(product.IsActive ? "icon-check" : "icon-x")"></i>
+                                                    @(product.IsActive ? "Aktiv" : "Deaktiv")
+                                                </button>
+                                            </td>
                                             <td>
                                                 <div class="d-flex justify-content-center gap-2">
                                                     <a asp-area="Admin"
@@ -237,8 +248,43 @@
             return confirm(message);
         }
 
-     
-        setTimeout(function() {
+        // Toggle Active/Deactive functionality
+        $(document).on('click', '.toggle-active-btn', function () {
+            var btn = $(this);
+            var productId = btn.data('product-id');
+            var token = $('input[name="__RequestVerificationToken"]').val();
+
+            $.ajax({
+                url: '@Url.Action("ToggleActive", "Product", new { area = "Admin" })',
+                type: 'POST',
+                data: {
+                    id: productId,
+                    __RequestVerificationToken: token
+                },
+                success: function (response) {
+                    if (response.success) {
+                        if (response.isActive) {
+                            btn.removeClass('btn-secondary').addClass('btn-success');
+                            btn.html('<i class="icon-check"></i> Aktiv');
+                            btn.attr('title', 'Click to deactivate');
+                        } else {
+                            btn.removeClass('btn-success').addClass('btn-secondary');
+                            btn.html('<i class="icon-x"></i> Deaktiv');
+                            btn.attr('title', 'Click to activate');
+                        }
+                        btn.data('is-active', response.isActive);
+                    } else {
+                        alert('Error: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while updating the product status.');
+                }
+            });
+        });
+
+        // Auto hide alerts
+        setTimeout(function () {
             $('.alert').fadeOut('slow');
         }, 5000);
     </script>

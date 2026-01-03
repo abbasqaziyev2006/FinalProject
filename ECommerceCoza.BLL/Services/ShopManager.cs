@@ -18,12 +18,11 @@ namespace EcommerceCoza.BLL.Services
             _brandService = brandService;
             _colorService = colorService;
         }
-
         public async Task<ShopViewModel> GetShopViewModelAsync()
         {
             var categories = await _categoryService.GetAllAsync(predicate: x => !x.IsDeleted);
             var products = await _productService.GetAllAsync(
-                predicate: x => !x.IsDeleted,
+                predicate: x => !x.IsDeleted && x.IsActive, 
                 include: x => x
                     .Include(pv => pv.ProductVariants).ThenInclude(i => i.ProductImages)
                     .Include(pv => pv.ProductVariants).ThenInclude(c => c.Color!)

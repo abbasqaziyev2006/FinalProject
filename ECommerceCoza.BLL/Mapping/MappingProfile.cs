@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EcommerceCoza.BLL.ViewModels;
 using ECommerceCoza.DAL.DataContext.Entities;
+using static EcommerceCoza.BLL.ViewModels.ProductViewModel;
 using Color = ECommerceCoza.DAL.DataContext.Entities.Color;
 
 namespace ECommerceCoza.BLL.Mapping

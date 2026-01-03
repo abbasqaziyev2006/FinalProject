@@ -11,6 +11,7 @@
         public Brand? Brand { get; set; }
         public double Rating { get; set; }
         public int ReviewCount { get; set; }
+        public bool IsActive { get; set; } = true; 
         public Category? Category { get; set; }
         public List<ProductVariant> ProductVariants { get; set; } = [];
         public List<WishlistItem> WishlistItems { get; set; } = [];

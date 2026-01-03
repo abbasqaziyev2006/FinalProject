@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 using System.Security.Claims;
+using static EcommerceCoza.BLL.ViewModels.ProductViewModel;
 
 namespace EcommerceCoza.BLL.Services
 {
@@ -34,9 +35,18 @@ namespace EcommerceCoza.BLL.Services
             IOrderedQueryable<Product>>? orderBy = null, bool AsNoTracking = false)
         {
             var currentUser = _httpContextAccessor.HttpContext?.User;
-            List<WishlistItemViewModel> wishlistItems = [];
 
-            var products = await base.GetAllAsync();
+           
+            predicate ??= x => !x.IsDeleted;
+
+          
+            include ??= x => x
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Include(pv => pv.ProductVariants).ThenInclude(i => i.ProductImages)
+                .Include(pv => pv.ProductVariants).ThenInclude(c => c.Color!);
+
+            var products = await base.GetAllAsync(predicate: predicate, include: include, orderBy: orderBy, AsNoTracking: AsNoTracking);
 
             if (currentUser != null && currentUser.Identity!.IsAuthenticated)
             {
@@ -48,11 +58,7 @@ namespace EcommerceCoza.BLL.Services
                         predicate: x => x.AppUserId == userId && x.ProductId == product.Id,
                         include: x => x.Include(p => p.Product));
 
-                    if (item != null)
-                        product!.IsInWishlist = true;
-
-                    else
-                        product.IsInWishlist = false;
+                    product.IsInWishlist = item != null;
                 }
             }
             else
@@ -63,14 +69,7 @@ namespace EcommerceCoza.BLL.Services
                 }
             }
 
-            return await base.GetAllAsync(predicate: x => !x.IsDeleted
-              , include: x => x
-              .Include(p => p.Category)
-              .Include(p => p.Brand)
-              .Include(pv => pv.ProductVariants).ThenInclude(i => i.ProductImages)
-              .Include(pv => pv.ProductVariants).ThenInclude(c => c.Color!))
-
-               ;
+            return products;
         }
 
         public async Task<ProductCreateViewModel> GetCreateViewModelAsync()
@@ -125,15 +124,26 @@ namespace EcommerceCoza.BLL.Services
             var entity = await Repository.GetByIdAsync(product.Id);
             if (entity == null) throw new InvalidOperationException("Product not found.");
 
-
             entity.Name = product.Name;
             entity.Description = product.Description;
             entity.AdditionalInformation = product.AdditionalInformation;
             entity.BasePrice = product.BasePrice;
             entity.CategoryId = product.CategoryId;
             entity.BrandId = product.BrandId;
+            entity.IsActive = product.IsActive;
 
             await Repository.UpdateAsync(entity);
+        }
+
+        public async Task<bool> ToggleActiveAsync(int id)
+        {
+            var product = await Repository.GetByIdAsync(id);
+            if (product == null)
+                return false;
+
+            product.IsActive = !product.IsActive;
+            await Repository.UpdateAsync(product);
+            return product.IsActive;
         }
     }
 }

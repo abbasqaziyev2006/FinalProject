@@ -2,6 +2,7 @@
 using EcommerceCoza.BLL.ViewModels;
 using ECommerceCoza.DAL.DataContext.Entities;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using static EcommerceCoza.BLL.ViewModels.ProductViewModel;
 
 namespace EcommerceCoza.BLL.Services.Contracts
 {
@@ -12,5 +13,6 @@ namespace EcommerceCoza.BLL.Services.Contracts
         Task<ProductUpdateViewModel> GetUpdateViewModelAsync(int id);
         Task<List<ProductViewModel>> GetProductsAndCategory();
         Task UpdateAsync(ProductViewModel product);
+        Task<bool> ToggleActiveAsync(int id);
     }
 }
