@@ -15,6 +15,8 @@
     <link rel="shortcut icon" href="~/Admin/images/favicon.ico">
     <link rel="stylesheet" type="text/css" href="~/Admin/css/sweetalert.min.css">
     <link rel="stylesheet" type="text/css" href="~/Admin/css/custom.css">
+    <!-- Summernote CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-bs5.min.css" rel="stylesheet">
     @await RenderSectionAsync("Styles", required: false)
 </head>
 <body class="body">
@@ -25,8 +27,8 @@
                 <div class="section-menu-left">
                     <div class="box-logo">
                         <a asp-area="Admin" asp-controller="Dashboard" asp-action="Index" id="site-logo-inner">
-                             <img class="" id="logo_header" alt="" src="~/Admin/images/logo/logo.png"
-                                 data-light="~/Admin/images/logo/logo.png" data-dark="~/Admin/images/logo/logo.png"> 
+                            <img class="" id="logo_header" alt="" src="~/Admin/images/logo/logo.png"
+                                 data-light="~/Admin/images/logo/logo.png" data-dark="~/Admin/images/logo/logo.png">
                         </a>
                         <div class="button-show-hide">
                             <i class="icon-menu-left"></i>
@@ -244,6 +246,25 @@
     <script src="~/Admin/js/sweetalert.min.js"></script>
     <script src="~/Admin/js/apexcharts/apexcharts.js"></script>
     <script src="~/Admin/js/main.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.20/dist/summernote-bs5.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.summernote').summernote({
+                height: 200,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ],
+                placeholder: 'Enter text here...'
+            });
+        });
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -59,10 +59,9 @@
                                 Description <span class="text-danger">*</span>
                             </label>
                             <textarea asp-for="Description"
-                                      class="form-control"
-                                      rows="4"
-                                      placeholder="Enter product description"
-                                      style="font-size: 16px; padding: 12px;"></textarea>
+                                      class="form-control summernote"
+                                      id="Description"
+                                      placeholder="Enter product description"></textarea>
                             <span asp-validation-for="Description" class="text-danger" style="font-size: 14px;"></span>
                         </div>
                     </div>
@@ -73,10 +72,9 @@
                                 Additional Information
                             </label>
                             <textarea asp-for="AdditionalInformation"
-                                      class="form-control"
-                                      rows="3"
-                                      placeholder="Enter additional information "
-                                      style="font-size: 16px; padding: 12px;"></textarea>
+                                      class="form-control summernote"
+                                      id="AdditionalInformation"
+                                      placeholder="Enter additional information"></textarea>
                             <span asp-validation-for="AdditionalInformation" class="text-danger" style="font-size: 14px;"></span>
                         </div>
                     </div>
@@ -360,9 +358,54 @@
         const bulkModal = new bootstrap.Modal(document.getElementById('bulkAddModal'));
 
         $(document).ready(function() {
+            // Initialize Summernote for Description
+            $('#Description').summernote({
+                height: 200,
+                placeholder: 'Enter product description...',
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ],
+                callbacks: {
+                    onImageUpload: function(files) {
+                        // Handle image upload
+                        for (var i = 0; i < files.length; i++) {
+                            var reader = new FileReader();
+                            reader.onloadend = function() {
+                                var img = $('<img>').attr('src', this.result);
+                                $('#Description').summernote('insertNode', img[0]);
+                            };
+                            reader.readAsDataURL(files[i]);
+                        }
+                    }
+                }
+            });
+
+            // Initialize Summernote for Additional Information
+            $('#AdditionalInformation').summernote({
+                height: 150,
+                placeholder: 'Enter additional information...',
+                disableDragAndDrop: false,
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link']],
+                    ['view', ['fullscreen', 'codeview']]
+                ]
+            });
+
             loadColors();
 
-            // Sale price validation
             $('#variantSalePrice, #bulkSalePrice').on('input', function() {
                 validateSalePrice();
             });
@@ -371,7 +414,6 @@
                 validateSalePrice();
             });
 
-            // Bulk color select change
             $('#bulkColorSelect').on('change', function() {
                 addBulkColor();
             });
@@ -415,7 +457,6 @@
             });
         }
 
-        // === BULK ADD FUNCTIONS ===
         function openBulkAddModal() {
             resetBulkForm();
             bulkModal.show();
@@ -552,7 +593,6 @@
             const salePrice = $('#bulkSalePrice').val();
             const additionalFiles = Array.from($('#bulkAdditionalImages')[0].files);
 
-            // Create all combinations
             selectedBulkSizes.forEach(function(size) {
                 selectedBulkColors.forEach(function(color) {
                     const variant = {
@@ -603,7 +643,6 @@
             }
         }
 
-        // === SINGLE VARIANT FUNCTIONS ===
         function openAddVariantModal() {
             resetVariantForm();
             modal.show();
@@ -769,7 +808,10 @@
 
             const formData = new FormData($('#createProductForm')[0]);
 
-            // Add variants data
+            // Get Summernote content
+            formData.set('Description', $('#Description').summernote('code'));
+            formData.set('AdditionalInformation', $('#AdditionalInformation').summernote('code'));
+
             variants.forEach((variant, index) => {
                 formData.append(`Variants[${index}].Size`, variant.size);
                 formData.append(`Variants[${index}].ColorId`, variant.colorId);
@@ -785,11 +827,10 @@
                 });
             });
 
-            // Show loading
-            const submitBtn = event.target;
-            const originalText = submitBtn.innerHTML;
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating...';
+            const submitBtn = $('button[onclick="submitProduct()"]');
+            const originalText = submitBtn.html();
+            submitBtn.prop('disabled', true);
+            submitBtn.html('<span class="spinner-border spinner-border-sm me-2"></span>Creating...');
 
             $.ajax({
                 url: $('#createProductForm').attr('action'),
@@ -805,14 +846,14 @@
                         }, 1500);
                     } else {
                         alert(response.message || 'Error creating product');
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = originalText;
+                        submitBtn.prop('disabled', false);
+                        submitBtn.html(originalText);
                     }
                 },
                 error: function(xhr) {
                     alert('An error occurred: ' + (xhr.responseJSON?.message || 'Please try again'));
-                    submitBtn.disabled = false;
-                    submitBtn.innerHTML = originalText;
+                    submitBtn.prop('disabled', false);
+                    submitBtn.html(originalText);
                 }
             });
         }
@@ -850,5 +891,19 @@
         .btn-close-white {
             filter: brightness(0) invert(1);
         }
+
+        .note-editor {
+            border: 1px solid #ddd !important;
+            border-radius: 8px !important;
+        }
+
+            .note-editor .note-toolbar {
+                background-color: #f8f9fa !important;
+                border-bottom: 1px solid #ddd !important;
+            }
+
+            .note-editor .note-editable {
+                padding: 15px !important;
+            }
     </style>
 }

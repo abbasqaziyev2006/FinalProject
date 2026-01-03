@@ -39,31 +39,53 @@
                     <input type="hidden" asp-for="CurrentLogoUrl" />
 
                     <div class="mb-4">
-                        <label asp-for="Name" class="form-label" style="font-size: 18px; font-weight: 600;"></label>
+                        <label asp-for="Name" class="form-label" style="font-size: 18px; font-weight: 600;">
+                            Brand Name <span class="text-danger">*</span>
+                        </label>
                         <input asp-for="Name" class="form-control" style="font-size: 16px; padding: 12px;" />
                         <span asp-validation-for="Name" class="text-danger" style="font-size: 14px;"></span>
                     </div>
 
                     <div class="mb-4">
-                        <label asp-for="Description" class="form-label" style="font-size: 18px; font-weight: 600;"></label>
-                        <textarea asp-for="Description" class="form-control" rows="4" style="font-size: 16px; padding: 12px;"></textarea>
+                        <label asp-for="Description" class="form-label" style="font-size: 18px; font-weight: 600;">
+                            Description
+                        </label>
+                        <textarea asp-for="Description"
+                                  class="form-control summernote"
+                                  id="Description"></textarea>
                         <span asp-validation-for="Description" class="text-danger" style="font-size: 14px;"></span>
                     </div>
 
                     <div class="mb-4">
                         <label asp-for="LogoFile" class="form-label" style="font-size: 18px; font-weight: 600;">Logo</label>
-                        <input asp-for="LogoFile" type="file" class="form-control" style="font-size: 16px; padding: 12px;" />
-                        <span asp-validation-for="LogoFile" class="text-danger" style="font-size: 14px;"></span>
-
-                        @if (!string.IsNullOrEmpty(Model.CurrentLogoUrl))
-                        {
-                            <div class="mt-3">
-                                <div style="font-size: 16px; margin-bottom: 8px;">Current logo:</div>
+                        <div class="upload-image flex-grow">
+                            <div class="item" id="imgpreview" style="@(string.IsNullOrEmpty(Model.CurrentLogoUrl) ? "display:none" : "")">
                                 <img src="@Model.CurrentLogoUrl"
-                                     alt="@Model.Name"
-                                     style="width:120px; height:120px; object-fit:cover; border-radius:8px;" />
+                                     id="preview-img"
+                                     style="width:120px; height:120px; object-fit:cover; border-radius:8px; border: 2px solid #e0e0e0;"
+                                     alt="@Model.Name">
+                                <button type="button" class="btn btn-sm btn-outline-primary mt-2 d-block" onclick="changeLogo()">
+                                    <i class="icon-edit me-1"></i>Change Logo
+                                </button>
                             </div>
-                        }
+                            <div id="upload-file" class="item up-load" style="@(string.IsNullOrEmpty(Model.CurrentLogoUrl) ? "" : "display:none")">
+                                <label class="uploadfile" for="LogoFile" style="cursor: pointer;">
+                                    <span class="icon">
+                                        <i class="icon-upload-cloud" style="font-size: 32px;"></i>
+                                    </span>
+                                    <span class="body-text" style="font-size: 16px; margin-top: 10px; display: block;">
+                                        Drop your image here or <span class="tf-color">click to browse</span>
+                                    </span>
+                                    <input asp-for="LogoFile"
+                                           type="file"
+                                           id="LogoFile"
+                                           accept="image/*"
+                                           style="display: none;"
+                                           onchange="previewLogo(this)">
+                                </label>
+                            </div>
+                        </div>
+                        <span asp-validation-for="LogoFile" class="text-danger" style="font-size: 14px;"></span>
                     </div>
 
                     <div class="mb-4">
@@ -100,4 +122,64 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function() {
+            $('#Description').summernote({
+                height: 150,
+                placeholder: 'Enter brand description...',
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['link']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+
+        function previewLogo(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#preview-img').attr('src', e.target.result);
+                    $('#imgpreview').show();
+                    $('#upload-file').hide();
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function changeLogo() {
+            $('#LogoFile').click();
+        }
+    </script>
+
+    <style>
+        .upload-image {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            transition: border-color 0.3s;
+        }
+
+            .upload-image:hover {
+                border-color: #007bff;
+            }
+
+        .note-editor {
+            border: 1px solid #ddd !important;
+            border-radius: 8px !important;
+        }
+
+            .note-editor .note-toolbar {
+                background-color: #f8f9fa !important;
+            }
+
+            .note-editor .note-editable {
+                padding: 15px !important;
+            }
+    </style>
 }

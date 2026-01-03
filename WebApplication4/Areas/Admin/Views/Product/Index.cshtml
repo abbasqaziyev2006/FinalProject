@@ -122,7 +122,7 @@
                                                 </div>
                                             </td>
                                             <td>
-                                                @if (product.Category != null)
+                                                @if (!string.IsNullOrEmpty(product.CategoryName))
                                                 {
                                                     <span class="badge bg-info">@product.CategoryName</span>
                                                 }
@@ -132,7 +132,7 @@
                                                 }
                                             </td>
                                             <td>
-                                                @if (product.Brand != null)
+                                                @if (!string.IsNullOrEmpty(product.BrandName))
                                                 {
                                                     <span class="badge bg-primary">@product.BrandName</span>
                                                 }

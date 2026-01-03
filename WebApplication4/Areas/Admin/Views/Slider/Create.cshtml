@@ -166,41 +166,92 @@
     }
 
     <script>
-        // Image preview functionality
-        document.getElementById('ImageFile').addEventListener('change', function(e) {
-            const file = e.target.files[0];
+        document.addEventListener('DOMContentLoaded', function() {
+            const uploadArea = document.getElementById('upload-file');
+            const fileInput = document.getElementById('ImageFile');
+            const imgPreview = document.getElementById('imgpreview');
+            const previewImg = document.getElementById('preview-img');
 
-            if (file) {
+            // Drag & Drop event handlers
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            // Highlight effect on drag
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                uploadArea.classList.add('drag-over');
+            }
+
+            function unhighlight(e) {
+                uploadArea.classList.remove('drag-over');
+            }
+
+            // Handle dropped files
+            uploadArea.addEventListener('drop', handleDrop, false);
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    handleFiles(files[0]);
+                }
+            }
+
+            // Handle file input change
+            fileInput.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    handleFiles(file);
+                }
+            });
+
+            function handleFiles(file) {
                 // Validate file type
                 const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
                 if (!validTypes.includes(file.type)) {
                     alert('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
-                    this.value = '';
+                    fileInput.value = '';
                     return;
                 }
 
                 // Validate file size (max 5MB)
                 if (file.size > 5 * 1024 * 1024) {
                     alert('File size must be less than 5MB');
-                    this.value = '';
+                    fileInput.value = '';
                     return;
                 }
 
                 // Show preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    document.getElementById('preview-img').src = e.target.result;
-                    document.getElementById('imgpreview').style.display = 'block';
-                    document.getElementById('upload-file').style.display = 'none';
+                    previewImg.src = e.target.result;
+                    imgPreview.style.display = 'block';
+                    uploadArea.style.display = 'none';
                 };
                 reader.readAsDataURL(file);
             }
-        });
 
-        // Reset preview on form reset
-        document.querySelector('form').addEventListener('reset', function() {
-            document.getElementById('imgpreview').style.display = 'none';
-            document.getElementById('upload-file').style.display = 'block';
+            // Reset preview on form reset
+            document.querySelector('form').addEventListener('reset', function() {
+                imgPreview.style.display = 'none';
+                uploadArea.style.display = 'block';
+            });
         });
     </script>
 
@@ -215,6 +266,11 @@
             .upload-image:hover {
                 border-color: #007bff;
             }
+
+        #upload-file.drag-over {
+            border-color: #007bff;
+            background-color: rgba(0, 123, 255, 0.1);
+        }
 
         #imgpreview img {
             max-width: 100%;
@@ -239,6 +295,19 @@
             gap: 15px;
             margin-top: 30px;
         }
+
+        .uploadfile {
+            cursor: pointer;
+        }
+
+            .uploadfile input[type="file"] {
+                position: absolute;
+                opacity: 0;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                cursor: pointer;
+            }
     </style>
 }
-

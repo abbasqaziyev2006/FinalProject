@@ -52,10 +52,8 @@
                             Description
                         </label>
                         <textarea asp-for="Description"
-                                  class="form-control"
-                                  rows="4"
-                                  placeholder="Enter brand description (optional)"
-                                  style="font-size: 16px; padding: 12px;"></textarea>
+                                  class="form-control summernote"
+                                  id="Description"></textarea>
                         <span asp-validation-for="Description" class="text-danger" style="font-size: 14px;"></span>
                     </div>
 
@@ -127,23 +125,62 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
+        $(document).ready(function() {
+            $('#Description').summernote({
+                height: 150,
+                placeholder: 'Enter brand description...',
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['insert', ['link']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+        });
+
         function previewImage(input) {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
-
                 reader.onload = function(e) {
                     $('#previewImg').attr('src', e.target.result);
                     $('#imgpreview').show();
                     $('#upload-file').hide();
                 }
-
                 reader.readAsDataURL(input.files[0]);
             }
         }
 
-        // Allow clicking on preview to change image
         $('#imgpreview').click(function() {
             $('#logoFile').click();
         });
     </script>
+
+    <style>
+        .upload-image {
+            border: 2px dashed #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            transition: border-color 0.3s;
+        }
+
+            .upload-image:hover {
+                border-color: #007bff;
+            }
+
+        .note-editor {
+            border: 1px solid #ddd !important;
+            border-radius: 8px !important;
+        }
+
+            .note-editor .note-toolbar {
+                background-color: #f8f9fa !important;
+            }
+
+            .note-editor .note-editable {
+                padding: 15px !important;
+            }
+    </style>
 }

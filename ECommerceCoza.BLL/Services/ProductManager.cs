@@ -62,11 +62,14 @@ namespace EcommerceCoza.BLL.Services
                     product.IsInWishlist = false;
                 }
             }
-            
+
             return await base.GetAllAsync(predicate: x => !x.IsDeleted
               , include: x => x
+              .Include(p => p.Category)
+              .Include(p => p.Brand)
               .Include(pv => pv.ProductVariants).ThenInclude(i => i.ProductImages)
               .Include(pv => pv.ProductVariants).ThenInclude(c => c.Color!))
+
                ;
         }
 
@@ -104,12 +107,12 @@ namespace EcommerceCoza.BLL.Services
 
         public async Task<List<ProductViewModel>> GetProductsAndCategory()
         {
-            var products = await GetAllAsync(include: x=>x.Include(c=>c.Category!));
-            foreach(var product in products)
+            var products = await GetAllAsync(include: x => x.Include(c => c.Category!));
+            foreach (var product in products)
             {
                 var category = await _categoryService.GetByIdAsync(product.CategoryId);
-                if(category != null)
-                product.CategoryName = category.Name;
+                if (category != null)
+                    product.CategoryName = category.Name;
             }
 
             return products.ToList();
@@ -122,7 +125,7 @@ namespace EcommerceCoza.BLL.Services
             var entity = await Repository.GetByIdAsync(product.Id);
             if (entity == null) throw new InvalidOperationException("Product not found.");
 
-            // Map updated fields from ProductViewModel to entity
+
             entity.Name = product.Name;
             entity.Description = product.Description;
             entity.AdditionalInformation = product.AdditionalInformation;

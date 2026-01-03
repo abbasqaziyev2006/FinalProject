@@ -8,7 +8,6 @@
 <div class="main-content">
     <div class="main-content-inner">
         <div class="main-content-wrap">
-            <!-- Header -->
             <div class="flex items-center flex-wrap justify-between gap20 mb-27">
                 <h3>Category Information</h3>
                 <ul class="breadcrumbs flex items-center flex-wrap justify-start gap10">
@@ -28,7 +27,6 @@
                 </ul>
             </div>
 
-            <!-- Validation Summary -->
             @if (!ViewData.ModelState.IsValid)
             {
                 <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -37,7 +35,6 @@
                 </div>
             }
 
-            <!-- Form -->
             <div class="wg-box">
                 <form asp-area="Admin"
                       asp-controller="Category"
@@ -48,7 +45,6 @@
 
                     @Html.AntiForgeryToken()
 
-                    <!-- Category Name -->
                     <fieldset class="name">
                         <div class="body-title">
                             Category Name <span class="tf-color-1">*</span>
@@ -62,21 +58,17 @@
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </fieldset>
 
-                    <!-- Category Description -->
                     <fieldset class="description">
                         <div class="body-title">
                             Category Description <span class="tf-color-1">*</span>
                         </div>
                         <textarea asp-for="Description"
-                                  class="flex-grow"
-                                  placeholder="Enter category description"
-                                  tabindex="2"
-                                  rows="4"
-                                  aria-required="true"></textarea>
+                                  class="form-control summernote"
+                                  id="Description"
+                                  tabindex="2"></textarea>
                         <span asp-validation-for="Description" class="text-danger"></span>
                     </fieldset>
 
-                    <!-- Image Upload -->
                     <fieldset>
                         <div class="body-title">
                             Upload Image <span class="tf-color-1">*</span>
@@ -104,7 +96,6 @@
                         <span asp-validation-for="ImageFile" class="text-danger"></span>
                     </fieldset>
 
-                    <!-- Buttons -->
                     <div class="bot">
                         <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="tf-button style-3 w208">
                             Cancel
@@ -129,41 +120,91 @@
     }
 
     <script>
-        // Image preview functionality
-        document.getElementById('ImageFile').addEventListener('change', function(e) {
-            const file = e.target.files[0];
+        $(document).ready(function() {
+            $('#Description').summernote({
+                height: 200,
+                placeholder: 'Enter category description...',
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
 
-            if (file) {
-                // Validate file type
+            // Drag & Drop functionality
+            const uploadArea = document.getElementById('upload-file');
+            const fileInput = document.getElementById('ImageFile');
+            const imgPreview = document.getElementById('imgpreview');
+            const previewImg = document.getElementById('preview-img');
+
+            // Prevent default behavior for drag events
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, preventDefaults, false);
+                document.body.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            // Highlight on drag
+            ['dragenter', 'dragover'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, () => uploadArea.classList.add('drag-over'), false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                uploadArea.addEventListener(eventName, () => uploadArea.classList.remove('drag-over'), false);
+            });
+
+            // Handle drop
+            uploadArea.addEventListener('drop', function(e) {
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    fileInput.files = files;
+                    handleFile(files[0]);
+                }
+            }, false);
+
+            // Handle file input change
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files[0]) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+
+            function handleFile(file) {
                 const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
                 if (!validTypes.includes(file.type)) {
                     alert('Please select a valid image file (JPEG, PNG, GIF, or WebP)');
-                    this.value = '';
+                    fileInput.value = '';
                     return;
                 }
-
-                // Validate file size (max 5MB)
                 if (file.size > 5 * 1024 * 1024) {
                     alert('File size must be less than 5MB');
-                    this.value = '';
+                    fileInput.value = '';
                     return;
                 }
-
-                // Show preview
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    document.getElementById('preview-img').src = e.target.result;
-                    document.getElementById('imgpreview').style.display = 'block';
-                    document.getElementById('upload-file').style.display = 'none';
+                    previewImg.src = e.target.result;
+                    imgPreview.style.display = 'block';
+                    uploadArea.style.display = 'none';
                 };
                 reader.readAsDataURL(file);
             }
-        });
 
-        // Reset preview on form reset
-        document.querySelector('form').addEventListener('reset', function() {
-            document.getElementById('imgpreview').style.display = 'none';
-            document.getElementById('upload-file').style.display = 'block';
+            // Reset form
+            document.querySelector('form').addEventListener('reset', function() {
+                imgPreview.style.display = 'none';
+                uploadArea.style.display = 'block';
+                $('#Description').summernote('reset');
+            });
         });
     </script>
 
@@ -172,12 +213,17 @@
             border: 2px dashed #ddd;
             border-radius: 8px;
             padding: 20px;
-            transition: border-color 0.3s;
+            transition: all 0.3s;
         }
 
             .upload-image:hover {
                 border-color: #007bff;
             }
+
+        #upload-file.drag-over {
+            border-color: #007bff !important;
+            background-color: rgba(0, 123, 255, 0.1);
+        }
 
         #imgpreview img {
             max-width: 100%;
@@ -196,14 +242,6 @@
             margin-bottom: 20px;
         }
 
-        .description textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-family: inherit;
-        }
-
         .bot {
             display: flex;
             justify-content: flex-end;
@@ -218,6 +256,34 @@
 
             .style-3:hover {
                 background-color: #5a6268;
+            }
+
+        .note-editor {
+            border: 1px solid #ddd !important;
+            border-radius: 8px !important;
+        }
+
+            .note-editor .note-toolbar {
+                background-color: #f8f9fa !important;
+            }
+
+            .note-editor .note-editable {
+                padding: 15px !important;
+            }
+
+        .uploadfile {
+            cursor: pointer;
+            position: relative;
+        }
+
+            .uploadfile input[type="file"] {
+                position: absolute;
+                opacity: 0;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                cursor: pointer;
             }
     </style>
 }

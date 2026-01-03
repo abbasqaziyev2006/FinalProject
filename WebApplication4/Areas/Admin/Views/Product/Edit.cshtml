@@ -30,7 +30,9 @@
 
             <!-- Product Basic Info -->
             <div class="wg-box mb-4">
-                <h4 class="mb-4" style="font-size: 20px; font-weight: 600;">Basic Information</h4>
+                <h4 class="mb-4" style="font-size: 20px; font-weight: 600; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">
+                    <i class="icon-box me-2"></i>Basic Information
+                </h4>
                 <form asp-area="Admin"
                       asp-controller="Product"
                       asp-action="Edit"
@@ -54,9 +56,8 @@
                             Description <span class="text-danger">*</span>
                         </label>
                         <textarea asp-for="Description"
-                                  class="form-control"
-                                  rows="4"
-                                  style="font-size: 16px; padding: 12px;"></textarea>
+                                  class="form-control summernote"
+                                  id="Description"></textarea>
                         <span asp-validation-for="Description" class="text-danger" style="font-size: 14px;"></span>
                     </div>
 
@@ -65,14 +66,13 @@
                             Additional Information
                         </label>
                         <textarea asp-for="AdditionalInformation"
-                                  class="form-control"
-                                  rows="3"
-                                  style="font-size: 16px; padding: 12px;"></textarea>
+                                  class="form-control summernote"
+                                  id="AdditionalInformation"></textarea>
                         <span asp-validation-for="AdditionalInformation" class="text-danger" style="font-size: 14px;"></span>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-4 mb-4">
                             <label asp-for="BasePrice" class="form-label" style="font-size: 18px; font-weight: 600;">
                                 Base Price ($) <span class="text-danger">*</span>
                             </label>
@@ -85,7 +85,7 @@
                             <span asp-validation-for="BasePrice" class="text-danger" style="font-size: 14px;"></span>
                         </div>
 
-                        <div class="col-md-6 mb-4">
+                        <div class="col-md-4 mb-4">
                             <label asp-for="CategoryId" class="form-label" style="font-size: 18px; font-weight: 600;">
                                 Category <span class="text-danger">*</span>
                             </label>
@@ -97,19 +97,19 @@
                             </select>
                             <span asp-validation-for="CategoryId" class="text-danger" style="font-size: 14px;"></span>
                         </div>
-                    </div>
 
-                    <div class="mb-4">
-                        <label asp-for="BrandId" class="form-label" style="font-size: 18px; font-weight: 600;">
-                            Brand <span class="text-danger">*</span>
-                        </label>
-                        <select asp-for="BrandId"
-                                asp-items="Model.BrandSelectListItems"
-                                class="form-select"
-                                style="font-size: 16px; padding: 12px;">
-                            <option value="">-- Select Brand --</option>
-                        </select>
-                        <span asp-validation-for="BrandId" class="text-danger" style="font-size: 14px;"></span>
+                        <div class="col-md-4 mb-4">
+                            <label asp-for="BrandId" class="form-label" style="font-size: 18px; font-weight: 600;">
+                                Brand <span class="text-danger">*</span>
+                            </label>
+                            <select asp-for="BrandId"
+                                    asp-items="Model.BrandSelectListItems"
+                                    class="form-select"
+                                    style="font-size: 16px; padding: 12px;">
+                                <option value="">-- Select Brand --</option>
+                            </select>
+                            <span asp-validation-for="BrandId" class="text-danger" style="font-size: 14px;"></span>
+                        </div>
                     </div>
 
                     <div class="d-flex gap-3 mt-4">
@@ -128,8 +128,10 @@
 
             <!-- Product Variants Section -->
             <div class="wg-box">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h4 style="font-size: 20px; font-weight: 600;">Product Variants</h4>
+                <div class="d-flex justify-content-between align-items-center mb-4" style="border-bottom: 2px solid #e0e0e0; padding-bottom: 10px;">
+                    <h4 style="font-size: 20px; font-weight: 600;">
+                        <i class="icon-layers me-2"></i>Product Variants
+                    </h4>
                     <div>
                         <button type="button" class="btn btn-lg btn-info me-2" onclick="openBulkAddModal()" style="font-size: 16px;">
                             <i class="icon-grid me-2"></i>Bulk Add
@@ -141,7 +143,6 @@
                 </div>
 
                 <div id="variantsList">
-                    <!-- Variants will be loaded here via AJAX -->
                     <div class="text-center py-4">
                         <div class="spinner-border text-primary" role="status">
                             <span class="visually-hidden">Loading...</span>
@@ -153,7 +154,7 @@
     </div>
 </div>
 
-<!-- Bulk Add Modal (Edit page) -->
+<!-- Bulk Add Modal -->
 <div class="modal fade" id="bulkAddModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -164,11 +165,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Sizes -->
                 <div class="mb-4">
-                    <label class="form-label" style="font-size: 16px; font-weight: 600;">
-                        Sizes
-                    </label>
+                    <label class="form-label" style="font-size: 16px; font-weight: 600;">Sizes <span class="text-danger">*</span></label>
                     <div class="input-group mb-2">
                         <input type="text" id="bulkSizeInput" class="form-control" placeholder="Enter size (e.g., S, M, L)" />
                         <button type="button" class="btn btn-primary" onclick="addBulkSize()">Add Size</button>
@@ -176,11 +174,8 @@
                     <div id="selectedSizes" class="d-flex gap-2 flex-wrap"></div>
                 </div>
 
-                <!-- Colors -->
                 <div class="mb-4">
-                    <label class="form-label" style="font-size: 16px; font-weight: 600;">
-                        Colors
-                    </label>
+                    <label class="form-label" style="font-size: 16px; font-weight: 600;">Colors <span class="text-danger">*</span></label>
                     <select id="bulkColorSelect" class="form-select mb-2">
                         <option value="">-- Select Color to Add --</option>
                     </select>
@@ -255,11 +250,15 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" style="font-size: 16px; font-weight: 600;">Sale Price ($) <span class="text-danger">*</span></label>
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" style="font-size: 16px; font-weight: 600;">Regular Price ($) <span class="text-danger">*</span></label>
                             <input type="number" name="Price" step="0.01" min="0" class="form-control" required style="font-size: 16px; padding: 10px;" />
                         </div>
-                        <div class="col-md-6 mb-3">
+                        <div class="col-md-4 mb-3">
+                            <label class="form-label" style="font-size: 16px; font-weight: 600;">Sale Price ($)</label>
+                            <input type="number" name="SalePrice" step="0.01" min="0" class="form-control" style="font-size: 16px; padding: 10px;" />
+                        </div>
+                        <div class="col-md-4 mb-3">
                             <label class="form-label" style="font-size: 16px; font-weight: 600;">Quantity <span class="text-danger">*</span></label>
                             <input type="number" name="Quantity" min="0" class="form-control" required style="font-size: 16px; padding: 10px;" />
                         </div>
@@ -300,7 +299,6 @@
             </div>
             <form id="editVariantForm" enctype="multipart/form-data">
                 <div class="modal-body" id="editVariantContent">
-                    <!-- Content will be loaded via AJAX -->
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="font-size: 16px;">Cancel</button>
@@ -324,6 +322,38 @@
         const addVariantForm = $('#addVariantForm');
 
         $(document).ready(function () {
+            // Initialize Summernote for Description
+            $('#Description').summernote({
+                height: 200,
+                placeholder: 'Enter product description...',
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+                    ['fontname', ['fontname']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link', 'picture']],
+                    ['view', ['fullscreen', 'codeview', 'help']]
+                ]
+            });
+
+            // Initialize Summernote for Additional Information
+            $('#AdditionalInformation').summernote({
+                height: 150,
+                placeholder: 'Enter additional information...',
+                toolbar: [
+                    ['style', ['style']],
+                    ['font', ['bold', 'italic', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['table', ['table']],
+                    ['insert', ['link']],
+                    ['view', ['fullscreen', 'codeview']]
+                ]
+            });
+
             loadVariants();
             loadColors();
         });
@@ -342,11 +372,10 @@
             $.get('@Url.Action("GetColors", "Product", new { area = "Admin" })',
                 function (data) {
                     colors = data;
-                    // populate addVariantForm select
                     let colorSelect = addVariantForm.find('select[name="ColorId"]');
                     colorSelect.empty();
                     colorSelect.append('<option value="">-- Select Color --</option>');
-                    // populate bulk color select
+
                     let bulkColorSelect = $('#bulkColorSelect');
                     bulkColorSelect.empty();
                     bulkColorSelect.append('<option value="">-- Select Color to Add --</option>');
@@ -486,7 +515,7 @@
         function renderSelectedSizes() {
             const c = $('#selectedSizes'); c.empty();
             selectedBulkSizes.forEach(s => {
-                c.append(`<span class="badge bg-info d-flex align-items-center" style="padding:6px 10px; margin-right:6px;">${s} <button type="button" class="btn-close btn-close-white ms-2" onclick="removeBulkSize('${s}')"></button></span>`);
+                c.append(`<span class="badge bg-info d-flex align-items-center" style="padding:8px 12px;">${s} <button type="button" class="btn-close btn-close-white ms-2" style="font-size:10px;" onclick="removeBulkSize('${s}')"></button></span>`);
             });
         }
 
@@ -496,7 +525,6 @@
             updateCombinationCount();
         }
 
-        // colors
         $('#bulkColorSelect').on('change', function () {
             const sel = $(this).find(':selected');
             const id = $(this).val();
@@ -511,7 +539,7 @@
         function renderSelectedColors() {
             const c = $('#selectedColors'); c.empty();
             selectedBulkColors.forEach(col => {
-                c.append(`<span class="badge bg-primary d-flex align-items-center" style="padding:6px 10px; margin-right:6px;">${col.hex ? `<span style="display:inline-block;width:14px;height:14px;background:${col.hex};border-radius:50%;margin-right:6px;border:1px solid #fff;"></span>` : ''}${col.name}<button type="button" class="btn-close btn-close-white ms-2" onclick="removeBulkColor(${col.id})"></button></span>`);
+                c.append(`<span class="badge bg-primary d-flex align-items-center" style="padding:8px 12px;">${col.hex ? `<span style="display:inline-block;width:16px;height:16px;background:${col.hex};border-radius:50%;margin-right:6px;border:1px solid #fff;"></span>` : ''}${col.name}<button type="button" class="btn-close btn-close-white ms-2" style="font-size:10px;" onclick="removeBulkColor(${col.id})"></button></span>`);
             });
         }
 
@@ -523,7 +551,7 @@
 
         function updateCombinationCount() {
             const count = selectedBulkSizes.length * selectedBulkColors.length;
-            $('#combinationCount').text(count > 0 ? `Total combinations: ${count}` : 'Select sizes and colors to see total combinations.');
+            $('#combinationCount').html(count > 0 ? `<strong>Total combinations: ${count} variants will be created</strong>` : 'Select sizes and colors to see total combinations.');
         }
 
         function previewBulkCoverImage(input) {
@@ -543,7 +571,7 @@
                 Array.from(input.files).forEach(file => {
                     const reader = new FileReader();
                     reader.onload = function (e) {
-                        $('#bulkAdditionalImagesPreview').append(`<img src="${e.target.result}" style="width:100px;height:100px;object-fit:cover;border-radius:8px;border:2px solid #e0e0e0;margin-right:6px;" />`);
+                        $('#bulkAdditionalImagesPreview').append(`<img src="${e.target.result}" style="width:100px;height:100px;object-fit:cover;border-radius:8px;border:2px solid #e0e0e0;" />`);
                     };
                     reader.readAsDataURL(file);
                 });
@@ -569,9 +597,8 @@
             if (total === 0) return;
 
             const createBtn = $('#createBulkBtn');
-            createBtn.prop('disabled', true).text('Creating...');
+            createBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Creating...');
 
-            // build array of ajax promises
             const ajaxCalls = combos.map(combo => {
                 const fd = new FormData();
                 fd.append('ProductId', productId);
@@ -608,7 +635,6 @@
             }
         }
 
-        // preview helpers for single add
         function previewCoverImage(input) {
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
@@ -626,7 +652,7 @@
                 Array.from(input.files).forEach(file => {
                     const reader = new FileReader();
                     reader.onload = function (e) {
-                        $('#additionalImagesPreview').append(`<img src="${e.target.result}" style="width:100px;height:100px;object-fit:cover;border-radius:8px;border:2px solid #e0e0e0;margin-right:6px;" />`);
+                        $('#additionalImagesPreview').append(`<img src="${e.target.result}" style="width:100px;height:100px;object-fit:cover;border-radius:8px;border:2px solid #e0e0e0;" />`);
                     };
                     reader.readAsDataURL(file);
                 });
@@ -648,5 +674,18 @@
         .modal-xl {
             max-width: 1000px;
         }
+
+        .note-editor {
+            border: 1px solid #ddd !important;
+            border-radius: 8px !important;
+        }
+
+            .note-editor .note-toolbar {
+                background-color: #f8f9fa !important;
+            }
+
+            .note-editor .note-editable {
+                padding: 15px !important;
+            }
     </style>
 }
