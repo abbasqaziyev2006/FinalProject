@@ -157,18 +157,6 @@
                         @basketItemsCount
                     </span>
                 </a>
-
-                <!-- Logout -->
-                @if (User.Identity?.IsAuthenticated ?? false)
-                {
-                    <div class="header-tools__item">
-                        <a asp-controller="Account" asp-action="Logout" class="header-tools__item" title="Logout">
-                            <svg class="d-block" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <use href="#icon_logout" />
-                            </svg>
-                        </a>
-                    </div>
-                }
             </div>
         </div>
     </div>
