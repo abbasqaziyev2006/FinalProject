@@ -69,6 +69,7 @@ namespace EcommerceCoza.MVC
             FilePathConstants.ProductImagePath = Path.Combine(builder.Environment.WebRootPath, "images", "products");
             FilePathConstants.CategoryImagePath = Path.Combine(builder.Environment.WebRootPath, "images", "collections");
             FilePathConstants.SliderImagePath = Path.Combine(builder.Environment.WebRootPath, "images", "sliders");
+            FilePathConstants.BrandImagePath = Path.Combine(builder.Environment.WebRootPath, "images", "brands");
 
             var app = builder.Build();
 

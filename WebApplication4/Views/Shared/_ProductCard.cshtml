@@ -104,20 +104,12 @@
         </div>
 
         <div class="pc__info position-relative">
-            <p class="pc__category">
-                @if (Model.Brand != null)
-                {
+            @if (Model.Brand != null)
+            {
+                <p class="pc__category">
                     <span class="fw-medium text-primary">@Model.Brand.Name</span>
-                    @if (Model.Category != null)
-                    {
-                        <span class="text-muted"> • </span>
-                    }
-                }
-                @if (Model.Category != null)
-                {
-                    <span>@Model.Category.Name</span>
-                }
-            </p>
+                </p>
+            }
             <h6 class="pc__title">
                 <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.DetailsUrl">@Model.Name</a>
             </h6>
@@ -268,21 +260,21 @@
             $card.find('.pc__swatch-color').removeClass('active');
             $sw.addClass('active');
 
- 
+
             var cover = $sw.data('cover-image') || '';
             var firstImg = $sw.data('first-image') || '';
             var imgFile = cover || firstImg || 'product-placeholder.jpg';
             var $img = $card.find('.main-product-image').first();
             $img.attr('src', '/images/products/' + imgFile);
 
-        
+
             var variantId = $sw.data('variant-id');
             var $atc = $card.find('.js-add-cart').first();
             if (variantId && $atc.length) {
                 $atc.attr('data-variant-id', variantId);
             }
 
-     
+
             var price = $sw.data('price');
             var sale = $sw.data('sale-price');
             var $priceContainer = $card.find('.product-card__price .price-current').first();
@@ -296,7 +288,7 @@
             }
         });
 
-   
+
         $(function () {
             $('.product-card-wrapper').each(function () {
                 var $card = $(this);
@@ -304,13 +296,13 @@
                 if ($first.length) {
                     $first.addClass('active');
 
-                   
+
                     var cover = $first.data('cover-image') || '';
                     var firstImg = $first.data('first-image') || '';
                     var imgFile = cover || firstImg || 'product-placeholder.jpg';
                     $card.find('.main-product-image').attr('src', '/images/products/' + imgFile);
 
-                  
+
                     var variantId = $first.data('variant-id');
                     if (variantId) {
                         $card.find('.js-add-cart').attr('data-variant-id', variantId);

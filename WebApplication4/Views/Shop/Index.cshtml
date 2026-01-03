@@ -89,6 +89,13 @@
                                             <li class="list-item mb-2">
                                                 <label class="form-check d-flex align-items-center" style="cursor: pointer;">
                                                     <input class="form-check-input brand-filter me-2" type="checkbox" data-brand-id="@brand.Id" value="@brand.Id">
+                                                    @if (!string.IsNullOrEmpty(brand.LogoUrl))
+                                                    {
+                                                        <img src="@brand.LogoUrl"
+                                                             alt="@brand.Name"
+                                                             style="width: 24px; height: 24px; object-fit: contain; margin-right: 8px; border-radius: 4px;"
+                                                             onerror="this.style.display='none'">
+                                                    }
                                                     <span class="form-check-label">@brand.Name (@brandProductCount)</span>
                                                 </label>
                                             </li>
@@ -176,12 +183,12 @@
                                     var availableSizes = allSizesSet
                                     .OrderBy(s =>
                                     {
-                                        // numeric sizes first, ordered ascending
+                                      
                                         if (int.TryParse(s, out var n)) return n;
-                                        // then known text sizes in the order defined
+                                 
                                         var idx = textSizes.IndexOf(s);
                                         if (idx >= 0) return 1000 + idx;
-                                        // any other sizes afterwards (alphabetical)
+                                   
                                         return 2000 + s.GetHashCode();
                                     })
                                     .ToArray();
@@ -300,6 +307,7 @@
                 </div>
             </div>
 
+
             <!-- Shop Controls -->
             <div class="d-flex justify-content-between mb-4 pb-md-2 flex-wrap gap-3">
                 <div class="breadcrumb mb-0 d-none d-md-block">
@@ -412,6 +420,29 @@
                 });
             });
             filteredProducts = [...allLoadedProducts];
+
+            // ============= BRAND LOGO CLICK =============
+            $('.brand-logo-link').on('click', function(e) {
+                e.preventDefault();
+                const brandId = parseInt($(this).data('brand-id'));
+
+                // Toggle brand selection
+                $('.brand-logo-link').removeClass('active');
+
+                if (selectedBrands.includes(brandId)) {
+                    // Deselect
+                    selectedBrands = [];
+                    $('.brand-filter').prop('checked', false);
+                } else {
+                    // Select this brand
+                    selectedBrands = [brandId];
+                    $(this).addClass('active');
+                    $('.brand-filter').prop('checked', false);
+                    $(`.brand-filter[data-brand-id="${brandId}"]`).prop('checked', true);
+                }
+
+                applyFilters();
+            });
 
             // ============= INFINITE SCROLL =============
             $(window).on('scroll', function() {
@@ -592,6 +623,13 @@
                 $('.brand-filter:checked').each(function() {
                     selectedBrands.push(parseInt($(this).data('brand-id')));
                 });
+
+                // Sync brand logo links
+                $('.brand-logo-link').removeClass('active');
+                selectedBrands.forEach(id => {
+                    $(`.brand-logo-link[data-brand-id="${id}"]`).addClass('active');
+                });
+
                 console.log('Selected brands:', selectedBrands);
                 applyFilters();
             });
@@ -673,6 +711,7 @@
                 $('.category-filter').removeClass('text-primary fw-bold active');
                 $('.category-filter[data-category-id="all"]').addClass('text-primary fw-bold active');
                 $('.brand-filter').prop('checked', false);
+                $('.brand-logo-link').removeClass('active');
 
                 // Reset color filters
                 $('.color-filter').prop('checked', false);

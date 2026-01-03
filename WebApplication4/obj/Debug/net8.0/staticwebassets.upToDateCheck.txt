@@ -119,6 +119,7 @@ wwwroot\assets\js\shop-filter.js
 wwwroot\assets\js\shop-sorting.js
 wwwroot\assets\js\theme.js
 wwwroot\favicon.ico
+wwwroot\images\brands\zara-b9d059ba-e595-438b-a921-6def3ba0f107-.png
 wwwroot\images\collections\51ILg+kw9xL._AC_SX569_-07ee4e04-52e7-43a4-87b1-48518ae2a145-.jpg
 wwwroot\images\collections\51ILg+kw9xL._AC_SX569_-a671e16c-fa75-42a8-8a74-60e6c68c7f44-.jpg
 wwwroot\images\collections\61gjlepkuBL._AC_SX425_-a22d79ad-4138-4999-914d-edc18e6288cb--27ca8a47-7025-4f94-8376-e08f9bad42ba-.jpg
