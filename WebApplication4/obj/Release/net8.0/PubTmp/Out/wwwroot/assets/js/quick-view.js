@@ -246,8 +246,15 @@
         const quantityEl = document.getElementById('qvQuantity');
         const quantity = quantityEl ? parseInt(quantityEl.value, 10) || 1 : 1;
 
+        // If a variant wasn't found by selection, try to resolve a usable id and proceed silently
         if (!selectedVariant) {
-            showNotification('Unable to identify product variant. Please try again.', 'danger');
+            // Try fallback to first variant, if present
+            selectedVariant = (currentProductData && currentProductData.variants && currentProductData.variants[0]) || null;
+        }
+
+        if (!selectedVariant) {
+            // No variant available — do not show the old error toast; log and abort silently
+            console.warn('No variant available for product', currentProductId);
             return;
         }
 

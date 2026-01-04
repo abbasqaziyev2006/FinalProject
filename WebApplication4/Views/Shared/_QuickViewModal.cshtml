@@ -180,33 +180,25 @@
     }
 
     @@keyframes slideIn {
-        from
-
-    {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
-
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
     }
 
     @@keyframes slideOut {
-        from
-
-    {
-        transform: translateX(0);
-        opacity: 1;
-    }
-
-    to {
-        transform: translateX(100%);
-        opacity: 0;
-    }
-
+        from {
+            transform: translateX(0);
+            opacity: 1;
+        }
+        to {
+            transform: translateX(100%);
+            opacity: 0;
+        }
     }
 
     .qv-toast {
@@ -321,7 +313,7 @@
             }
         }
 
-        // UPDATE DISPLAY
+        // UPDATE DISPLAY - FIXED: Using .html() instead of .text() for currency symbols
         function updateVariantDisplay() {
             const variant = currentProductData.variants.find(v =>
                 (!selectedColorId || String(v.colorId) === String(selectedColorId)) &&
@@ -338,12 +330,13 @@
             if (variant.size) detailUrl += `${variant.colorId ? '&' : '?'}size=${variant.size}`;
             $('#qvViewDetails').attr('href', detailUrl);
 
+            // FIXED: Changed .text() to .html() to properly render HTML entities like &#x20BD;
             if (variant.salePrice && variant.salePrice < variant.price) {
-                $('#qvSalePrice').text(`${currencySymbol}${variant.salePrice}`).removeClass('d-none');
-                $('#qvOldPrice').text(`${currencySymbol}${variant.price}`).removeClass('d-none');
+                $('#qvSalePrice').html(`${currencySymbol}${variant.salePrice}`).removeClass('d-none');
+                $('#qvOldPrice').html(`${currencySymbol}${variant.price}`).removeClass('d-none');
                 $('#qvOriginalPrice').addClass('d-none');
             } else {
-                $('#qvOriginalPrice').text(`${currencySymbol}${variant.price}`).removeClass('d-none');
+                $('#qvOriginalPrice').html(`${currencySymbol}${variant.price}`).removeClass('d-none');
                 $('#qvSalePrice, #qvOldPrice').addClass('d-none');
             }
 
@@ -399,7 +392,7 @@
                     }
                 },
                 error: function() {
-                    // Səssiz error
+                    // Silent error
                 },
                 complete: function() {
                     $btn.prop('disabled', false).html('<i class="fa fa-shopping-cart me-2"></i>Add To Cart');
