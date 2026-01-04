@@ -55,6 +55,21 @@
             initialImage = firstVariant.ImageNames.First();
         }
     }
+
+    // Serialize variants for quick view
+    var variantsJson = System.Text.Json.JsonSerializer.Serialize(Model.ProductVariants.Select(v => new
+    {
+        id = v.Id,
+        colorId = v.ColorId,
+        colorName = v.ColorName,
+        colorHexCode = v.ColorHexCode,
+        size = v.Size,
+        price = v.Price,
+        salePrice = v.SalePrice,
+        quantity = v.Quantity,
+        coverImageName = v.CoverImageName,
+        imageNames = v.ImageNames
+    }));
 }
 
 <div class="product-card-wrapper"
@@ -65,7 +80,8 @@
      data-product-sizes="@string.Join(",", productSizes)"
      data-product-price="@lowestPrice"
      data-product-name="@Model.Name"
-     data-product-date="@Model.Id">
+     data-product-date="@Model.Id"
+     data-product-variants='@variantsJson'>
     <div class="product-card mb-3 mb-md-4 mb-xxl-5">
         <div class="pc__img-wrapper position-relative">
             <a asp-controller="Product" asp-action="Details" asp-route-id="@Model.DetailsUrl" class="d-block">
@@ -86,6 +102,16 @@
                     </span>
                 </div>
             }
+
+            <!-- Quick View Button -->
+            <button class="pc__quick-view btn position-absolute border-0 text-uppercase fw-medium js-quick-view"
+                    data-product-id="@Model.Id"
+                    data-bs-toggle="modal"
+                    data-bs-target="#quickViewModal"
+                    title="@Localizer["QuickView"]"
+                    style="bottom: 50px; left: 50%; transform: translateX(-50%); background: rgba(0,0,0,0.8); color: #fff; padding: 8px 16px; font-size: 12px; opacity: 0; transition: opacity 0.3s ease;">
+                <i class="fa fa-eye me-1"></i> @Localizer["QuickView"]
+            </button>
 
             @if (firstVariant != null && firstVariant.Quantity > 0)
             {
@@ -248,6 +274,15 @@
             outline: 2px solid #333;
             transform: translateY(-1px);
         }
+
+    /* Quick View Button Hover Effect */
+    .product-card:hover .pc__quick-view {
+        opacity: 1 !important;
+    }
+
+    .pc__quick-view:hover {
+        background: #000 !important;
+    }
 </style>
 
 <script>

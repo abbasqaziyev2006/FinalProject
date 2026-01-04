@@ -1,0 +1,571 @@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@inject WebApplication4.Services.ICurrencyService CurrencyService
+
+<div class="modal fade" id="quickViewModal" tabindex="-1" aria-labelledby="quickViewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-0">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="row g-0">
+                    <div class="col-md-6">
+                        <div class="quick-view-image position-relative bg-light d-flex align-items-center justify-content-center" style="min-height: 400px;">
+                            <img id="qvMainImage" src="/images/products/product-placeholder.jpg" alt="Product Image" class="img-fluid" style="max-height: 400px; object-fit: contain; width: 100%;">
+                            <div id="qvDiscountBadge" class="position-absolute top-0 start-0 m-3 d-none">
+                                <span class="badge bg-danger px-2 py-1"></span>
+                            </div>
+                        </div>
+                        <div id="qvThumbnails" class="d-flex gap-2 p-3 justify-content-center flex-wrap"></div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="quick-view-info p-4">
+                            <p class="text-muted mb-1 small text-uppercase" id="qvBrand"></p>
+                            <h4 id="qvTitle" class="mb-2 fw-bold"></h4>
+
+                            <div id="qvPriceContainer" class="mb-3">
+                                <span id="qvSalePrice" class="h4 fw-bold text-danger d-none"></span>
+                                <span id="qvOriginalPrice" class="h4 fw-bold"></span>
+                                <del id="qvOldPrice" class="text-muted ms-2 d-none"></del>
+                            </div>
+
+                            <div id="qvStockStatus" class="mb-3"></div>
+
+                            <hr>
+
+                            <div id="qvColorSection" class="mb-3 d-none">
+                                <label class="form-label fw-bold small">Color: <span id="qvSelectedColorName" class="fw-normal text-muted"></span></label>
+                                <div id="qvColorSwatches" class="d-flex gap-2 flex-wrap"></div>
+                            </div>
+
+                            <div id="qvSizeSection" class="mb-4 d-none">
+                                <label class="form-label fw-bold small">Size:</label>
+                                <div id="qvSizeOptions" class="d-flex gap-2 flex-wrap"></div>
+                            </div>
+
+                            <div class="d-flex gap-2 mb-3">
+                                <div class="qty-control d-flex align-items-center border rounded">
+                                    <button type="button" class="btn btn-link text-dark qv-qty-decrease">−</button>
+                                    <input type="number" id="qvQuantity" value="1" min="1" class="form-control text-center border-0 p-0" style="width: 40px;">
+                                    <button type="button" class="btn btn-link text-dark qv-qty-increase">+</button>
+                                </div>
+                                <button id="qvAddToCart" class="btn btn-dark flex-grow-1 text-uppercase fw-bold">
+                                    <i class="fa fa-shopping-cart me-2"></i>Add To Cart
+                                </button>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button id="qvAddToWishlist" class="btn btn-outline-secondary btn-sm flex-grow-1">
+                                    <i class="fa fa-heart me-1"></i>Add To Wishlist
+                                </button>
+                                <a id="qvViewDetails" href="#" class="btn btn-outline-dark btn-sm flex-grow-1">
+                                    View Details
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .modal-backdrop {
+        z-index: 1040 !important;
+    }
+
+    #quickViewModal {
+        z-index: 1050 !important;
+    }
+
+    .qv-color-swatch {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        cursor: pointer;
+        box-shadow: 0 0 0 1px #ddd;
+        transition: 0.2s;
+    }
+
+        .qv-color-swatch.active {
+            box-shadow: 0 0 0 2px #000;
+            transform: scale(1.1);
+        }
+
+    .qv-size-option {
+        min-width: 40px;
+        height: 40px;
+        border: 1px solid #ddd;
+        background: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 13px;
+        transition: 0.2s;
+        border-radius: 4px;
+    }
+
+        .qv-size-option.active {
+            background: #000;
+            color: #fff;
+            border-color: #000;
+        }
+
+    .qv-thumbnail {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border: 1px solid #ddd;
+        cursor: pointer;
+        opacity: 0.6;
+        transition: 0.2s;
+        border-radius: 4px;
+    }
+
+        .qv-thumbnail.active, .qv-thumbnail:hover {
+            opacity: 1;
+            border-color: #000;
+        }
+
+    .qty-control button {
+        text-decoration: none;
+        padding: 0 10px;
+        font-weight: bold;
+    }
+
+    #qvQuantity::-webkit-inner-spin-button {
+        display: none;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let currentProductData = null;
+        let selectedColorId = null;
+        let selectedSize = null;
+        const currencySymbol = '@CurrencyService.GetSymbol()';
+
+        // --- 1. OPEN MODAL ---
+        document.body.addEventListener('click', function(e) {
+            const btn = e.target.closest('.js-quick-view');
+            if (btn) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const $card = $(btn).closest('.product-card-wrapper');
+                const productId = $(btn).data('product-id') || $card.data('product-id');
+                const productName = $card.data('product-name');
+
+                let variants = [];
+                try {
+                    const variantsAttr = $card.attr('data-product-variants');
+                    if (variantsAttr) variants = JSON.parse(variantsAttr);
+                } catch(err) { console.error('Data error:', err); }
+
+                currentProductData = {
+                    id: productId,
+                    name: productName,
+                    variants: variants,
+                    brandName: $card.find('.pc__category').text().trim(),
+                    detailsUrl: $card.find('a').first().attr('href')
+                };
+
+                selectedColorId = null;
+                selectedSize = null;
+
+                populateQuickView();
+                let modal = new bootstrap.Modal(document.getElementById('quickViewModal'));
+                modal.show();
+            }
+        });
+
+        // --- 2. POPULATE DATA ---
+        function populateQuickView() {
+            const data = currentProductData;
+            $('#qvTitle').text(data.name);
+            $('#qvBrand').text(data.brandName);
+            $('#qvViewDetails').attr('href', data.detailsUrl);
+
+            const uniqueColors = [];
+            const seenColors = new Set();
+            data.variants.forEach(v => {
+                if (v.colorId && !seenColors.has(v.colorId)) {
+                    seenColors.add(v.colorId);
+                    uniqueColors.push(v);
+                }
+            });
+
+            if (uniqueColors.length > 0) {
+                $('#qvColorSection').removeClass('d-none');
+                let html = '';
+                uniqueColors.forEach((v, i) => {
+                    if(i === 0) { selectedColorId = v.colorId; $('#qvSelectedColorName').text(v.colorName); }
+                    html += `<div class="qv-color-swatch ${v.colorId === selectedColorId ? 'active' : ''}"
+                                  data-color-id="${v.colorId}" data-color-name="${v.colorName}"
+                                  style="background-color: ${v.colorHexCode || '#ccc'}" title="${v.colorName}"></div>`;
+                });
+                $('#qvColorSwatches').html(html);
+            } else { $('#qvColorSection').addClass('d-none'); }
+
+            renderSizes();
+            updateVariantDisplay();
+        }
+
+        // --- 3. RENDER SIZES ---
+        function renderSizes() {
+            const availableVariants = currentProductData.variants.filter(v =>
+                !selectedColorId || String(v.colorId) === String(selectedColorId)
+            );
+            const sizes = [...new Set(availableVariants.map(v => v.size))].filter(s => s);
+
+            if (sizes.length > 0) {
+                $('#qvSizeSection').removeClass('d-none');
+                let html = '';
+                sizes.forEach((s, i) => {
+                    if (i === 0) selectedSize = s;
+                    html += `<div class="qv-size-option ${s === selectedSize ? 'active' : ''}" data-size="${s}">${s}</div>`;
+                });
+                $('#qvSizeOptions').html(html);
+            } else { $('#qvSizeSection').addClass('d-none'); selectedSize = null; }
+        }
+
+        // --- 4. UPDATE DISPLAY ---
+        function updateVariantDisplay() {
+            const variant = currentProductData.variants.find(v =>
+                (!selectedColorId || String(v.colorId) === String(selectedColorId)) &&
+                (!selectedSize || v.size === selectedSize)
+            ) || currentProductData.variants[0];
+
+            if (!variant) return;
+
+            const imgName = variant.coverImageName || (variant.imageNames ? variant.imageNames[0] : 'product-placeholder.jpg');
+            $('#qvMainImage').attr('src', imgName.includes('/') ? imgName : `/images/products/${imgName}`);
+
+            // Update View Details link with color/size params
+            let detailUrl = currentProductData.detailsUrl;
+            if (variant.colorId) detailUrl += `?colorId=${variant.colorId}`;
+            if (variant.size) detailUrl += `${variant.colorId ? '&' : '?'}size=${variant.size}`;
+            $('#qvViewDetails').attr('href', detailUrl);
+
+            // Prices
+            if (variant.salePrice && variant.salePrice < variant.price) {
+                $('#qvSalePrice').text(`${currencySymbol}${variant.salePrice}`).removeClass('d-none');
+                $('#qvOldPrice').text(`${currencySymbol}${variant.price}`).removeClass('d-none');
+                $('#qvOriginalPrice').addClass('d-none');
+            } else {
+                $('#qvOriginalPrice').text(`${currencySymbol}${variant.price}`).removeClass('d-none');
+                $('#qvSalePrice, #qvOldPrice').addClass('d-none');
+            }
+
+            const isStock = variant.quantity > 0;
+            $('#qvStockStatus').html(isStock ? `<span class="badge bg-success-line">In Stock</span>` : `<span class="badge bg-danger-line">Out of Stock</span>`);
+            $('#qvAddToCart').prop('disabled', !isStock);
+        }
+    // --- 5. ADD TO BASKET (FIXED WITH UI UPDATE) ---
+    $(document).on('click', '#qvAddToCart', function(e) {
+        e.preventDefault();
+        const variant = currentProductData.variants.find(v =>
+            (!selectedColorId || String(v.colorId) === String(selectedColorId)) &&
+            (!selectedSize || v.size === selectedSize)
+        ) || currentProductData.variants[0];
+
+        const $btn = $(this);
+        $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin me-2"></i>Adding...');
+
+        $.ajax({
+            url: '/Basket/Add',
+            type: 'POST',
+            data: {
+                productVariantId: variant.id,
+                quantity: $('#qvQuantity').val()
+            },
+            success: function(res) {
+                if(res.success) {
+                    // Update cart count in header (using correct selectors)
+                    $('.js-cart-items-count, .cart-amount').text(res.totalCount);
+                    if(res.totalCount > 0) {
+                        $('.js-cart-items-count, .cart-amount').show();
+                    }
+
+                    // Show success toast notification
+                    showCartToast(res.message);
+
+                    // Close modal
+                    $('#quickViewModal').modal('hide');
+                } else {
+                    alert(res.message || "Failed to add to cart");
+                }
+            },
+            error: function() {
+                alert("An error occurred!");
+            },
+            complete: function() {
+                $btn.prop('disabled', false).html('<i class="fa fa-shopping-cart me-2"></i>Add To Cart');
+            }
+        });
+    });
+
+    // Toast notification function
+    function showCartToast(message) {
+        // Remove existing toast if any
+        $('.cart-toast').remove();
+
+        const toast = $('<div>')
+            .addClass('cart-toast')
+            .html('<i class="fa fa-check-circle me-2"></i>' + message)
+            .css({
+                'position': 'fixed',
+                'top': '20px',
+                'right': '20px',
+                'background': '#28a745',
+                'color': '#fff',
+                'padding': '15px 25px',
+                'border-radius': '5px',
+                'z-index': '9999',
+                'box-shadow': '0 4px 12px rgba(0,0,0,0.15)',
+                'font-weight': '500'
+            });
+
+        $('body').append(toast);
+
+        setTimeout(function() {
+            toast.fadeOut(300, function() { $(this).remove(); });
+        }, 3000);
+    }
+           // --- 6. ADD TO / REMOVE FROM WISHLIST (TOGGLE) ---
+    $(document).on('click', '#qvAddToWishlist', function(e) {
+        e.preventDefault();
+
+        const $btn = $(this);
+        const isInWishlist = $btn.hasClass('in-wishlist');
+
+        $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin me-1"></i>' + (isInWishlist ? 'Removing...' : 'Adding...'));
+
+        if (isInWishlist) {
+            // Remove from wishlist
+            $.ajax({
+                url: '/Wishlist/Remove',
+                type: 'POST',
+                data: { id: currentProductData.id },
+                success: function(data, textStatus, xhr) {
+                    if(xhr.status === 204) {
+                        showToast("Removed from wishlist!", 'success');
+                        $btn.html('<i class="fa fa-heart me-1"></i>Add To Wishlist')
+                            .removeClass('btn-danger in-wishlist')
+                            .addClass('btn-outline-secondary');
+                    }
+                },
+                error: function(xhr) {
+                    if(xhr.status === 401) {
+                        showToast("Please login first!", 'warning');
+                    } else {
+                        showToast("Error removing from wishlist", 'error');
+                    }
+                },
+                complete: function() {
+                    $btn.prop('disabled', false);
+                }
+            });
+        } else {
+            // Add to wishlist
+            $.ajax({
+                url: '/Wishlist/Add',
+                type: 'POST',
+                data: { id: currentProductData.id },
+                success: function(data, textStatus, xhr) {
+                    if(xhr.status === 204) {
+                        showToast("Added to wishlist!", 'success');
+                        $btn.html('<i class="fa fa-heart me-1"></i>Remove from Wishlist')
+                            .removeClass('btn-outline-secondary')
+                            .addClass('btn-danger in-wishlist');
+                    }
+                },
+                error: function(xhr) {
+                    if(xhr.status === 401) {
+                        showToast("Please login to add to wishlist!", 'warning');
+                        setTimeout(function() {
+                            window.location.href = '/Account/Login?returnUrl=' + encodeURIComponent(window.location.pathname);
+                        }, 2000);
+                    } else if(xhr.status === 404) {
+                        showToast("Product not found", 'error');
+                    } else {
+                        showToast("Error adding to wishlist", 'error');
+                    }
+                },
+                complete: function() {
+                    $btn.prop('disabled', false);
+                }
+            });
+        }
+    });
+
+    // Toast notification function
+    function showToast(message, type) {
+        $('.qv-toast').remove();
+
+        let bgColor, icon;
+        switch(type) {
+            case 'success': bgColor = '#28a745'; icon = 'fa-check-circle'; break;
+            case 'error': bgColor = '#dc3545'; icon = 'fa-times-circle'; break;
+            case 'warning': bgColor = '#ffc107'; icon = 'fa-exclamation-triangle'; break;
+            case 'info': bgColor = '#17a2b8'; icon = 'fa-info-circle'; break;
+            default: bgColor = '#28a745'; icon = 'fa-check-circle';
+        }
+
+        const toast = $('<div>')
+            .addClass('qv-toast')
+            .html('<i class="fa ' + icon + ' me-2"></i>' + message)
+            .css({
+                'position': 'fixed',
+                'top': '20px',
+                'right': '20px',
+                'background': bgColor,
+                'color': type === 'warning' ? '#212529' : '#fff',
+                'padding': '15px 25px',
+                'border-radius': '8px',
+                'z-index': '99999',
+                'box-shadow': '0 4px 12px rgba(0,0,0,0.2)',
+                'font-weight': '500'
+            });
+
+        $('body').append(toast);
+        setTimeout(function() {
+            toast.fadeOut(300, function() { $(this).remove(); });
+        }, 3000);
+    }
+
+    // Universal Toast notification function
+    function showToast(message, type) {
+        $('.qv-toast').remove();
+
+        let bgColor, icon;
+        switch(type) {
+            case 'success':
+                bgColor = '#28a745';
+                icon = 'fa-check-circle';
+                break;
+            case 'error':
+                bgColor = '#dc3545';
+                icon = 'fa-times-circle';
+                break;
+            case 'warning':
+                bgColor = '#ffc107';
+                icon = 'fa-exclamation-triangle';
+                break;
+            case 'info':
+                bgColor = '#17a2b8';
+                icon = 'fa-info-circle';
+                break;
+            default:
+                bgColor = '#28a745';
+                icon = 'fa-check-circle';
+        }
+
+        const toast = $('<div>')
+            .addClass('qv-toast')
+            .html('<i class="fa ' + icon + ' me-2"></i>' + message)
+            .css({
+                'position': 'fixed',
+                'top': '20px',
+                'right': '20px',
+                'background': bgColor,
+                'color': type === 'warning' ? '#212529' : '#fff',
+                'padding': '15px 25px',
+                'border-radius': '8px',
+                'z-index': '99999',
+                'box-shadow': '0 4px 12px rgba(0,0,0,0.2)',
+                'font-weight': '500'
+            });
+
+        $('body').append(toast);
+
+        setTimeout(function() {
+            toast.fadeOut(300, function() { $(this).remove(); });
+        }, 3000);
+    }
+
+    // Universal Toast notification function
+    function showToast(message, type) {
+        // Remove existing toast
+        $('.qv-toast').remove();
+
+        let bgColor, icon;
+        switch(type) {
+            case 'success':
+                bgColor = '#28a745';
+                icon = 'fa-check-circle';
+                break;
+            case 'error':
+                bgColor = '#dc3545';
+                icon = 'fa-times-circle';
+                break;
+            case 'warning':
+                bgColor = '#ffc107';
+                icon = 'fa-exclamation-triangle';
+                break;
+            case 'info':
+                bgColor = '#17a2b8';
+                icon = 'fa-info-circle';
+                break;
+            default:
+                bgColor = '#28a745';
+                icon = 'fa-check-circle';
+        }
+
+        const toast = $('<div>')
+            .addClass('qv-toast')
+            .html('<i class="fa ' + icon + ' me-2"></i>' + message)
+            .css({
+                'position': 'fixed',
+                'top': '20px',
+                'right': '20px',
+                'background': bgColor,
+                'color': type === 'warning' ? '#212529' : '#fff',
+                'padding': '15px 25px',
+                'border-radius': '8px',
+                'z-index': '99999',
+                'box-shadow': '0 4px 12px rgba(0,0,0,0.2)',
+                'font-weight': '500',
+                'animation': 'slideIn 0.3s ease'
+            });
+
+        $('body').append(toast);
+
+        setTimeout(function() {
+            toast.fadeOut(300, function() { $(this).remove(); });
+        }, 3000);
+    }
+
+        // Modal Backdrop Fix
+        $('#quickViewModal').on('hidden.bs.modal', function () {
+            $('.modal-backdrop').remove();
+            $('body').removeClass('modal-open').css({'overflow': '', 'padding-right': ''});
+        });
+
+        // Color/Size/Qty Click Handlers
+        $(document).on('click', '.qv-color-swatch', function() {
+            selectedColorId = $(this).data('color-id');
+            $('#qvSelectedColorName').text($(this).data('color-name'));
+            $('.qv-color-swatch').removeClass('active'); $(this).addClass('active');
+            renderSizes(); updateVariantDisplay();
+        });
+        $(document).on('click', '.qv-size-option', function() {
+            selectedSize = $(this).data('size');
+            $('.qv-size-option').removeClass('active'); $(this).addClass('active');
+            updateVariantDisplay();
+        });
+        $(document).on('click', '.qv-qty-increase', function() {
+            let val = parseInt($('#qvQuantity').val());
+            $('#qvQuantity').val(val + 1);
+        });
+        $(document).on('click', '.qv-qty-decrease', function() {
+            let val = parseInt($('#qvQuantity').val());
+            if(val > 1) $('#qvQuantity').val(val - 1);
+        });
+    });
+</script>
