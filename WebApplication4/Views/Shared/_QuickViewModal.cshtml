@@ -45,10 +45,10 @@
                             </div>
 
                             <div class="d-flex gap-2 mb-3">
-                                <div class="qty-control d-flex align-items-center border rounded">
-                                    <button type="button" class="btn btn-link text-dark qv-qty-decrease">−</button>
-                                    <input type="number" id="qvQuantity" value="1" min="1" class="form-control text-center border-0 p-0" style="width: 40px;">
-                                    <button type="button" class="btn btn-link text-dark qv-qty-increase">+</button>
+                                <div class="qv-qty-wrapper">
+                                    <button type="button" class="qv-qty-btn qv-qty-decrease">−</button>
+                                    <span id="qvQuantity" class="qv-qty-display">1</span>
+                                    <button type="button" class="qv-qty-btn qv-qty-increase">+</button>
                                 </div>
                                 <button id="qvAddToCart" class="btn btn-dark flex-grow-1 text-uppercase fw-bold">
                                     <i class="fa fa-shopping-cart me-2"></i>Add To Cart
@@ -56,11 +56,8 @@
                             </div>
 
                             <div class="d-flex gap-2">
-                                <button id="qvAddToWishlist" class="btn btn-outline-secondary btn-sm flex-grow-1">
-                                    <i class="fa fa-heart me-1"></i>Add To Wishlist
-                                </button>
-                                <a id="qvViewDetails" href="#" class="btn btn-outline-dark btn-sm flex-grow-1">
-                                    View Details
+                                <a id="qvViewDetails" href="#" class="btn btn-outline-dark btn-sm w-100">
+                                    View Full Details
                                 </a>
                             </div>
                         </div>
@@ -116,6 +113,11 @@
             border-color: #000;
         }
 
+        .qv-size-option:hover:not(.active) {
+            border-color: #666;
+            background: #f8f9fa;
+        }
+
     .qv-thumbnail {
         width: 60px;
         height: 60px;
@@ -127,20 +129,93 @@
         border-radius: 4px;
     }
 
-        .qv-thumbnail.active, .qv-thumbnail:hover {
+        .qv-thumbnail.active,
+        .qv-thumbnail:hover {
             opacity: 1;
             border-color: #000;
         }
 
-    .qty-control button {
-        text-decoration: none;
-        padding: 0 10px;
-        font-weight: bold;
+    .qv-qty-wrapper {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        background: #fff;
+        height: 42px;
     }
 
-    #qvQuantity::-webkit-inner-spin-button {
-        display: none;
+    .qv-qty-btn {
+        width: 32px;
+        height: 100%;
+        background: transparent;
+        border: none;
+        color: #212529;
+        font-size: 18px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.15s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
     }
+
+        .qv-qty-btn:hover {
+            background: #f8f9fa;
+            color: #000;
+        }
+
+        .qv-qty-btn:active {
+            background: #e9ecef;
+        }
+
+    .qv-qty-display {
+        min-width: 30px;
+        text-align: center;
+        font-size: 16px;
+        font-weight: 600;
+        color: #212529;
+        padding: 0 8px;
+        user-select: none;
+    }
+
+    @@keyframes slideIn {
+        from
+
+    {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    }
+
+    @@keyframes slideOut {
+        from
+
+    {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    }
+
+    .qv-toast {
+        animation: slideIn 0.3s ease;
+    }
+
+        .qv-toast.hiding {
+            animation: slideOut 0.3s ease;
+        }
 </style>
 
 <script>
@@ -148,9 +223,10 @@
         let currentProductData = null;
         let selectedColorId = null;
         let selectedSize = null;
+        let currentQuantity = 1;
         const currencySymbol = '@CurrencyService.GetSymbol()';
 
-        // --- 1. OPEN MODAL ---
+        // OPEN MODAL
         document.body.addEventListener('click', function(e) {
             const btn = e.target.closest('.js-quick-view');
             if (btn) {
@@ -177,19 +253,22 @@
 
                 selectedColorId = null;
                 selectedSize = null;
+                currentQuantity = 1;
 
                 populateQuickView();
+
                 let modal = new bootstrap.Modal(document.getElementById('quickViewModal'));
                 modal.show();
             }
         });
 
-        // --- 2. POPULATE DATA ---
+        // POPULATE DATA
         function populateQuickView() {
             const data = currentProductData;
             $('#qvTitle').text(data.name);
             $('#qvBrand').text(data.brandName);
             $('#qvViewDetails').attr('href', data.detailsUrl);
+            $('#qvQuantity').text(currentQuantity);
 
             const uniqueColors = [];
             const seenColors = new Set();
@@ -204,19 +283,24 @@
                 $('#qvColorSection').removeClass('d-none');
                 let html = '';
                 uniqueColors.forEach((v, i) => {
-                    if(i === 0) { selectedColorId = v.colorId; $('#qvSelectedColorName').text(v.colorName); }
+                    if(i === 0) {
+                        selectedColorId = v.colorId;
+                        $('#qvSelectedColorName').text(v.colorName);
+                    }
                     html += `<div class="qv-color-swatch ${v.colorId === selectedColorId ? 'active' : ''}"
                                   data-color-id="${v.colorId}" data-color-name="${v.colorName}"
                                   style="background-color: ${v.colorHexCode || '#ccc'}" title="${v.colorName}"></div>`;
                 });
                 $('#qvColorSwatches').html(html);
-            } else { $('#qvColorSection').addClass('d-none'); }
+            } else {
+                $('#qvColorSection').addClass('d-none');
+            }
 
             renderSizes();
             updateVariantDisplay();
         }
 
-        // --- 3. RENDER SIZES ---
+        // RENDER SIZES
         function renderSizes() {
             const availableVariants = currentProductData.variants.filter(v =>
                 !selectedColorId || String(v.colorId) === String(selectedColorId)
@@ -231,10 +315,13 @@
                     html += `<div class="qv-size-option ${s === selectedSize ? 'active' : ''}" data-size="${s}">${s}</div>`;
                 });
                 $('#qvSizeOptions').html(html);
-            } else { $('#qvSizeSection').addClass('d-none'); selectedSize = null; }
+            } else {
+                $('#qvSizeSection').addClass('d-none');
+                selectedSize = null;
+            }
         }
 
-        // --- 4. UPDATE DISPLAY ---
+        // UPDATE DISPLAY
         function updateVariantDisplay() {
             const variant = currentProductData.variants.find(v =>
                 (!selectedColorId || String(v.colorId) === String(selectedColorId)) &&
@@ -246,13 +333,11 @@
             const imgName = variant.coverImageName || (variant.imageNames ? variant.imageNames[0] : 'product-placeholder.jpg');
             $('#qvMainImage').attr('src', imgName.includes('/') ? imgName : `/images/products/${imgName}`);
 
-            // Update View Details link with color/size params
             let detailUrl = currentProductData.detailsUrl;
             if (variant.colorId) detailUrl += `?colorId=${variant.colorId}`;
             if (variant.size) detailUrl += `${variant.colorId ? '&' : '?'}size=${variant.size}`;
             $('#qvViewDetails').attr('href', detailUrl);
 
-            // Prices
             if (variant.salePrice && variant.salePrice < variant.price) {
                 $('#qvSalePrice').text(`${currencySymbol}${variant.salePrice}`).removeClass('d-none');
                 $('#qvOldPrice').text(`${currencySymbol}${variant.price}`).removeClass('d-none');
@@ -266,306 +351,153 @@
             $('#qvStockStatus').html(isStock ? `<span class="badge bg-success-line">In Stock</span>` : `<span class="badge bg-danger-line">Out of Stock</span>`);
             $('#qvAddToCart').prop('disabled', !isStock);
         }
-    // --- 5. ADD TO BASKET (FIXED WITH UI UPDATE) ---
-    $(document).on('click', '#qvAddToCart', function(e) {
-        e.preventDefault();
-        const variant = currentProductData.variants.find(v =>
-            (!selectedColorId || String(v.colorId) === String(selectedColorId)) &&
-            (!selectedSize || v.size === selectedSize)
-        ) || currentProductData.variants[0];
 
-        const $btn = $(this);
-        $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin me-2"></i>Adding...');
+        // ADD TO BASKET
+        $(document).on('click', '#qvAddToCart', function(e) {
+            e.preventDefault();
 
-        $.ajax({
-            url: '/Basket/Add',
-            type: 'POST',
-            data: {
-                productVariantId: variant.id,
-                quantity: $('#qvQuantity').val()
-            },
-            success: function(res) {
-                if(res.success) {
-                    // Update cart count in header (using correct selectors)
-                    $('.js-cart-items-count, .cart-amount').text(res.totalCount);
-                    if(res.totalCount > 0) {
-                        $('.js-cart-items-count, .cart-amount').show();
-                    }
+            let variant = null;
 
-                    // Show success toast notification
-                    showCartToast(res.message);
+            if (currentProductData && currentProductData.variants && currentProductData.variants.length > 0) {
+                variant = currentProductData.variants.find(v => {
+                    const colorMatch = !selectedColorId || String(v.colorId) === String(selectedColorId);
+                    const sizeMatch = !selectedSize || String(v.size) === String(selectedSize);
+                    return colorMatch && sizeMatch;
+                });
 
-                    // Close modal
-                    $('#quickViewModal').modal('hide');
-                } else {
-                    alert(res.message || "Failed to add to cart");
+                if (!variant && selectedColorId) {
+                    variant = currentProductData.variants.find(v => String(v.colorId) === String(selectedColorId));
                 }
-            },
-            error: function() {
-                alert("An error occurred!");
-            },
-            complete: function() {
-                $btn.prop('disabled', false).html('<i class="fa fa-shopping-cart me-2"></i>Add To Cart');
+
+                if (!variant) {
+                    variant = currentProductData.variants[0];
+                }
             }
+
+            if (!variant || !variant.id) {
+                return;
+            }
+
+            const $btn = $(this);
+            $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin me-2"></i>Adding...');
+
+            $.ajax({
+                url: '/Basket/Add',
+                type: 'POST',
+                data: {
+                    productVariantId: variant.id,
+                    quantity: currentQuantity
+                },
+                success: function(res) {
+                    if(res.success) {
+                        $('.js-cart-items-count, .cart-amount').text(res.totalCount);
+                        if(res.totalCount > 0) {
+                            $('.js-cart-items-count, .cart-amount').show();
+                        }
+                        showToast(res.message || 'Product added to cart!', 'success');
+                        $('#quickViewModal').modal('hide');
+                    }
+                },
+                error: function() {
+                    // Səssiz error
+                },
+                complete: function() {
+                    $btn.prop('disabled', false).html('<i class="fa fa-shopping-cart me-2"></i>Add To Cart');
+                }
+            });
         });
-    });
 
-    // Toast notification function
-    function showCartToast(message) {
-        // Remove existing toast if any
-        $('.cart-toast').remove();
+        // TOAST NOTIFICATION
+        function showToast(message, type) {
+            $('.qv-toast').remove();
 
-        const toast = $('<div>')
-            .addClass('cart-toast')
-            .html('<i class="fa fa-check-circle me-2"></i>' + message)
-            .css({
-                'position': 'fixed',
-                'top': '20px',
-                'right': '20px',
-                'background': '#28a745',
-                'color': '#fff',
-                'padding': '15px 25px',
-                'border-radius': '5px',
-                'z-index': '9999',
-                'box-shadow': '0 4px 12px rgba(0,0,0,0.15)',
-                'font-weight': '500'
-            });
+            let bgColor, icon;
+            switch(type) {
+                case 'success':
+                    bgColor = '#28a745';
+                    icon = 'fa-check-circle';
+                    break;
+                case 'error':
+                    bgColor = '#dc3545';
+                    icon = 'fa-times-circle';
+                    break;
+                case 'warning':
+                    bgColor = '#ffc107';
+                    icon = 'fa-exclamation-triangle';
+                    break;
+                case 'info':
+                    bgColor = '#17a2b8';
+                    icon = 'fa-info-circle';
+                    break;
+                default:
+                    bgColor = '#28a745';
+                    icon = 'fa-check-circle';
+            }
 
-        $('body').append(toast);
+            const toast = $('<div>')
+                .addClass('qv-toast')
+                .html('<i class="fa ' + icon + ' me-2"></i>' + message)
+                .css({
+                    'position': 'fixed',
+                    'top': '20px',
+                    'right': '20px',
+                    'background': bgColor,
+                    'color': type === 'warning' ? '#212529' : '#fff',
+                    'padding': '15px 25px',
+                    'border-radius': '8px',
+                    'z-index': '99999',
+                    'box-shadow': '0 4px 12px rgba(0,0,0,0.2)',
+                    'font-weight': '500'
+                });
 
-        setTimeout(function() {
-            toast.fadeOut(300, function() { $(this).remove(); });
-        }, 3000);
-    }
-           // --- 6. ADD TO / REMOVE FROM WISHLIST (TOGGLE) ---
-    $(document).on('click', '#qvAddToWishlist', function(e) {
-        e.preventDefault();
+            $('body').append(toast);
 
-        const $btn = $(this);
-        const isInWishlist = $btn.hasClass('in-wishlist');
-
-        $btn.prop('disabled', true).html('<i class="fa fa-spinner fa-spin me-1"></i>' + (isInWishlist ? 'Removing...' : 'Adding...'));
-
-        if (isInWishlist) {
-            // Remove from wishlist
-            $.ajax({
-                url: '/Wishlist/Remove',
-                type: 'POST',
-                data: { id: currentProductData.id },
-                success: function(data, textStatus, xhr) {
-                    if(xhr.status === 204) {
-                        showToast("Removed from wishlist!", 'success');
-                        $btn.html('<i class="fa fa-heart me-1"></i>Add To Wishlist')
-                            .removeClass('btn-danger in-wishlist')
-                            .addClass('btn-outline-secondary');
-                    }
-                },
-                error: function(xhr) {
-                    if(xhr.status === 401) {
-                        showToast("Please login first!", 'warning');
-                    } else {
-                        showToast("Error removing from wishlist", 'error');
-                    }
-                },
-                complete: function() {
-                    $btn.prop('disabled', false);
-                }
-            });
-        } else {
-            // Add to wishlist
-            $.ajax({
-                url: '/Wishlist/Add',
-                type: 'POST',
-                data: { id: currentProductData.id },
-                success: function(data, textStatus, xhr) {
-                    if(xhr.status === 204) {
-                        showToast("Added to wishlist!", 'success');
-                        $btn.html('<i class="fa fa-heart me-1"></i>Remove from Wishlist')
-                            .removeClass('btn-outline-secondary')
-                            .addClass('btn-danger in-wishlist');
-                    }
-                },
-                error: function(xhr) {
-                    if(xhr.status === 401) {
-                        showToast("Please login to add to wishlist!", 'warning');
-                        setTimeout(function() {
-                            window.location.href = '/Account/Login?returnUrl=' + encodeURIComponent(window.location.pathname);
-                        }, 2000);
-                    } else if(xhr.status === 404) {
-                        showToast("Product not found", 'error');
-                    } else {
-                        showToast("Error adding to wishlist", 'error');
-                    }
-                },
-                complete: function() {
-                    $btn.prop('disabled', false);
-                }
-            });
-        }
-    });
-
-    // Toast notification function
-    function showToast(message, type) {
-        $('.qv-toast').remove();
-
-        let bgColor, icon;
-        switch(type) {
-            case 'success': bgColor = '#28a745'; icon = 'fa-check-circle'; break;
-            case 'error': bgColor = '#dc3545'; icon = 'fa-times-circle'; break;
-            case 'warning': bgColor = '#ffc107'; icon = 'fa-exclamation-triangle'; break;
-            case 'info': bgColor = '#17a2b8'; icon = 'fa-info-circle'; break;
-            default: bgColor = '#28a745'; icon = 'fa-check-circle';
+            setTimeout(function() {
+                toast.addClass('hiding');
+                setTimeout(function() {
+                    toast.remove();
+                }, 300);
+            }, 3000);
         }
 
-        const toast = $('<div>')
-            .addClass('qv-toast')
-            .html('<i class="fa ' + icon + ' me-2"></i>' + message)
-            .css({
-                'position': 'fixed',
-                'top': '20px',
-                'right': '20px',
-                'background': bgColor,
-                'color': type === 'warning' ? '#212529' : '#fff',
-                'padding': '15px 25px',
-                'border-radius': '8px',
-                'z-index': '99999',
-                'box-shadow': '0 4px 12px rgba(0,0,0,0.2)',
-                'font-weight': '500'
-            });
-
-        $('body').append(toast);
-        setTimeout(function() {
-            toast.fadeOut(300, function() { $(this).remove(); });
-        }, 3000);
-    }
-
-    // Universal Toast notification function
-    function showToast(message, type) {
-        $('.qv-toast').remove();
-
-        let bgColor, icon;
-        switch(type) {
-            case 'success':
-                bgColor = '#28a745';
-                icon = 'fa-check-circle';
-                break;
-            case 'error':
-                bgColor = '#dc3545';
-                icon = 'fa-times-circle';
-                break;
-            case 'warning':
-                bgColor = '#ffc107';
-                icon = 'fa-exclamation-triangle';
-                break;
-            case 'info':
-                bgColor = '#17a2b8';
-                icon = 'fa-info-circle';
-                break;
-            default:
-                bgColor = '#28a745';
-                icon = 'fa-check-circle';
-        }
-
-        const toast = $('<div>')
-            .addClass('qv-toast')
-            .html('<i class="fa ' + icon + ' me-2"></i>' + message)
-            .css({
-                'position': 'fixed',
-                'top': '20px',
-                'right': '20px',
-                'background': bgColor,
-                'color': type === 'warning' ? '#212529' : '#fff',
-                'padding': '15px 25px',
-                'border-radius': '8px',
-                'z-index': '99999',
-                'box-shadow': '0 4px 12px rgba(0,0,0,0.2)',
-                'font-weight': '500'
-            });
-
-        $('body').append(toast);
-
-        setTimeout(function() {
-            toast.fadeOut(300, function() { $(this).remove(); });
-        }, 3000);
-    }
-
-    // Universal Toast notification function
-    function showToast(message, type) {
-        // Remove existing toast
-        $('.qv-toast').remove();
-
-        let bgColor, icon;
-        switch(type) {
-            case 'success':
-                bgColor = '#28a745';
-                icon = 'fa-check-circle';
-                break;
-            case 'error':
-                bgColor = '#dc3545';
-                icon = 'fa-times-circle';
-                break;
-            case 'warning':
-                bgColor = '#ffc107';
-                icon = 'fa-exclamation-triangle';
-                break;
-            case 'info':
-                bgColor = '#17a2b8';
-                icon = 'fa-info-circle';
-                break;
-            default:
-                bgColor = '#28a745';
-                icon = 'fa-check-circle';
-        }
-
-        const toast = $('<div>')
-            .addClass('qv-toast')
-            .html('<i class="fa ' + icon + ' me-2"></i>' + message)
-            .css({
-                'position': 'fixed',
-                'top': '20px',
-                'right': '20px',
-                'background': bgColor,
-                'color': type === 'warning' ? '#212529' : '#fff',
-                'padding': '15px 25px',
-                'border-radius': '8px',
-                'z-index': '99999',
-                'box-shadow': '0 4px 12px rgba(0,0,0,0.2)',
-                'font-weight': '500',
-                'animation': 'slideIn 0.3s ease'
-            });
-
-        $('body').append(toast);
-
-        setTimeout(function() {
-            toast.fadeOut(300, function() { $(this).remove(); });
-        }, 3000);
-    }
-
-        // Modal Backdrop Fix
+        // MODAL BACKDROP FIX
         $('#quickViewModal').on('hidden.bs.modal', function () {
             $('.modal-backdrop').remove();
             $('body').removeClass('modal-open').css({'overflow': '', 'padding-right': ''});
         });
 
-        // Color/Size/Qty Click Handlers
+        // COLOR CLICK
         $(document).on('click', '.qv-color-swatch', function() {
             selectedColorId = $(this).data('color-id');
             $('#qvSelectedColorName').text($(this).data('color-name'));
-            $('.qv-color-swatch').removeClass('active'); $(this).addClass('active');
-            renderSizes(); updateVariantDisplay();
-        });
-        $(document).on('click', '.qv-size-option', function() {
-            selectedSize = $(this).data('size');
-            $('.qv-size-option').removeClass('active'); $(this).addClass('active');
+            $('.qv-color-swatch').removeClass('active');
+            $(this).addClass('active');
+            renderSizes();
             updateVariantDisplay();
         });
-        $(document).on('click', '.qv-qty-increase', function() {
-            let val = parseInt($('#qvQuantity').val());
-            $('#qvQuantity').val(val + 1);
+
+        // SIZE CLICK
+        $(document).on('click', '.qv-size-option', function() {
+            selectedSize = $(this).data('size');
+            $('.qv-size-option').removeClass('active');
+            $(this).addClass('active');
+            updateVariantDisplay();
         });
+
+        // QUANTITY INCREASE
+        $(document).on('click', '.qv-qty-increase', function() {
+            if (currentQuantity < 99) {
+                currentQuantity++;
+                $('#qvQuantity').text(currentQuantity);
+            }
+        });
+
+        // QUANTITY DECREASE
         $(document).on('click', '.qv-qty-decrease', function() {
-            let val = parseInt($('#qvQuantity').val());
-            if(val > 1) $('#qvQuantity').val(val - 1);
+            if(currentQuantity > 1) {
+                currentQuantity--;
+                $('#qvQuantity').text(currentQuantity);
+            }
         });
     });
 </script>

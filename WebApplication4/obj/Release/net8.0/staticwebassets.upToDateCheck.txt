@@ -495,6 +495,10 @@ wwwroot\images\products\91vIa8FrMeL._AC_SX522_-dddd8e8e-3049-4216-afc5-33244a738
 wwwroot\images\products\category_4-d73b14b1-1cea-4890-98f0-12848303efdf-.png
 wwwroot\images\products\category_6-e4c85ed6-0d6a-4726-91e5-bae654c5f1c3-.png
 wwwroot\images\products\category_7-3907a86a-f08a-42ca-a78b-f217b95a4353-.png
+wwwroot\images\products\download (6)-d7b52185-e2fa-4e2a-be4c-0952002df04d-.png
+wwwroot\images\products\download (6)-eefab675-a32d-4c36-979f-ca1e0e1de8f1-.png
+wwwroot\images\products\images-565290ac-a707-4960-bac9-f62e9a8f6f39-.png
+wwwroot\images\products\images-7c9e58bb-382b-4353-8148-b2c2583146f5-.png
 wwwroot\images\products\l0s5ad2n.zzi_IMG_03_2110097683081-265a5d3d-521f-4e1b-add8-99107c266ef3-.jpg
 wwwroot\images\products\l0s5ad2n.zzi_IMG_03_2110097683081-acec04f8-174a-48f7-a8f1-14769f85c85b-.jpg
 wwwroot\images\products\l0s5ad2n.zzi_IMG_03_2110097683081-d28ab6d6-51cf-41aa-9ef7-dbd444775455-.jpg
