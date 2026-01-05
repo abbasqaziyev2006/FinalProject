@@ -12,20 +12,14 @@
             padding-top: 160px;
         }
         @@media (max-width: 991.98px) {
-            .custom-pt
-
-        {
-            padding-top: 120px;
-        }
-
+            .custom-pt {
+                padding-top: 120px;
+            }
         }
         @@media (max-width: 575.98px) {
-            .custom-pt
-
-        {
-            padding-top: 90px;
-        }
-
+            .custom-pt {
+                padding-top: 90px;
+            }
         }
     </style>
 
@@ -201,7 +195,7 @@
                                             }
                                             else
                                             {
-                                                <text>-@CurrencyService.GetSymbol()0.00</text>
+                                                @CurrencyService.Format(0)
                                             }
                                         </td>
                                     </tr>
@@ -261,37 +255,34 @@
     <script>
         $(document).ready(function () {
             let currentTotalPrice = @(Model?.TotalPrice ?? 0);
-            const currencySymbol = '@CurrencyService.GetSymbol()';
+            const currencySymbol = '@Html.Raw(CurrencyService.GetSymbol())';
 
-            const msgEnterDiscount = '@(Localizer["EnterDiscountCodeWarning"].Value ?? "")';
-            const msgDiscountAppliedFormat = '@(Localizer["DiscountAppliedFormat"].Value ?? "")';
-            const msgInvalidCode = '@(Localizer["InvalidDiscountCode"].Value ?? "")';
-            const msgErrorApplying = '@(Localizer["ErrorApplyingDiscount"].Value ?? "")';
-
+            const msgEnterDiscount = '@Html.Raw(Localizer["EnterDiscountCodeWarning"].Value ?? "")';
+            const msgDiscountAppliedFormat = '@Html.Raw(Localizer["DiscountAppliedFormat"].Value ?? "")';
+            const msgInvalidCode = '@Html.Raw(Localizer["InvalidDiscountCode"].Value ?? "")';
+            const msgErrorApplying = '@Html.Raw(Localizer["ErrorApplyingDiscount"].Value ?? "")';
 
             $('#checkoutForm').on('submit', function () {
-                $('#placeOrderBtn').prop('disabled', true).text('@Localizer["Processing"]' ?? 'Processing...');
+                $('#placeOrderBtn').prop('disabled', true).text('@Html.Raw(Localizer["Processing"].Value ?? "Processing...")');
                 return true;
             });
 
-
             @if (ViewData["SavedDiscountCode"] != null && string.IsNullOrEmpty(Model?.Discount))
             {
-                        <text>
-                        setTimeout(function () {
-                            $('#discountCode').val('@ViewData["SavedDiscountCode"]');
-                            $('#applyDiscountBtn').click();
-                        }, 300);
-                        </text>
+                <text>
+                setTimeout(function () {
+                    $('#discountCode').val('@ViewData["SavedDiscountCode"]');
+                    $('#applyDiscountBtn').click();
+                }, 300);
+                </text>
             }
 
-           
             $('#applyDiscountBtn').on('click', function () {
                 const discountCode = $('#discountCode').val().trim();
 
                 if (!discountCode) {
                     $('#discountMessage')
-                        .text('⚠ ' + msgEnterDiscount)
+                        .html('⚠ ' + msgEnterDiscount)
                         .css('color', '#dc3545')
                         .removeClass('text-success')
                         .addClass('text-danger');
@@ -311,21 +302,21 @@
                             $('#hasAppliedDiscount').val('true');
                             $('#discountField').val(discountCode);
 
-                            const discount = parseFloat(response.discountAmount);
-                            const finalTotal = parseFloat(response.finalPrice);
+                            const discount = parseFloat(response.discountAmount) || 0;
+                            const finalTotal = parseFloat(response.finalPrice) || 0;
 
-                            $('#discountAmount').text('-' + currencySymbol + discount.toFixed(2));
-                            $('#totalPrice').text(currencySymbol + finalTotal.toFixed(2));
+                            $('#discountAmount').html('-' + currencySymbol + discount.toFixed(2));
+                            $('#totalPrice').html(currencySymbol + finalTotal.toFixed(2));
 
                             const appliedText = msgDiscountAppliedFormat.replace('{0}', response.salePercentage);
                             $('#discountMessage')
-                                .text('✓ ' + appliedText)
+                                .html('✓ ' + appliedText)
                                 .css('color', '#28a745')
                                 .removeClass('text-danger')
                                 .addClass('text-success');
                         } else {
                             $('#discountMessage')
-                                .text('⚠ ' + (response.message || msgInvalidCode))
+                                .html('⚠ ' + (response.message || msgInvalidCode))
                                 .css('color', '#dc3545')
                                 .removeClass('text-success')
                                 .addClass('text-danger');
@@ -334,7 +325,7 @@
                     },
                     error: function () {
                         $('#discountMessage')
-                            .text('⚠ ' + msgErrorApplying)
+                            .html('⚠ ' + msgErrorApplying)
                             .css('color', '#dc3545')
                             .removeClass('text-success')
                             .addClass('text-danger');
