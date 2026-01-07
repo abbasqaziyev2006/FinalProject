@@ -173,55 +173,62 @@
         color: #212529;
     }
 
+    /* make muted text darker (more contrast) */
     .text-muted-theme {
-        color: #6c757d;
+        color: #535353 !important;
     }
+    /* darker gray */
 
+    /* price and general text */
     .price-text {
-        color: #212529;
+        color: #1f1f1f;
+        font-weight: 700;
     }
 
     .border-bottom-theme {
-        border-bottom: 1px solid #dee2e6;
+        border-bottom: 1px solid #e6e6e6;
     }
 
     .border-top-theme {
-        border-top: 1px solid #dee2e6;
+        border-top: 1px solid #e6e6e6;
     }
 
     .border-theme {
-        border-color: #dee2e6 !important;
+        border-color: #e6e6e6 !important;
     }
 
+    /* product image */
     .product-img {
         width: 120px;
         height: 150px;
         object-fit: cover;
         border: 1px solid #dee2e6;
+        background: #fff;
     }
 
+    /* qty controls — make darker greys for controls */
     .qty-btn {
         width: 38px;
         height: 38px;
-        background-color: #e9ecef;
-        color: #212529;
-        border: 1px solid #ced4da;
+        background-color: #f0f0f0;
+        color: #2b2b2b;
+        border: 1px solid #bfbfbf;
         font-size: 18px;
-        transition: 0.2s;
+        transition: 0.15s;
     }
 
         .qty-btn:hover {
-            background-color: #dee2e6;
+            background-color: #e1e1e1;
         }
 
     .qty-input {
         width: 60px;
         height: 38px;
         background-color: #ffffff;
-        color: #212529;
-        border: 1px solid #ced4da;
+        color: #2b2b2b;
+        border: 1px solid #c6c6c6;
         border-radius: 0;
-        font-weight: bold;
+        font-weight: 700;
     }
 
         .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button {
@@ -229,16 +236,17 @@
             margin: 0;
         }
 
+    /* delete text — darker gray and stronger hover */
     .btn-delete-text {
         background: none;
         border: none;
-        color: #6c757d;
+        color: #5b5b5b;
         font-size: 14px;
         padding: 0;
     }
 
         .btn-delete-text:hover {
-            color: #dc3545;
+            color: #b22222;
             text-decoration: underline;
         }
 
@@ -269,57 +277,113 @@
     }
 
     .discount-alert {
-        background-color: #d1e7dd !important;
-        border-color: #badbcc !important;
+        background-color: #dff0d8 !important;
+        border-color: #c3e6cb !important;
         color: #0f5132 !important;
     }
 
+    /* COUPON LINK: yellow visual marker + darker label */
     .coupon-link {
-        color: #212529;
+        color: #343434;
         font-size: 15px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        display: inline-block;
+        font-weight: 600;
+        position: relative;
+        padding-left: 14px; /* space for yellow marker */
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: color .2s ease, transform .15s ease;
     }
 
+        /* small vertical yellow bar to the left */
+        .coupon-link::before {
+            content: "";
+            display: block;
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 8px;
+            height: 28px;
+            background: #ffd814; /* strong yellow */
+            border-radius: 3px;
+            box-shadow: 0 2px 6px rgba(255,216,20,0.12);
+            transition: width .15s ease, background .15s ease, box-shadow .15s ease;
+        }
+
         .coupon-link:hover {
-            color: #000000;
+            color: #1f1f1f;
             transform: translateX(3px);
         }
 
-        .coupon-link i {
-            font-size: 16px;
+            .coupon-link:hover::before {
+                background: #ffcf2a;
+                width: 10px;
+                box-shadow: 0 4px 10px rgba(255,207,42,0.14);
+            }
+
+    /* make coupon input and apply button align with yellow theme */
+    .coupon-input {
+        border-radius: 0;
+    }
+
+    .btn-outline-warning {
+        border-color: #ffd814;
+        color: #222;
+    }
+
+        .btn-outline-warning:hover {
+            background: #ffd814;
+            color: #000;
+            border-color: #ffd814;
         }
 
-    :root[data-theme="dark"] .main-cart-container, body.dark-mode .main-cart-container {
+    /* Dark Mode overrides (consistent, fully dark basket) */
+    :root[data-theme="dark"] .main-cart-container,
+    body.dark-mode .main-cart-container {
         background-color: #0b0b0b !important;
         color: #f5f5f5 !important;
     }
 
-    :root[data-theme="dark"] .cart-card, body.dark-mode .cart-card {
+    :root[data-theme="dark"] .cart-card,
+    body.dark-mode .cart-card {
         background-color: #0b0b0b !important;
         color: #f5f5f5 !important;
         border-color: rgba(255,255,255,0.06) !important;
         box-shadow: none !important;
     }
 
-        :root[data-theme="dark"] .cart-card .cart-item, body.dark-mode .cart-card .cart-item {
-            background-color: transparent !important;
-            color: inherit !important;
-            border-color: rgba(255,255,255,0.04) !important;
-        }
+    /* keep the yellow marker visible in dark mode (slightly brighter) */
+    :root[data-theme="dark"] .coupon-link::before,
+    body.dark-mode .coupon-link::before {
+        background: #ffd814 !important;
+        box-shadow: 0 4px 12px rgba(255,216,20,0.16) !important;
+    }
 
-        :root[data-theme="dark"] .cart-card .qty-btn, body.dark-mode .cart-card .qty-btn {
-            background-color: #151515 !important;
-            border-color: rgba(255,255,255,0.06) !important;
-            color: #fff !important;
-        }
+    :root[data-theme="dark"] .text-muted-theme,
+    body.dark-mode .text-muted-theme {
+        color: #bdbdbd !important; /* readable but lighter in dark */
+    }
 
-        :root[data-theme="dark"] .cart-card .qty-input, body.dark-mode .cart-card .qty-input {
-            background-color: #171717 !important;
-            color: #fff !important;
-            border-color: rgba(255,255,255,0.06) !important;
-        }
+    :root[data-theme="dark"] .qty-btn,
+    body.dark-mode .qty-btn {
+        background-color: #1b1b1b !important;
+        color: #fff !important;
+        border: 1px solid #333 !important;
+    }
+
+    :root[data-theme="dark"] .qty-input,
+    body.dark-mode .qty-input {
+        background-color: #151515 !important;
+        color: #fff !important;
+        border: 1px solid #333 !important;
+    }
+
+    /* ensure product-img border visible in dark */
+    :root[data-theme="dark"] .product-img,
+    body.dark-mode .product-img {
+        border-color: rgba(255,255,255,0.06) !important;
+    }
 </style>
 
 @section Scripts {
@@ -389,7 +453,6 @@
                     const item = res?.basketViewModel?.items?.find(x => x.productVariantId === variantId);
                     if (item) {
                         $(`.qty-input[data-variant-id="${variantId}"]`).val(item.quantity);
-                        // prefer server-formatted price when available
                         const formatted = item.totalPriceFormatted || formatCurrency(item.totalPrice);
                         $(`.cart-item[data-variant-id="${variantId}"] .item-price`).html(formatted);
                         updateTotals();
@@ -412,7 +475,6 @@
                     $('#cart-items-count, #cart-items-count-bottom').text(data.totalCount);
                     $('.header__cart-count').text(data.totalCount || 0);
 
-                 
                     if (data.discount) {
                         $('#discount-amount').html(data.discount.discountAmountFormatted || formatCurrency(data.discount.discountAmountNumeric));
                         const html = `<span class="text-decoration-line-through text-muted-theme me-2">${data.discount.originalTotalFormatted || formatCurrency(data.discount.originalTotalNumeric)}</span>${data.discount.finalPriceFormatted || formatCurrency(data.discount.finalPriceNumeric)}`;
@@ -441,7 +503,6 @@
                     headers: { 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() },
                     success: function (res) {
                         if (res.success) {
-                     
                             appliedCoupon = { code: code, salePercentage: res.salePercentage, discountAmountNumeric: res.discountAmountNumeric, finalPriceNumeric: res.finalPriceNumeric };
 
                             $('#discount-info').removeClass('d-none');
@@ -456,7 +517,6 @@
                             updateTotals();
                             $('#couponCollapse').collapse('hide');
                         } else {
-                      
                             alert(res.message || 'Invalid or expired discount code');
                         }
                     },
@@ -471,7 +531,6 @@
                 $('#discount-info').addClass('d-none');
                 $.post('@Url.Action("RemoveDiscount", "Basket")', () => updateTotals());
             });
-
 
             updateTotals();
 
