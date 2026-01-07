@@ -9,6 +9,8 @@ class DarkModeTheme {
         this.DARK_CLASS = 'dark-mode';
         this.LIGHT_CLASS = 'light-mode';
         this.SYSTEM_PREF = 'system';
+        // The Bootstrap attribute used in project CSS
+        this.BS_THEME_ATTR = 'data-bs-theme';
         this.init();
     }
 
@@ -33,10 +35,12 @@ class DarkModeTheme {
         const savedTheme = localStorage.getItem(this.STORAGE_KEY);
 
         if (savedTheme === 'dark') {
-            this.enableDarkMode(true);
+            // Do not re-persist when running on initial immediate apply
+            this.enableDarkMode(true, false);
         } else if (savedTheme === 'light') {
-            this.enableLightMode(true);
+            this.enableLightMode(true, false);
         } else {
+            // No explicit saved preference — apply system without persisting
             this.applySystemPreference(true);
         }
     }
@@ -53,12 +57,16 @@ class DarkModeTheme {
 
     /**
      * Force style application to stubborn elements
+     *
+     * NOTE: Removed '.cart-item' from forced selectors so page CSS (dark-mode.css)
+     * controls cart visuals. Inline forcing caused the cart panel to be fully black
+     * only on the basket page.
      */
     forceStyleApplication() {
         const isDark = document.documentElement.classList.contains(this.DARK_CLASS);
 
         if (isDark) {
-            // Elements to force dark styling for readability (checkout / basket / form areas)
+            // Elements to force dark styling for readability (checkout / form areas)
             const containerSelectors = [
                 '.checkout-form',
                 '.billing-info__wrapper',
@@ -69,7 +77,6 @@ class DarkModeTheme {
                 '.sticky-content',
                 '.bg-white',
                 '.bg-light',
-                '.cart-item',
                 '.modal-content'
             ];
 
@@ -136,7 +143,7 @@ class DarkModeTheme {
             // Buttons: ensure text contrast
             const buttonSelectors = [
                 '.btn-primary',
-                 '.btn-checkout', 
+                '.btn-checkout',
                 '.btn'
             ];
 
@@ -159,7 +166,6 @@ class DarkModeTheme {
                 '.sticky-content',
                 '.bg-white',
                 '.bg-light',
-                '.cart-item',
                 '.modal-content',
                 '.page-title',
                 '.checkout-steps__item',
@@ -202,13 +208,19 @@ class DarkModeTheme {
      */
     applySystemPreference(skipUI = false) {
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            this.enableDarkMode(skipUI);
+            // do not persist when applying system on initial load
+            this.enableDarkMode(skipUI, !skipUI);
         } else {
-            this.enableLightMode(skipUI);
+            this.enableLightMode(skipUI, !skipUI);
         }
     }
 
-    enableDarkMode(skipUI = false) {
+    /**
+     * Enable dark mode.
+     * @param {boolean} skipUI - if true, skip UI animation and toggle updates
+     * @param {boolean} persist - if true, write choice to localStorage
+     */
+    enableDarkMode(skipUI = false, persist = true) {
         const doc = document.documentElement;
         const body = document.body;
 
@@ -216,9 +228,15 @@ class DarkModeTheme {
         doc.classList.remove(this.LIGHT_CLASS);
         body.classList.add(this.DARK_CLASS);
         body.classList.remove(this.LIGHT_CLASS);
+
+        // Set Bootstrap data attribute used by CSS selectors in views
+        doc.setAttribute(this.BS_THEME_ATTR, 'dark');
+        // keep backward compatibility
         doc.setAttribute('data-theme', 'dark');
 
-        localStorage.setItem(this.STORAGE_KEY, 'dark');
+        if (persist) {
+            localStorage.setItem(this.STORAGE_KEY, 'dark');
+        }
 
         if (!skipUI) {
             this.updateToggleUI();
@@ -229,7 +247,12 @@ class DarkModeTheme {
         }
     }
 
-    enableLightMode(skipUI = false) {
+    /**
+     * Enable light mode.
+     * @param {boolean} skipUI - if true, skip UI animation and toggle updates
+     * @param {boolean} persist - if true, write choice to localStorage
+     */
+    enableLightMode(skipUI = false, persist = true) {
         const doc = document.documentElement;
         const body = document.body;
 
@@ -237,9 +260,14 @@ class DarkModeTheme {
         doc.classList.remove(this.DARK_CLASS);
         body.classList.add(this.LIGHT_CLASS);
         body.classList.remove(this.DARK_CLASS);
+
+        doc.setAttribute(this.BS_THEME_ATTR, 'light');
+        // keep backward compatibility
         doc.setAttribute('data-theme', 'light');
 
-        localStorage.setItem(this.STORAGE_KEY, 'light');
+        if (persist) {
+            localStorage.setItem(this.STORAGE_KEY, 'light');
+        }
 
         if (!skipUI) {
             this.updateToggleUI();
@@ -256,9 +284,9 @@ class DarkModeTheme {
         const isDark = document.documentElement.classList.contains(this.DARK_CLASS);
 
         if (isDark) {
-            this.enableLightMode();
+            this.enableLightMode(false, true);
         } else {
-            this.enableDarkMode();
+            this.enableDarkMode(false, true);
         }
 
         this.dispatchThemeChangeEvent();

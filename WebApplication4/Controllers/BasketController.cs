@@ -30,15 +30,42 @@ namespace EcommerceCoza.MVC.Controllers
         {
             try
             {
-
                 var basket = await _basketManager.AddToBasketAsync(productVariantId, quantity);
+
+                // Check server-side whether a discount is currently saved in session.
+                var savedDiscountCode = Session?.GetString(AppliedDiscountCodeKey);
+                object? discountInfo = null;
+
+                if (!string.IsNullOrEmpty(savedDiscountCode))
+                {
+                    var discount = await _orderService.GetDiscount(savedDiscountCode);
+                    if (discount != null)
+                    {
+                        var discountAmount = (basket.TotalPrice * discount.SalePercentage) / 100;
+                        var finalPrice = basket.TotalPrice - discountAmount;
+
+                        discountInfo = new
+                        {
+                            code = savedDiscountCode,
+                            salePercentage = discount.SalePercentage,
+                            discountAmount = Math.Round(discountAmount, 2),
+                            finalPrice = Math.Round(finalPrice, 2)
+                        };
+                    }
+                    else
+                    {
+                        // If discount code no longer valid, remove it from session
+                        Session?.Remove(AppliedDiscountCodeKey);
+                    }
+                }
 
                 return Json(new
                 {
                     success = true,
                     message = "Product added to basket successfully!",
                     totalCount = basket.TotalCount,
-                    totalPrice = basket.TotalPrice
+                    totalPrice = basket.TotalPrice,
+                    discount = discountInfo
                 });
             }
             catch
@@ -122,7 +149,7 @@ namespace EcommerceCoza.MVC.Controllers
 
             if (discount == null)
             {
-       
+
                 Session?.Remove(AppliedDiscountCodeKey);
                 return Json(new
                 {
