@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using System.Threading.Tasks;
+using WebApplication4.Services;
 
 namespace EcommerceCoza.MVC.Controllers
 {
@@ -14,13 +15,15 @@ namespace EcommerceCoza.MVC.Controllers
         private readonly BasketManager _basketManager;
         private readonly IOrderService _orderService;
         private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ICurrencyService _currencyService;
         private const string AppliedDiscountCodeKey = "AppliedDiscountCode";
 
-        public BasketController(BasketManager basketManager, IOrderService orderService, IHttpContextAccessor httpContextAccessor)
+        public BasketController(BasketManager basketManager, IOrderService orderService, IHttpContextAccessor httpContextAccessor, ICurrencyService currencyService)
         {
             _basketManager = basketManager;
             _orderService = orderService;
             _httpContextAccessor = httpContextAccessor;
+            _currencyService = currencyService;
         }
 
         private ISession? Session => _httpContextAccessor.HttpContext?.Session;
@@ -32,29 +35,31 @@ namespace EcommerceCoza.MVC.Controllers
             {
                 var basket = await _basketManager.AddToBasketAsync(productVariantId, quantity);
 
-                // Check server-side whether a discount is currently saved in session.
-                var savedDiscountCode = Session?.GetString(AppliedDiscountCodeKey);
                 object? discountInfo = null;
-
+                var savedDiscountCode = Session?.GetString(AppliedDiscountCodeKey);
                 if (!string.IsNullOrEmpty(savedDiscountCode))
                 {
                     var discount = await _orderService.GetDiscount(savedDiscountCode);
                     if (discount != null)
                     {
-                        var discountAmount = (basket.TotalPrice * discount.SalePercentage) / 100;
-                        var finalPrice = basket.TotalPrice - discountAmount;
+                        var originalTotal = basket.TotalPrice;
+                        var discountAmount = (originalTotal * discount.SalePercentage) / 100m;
+                        var finalPrice = originalTotal - discountAmount;
 
                         discountInfo = new
                         {
                             code = savedDiscountCode,
                             salePercentage = discount.SalePercentage,
-                            discountAmount = Math.Round(discountAmount, 2),
-                            finalPrice = Math.Round(finalPrice, 2)
+                            originalTotalNumeric = decimal.Round(_currencyService.ConvertFromBaseUsd(originalTotal), 2),
+                            discountAmountNumeric = decimal.Round(_currencyService.ConvertFromBaseUsd(discountAmount), 2),
+                            finalPriceNumeric = decimal.Round(_currency_service_safe_convert(finalPrice), 2),
+                            originalTotalFormatted = _currencyService.Format(originalTotal),
+                            discountAmountFormatted = _currencyService.Format(discountAmount),
+                            finalPriceFormatted = _currencyService.Format(finalPrice)
                         };
                     }
                     else
                     {
-                        // If discount code no longer valid, remove it from session
                         Session?.Remove(AppliedDiscountCodeKey);
                     }
                 }
@@ -65,6 +70,7 @@ namespace EcommerceCoza.MVC.Controllers
                     message = "Product added to basket successfully!",
                     totalCount = basket.TotalCount,
                     totalPrice = basket.TotalPrice,
+                    totalPriceFormatted = _currencyService.Format(basket.TotalPrice),
                     discount = discountInfo
                 });
             }
@@ -75,6 +81,13 @@ namespace EcommerceCoza.MVC.Controllers
                     success = false,
                     message = "Failed to add product to basket. Please try again."
                 });
+            }
+
+            // local helper to convert safely when _currencyService expects USD base
+            decimal _currency_service_safe_convert(decimal baseUsdAmount)
+            {
+                // _currencyService.ConvertFromBaseUsd multiplies by rate and returns formatted rounding.
+                return _currencyService.ConvertFromBaseUsd(baseUsdAmount);
             }
         }
 
@@ -91,7 +104,49 @@ namespace EcommerceCoza.MVC.Controllers
         {
             var model = await _basketManager.GetBasketAsync();
 
-            return Json(model);
+            object? discountInfo = null;
+            var savedDiscountCode = Session?.GetString(AppliedDiscountCodeKey);
+            if (!string.IsNullOrEmpty(savedDiscountCode))
+            {
+                var discount = await _order_service_getdiscount_safe(savedDiscountCode);
+                if (discount != null)
+                {
+                    var originalTotal = model.TotalPrice;
+                    var discountAmount = (originalTotal * discount.SalePercentage) / 100m;
+                    var finalPrice = originalTotal - discountAmount;
+
+                    discountInfo = new
+                    {
+                        code = savedDiscountCode,
+                        salePercentage = discount.SalePercentage,
+                        originalTotalNumeric = decimal.Round(_currencyService.ConvertFromBaseUsd(originalTotal), 2),
+                        discountAmountNumeric = decimal.Round(_currencyService.ConvertFromBaseUsd(discountAmount), 2),
+                        finalPriceNumeric = decimal.Round(_currencyService.ConvertFromBaseUsd(finalPrice), 2),
+                        originalTotalFormatted = _currencyService.Format(originalTotal),
+                        discountAmountFormatted = _currencyService.Format(discountAmount),
+                        finalPriceFormatted = _currencyService.Format(finalPrice)
+                    };
+                }
+                else
+                {
+                    Session?.Remove(AppliedDiscountCodeKey);
+                }
+            }
+
+            return Json(new
+            {
+                items = model.Items,
+                totalCount = model.TotalCount,
+                totalPrice = model.TotalPrice,
+                totalPriceFormatted = _currencyService.Format(model.TotalPrice),
+                discount = discountInfo
+            });
+
+
+            async Task<dynamic?> _order_service_getdiscount_safe(string code)
+            {
+                return await _orderService.GetDiscount(code);
+            }
         }
 
         [HttpPost]
@@ -102,7 +157,8 @@ namespace EcommerceCoza.MVC.Controllers
             return Json(new
             {
                 success = true,
-                basketViewModel
+                basketViewModel,
+                totalPriceFormatted = _currencyService.Format(basketViewModel.TotalPrice)
             });
         }
 
@@ -116,7 +172,8 @@ namespace EcommerceCoza.MVC.Controllers
             {
                 success = true,
                 basketViewModel,
-                cartHtml
+                cartHtml,
+                totalPriceFormatted = _currencyService.Format(basketViewModel.TotalPrice)
             });
         }
 
@@ -149,7 +206,6 @@ namespace EcommerceCoza.MVC.Controllers
 
             if (discount == null)
             {
-
                 Session?.Remove(AppliedDiscountCodeKey);
                 return Json(new
                 {
@@ -158,22 +214,27 @@ namespace EcommerceCoza.MVC.Controllers
                 });
             }
 
-
             Session?.SetString(AppliedDiscountCodeKey, discountCode);
 
             var basket = await _basketManager.GetBasketAsync();
             var originalTotal = basket.TotalPrice;
-            var discountAmount = (originalTotal * discount.SalePercentage) / 100;
+            var discountAmount = (originalTotal * discount.SalePercentage) / 100m;
             var finalPrice = originalTotal - discountAmount;
 
             return Json(new
             {
                 success = true,
                 salePercentage = discount.SalePercentage,
-                originalTotal = Math.Round(originalTotal, 2),
-                discountAmount = Math.Round(discountAmount, 2),
-                finalPrice = Math.Round(finalPrice, 2)
+                originalTotalNumeric = decimal.Round(_currencyService.ConvertFromBaseUsd(originalTotal), 2),
+                discountAmountNumeric = decimal.Round(_currencyService.ConvertFromBaseUsd(discountAmount), 2),
+                finalPriceNumeric = decimal.Round(_currency_service_safe_convert(finalPrice), 2),
+                originalTotalFormatted = _currencyService.Format(originalTotal),
+                discountAmountFormatted = _currencyService.Format(discountAmount),
+                finalPriceFormatted = _currencyService.Format(finalPrice),
+                currency = _currencyService.GetCurrentCurrency().ToString()
             });
+
+            decimal _currency_service_safe_convert(decimal baseUsdAmount) => _currencyService.ConvertFromBaseUsd(baseUsdAmount);
         }
 
         private async Task<string> RenderPartialViewToString(string viewName, object model)

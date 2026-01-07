@@ -159,7 +159,6 @@
 </div>
 
 <style>
-
     .main-cart-container {
         background-color: #f8f9fa;
         color: #212529;
@@ -225,8 +224,7 @@
         font-weight: bold;
     }
 
-        .qty-input::-webkit-outer-spin-button,
-        .qty-input::-webkit-inner-spin-button {
+        .qty-input::-webkit-outer-spin-button, .qty-input::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
         }
@@ -293,204 +291,74 @@
             font-size: 16px;
         }
 
-    /* Dark Mode */
-    [data-bs-theme="dark"] .main-cart-container {
-        background-color: #121212;
-        color: #e0e0e0;
+    :root[data-theme="dark"] .main-cart-container, body.dark-mode .main-cart-container {
+        background-color: #0b0b0b !important;
+        color: #f5f5f5 !important;
     }
 
-    [data-bs-theme="dark"] .cart-card {
-        background-color: #1e1e1e;
-        border: 1px solid #333;
-    }
-
-    [data-bs-theme="dark"] .title-text {
-        color: #ffffff;
-    }
-
-    [data-bs-theme="dark"] .text-muted-theme {
-        color: #b0b0b0;
-    }
-
-    [data-bs-theme="dark"] .price-text {
-        color: #ffffff;
-    }
-
-    [data-bs-theme="dark"] .border-bottom-theme {
-        border-bottom: 1px solid #333;
-    }
-
-    [data-bs-theme="dark"] .border-top-theme {
-        border-top: 1px solid #333;
-    }
-
-    [data-bs-theme="dark"] .border-theme {
-        border-color: #333 !important;
-    }
-
-    [data-bs-theme="dark"] .product-img {
-        border: 1px solid #333;
-    }
-
-    [data-bs-theme="dark"] .qty-btn {
-        background-color: #333;
-        color: #fff;
-        border: 1px solid #444;
-    }
-
-        [data-bs-theme="dark"] .qty-btn:hover {
-            background-color: #444;
-        }
-
-    [data-bs-theme="dark"] .qty-input {
-        background-color: #1e1e1e;
-        color: #fff;
-        border: 1px solid #444;
-    }
-
-    [data-bs-theme="dark"] .btn-delete-text {
-        color: #b0b0b0;
-    }
-
-        [data-bs-theme="dark"] .btn-delete-text:hover {
-            color: #ff4d4d;
-        }
-
-    [data-bs-theme="dark"] .modal-content-theme {
-        background-color: #1e1e1e;
-        color: #ffffff;
-        border: 1px solid #333;
-    }
-
-    [data-bs-theme="dark"] .btn-close-theme {
-        filter: invert(1) grayscale(100%) brightness(200%);
-    }
-
-    [data-bs-theme="dark"] .coupon-input {
-        background-color: #1e1e1e;
-        color: #ffffff;
-        border: 1px solid #444;
-    }
-
-    [data-bs-theme="dark"] .discount-alert {
-        background-color: #1e3a28 !important;
-        border-color: #28a745 !important;
-        color: #7ed99e !important;
-    }
-
-    [data-bs-theme="dark"] .coupon-link {
-        color: #ffffff;
-    }
-
-        [data-bs-theme="dark"] .coupon-link:hover {
-            color: #f0f0f0;
-        }
-
-
-    @@keyframes slideIn {
-        from {
-            transform: translateX(100%);
-            opacity: 0;
-        }
-
-        to {
-            transform: translateX(0);
-            opacity: 1;
-        }
-    }
-
-    /* Explicit overrides to force fully black basket panel like About Us page */
-    :root[data-theme="dark"] .main-cart-container,
-    html.dark-mode .main-cart-container,
-    body.dark-mode .main-cart-container,
-    :root[data-theme="dark"] .cart-card,
-    html.dark-mode .cart-card,
-    body.dark-mode .cart-card {
-        background-color: #0b0b0b !important; /* full black */
+    :root[data-theme="dark"] .cart-card, body.dark-mode .cart-card {
+        background-color: #0b0b0b !important;
         color: #f5f5f5 !important;
         border-color: rgba(255,255,255,0.06) !important;
         box-shadow: none !important;
     }
 
-        /* Make cart-items blend into the card (prevent half-white areas) */
-        :root[data-theme="dark"] .cart-card .cart-item,
-        html.dark-mode .cart-card .cart-item,
-        body.dark-mode .cart-card .cart-item {
+        :root[data-theme="dark"] .cart-card .cart-item, body.dark-mode .cart-card .cart-item {
             background-color: transparent !important;
             color: inherit !important;
             border-color: rgba(255,255,255,0.04) !important;
         }
 
-        /* Ensure internal controls are visible on pure black */
-        :root[data-theme="dark"] .cart-card .title-text,
-        :root[data-theme="dark"] .cart-card .price-text,
-        :root[data-theme="dark"] .cart-card .text-muted-theme,
-        body.dark-mode .cart-card .title-text,
-        body.dark-mode .cart-card .price-text,
-        body.dark-mode .cart-card .text-muted-theme {
-            color: #f5f5f5 !important;
-        }
-
-        :root[data-theme="dark"] .cart-card .qty-btn,
-        body.dark-mode .cart-card .qty-btn {
+        :root[data-theme="dark"] .cart-card .qty-btn, body.dark-mode .cart-card .qty-btn {
             background-color: #151515 !important;
             border-color: rgba(255,255,255,0.06) !important;
             color: #fff !important;
         }
 
-        :root[data-theme="dark"] .cart-card .qty-input,
-        body.dark-mode .cart-card .qty-input {
+        :root[data-theme="dark"] .cart-card .qty-input, body.dark-mode .cart-card .qty-input {
             background-color: #171717 !important;
             color: #fff !important;
             border-color: rgba(255,255,255,0.06) !important;
         }
-
-        :root[data-theme="dark"] .cart-card .product-img,
-        body.dark-mode .cart-card .product-img {
-            border-color: rgba(255,255,255,0.06) !important;
-            background-color: transparent !important;
-        }
-
-    /* Sidebar card (checkout / coupon) */
-    :root[data-theme="dark"] .col-lg-4 .cart-card,
-    body.dark-mode .col-lg-4 .cart-card {
-        background-color: #0b0b0b !important;
-        color: #f5f5f5 !important;
-        border-color: rgba(255,255,255,0.06) !important;
-    }
-
-    /* Remove any inline white backgrounds inside cart-card */
-    :root[data-theme="dark"] .cart-card [style*="background:#fff"],
-    body.dark-mode .cart-card [style*="background:#fff"],
-    :root[data-theme="dark"] .cart-card [style*="background: #fff"],
-    body.dark-mode .cart-card [style*="background: #fff"] {
-        background-color: transparent !important;
-    }
-
 </style>
 
 @section Scripts {
     <script>
         $(document).ready(function () {
+            // Expose current currency to JS for fallback formatting
+            window.currentCurrency = '@CurrencyService.GetCurrentCurrency().ToString()';
+
             let appliedCoupon = null;
             let variantIdToDelete = null;
 
-            function formatCurrency(amount) {
-                return new Intl.NumberFormat('az-AZ', {
-                    style: 'currency', currency: 'AZN'
-                }).format(amount);
+            function localeForCurrency(curr) {
+                switch (curr) {
+                    case 'AZN': return 'az-AZ';
+                    case 'RUB': return 'ru-RU';
+                    default: return 'en-US';
+                }
             }
 
+            function formatCurrency(amount) {
+                const curr = window.currentCurrency || 'USD';
+                const locale = localeForCurrency(curr);
+                try {
+                    return new Intl.NumberFormat(locale, {
+                        style: 'currency', currency: curr
+                    }).format(amount);
+                } catch {
+                    return amount.toFixed(2) + ' ' + curr;
+                }
+            }
 
             $(document).on('change', '.qty-input', function() {
                 const variantId = $(this).data('variant-id');
-                const newQty = parseInt($(this).val());
+                const newQty = parseInt($(this).val(), 10);
 
                 if (newQty < 1 || isNaN(newQty)) {
                     $(this).val(1);
                     return;
                 }
-
 
                 $.get('@Url.Action("GetBasket", "Basket")', data => {
                     const currentItem = data.items.find(x => x.productVariantId === variantId);
@@ -501,7 +369,6 @@
                 });
             });
 
-
             $(document).on('click', '.qty-increase', function () {
                 changeQuantity($(this).data('variant-id'), 1);
             });
@@ -509,7 +376,7 @@
             $(document).on('click', '.qty-decrease', function () {
                 const variantId = $(this).data('variant-id');
                 const $input = $(`.qty-input[data-variant-id="${variantId}"]`);
-                if (parseInt($input.val()) > 1) {
+                if (parseInt($input.val(), 10) > 1) {
                     changeQuantity(variantId, -1);
                 } else {
                     showDeleteConfirmation(variantId, $(this).closest('.cart-item').find('h5').text());
@@ -522,12 +389,13 @@
                     const item = res?.basketViewModel?.items?.find(x => x.productVariantId === variantId);
                     if (item) {
                         $(`.qty-input[data-variant-id="${variantId}"]`).val(item.quantity);
-                        $(`.cart-item[data-variant-id="${variantId}"] .item-price`).html(formatCurrency(item.totalPrice));
+                        // prefer server-formatted price when available
+                        const formatted = item.totalPriceFormatted || formatCurrency(item.totalPrice);
+                        $(`.cart-item[data-variant-id="${variantId}"] .item-price`).html(formatted);
                         updateTotals();
                     }
                 });
             }
-
 
             $(document).on('click', '.btn-delete-text', function () {
                 variantIdToDelete = $(this).data('variant-id');
@@ -539,28 +407,33 @@
                 $.post('@Url.Action("Remove", "Basket")', { id: variantIdToDelete }).done(() => location.reload());
             });
 
-
             function updateTotals() {
                 $.get('@Url.Action("GetBasket", "Basket")', data => {
                     $('#cart-items-count, #cart-items-count-bottom').text(data.totalCount);
                     $('.header__cart-count').text(data.totalCount || 0);
 
-                    if (appliedCoupon) {
-                        const disc = (data.totalPrice * appliedCoupon.salePercentage) / 100;
-                        const final = data.totalPrice - disc;
-                        $('#discount-amount').html(formatCurrency(disc));
-                        const html = `<span class="text-decoration-line-through text-muted-theme me-2">${formatCurrency(data.totalPrice)}</span>${formatCurrency(final)}`;
+                 
+                    if (data.discount) {
+                        $('#discount-amount').html(data.discount.discountAmountFormatted || formatCurrency(data.discount.discountAmountNumeric));
+                        const html = `<span class="text-decoration-line-through text-muted-theme me-2">${data.discount.originalTotalFormatted || formatCurrency(data.discount.originalTotalNumeric)}</span>${data.discount.finalPriceFormatted || formatCurrency(data.discount.finalPriceNumeric)}`;
                         $('#cart-subtotal, #cart-subtotal-bottom').html(html);
+                        $('#discount-info').removeClass('d-none');
+                        $('#discount-code').text(data.discount.code);
+                        $('#discount-percentage').text(data.discount.salePercentage);
+                        appliedCoupon = { code: data.discount.code, salePercentage: data.discount.salePercentage };
                     } else {
-                        $('#cart-subtotal, #cart-subtotal-bottom').html(formatCurrency(data.totalPrice));
+                        $('#discount-info').addClass('d-none');
+                        $('#cart-subtotal, #cart-subtotal-bottom').html(data.totalPriceFormatted || formatCurrency(data.totalPrice));
+                        appliedCoupon = null;
                     }
                 });
             }
 
-
             $('#coupon-form').on('submit', function (e) {
                 e.preventDefault();
                 const code = $('#coupon-code-input').val().trim();
+                if (!code) return;
+
                 $.ajax({
                     url: '@Url.Action("ApplyDiscount", "Basket")',
                     type: 'POST',
@@ -568,13 +441,27 @@
                     headers: { 'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val() },
                     success: function (res) {
                         if (res.success) {
-                            appliedCoupon = { code: code, salePercentage: res.salePercentage };
+                     
+                            appliedCoupon = { code: code, salePercentage: res.salePercentage, discountAmountNumeric: res.discountAmountNumeric, finalPriceNumeric: res.finalPriceNumeric };
+
                             $('#discount-info').removeClass('d-none');
                             $('#discount-code').text(code);
                             $('#discount-percentage').text(res.salePercentage);
+                            $('#discount-amount').html(res.discountAmountFormatted || formatCurrency(res.discountAmountNumeric));
+
+                            const original = res.originalTotalFormatted || formatCurrency(res.originalTotalNumeric || res.originalTotal || 0);
+                            const final = res.finalPriceFormatted || formatCurrency(res.finalPriceNumeric || res.finalPrice || 0);
+                            $('#cart-subtotal, #cart-subtotal-bottom').html(`<span class="text-decoration-line-through text-muted-theme me-2">${original}</span>${final}`);
+
                             updateTotals();
                             $('#couponCollapse').collapse('hide');
+                        } else {
+                      
+                            alert(res.message || 'Invalid or expired discount code');
                         }
+                    },
+                    error: function () {
+                        alert('Error applying discount');
                     }
                 });
             });
@@ -584,6 +471,15 @@
                 $('#discount-info').addClass('d-none');
                 $.post('@Url.Action("RemoveDiscount", "Basket")', () => updateTotals());
             });
+
+
+            updateTotals();
+
+            function showDeleteConfirmation(variantId, productName) {
+                variantIdToDelete = variantId;
+                $('#productNameToDelete').text(productName);
+                $('#deleteConfirmModal').modal('show');
+            }
         });
     </script>
 }
