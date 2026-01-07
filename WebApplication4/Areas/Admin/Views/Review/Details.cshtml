@@ -1,0 +1,243 @@
+﻿@model EcommerceCoza.BLL.ViewModels.ReviewViewModel
+@{
+    ViewData["Title"] = "Review Details";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .page-wrapper {
+        background-color: #f8f9fa;
+        min-height: 100vh;
+        padding: 10px 0;
+    }
+
+    .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+        background: white;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 12px 20px;
+        border-radius: 12px 12px 0 0;
+    }
+
+        .card-header h4 {
+            color: white;
+            font-size: 1.1rem;
+            margin: 0;
+            font-weight: 600;
+        }
+
+    .card-body {
+        padding: 16px;
+    }
+
+    .info-section {
+        background: #fcfcfd;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 12px;
+        border: 1px solid #edf2f7;
+    }
+
+    .section-title {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #2d3748;
+        margin-bottom: 10px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #e2e8f0;
+        display: flex;
+        align-items: center;
+    }
+
+    .info-row {
+        display: flex;
+        padding: 6px 0;
+        font-size: 0.9rem;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #4a5568;
+        width: 120px;
+        flex-shrink: 0;
+    }
+
+    .info-value {
+        color: #2d3748;
+    }
+
+    .star-rating {
+        color: #ffc107;
+        font-size: 1rem;
+        display: inline-block;
+    }
+
+    .rating-number {
+        margin-left: 8px;
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #2d3748;
+    }
+
+    .comment-box {
+        background: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        padding: 12px;
+    }
+
+    .comment-content {
+        font-size: 0.9rem;
+        color: #4a5568;
+    }
+
+    .btn {
+        border-radius: 6px;
+        padding: 6px 14px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+
+    .btn-warning {
+        background: #ffc107;
+        color: #212529;
+    }
+
+    .btn-danger {
+        background: #dc3545;
+        color: white;
+    }
+
+    .timestamp-badge {
+        background: #eef2ff;
+        color: #4338ca;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+    }
+
+    .delete-section {
+        background: #fff5f5;
+        border: 1px solid #feb2b2;
+        border-radius: 8px;
+        padding: 12px;
+        margin-top: 15px;
+    }
+
+        .delete-section h6 {
+            color: #c53030;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .delete-section p {
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 -10px;
+    }
+
+    .col-md-6 {
+        flex: 0 0 50%;
+        padding: 0 10px;
+    }
+</style>
+
+<div class="page-wrapper">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4><i class="fas fa-star"></i> Review Details</h4>
+                <div class="action-buttons">
+                    <a asp-action="Index" class="btn btn-secondary"><i class="fas fa-arrow-left"></i> Back</a>
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class="fas fa-edit"></i> Edit</a>
+                </div>
+            </div>
+
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="timestamp-badge">ID: #@Model.Id</span>
+                    <div class="d-flex align-items-center">
+                        <div class="star-rating">
+                            @for (int i = 1; i <= 5; i++)
+                            {
+                                <i class="fas fa-star @(i <= Model.Rating ? "" : "text-muted")" style="@(i > Model.Rating ? "opacity:0.3" : "")"></i>
+                            }
+                        </div>
+                        <span class="rating-number">@Model.Rating.ToString("0.0")</span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="info-section">
+                            <h5 class="section-title"><i class="fas fa-info-circle text-primary"></i> Information</h5>
+                            <div class="info-row">
+                                <span class="info-label">Created:</span>
+                                <span class="info-value">@Model.CreatedAt.ToString("MMM dd, yyyy HH:mm")</span>
+                            </div>
+                            @if (Model.UpdatedAt.HasValue)
+                            {
+                                <div class="info-row">
+                                    <span class="info-label">Updated:</span>
+                                    <span class="info-value">@Model.UpdatedAt.Value.ToString("MMM dd, yyyy HH:mm")</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="info-section">
+                            <h5 class="section-title"><i class="fas fa-link text-info"></i> Related</h5>
+                            <div class="info-row">
+                                <span class="info-label">Product:</span>
+                                <span class="info-value"><strong>@Model.ProductName</strong></span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">User:</span>
+                                <span class="info-value">@Model.UserName</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="info-section mb-0">
+                    <h5 class="section-title"><i class="fas fa-comment-dots text-success"></i> Review Comment</h5>
+                    <div class="comment-box">
+                        <p class="comment-content mb-0">@(string.IsNullOrEmpty(Model.Comment) ? "No comment provided." : Model.Comment)</p>
+                    </div>
+                </div>
+
+                <div class="delete-section">
+                    <h6><i class="fas fa-exclamation-triangle"></i> Danger Zone</h6>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="mb-0">Permanently remove this review from the system.</p>
+                        <form asp-action="Delete" asp-route-id="@Model.Id" method="post" onsubmit="return confirm('Delete this review permanently?');">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

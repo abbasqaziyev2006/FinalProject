@@ -552,7 +552,7 @@ wwwroot\images\products\yxl1ikcg.k0b_IMG_05_2110099203621-55b54ebc-6c99-4e1f-8e9
 wwwroot\images\products\yxl1ikcg.k0b_IMG_05_2110099203621-ccc9bd83-2b78-4e2d-a49c-1c8c4a5c3ab2-.jpg
 wwwroot\images\sliders\61d0Fhf4RvL._AC_SX679_-e69f2802-694d-45ff-9b52-73f65a626eb7--1d0dc5b5-acaa-4a1e-95f7-e036fb8cbc82-.jpg
 wwwroot\images\sliders\61OPrg3kGML._AC_SY550_-1e9129c7-e64d-4ab4-a8ae-c227b762dba4-.jpg
-wwwroot\images\sliders\71AJjs+VtmL._AC_SY550_-ed65aeb8-aff3-4244-8ec8-ea8745dd871b-.jpg
+wwwroot\images\sliders\71wqlPJiimL._AC_SX679_-00fa1494-3562-404e-b39f-e490289fba23--a8d95efe-9d7d-4470-b6aa-75051843e7b6-.jpg
 wwwroot\images\sliders\81+oQBvBR-L._AC_SX522_-e0fbd6a9-8b66-4714-9c09-d0f62b2166eb- (1)-0190ca2d-eec4-43d9-a65d-f82806ecadbe-.jpg
 wwwroot\lib\bootstrap\dist\css\bootstrap.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.css.map

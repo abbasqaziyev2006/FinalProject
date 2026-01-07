@@ -1,4 +1,5 @@
 ﻿using EcommerceCoza.DAL.DataContext.Repositories.Contracts;
+using ECommerceCoza.DAL.DataContext.Entities;
 
 public interface IReviewRepository : IRepository<Review>
 {

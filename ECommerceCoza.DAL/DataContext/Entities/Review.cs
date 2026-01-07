@@ -1,4 +1,4 @@
-﻿using ECommerceCoza.DAL.DataContext.Entities;
+﻿namespace ECommerceCoza.DAL.DataContext.Entities;
 
 public class Review : TimeStample
 {

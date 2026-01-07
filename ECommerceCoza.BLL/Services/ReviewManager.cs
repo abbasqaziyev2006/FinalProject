@@ -1,9 +1,10 @@
 ﻿using EcommerceCoza.BLL.Services.Contracts;
+using ECommerceCoza.DAL.DataContext.Entities;
 public class ReviewManager : IReviewService
 {
     private readonly IReviewRepository _reviewRepo;
     public ReviewManager(IReviewRepository reviewRepo) => _reviewRepo = reviewRepo;
-
+    
     public async Task<Review?> GetReviewByIdAsync(int id) => await _reviewRepo.GetByIdAsync(id);
 
     public async Task<IEnumerable<Review>> GetReviewsByProductIdAsync(int productId) => await _reviewRepo.GetReviewsByProductIdAsync(productId);
@@ -13,7 +14,7 @@ public class ReviewManager : IReviewService
     public async Task<Review?> GetReviewByUserAndProductAsync(string userId, int productId) => await _reviewRepo.GetReviewByUserAndProductAsync(userId, productId);
 
     public async Task CreateReviewAsync(Review review) => await _reviewRepo.CreateAsync(review);
-
+    public async Task<IEnumerable<Review>> GetAllReviewsAsync() => await _reviewRepo.GetAllAsync();
     public async Task UpdateReviewAsync(Review review) => await _reviewRepo.UpdateAsync(review);
 
     public async Task DeleteReviewAsync(int reviewId)

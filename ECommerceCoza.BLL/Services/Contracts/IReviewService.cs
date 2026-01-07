@@ -14,5 +14,6 @@ namespace EcommerceCoza.BLL.Services.Contracts
         Task<bool> UserHasReviewedProductAsync(string userId, int productId);
         Task<double> GetAverageRatingByProductIdAsync(int productId);
         Task<int> GetReviewCountByProductIdAsync(int productId);
+        Task<IEnumerable<Review>> GetAllReviewsAsync();
     }
 }

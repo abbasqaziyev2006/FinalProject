@@ -2,14 +2,11 @@
     'use strict';
 
     /**
-     * custom-search.js
-     * - If #products-grid exists (Shop page) perform client-side filtering (like Wishlist).
-     * - Otherwise do debounced AJAX to /Shop/SearchProducts.
-     * - Defensive: handles non-JSON responses, shows friendly messages, logs useful debug info.
+     * custom-search.js - header search now behaves like wishlist search (renders product grid in popup).
      */
 
     document.addEventListener('DOMContentLoaded', function () {
-        // Elements (must match markup in Header component)
+        // Elements
         const searchPopup = document.querySelector('.search-popup');
         const searchInput = document.getElementById('headerSearchInput');
         const searchResults = document.getElementById('searchResults');
@@ -18,27 +15,20 @@
         const openSearchBtns = Array.from(document.querySelectorAll('.js-search-popup'));
         const closeSearchBtn = document.querySelector('.js-close-search');
 
-        console.log('custom-search: Initializing...', {
-            searchPopup: !!searchPopup,
-            searchInput: !!searchInput,
-            searchResults: !!searchResults,
-            openSearchBtns: openSearchBtns.length,
-            closeSearchBtn: !!closeSearchBtn
-        });
+        // Selection / actions UI (may be present in header partial)
+        const selectionBar = document.getElementById('searchSelectionBar');
+        const selectAllCheckbox = document.getElementById('searchSelectAll');
+        const selectedCountEl = document.getElementById('searchSelectedCount');
+        const btnAddSelectedToWishlist = document.getElementById('btnAddSelectedToWishlist');
+        const btnAddSelectedToCart = document.getElementById('btnAddSelectedToCart');
+        const btnViewAllOnShop = document.getElementById('btnViewAllOnShop');
 
-        if (!searchPopup || !searchInput) {
-            console.error('custom-search: required elements are missing; aborting initialization.', {
-                searchPopup: !!searchPopup,
-                searchInput: !!searchInput
-            });
-            return;
-        }
+        if (!searchPopup || !searchInput || !searchResults) return;
 
-        // Detect local products grid (Shop page) for client-side search
+        // Detect local products grid (Shop page)
         const productsGrid = document.getElementById('products-grid');
         let clientSideCards = productsGrid ? Array.from(productsGrid.querySelectorAll('.product-card-wrapper')) : null;
 
-        // UI helpers
         const DEBOUNCE_MS = 300;
         let debounceTimer = null;
 
@@ -46,181 +36,206 @@
         function hideLoading() { if (searchLoading) searchLoading.classList.add('d-none'); }
         function showNoResults() { if (searchNoResults) searchNoResults.classList.remove('d-none'); }
         function hideNoResults() { if (searchNoResults) searchNoResults.classList.add('d-none'); }
-        function clearResults() { if (searchResults) searchResults.innerHTML = ''; }
+        function clearResults() { if (searchResults) searchResults.innerHTML = ''; hideSelectionBar(); }
 
-        // Popup open/close
-        function openSearch() {
-            console.log('custom-search: Opening search popup');
-            if (!searchPopup || !searchInput) {
-                console.error('custom-search: Cannot open - elements missing');
-                return;
-            }
-            searchPopup.style.display = 'block';
-            document.body.style.overflow = 'hidden';
-            setTimeout(() => {
-                try {
-                    searchInput.focus();
-                    console.log('custom-search: Search input focused');
-                } catch (e) {
-                    console.warn('custom-search: Could not focus input', e);
-                }
-            }, 80);
+        // Selection storage per query (kept for compatibility but header grid will not show checkboxes)
+        const STORAGE_PREFIX = 'searchSelection_';
+        let selectedProducts = new Set();
+        let currentQueryForSelection = '';
+        function saveSelectionForQuery(query) {
+            if (!query) return;
+            try { sessionStorage.setItem(STORAGE_PREFIX + query, JSON.stringify(Array.from(selectedProducts))); } catch (e) { }
         }
-        function closeSearch() {
-            searchPopup.style.display = 'none';
-            document.body.style.overflow = '';
-            searchInput.value = '';
-            clearResults();
-            hideLoading();
-            hideNoResults();
-            // If client-side, reset product-grid visibility back to normal
-            if (clientSideCards) {
-                clientSideCards.forEach(c => {
-                    c.style.display = '';
-                    c.classList.remove('d-none');
-                });
-                if (productsGrid) {
-                    const noResultsEl = document.getElementById('wishlistNoResults');
-                    if (noResultsEl) noResultsEl.classList.add('d-none');
-                }
-            }
+        function loadSelectionForQuery(query) {
+            selectedProducts.clear();
+            if (!query) return;
+            try {
+                const raw = sessionStorage.getItem(STORAGE_PREFIX + query);
+                if (raw) JSON.parse(raw).forEach(id => selectedProducts.add(String(id)));
+            } catch (e) { }
         }
 
-        // Attach event listeners
-        openSearchBtns.forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('custom-search: Search button clicked');
-                openSearch();
-            });
-        });
+        function showSelectionBar() { if (!selectionBar) return; selectionBar.classList.remove('d-none'); selectionBar.style.display = 'flex'; }
+        function hideSelectionBar() { if (!selectionBar) return; selectionBar.classList.add('d-none'); selectionBar.style.display = 'none'; if (selectAllCheckbox) selectAllCheckbox.checked = false; updateSelectedCount(); }
+        function updateSelectedCount() { if (!selectedCountEl) return; selectedCountEl.textContent = `${selectedProducts.size} selected`; const disabled = selectedProducts.size === 0; if (btnAddSelectedToWishlist) btnAddSelectedToWishlist.disabled = disabled; if (btnAddSelectedToCart) btnAddSelectedToCart.disabled = disabled; }
 
-        if (closeSearchBtn) {
-            closeSearchBtn.addEventListener('click', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('custom-search: Close button clicked');
-                closeSearch();
-            });
-        }
+        // Helpers
+        function escapeHtml(str) { if (!str) return ''; return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'); }
 
-        searchPopup.addEventListener('click', function (e) {
-            if (e.target === searchPopup) {
-                console.log('custom-search: Popup background clicked');
-                closeSearch();
-            }
-        });
-
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && searchPopup.style.display === 'block') {
-                console.log('custom-search: Escape key pressed');
-                closeSearch();
-            }
-        });
-
-        // Helpers for rendering server results (unchanged)
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
-        }
-
-        function buildResultItem(product) {
-            const id = product.id || '';
-            const name = product.name || 'Unknown product';
-            const image = product.coverImageName || product.image || 'product-placeholder.jpg';
-            const category = product.categoryName || product.category || '';
-            const priceVal = (product.basePrice !== undefined) ? product.basePrice : (product.price || product.salePrice || 0);
-            const price = (typeof priceVal === 'number') ? priceVal.toFixed(2) : parseFloat(priceVal || 0).toFixed(2);
-            const detailsUrl = product.detailsUrl || product.url || product.slug || id;
-
-            const a = document.createElement('a');
-            a.href = `/Product/Details/${encodeURIComponent(detailsUrl)}`;
-            a.className = 'list-group-item list-group-item-action border-0 py-3 search-result-item';
-            a.innerHTML = `
-                <div class="d-flex align-items-center gap-3">
-                    <img src="/images/products/${encodeURIComponent(image)}" alt="${escapeHtml(name)}"
-                         style="width:70px;height:70px;object-fit:cover;border-radius:8px;flex-shrink:0;"
-                         onerror="this.onerror=null;this.src='/assets/images/no-image.png';" />
-                    <div class="flex-grow-1" style="min-width:0;">
-                        <h6 class="mb-1 text-truncate" title="${escapeHtml(name)}">${escapeHtml(name)}</h6>
-                        <p class="mb-0 text-muted small text-truncate" title="${escapeHtml(category)}">${escapeHtml(category)}</p>
-                    </div>
-                    <div class="text-end" style="flex-shrink:0;">
-                        <strong class="text-primary fs-6">$${price}</strong>
-                    </div>
-                </div>
-            `;
-            return a;
-        }
-
-        function renderResults(products) {
+        // Render results as a product grid (wishlist-like)
+        function renderResultsGrid(products, query) {
             clearResults();
             hideNoResults();
+
             if (!Array.isArray(products) || products.length === 0) {
                 showNoResults();
                 return;
             }
+
+            // hide selection UI for grid mode (optional)
+            if (selectionBar) hideSelectionBar();
+
+            // container similar to wishlist grid
             const wrapper = document.createElement('div');
-            wrapper.className = 'list-group list-group-flush';
+            wrapper.className = 'products-grid row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3';
+
             products.forEach(p => {
-                try { wrapper.appendChild(buildResultItem(p)); } catch (err) { console.warn('custom-search render error', err, p); }
+                try {
+                    const id = p.id || '';
+                    const name = p.name || 'Unknown';
+                    const image = p.coverImageName || p.image || 'product-placeholder.jpg';
+                    const category = p.categoryName || p.category || '';
+                    const priceVal = (p.basePrice !== undefined) ? p.basePrice : (p.price || p.salePrice || 0);
+                    const price = (typeof priceVal === 'number') ? priceVal.toFixed(2) : parseFloat(priceVal || 0).toFixed(2);
+                    const detailsUrl = p.detailsUrl || p.url || p.slug || id;
+
+                    const col = document.createElement('div');
+                    col.className = 'product-card-wrapper col';
+
+                    // minimal product card markup matching wishlist style
+                    col.innerHTML = `
+                        <div class="product-card mb-3 mb-md-4 mb-xxl-5">
+                            <div class="pc__img-wrapper">
+                                <a href="/Product/Details/${encodeURIComponent(detailsUrl)}" class="d-block">
+                                    <img loading="lazy" src="/images/products/${encodeURIComponent(image)}" alt="${escapeHtml(name)}" class="pc__img" style="width:100%;height:auto;object-fit:cover;"/>
+                                </a>
+                            </div>
+                            <div class="pc__info position-relative">
+                                <p class="pc__category">${escapeHtml(category)}</p>
+                                <h6 class="pc__title"><a href="/Product/Details/${encodeURIComponent(detailsUrl)}">${escapeHtml(name)}</a></h6>
+                                <div class="product-card__price d-flex">
+                                    <span class="money price">${escapeHtml(price)}</span>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    wrapper.appendChild(col);
+                } catch (err) {
+                    console.warn('renderResultsGrid error', err, p);
+                }
             });
+
             if (searchResults) searchResults.appendChild(wrapper);
+
+            // Update "View all" link
+            if (btnViewAllOnShop) btnViewAllOnShop.href = `/Shop?search=${encodeURIComponent(query || '')}`;
+
+            // focus first product link for keyboard users
+            setTimeout(() => {
+                const firstLink = searchResults.querySelector('a');
+                if (firstLink) firstLink.focus();
+            }, 120);
         }
 
-        // CLIENT-SIDE FILTER (Shop page) - operate directly on DOM product cards
-        function clientSideFilter(term) {
-            if (!clientSideCards) return;
-            const q = String(term || '').trim().toLowerCase();
-            let visible = 0;
+        // Original list-style results (kept as fallback)
+        function renderResultsList(products, query) {
+            clearResults();
+            hideNoResults();
 
-            // If empty, reset to normal infinite-scroll visibility (remove inline display/none)
-            if (q.length === 0) {
-                clientSideCards.forEach(c => {
-                    c.style.display = '';
-                    c.classList.remove('d-none');
-                });
-                const wishlistNoResults = document.getElementById('wishlistNoResults');
-                if (wishlistNoResults) wishlistNoResults.classList.add('d-none');
+            if (!Array.isArray(products) || products.length === 0) {
+                showNoResults();
                 return;
             }
 
-            clientSideCards.forEach(card => {
-                const title = (card.querySelector('.pc__title')?.textContent || '').trim().toLowerCase();
-                const category = (card.querySelector('.pc__category')?.textContent || '').trim().toLowerCase();
-                const match = title.includes(q) || category.includes(q);
-                card.style.display = match ? '' : 'none';
-                card.classList.remove('d-none'); // ensure visible ones aren't hidden via d-none
-                if (match) visible++;
+            // show selection bar (if present) and load selection state
+            currentQueryForSelection = String(query || '').trim();
+            loadSelectionForQuery(currentQueryForSelection);
+            if (selectionBar) showSelectionBar();
+
+            const wrapper = document.createElement('div');
+            wrapper.className = 'list-group list-group-flush';
+
+            products.forEach(p => {
+                const item = document.createElement('div');
+                item.className = 'search-result-row list-group-item border-0 py-2 d-flex align-items-center gap-3';
+                const id = p.id || '';
+                const name = p.name || 'Unknown';
+                const image = p.coverImageName || p.image || 'product-placeholder.jpg';
+                const category = p.categoryName || p.category || '';
+                const priceVal = (p.basePrice !== undefined) ? p.basePrice : (p.price || p.salePrice || 0);
+                const price = (typeof priceVal === 'number') ? priceVal.toFixed(2) : parseFloat(priceVal || 0).toFixed(2);
+                const detailsUrl = p.detailsUrl || p.url || p.slug || id;
+
+                item.innerHTML = `
+                    <div style="flex:0 0 28px;">
+                        <input type="checkbox" class="search-select-checkbox form-check-input" data-product-id="${escapeHtml(id)}" />
+                    </div>
+                    <a href="/Product/Details/${encodeURIComponent(detailsUrl)}" class="flex-grow-1 text-decoration-none" style="min-width:0;">
+                        <div class="d-flex align-items-center gap-3">
+                            <img src="/images/products/${encodeURIComponent(image)}" alt="${escapeHtml(name)}" style="width:70px;height:70px;object-fit:cover;border-radius:8px;flex-shrink:0;" />
+                            <div class="flex-grow-1" style="min-width:0;">
+                                <h6 class="mb-1 text-truncate" title="${escapeHtml(name)}" style="margin:0;">${escapeHtml(name)}</h6>
+                                <p class="mb-0 text-muted small text-truncate" title="${escapeHtml(category)}" style="margin:0;">${escapeHtml(category)}</p>
+                            </div>
+                            <div class="text-end" style="flex-shrink:0;">
+                                <strong class="text-primary fs-6">$${price}</strong>
+                            </div>
+                        </div>
+                    </a>
+                `;
+                wrapper.appendChild(item);
             });
 
-            const wishlistNoResults = document.getElementById('wishlistNoResults');
-            if (wishlistNoResults) wishlistNoResults.classList.toggle('d-none', visible !== 0);
-            // Accessibility: focus first matching product (optionally)
-            if (visible > 0 && productsGrid) {
-                const first = productsGrid.querySelector('.product-card-wrapper[style*="display:"]') || productsGrid.querySelector('.product-card-wrapper:not([style*="display: none"])');
-                if (first) first.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
+            searchResults.appendChild(wrapper);
         }
 
-        // SERVER-SIDE AJAX search (used when not on Shop page)
-        function serverSideSearch(query) {
-            if (!query || query.length < 2) {
+        // Decide which renderer to use; header popup uses grid to match wishlist
+        function renderResults(products, query) {
+            renderResultsGrid(products, query);
+        }
+
+        // Debounced input handler
+        searchInput.addEventListener('input', function () {
+            const q = this.value || '';
+            clearTimeout(debounceTimer);
+            if (q.trim().length < 2) {
                 clearResults();
                 hideLoading();
                 hideNoResults();
                 return;
             }
+            debounceTimer = setTimeout(() => performSearch(q), DEBOUNCE_MS);
+        });
 
-            console.log('custom-search: Starting server-side search for:', query);
+        // Unified performSearch: client-side on Shop page, otherwise server-side AJAX
+        function performSearch(query) {
+            const q = (query || '').trim();
+            if (!q) { clearResults(); hideLoading(); hideNoResults(); return; }
+
+            if (clientSideCards && clientSideCards.length > 0) {
+                // If user is on Shop page, mimic wishlist filter: show matching product cards in popup
+                const matched = [];
+                clientSideCards.forEach(card => {
+                    const title = (card.querySelector('.pc__title')?.textContent || '').trim();
+                    const category = (card.querySelector('.pc__category')?.textContent || '').trim();
+                    const match = title.toLowerCase().includes(q.toLowerCase()) || category.toLowerCase().includes(q.toLowerCase());
+                    if (match) {
+                        const product = {
+                            id: card.dataset.productId,
+                            name: title,
+                            coverImageName: card.querySelector('.main-product-image')?.getAttribute('src')?.split('/').pop() || '',
+                            categoryName: category,
+                            basePrice: parseFloat(card.dataset.productPrice) || 0,
+                            detailsUrl: card.querySelector('a')?.getAttribute('href')?.split('/Product/Details/')[1] || card.dataset.productId
+                        };
+                        matched.push(product);
+                    }
+                });
+                renderResults(matched, q);
+            } else {
+                serverSideSearch(q);
+            }
+        }
+
+        // Server-side AJAX search
+        function serverSideSearch(query) {
+            if (!query || query.length < 2) { clearResults(); hideLoading(); hideNoResults(); return; }
+
             showLoading();
             clearResults();
             hideNoResults();
 
             const url = `/Shop/SearchProducts?query=${encodeURIComponent(query)}`;
-            console.log('custom-search: Fetching URL:', url);
             fetch(url, {
                 method: 'GET',
                 headers: { 'X-Requested-With': 'XMLHttpRequest' },
@@ -231,98 +246,8 @@
                     if (ct.includes('application/json')) {
                         return response.json().then(json => ({ ok: response.ok, status: response.status, json }));
                     }
-                    return response.text().then(text => { throw new Error(`Server returned non-JSON response (status ${response.status}). Preview: ${text.substring(0, 800)}`); });
+                    return response.text().then(text => { throw new Error(`Server returned non-JSON response (status ${response.status}).`); });
                 })
                 .then(({ ok, status, json }) => {
                     hideLoading();
-                    console.log('custom-search: Response received', { ok, status, json });
-                    if (!ok && status >= 400) {
-                        const errMsg = (json && json.error) ? json.error : `Search request failed with status ${status}`;
-                        console.error('custom-search: Search failed', { status, error: errMsg });
-                        clearResults();
-                        if (searchResults) searchResults.innerHTML = `<div class="alert alert-danger m-3"><strong>Error:</strong> ${escapeHtml(errMsg)}</div>`;
-                        return;
-                    }
-                    const products = json && (json.products || json.data || json.items) ? (json.products || json.data || json.items) : (Array.isArray(json) ? json : []);
-                    console.log('custom-search: Products found', products.length);
-                    renderResults(products);
-                })
-                .catch(err => {
-                    hideLoading();
-                    clearResults();
-                    console.error('custom-search: Fetch error', err);
-                    if (searchResults) {
-                        const message = escapeHtml(err.message || 'Unknown error');
-                        searchResults.innerHTML = `<div class="alert alert-danger m-3"><strong>Search Error:</strong> ${message}<br/><small>Open DevTools Network tab and inspect /Shop/SearchProducts response.</small></div>`;
-                    }
-                });
-        }
-
-        // Unified performSearch: choose client or server path
-        function performSearch(query) {
-            const q = (query || '').trim();
-            if (clientSideCards && clientSideCards.length > 0) {
-                // Client-side: behave like wishlist
-                clientSideFilter(q);
-                // Also keep server results area clean
-                clearResults();
-                hideLoading();
-            } else {
-                // Fallback: server-side AJAX
-                serverSideSearch(q);
-            }
-        }
-
-        // Debounced input handler
-        searchInput.addEventListener('input', function () {
-            const q = this.value || '';
-            console.log('custom-search: Input changed:', q);
-            clearTimeout(debounceTimer);
-            if (q.trim().length < 2) {
-                // quick reset for short queries
-                performSearch(q);
-                return;
-            }
-            debounceTimer = setTimeout(() => {
-                console.log('custom-search: Performing search for:', q);
-                performSearch(q);
-            }, DEBOUNCE_MS);
-        });
-
-        // Enter -> if server results exist navigate to first; if client-side navigate to first matching product
-        searchInput.addEventListener('keydown', function (e) {
-            if (e.key !== 'Enter') return;
-            const q = this.value.trim();
-            if (clientSideCards && clientSideCards.length > 0) {
-                // find first visible matching card and navigate to its product page link
-                const first = productsGrid.querySelector('.product-card-wrapper:not([style*="display: none"]) a') ||
-                    productsGrid.querySelector('.product-card-wrapper a');
-                if (first) {
-                    e.preventDefault();
-                    window.location.href = first.href;
-                }
-            } else {
-                // server results: click first result link if present
-                const firstLink = searchResults ? searchResults.querySelector('a') : null;
-                if (firstLink) {
-                    e.preventDefault();
-                    window.location.href = firstLink.href;
-                } else {
-                    // if no results yet, trigger immediate server search
-                    e.preventDefault();
-                    performSearch(q);
-                }
-            }
-        });
-
-        // Prevent clicks inside popup content from closing popup
-        const innerBoxes = searchPopup.querySelectorAll('.search-field, .search-result, .search-field__input, .search-field .btn');
-        innerBoxes.forEach(el => el.addEventListener('click', e => e.stopPropagation()));
-
-        // Initial debug log
-        console.log('custom-search initialized', {
-            clientSide: !!clientSideCards,
-            productCount: clientSideCards ? clientSideCards.length : 0
-        });
-    });
-})();
+                    const products = json && (json.products 

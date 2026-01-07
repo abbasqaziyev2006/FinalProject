@@ -1,0 +1,146 @@
+﻿@model EcommerceCoza.BLL.ViewModels.ReviewUpdateViewModel
+
+@{
+    ViewData["Title"] = "Edit Review";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    /* ==== SIDEBAR FIX ==== */
+    .content-wrapper {
+        margin-left: 260px; /* sidebar eni */
+    }
+
+    /* ==== PAGE CONTAINER ==== */
+    .edit-container {
+        padding: 20px;
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .card-box {
+        background: #fff;
+        border: 1px solid #eef0f2;
+        border-radius: 8px;
+        padding: 12px 15px;
+        margin-bottom: 15px;
+    }
+
+    .label {
+        font-size: 11px;
+        text-transform: uppercase;
+        color: #90a4ae;
+        font-weight: 600;
+        margin-bottom: 4px;
+        display: block;
+    }
+
+    .value {
+        font-size: 13px;
+        font-weight: 600;
+        color: #37474f;
+    }
+
+    .form-control-custom {
+        width: 100%;
+        border: 1px solid #e0e6ed;
+        border-radius: 6px;
+        padding: 8px 10px;
+        font-size: 13px;
+    }
+
+        .form-control-custom:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+    .action-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 8px;
+        margin-top: 20px;
+    }
+
+    .btn-save {
+        background: #007bff;
+        color: #fff;
+        border: none;
+        padding: 7px 18px;
+        border-radius: 5px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .btn-cancel {
+        background: #6c757d;
+        color: #fff;
+        border: none;
+        padding: 7px 18px;
+        border-radius: 5px;
+        font-size: 13px;
+    }
+
+    /* ==== MOBILE ==== */
+    @@media (max-width: 991px) {
+        .content-wrapper
+
+    {
+        margin-left: 0;
+    }
+
+    .edit-container {
+        max-width: 100%;
+    }
+
+    }
+</style>
+
+<div class="edit-container">
+    <form asp-action="Edit" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card-box">
+                    <span class="label">Product</span>
+                    <span class="value text-primary">@ViewBag.ProductName</span>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card-box">
+                    <span class="label">Author</span>
+                    <span class="value">@ViewBag.UserName</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-box">
+            <label asp-for="Rating" class="label">Rating</label>
+            <select asp-for="Rating" class="form-control-custom" style="max-width:150px">
+                <option value="1">1 Star</option>
+                <option value="2">2 Stars</option>
+                <option value="3">3 Stars</option>
+                <option value="4">4 Stars</option>
+                <option value="5">5 Stars</option>
+            </select>
+        </div>
+
+        <div class="card-box">
+            <label asp-for="Comment" class="label">Comment</label>
+            <textarea asp-for="Comment" rows="4" class="form-control-custom"></textarea>
+            <span asp-validation-for="Comment" class="text-danger small"></span>
+        </div>
+
+        <div class="action-footer">
+            <a asp-action="Index" class="btn-cancel">Cancel</a>
+            <button type="submit" class="btn-save">Save</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
