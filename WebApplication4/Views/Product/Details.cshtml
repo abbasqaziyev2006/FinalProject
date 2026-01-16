@@ -31,7 +31,6 @@
         .Distinct()
         .ToList();
 
-    // Rating calculation with half stars support
     var fullStars = (int)Math.Floor(Model.Rating);
     var hasHalfStar = (Model.Rating - fullStars) >= 0.5;
     var emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);

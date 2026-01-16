@@ -75,13 +75,18 @@
                                                         <img loading="lazy" src="~/images/products/product-placeholder.jpg" width="330" height="400" alt="@item.Product.Name" class="pc__img">
                                                     </a>
                                                 }
-                                                <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist active"
+
+                                                
+                                                <button class="pc__btn-wl position-absolute top-0 end-0 border-0 js-add-wishlist active rounded-circle d-flex align-items-center justify-content-center"
                                                         data-product-id="@item.ProductId"
-                                                        title="Remove from Wishlist">
-                                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <use href="#icon_heart" />
+                                                        title="Remove from Wishlist"
+                                                        style="background-color: white !important; width: 40px; height: 40px; margin: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10; cursor: pointer;">
+                                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="#fd7e14" stroke="#fd7e14" stroke-width="1" xmlns="http://www.w3.org/2000/svg" style="display: block;">
+                                                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                                                     </svg>
                                                 </button>
+                                      
+
                                             </div>
                                             <div class="pc__info position-relative">
                                                 <p class="pc__category">@categoryName</p>
@@ -113,7 +118,7 @@
                 {
                     <div class="text-center py-5">
                         <svg width="100" height="100" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="text-muted mb-3">
-                            <use href="#icon_heart" />
+                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
                         </svg>
                         <h4 class="mb-3">Your wishlist is empty</h4>
                         <p class="text-muted mb-4">Start adding products you love to your wishlist</p>
@@ -129,7 +134,6 @@
 
 @section Scripts {
     <script>
-        // Infinite scroll and search functionality
         (function () {
             const input = document.getElementById('wishlistSearchInput');
             const btn = document.getElementById('wishlistSearchBtn');
@@ -145,19 +149,16 @@
             let isSearching = false;
             let isLoading = false;
 
-            // Initialize by showing first batch
             function init() {
                 hideAllCards();
                 showNextBatch();
                 setupInfiniteScroll();
             }
 
-            // Hide all cards initially
             function hideAllCards() {
                 cards.forEach(c => c.classList.add('d-none'));
             }
 
-            // Show next batch of items
             function showNextBatch() {
                 if (isSearching || isLoading) return;
 
@@ -166,14 +167,11 @@
                     c.style.display !== 'none'
                 );
 
-                if (hidden.length === 0) {
-                    return false; // No more items to show
-                }
+                if (hidden.length === 0) return false;
 
                 isLoading = true;
                 if (loading) loading.classList.remove('d-none');
 
-                // Simulate loading delay for smooth experience
                 setTimeout(() => {
                     hidden.slice(0, itemsPerLoad).forEach(c => {
                         c.classList.remove('d-none');
@@ -187,42 +185,32 @@
                 return true;
             }
 
-            // Setup infinite scroll
             function setupInfiniteScroll() {
                 let scrollTimeout;
-
                 window.addEventListener('scroll', () => {
                     clearTimeout(scrollTimeout);
-
                     scrollTimeout = setTimeout(() => {
                         if (isSearching || isLoading) return;
-
                         const scrollPosition = window.innerHeight + window.scrollY;
                         const pageHeight = document.documentElement.scrollHeight;
-                        const threshold = 300; // Trigger 300px before bottom
-
-                        if (scrollPosition >= pageHeight - threshold) {
+                        if (scrollPosition >= pageHeight - 300) {
                             showNextBatch();
                         }
                     }, 100);
                 });
             }
 
-            // Apply search filter
             function applyFilter() {
                 const term = input.value.trim().toLowerCase();
                 let visible = 0;
                 isSearching = term.length > 0;
-
                 cards = Array.from(grid.querySelectorAll('.product-card-wrapper'));
 
                 if (term.length === 0) {
-                    // Reset to infinite scroll mode
                     hideAllCards();
                     currentlyVisible = 0;
                     showNextBatch();
                 } else {
-                    // Show all matching items
                     cards.forEach(card => {
                         const title = card.querySelector('.pc__title')?.textContent.trim().toLowerCase() || '';
                         const category = card.querySelector('.pc__category')?.textContent.trim().toLowerCase() || '';
@@ -230,22 +218,17 @@
 
                         card.classList.remove('d-none');
                         card.style.display = match ? '' : 'none';
-
                         if (match) visible++;
                     });
                 }
 
-                // Show/hide no results message
                 if (noResults) {
                     noResults.classList.toggle('d-none', !isSearching || visible !== 0);
                 }
             }
 
-            // Event listeners
             input?.addEventListener('input', applyFilter);
             btn?.addEventListener('click', applyFilter);
-
-            // Initialize
             init();
         })();
     </script>

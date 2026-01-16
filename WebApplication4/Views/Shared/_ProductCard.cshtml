@@ -42,7 +42,6 @@
     var displayColors = uniqueColors.Take(displayColorLimit).ToList();
     var remainingColorCount = Math.Max(0, uniqueColors.Count - displayColorLimit);
 
-
     string initialImage = "product-placeholder.jpg";
     if (firstVariant != null)
     {
@@ -56,7 +55,6 @@
         }
     }
 
-    // Serialize variants for quick view
     var variantsJson = System.Text.Json.JsonSerializer.Serialize(Model.ProductVariants.Select(v => new
     {
         id = v.Id,
@@ -127,6 +125,16 @@
                     @Localizer["OutOfStock"]
                 </div>
             }
+
+          
+            <button class="pc__btn-wl position-absolute top-0 end-0 border-0 js-add-wishlist rounded-circle d-flex align-items-center justify-content-center"
+                    data-product-id="@Model.Id"
+                    title="@Localizer["AddToWishlist"]"
+                    style="background-color: white !important; width: 40px; height: 40px; margin: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 10; cursor: pointer; transition: all 0.3s ease;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" xmlns="http://www.w3.org/2000/svg" class="heart-icon">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
+            </button>
         </div>
 
         <div class="pc__info position-relative">
@@ -221,14 +229,6 @@
                 </div>
             }
 
-            <button class="pc__btn-wl position-absolute top-0 end-0 bg-transparent border-0 js-add-wishlist"
-                    data-product-id="@Model.Id"
-                    title="@Localizer["AddToWishlist"]">
-                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <use href="#icon_heart" />
-                </svg>
-            </button>
-
             @if (firstVariant != null && firstVariant.Quantity == 0)
             {
                 <div class="pc-labels position-absolute top-0 start-0">
@@ -240,6 +240,30 @@
 </div>
 
 <style>
+   
+    .pc__btn-wl .heart-icon {
+        stroke: #6c757d;
+        fill: none;
+        transition: all 0.3s ease;
+    }
+
+
+    .pc__btn-wl.active .heart-icon {
+        fill: #fd7e14;
+        stroke: #fd7e14;
+    }
+
+
+    .pc__btn-wl:hover {
+        transform: scale(1.1);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2) !important;
+    }
+
+        .pc__btn-wl:hover .heart-icon {
+            stroke: #fd7e14;
+        }
+
+
     .product-card__price .text-danger {
         color: #dc3545 !important;
         font-weight: 600;
@@ -275,7 +299,6 @@
             transform: translateY(-1px);
         }
 
-    /* Quick View Button Hover Effect */
     .product-card:hover .pc__quick-view {
         opacity: 1 !important;
     }
@@ -287,6 +310,7 @@
 
 <script>
     (function ($) {
+        // Swatch Color Click Handler
         $(document).on('click', '.pc__swatch-color', function (e) {
             e.preventDefault();
             var $sw = $(this);
@@ -295,13 +319,11 @@
             $card.find('.pc__swatch-color').removeClass('active');
             $sw.addClass('active');
 
-
             var cover = $sw.data('cover-image') || '';
             var firstImg = $sw.data('first-image') || '';
             var imgFile = cover || firstImg || 'product-placeholder.jpg';
             var $img = $card.find('.main-product-image').first();
             $img.attr('src', '/images/products/' + imgFile);
-
 
             var variantId = $sw.data('variant-id');
             var $atc = $card.find('.js-add-cart').first();
@@ -309,21 +331,20 @@
                 $atc.attr('data-variant-id', variantId);
             }
 
-
             var price = $sw.data('price');
             var sale = $sw.data('sale-price');
             var $priceContainer = $card.find('.product-card__price .price-current').first();
             var $priceOld = $card.find('.product-card__price .price-old').first();
             if ($priceContainer.length && (price !== undefined && price !== null)) {
                 if (sale && sale !== '') {
-                    $card.find('.product-card__price').html('<div class="d-flex align-items-center gap-2 mb-1"><span class="money price text-danger fw-semibold price-current" style="font-size:1.15rem;">' + '@CurrencyService.GetSymbol() ' + parseFloat(sale).toFixed(2) + '</span><span class="money price text-decoration-line-through text-muted price-old" style="font-size:0.875rem;">' + '@CurrencyService.GetSymbol() ' + parseFloat(price).toFixed(2) + '</span></div>');
+                    $card.find('.product-card__price').html('<div class="d-flex align-items-center gap-2 mb-1"><span class="money price text-danger fw-semibold price-current" style="font-size:1.15rem;">@CurrencyService.GetSymbol() ' + parseFloat(sale).toFixed(2) + '</span><span class="money price text-decoration-line-through text-muted price-old" style="font-size:0.875rem;">@CurrencyService.GetSymbol() ' + parseFloat(price).toFixed(2) + '</span></div>');
                 } else {
-                    $card.find('.product-card__price').html('<span class="money price price-current" style="font-size:1.15rem;">' + '@CurrencyService.GetSymbol() ' + parseFloat(price).toFixed(2) + '</span>');
+                    $card.find('.product-card__price').html('<span class="money price price-current" style="font-size:1.15rem;">@CurrencyService.GetSymbol() ' + parseFloat(price).toFixed(2) + '</span>');
                 }
             }
         });
 
-
+        // Initialize First Swatch as Active
         $(function () {
             $('.product-card-wrapper').each(function () {
                 var $card = $(this);
@@ -331,12 +352,10 @@
                 if ($first.length) {
                     $first.addClass('active');
 
-
                     var cover = $first.data('cover-image') || '';
                     var firstImg = $first.data('first-image') || '';
                     var imgFile = cover || firstImg || 'product-placeholder.jpg';
                     $card.find('.main-product-image').attr('src', '/images/products/' + imgFile);
-
 
                     var variantId = $first.data('variant-id');
                     if (variantId) {
@@ -344,6 +363,26 @@
                     }
                 }
             });
+
+            
+            checkWishlistStatus();
         });
+
+        function checkWishlistStatus() {
+            $.ajax({
+                url: '/Wishlist/GetWishlistItems',
+                type: 'GET',
+                success: function(response) {
+                    if (response && response.items) {
+                        response.items.forEach(function(item) {
+                            $(`.js-add-wishlist[data-product-id="${item.productId}"]`).addClass('active');
+                        });
+                    }
+                },
+                error: function() {
+                    console.log('Could not load wishlist status');
+                }
+            });
+        }
     })(jQuery);
 </script>

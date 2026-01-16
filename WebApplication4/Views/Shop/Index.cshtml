@@ -394,7 +394,7 @@
             let currentSkip = @ViewBag.PageSize;
             let isLoading = false;
             let hasMoreProducts = true;
-            const pageSize = @ViewBag.PageSize;
+            const pageSize = 3; 
             let allLoadedProducts = [];
             let filteredProducts = [];
             let selectedCategory = 'all';
@@ -427,15 +427,12 @@
                 e.preventDefault();
                 const brandId = parseInt($(this).data('brand-id'));
 
-                // Toggle brand selection
                 $('.brand-logo-link').removeClass('active');
 
                 if (selectedBrands.includes(brandId)) {
-                    // Deselect
                     selectedBrands = [];
                     $('.brand-filter').prop('checked', false);
                 } else {
-                    // Select this brand
                     selectedBrands = [brandId];
                     $(this).addClass('active');
                     $('.brand-filter').prop('checked', false);
@@ -445,7 +442,7 @@
                 applyFilters();
             });
 
-            // ============= INFINITE SCROLL =============
+          
             $(window).on('scroll', function() {
                 if (isLoading || !hasMoreProducts) return;
 
@@ -454,8 +451,8 @@
                 const documentHeight = $(document).height();
                 const scrollPercentage = (scrollTop + windowHeight) / documentHeight;
 
-                // Trigger when user scrolls to 80% of page
-                if (scrollPercentage > 0.8) {
+             
+                if (scrollPercentage > 0.7) {
                     loadMoreProducts();
                 }
             });
@@ -464,7 +461,17 @@
                 if (isLoading || !hasMoreProducts) return;
 
                 isLoading = true;
-                $('#loading-indicator').show();
+
+                const $loadingIndicator = $(`
+                    <div class="col-12 loading-skeleton" style="text-align: center; padding: 40px 0;">
+                        <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Yükleniyor...</span>
+                        </div>
+                        <p class="mt-3 text-muted">Products are loading...</p>
+                    </div>
+                `);
+
+                $('#products-grid').append($loadingIndicator);
 
                 $.ajax({
                     url: '@Url.Action("LoadMoreProducts", "Shop")',
@@ -474,19 +481,19 @@
                         take: pageSize
                     },
                     success: function(response) {
+                  
+                        $('.loading-skeleton').remove();
+
                         if (response.hasMore === false || response.products.length === 0) {
                             hasMoreProducts = false;
-                            $('#loading-indicator').hide();
                             $('#no-more-products').show();
                             return;
                         }
 
-                        // Append new products to grid
                         response.products.forEach(function(product) {
                             const productHtml = createProductCard(product);
                             $('#products-grid').append(productHtml);
 
-                            // Store product data for filtering
                             const $newProduct = $('.product-card-wrapper').last();
                             allLoadedProducts.push({
                                 element: $newProduct,
@@ -504,7 +511,6 @@
                         currentSkip += pageSize;
                         $('#totalProducts').text(allLoadedProducts.length);
 
-                        // Apply current filters to newly loaded products
                         applyFilters();
 
                         hasMoreProducts = response.hasMore;
@@ -513,11 +519,20 @@
                         }
                     },
                     error: function() {
+                        $('.loading-skeleton').remove();
                         console.error('Error loading products');
+
+                     
+                        const $errorMsg = $(`
+                            <div class="col-12 text-center py-4">
+                                <p class="text-danger">An error occurred while loading products. Please try again.</p>
+                            </div>
+                        `);
+                        $('#products-grid').append($errorMsg);
+                        setTimeout(() => $errorMsg.remove(), 3000);
                     },
                     complete: function() {
                         isLoading = false;
-                        $('#loading-indicator').hide();
                     }
                 });
             }
@@ -625,13 +640,11 @@
                     selectedBrands.push(parseInt($(this).data('brand-id')));
                 });
 
-                // Sync brand logo links
                 $('.brand-logo-link').removeClass('active');
                 selectedBrands.forEach(id => {
                     $(`.brand-logo-link[data-brand-id="${id}"]`).addClass('active');
                 });
 
-                console.log('Selected brands:', selectedBrands);
                 applyFilters();
             });
 
@@ -655,7 +668,6 @@
                 $('.color-filter:checked').each(function() {
                     selectedColors.push(parseInt($(this).data('color-id')));
                 });
-                console.log('Selected colors:', selectedColors);
                 applyFilters();
             });
 
@@ -682,7 +694,6 @@
                 $('.size-filter:checked').each(function() {
                     selectedSizes.push($(this).data('size').toString().toUpperCase());
                 });
-                console.log('Selected sizes:', selectedSizes);
                 applyFilters();
             });
 
@@ -714,7 +725,6 @@
                 $('.brand-filter').prop('checked', false);
                 $('.brand-logo-link').removeClass('active');
 
-                // Reset color filters
                 $('.color-filter').prop('checked', false);
                 $('.color-filter').each(function() {
                     const $label = $(this).closest('label');
@@ -725,7 +735,6 @@
                     $check.addClass('d-none');
                 });
 
-                // Reset size filters
                 $('.size-filter').prop('checked', false);
                 $('.size-filter').each(function() {
                     const $label = $(this).closest('label');
@@ -761,16 +770,9 @@
                     return categoryMatch && brandMatch && colorMatch && sizeMatch && priceMatch;
                 });
 
-                // Hide all products
                 allLoadedProducts.forEach(p => p.element.hide());
-
-                // Show filtered products
                 filteredProducts.forEach(p => p.element.show());
-
-                // Update count
                 $('#productsCount').text(filteredProducts.length);
-
-                console.log('Filtered products:', filteredProducts.length);
             }
 
             // ============= SORT PRODUCTS =============
@@ -799,7 +801,6 @@
                         break;
                 }
 
-                // Reorder DOM elements
                 sorted.forEach(product => {
                     $grid.append(product.element);
                 });
@@ -817,7 +818,6 @@
                     return;
                 }
 
-                // Disable button
                 $button.prop('disabled', true);
                 const originalText = $button.text();
 
@@ -832,12 +832,10 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        // Update cart count
                         if (response && response.totalCount !== undefined) {
                             $('.js-cart-items-count, .header__cart-count').text(response.totalCount);
                             $('.js-cart-items-count, .header__cart-count').show();
                         } else {
-                            // Fallback: fetch basket count
                             $.get('/Basket/GetBasket', function(data) {
                                 if (data && data.totalCount !== undefined) {
                                     $('.js-cart-items-count, .header__cart-count').text(data.totalCount);
@@ -845,7 +843,6 @@
                             });
                         }
 
-                        // Show success notification with localized message
                         showSuccessNotification('@Localizer["ProductAddedToCart"]');
                     },
                     error: function(xhr, status, error) {
@@ -853,7 +850,6 @@
                         showErrorNotification('@Localizer["ErrorAddingToCart"]');
                     },
                     complete: function() {
-                        // Re-enable button
                         $button.prop('disabled', false);
                         $button.text(originalText);
                     }
@@ -934,6 +930,20 @@
             to {
                 transform: translateX(100%);
                 opacity: 0;
+            }
+        }
+
+        .loading-skeleton {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @@keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.6;
             }
         }
     </style>
